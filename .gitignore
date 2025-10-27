@@ -19,4 +19,10 @@
 # Hardhat coverage reports
 /coverage
 
+# Configurazione Hardhat (contiene dati sensibili)
 hardhat.config.ts
+
+# File ambiente
+.env
+.env.local
+.env.production
