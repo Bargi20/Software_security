@@ -1,0 +1,895 @@
+
+\chapter{Valutazione del rischio}
+
+
+\section{Diagrammi i*}
+
+\subsection{SD/SR ruoli senza sistema}
+% Diagramma i* attori senza sistema
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter2/immagini/2\_model\_solo\_attori\_principali\_no\_sistema.png}
+\end{figure}
+
+\clearpage
+
+\subsection{SD/SR ruoli con sistema}
+
+% Diagramma i* attori con sistema
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{chapter2/immagini/3\_model\_con\_sistema.png}
+\end{figure}
+
+\subsection{SD/SR sistema e attaccanti con alberi di attacco}
+
+% Diagramma i* attori con alberi di attacco
+\begin{figure}[h!]	\centering
+	\includegraphics[width=0.9\columnwidth]{chapter2/immagini/4\_model\_con\_alberi\_di\_attacco.png}
+\end{figure}
+\clearpage
+\subsection{SD/SR sistema e oracolo bayesiano}
+
+% Diagramma i* attori con oracolo
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter2/immagini/5\_model\_con\_oracolo.png}
+\end{figure}
+% Prima pagina: sezione + PDF in landscape
+
+\newgeometry{paperwidth=297mm,paperheight=210mm,margin=2cm}
+\includepdf[
+  pages=1,
+  fitpaper=true,
+  scale=0.85,        
+  pagecommand={\section{Tabella Dual Stride} %qui si può scrivere
+  }
+]{chapter2/dual-stride.pdf}
+\restoregeometry
+
+\newgeometry{paperwidth=297mm,paperheight=210mm,margin=2cm} % A4 landscape
+\includepdf[pages=2-,fitpaper=true,pagecommand={}]{chapter2/dual-stride.pdf}
+\restoregeometry % torna al layout originale portrait
+
+
+\section{Abuse Case}
+
+In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse case. In particolare si analizzerà ogni tipologia di attacco individuato nella tabella Dual Stride.
+%%%%%%%%%% Authentication Abuse (CAPEC 114) %%%%%%%%%%%%%%%
+\renewcommand{\arraystretch}{1.5} % aumenta l'altezza delle righe del 50%
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-01 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Authentication Abuse (CAPEC 114) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un aggressore ottiene l'accesso non autorizzato a un'applicazione, un servizio o un dispositivo conoscendo le debolezze intrinseche di un meccanismo di autenticazione o sfruttando una falla nell'implementazione dello schema di autenticazione. In un attacco di questo tipo, un meccanismo di autenticazione funziona, ma una sequenza di eventi attentamente controllata fa sì che il meccanismo conceda l'accesso all'aggressore.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+						\item Un meccanismo o sottosistema di autenticazione che implementa una qualche forma di autenticazione, come password, certificati di sicurezza, ecc., che presenta qualche difetto/vulnerabilità;
+						\item Un'applicazione client, un accesso da riga di comando a un file binario o un linguaggio di programmazione in grado di interagire con il meccanismo di autenticazione.
+					\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Un attaccante sfrutta una debolezza nel meccanismo di autenticazione, permettendogli di eseguire azioni illegalmente. Per esempio, dopo aver bypassato l'autenticazione, potrebbe effettuare azioni come visionare i dati contenuti nel sistema o azioni di modifica dei dati.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L’aggressore ottiene l’accesso non autorizzato ed effettua azioni malevoli.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Garantire che tutti i meccanismi di autenticazione siano sicuri e a più fattori, includendo protezioni contro l’elevazione dei privilegi non autorizzata. Effettuare audit regolari per rilevare configurazioni errate o credenziali
+				compromesse.
+			\vspace{0.5em}\end{minipage}
+		} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+						\item Utilizzare autenticazione MFA;
+					\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Gli attacchi sui sistemi di autenticazione sono una delle cause principali di compromissioni. La combinazione di MFA, auditing continuo e l'uso di password robuste può ridurre significativamente il rischio.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+	}
+	\caption{Use Case Template}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%% Privilage Escalation (CAPEC 233) %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-02 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Privilage Escalation (CAPEC 233) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un avversario sfrutta una debolezza che gli consente di elevare i propri privilegi ed eseguire azioni che non dovrebbe essere autorizzato a eseguire.				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Il sistema contiene un meccanismo di controllo dei privilegi mal configurato o vulnerabile
+        				\item L'attaccante ha un accesso limitato al sistema.
+        				\item L'attaccante conosce o riesce a dedurre una vulnerabilità sfruttabile nel controllo dei privilegi.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Gli attaccanti possono eseguire il caching sudo e/o utilizzare il file "sudoers" per elevare i propri privilegi. Ciò permette di eseguire comandi al posto di altri utenti o per generare processi con privilegi più elevati.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L’attaccante sfrutta la configurazione errata del meccanismo di controllo degli account utente, consentendo l’esecuzione di codice arbitrario con privilegi elevati senza richiedere autorizzazioni
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					I privilegi aumentati vengono utilizzati per eseguire operazioni non autorizzate.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Deve essere garantita una gestione dei privilegi sicura, proteggendo i meccanismi di escalation e prevenendo configurazioni usate. Monitoraggio continuo e auditing dei privilegi devono essere implementati per rilevare tentativi di escalation non autorizzati
+			\vspace{0.5em}\end{minipage}
+		} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Applicare MFA per azioni sensibili;
+        				\item Controllare periodicamente file di configurazione;
+        				\item Effettuare audit periodici del sistema;
+        				\item Mantenere aggiornati i programmi, le librerie e framework in uso;
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					È fondamentale combinare l'autenticazione MFA, monitorare continuamente il sistema, mantenere aggiornate le varei tecnologie in uso e gestire rigorosamente i privilegi e i file di configurazione per prevenire vulnerabilità di questo tipo.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+	}
+	\caption{Use Case Template}
+\end{table}
+
+%%%%%%%%%%%%%%%%%% Targeted Malware (CAPEC 542) %%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-03 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Targeted Malware (CAPEC 542) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Cliente, Corriere, Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un avversario sviluppa un malware mirato che sfrutta una vulnerabilità nota in un ambiente informatico organizzativo. Il malware creato per questi attacchi si basa specificamente sulle informazioni raccolte sull'ambiente tecnologico. L'esecuzione con successo del malware consente a un avversario di ottenere un'ampia varietà di impatti tecnici negativi	
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item L'attaccante deve raccogliere informazioni sull'ambiente target.
+        				\item L'attaccante deve provare modi di social engineering come il phising per far eseguire il malware sul sistema. 
+        				\item Identificare vulnerabilità e creare malware ad hoc per sfruttarle.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'attaccante analizza il sistema cercando di ottenere informazioni utili per lo sviluppo di un malware ed il suo deploy. Successivamente, dopo lo sviluppo del malware, l'attaccante tenta il deploy di quest'ultimo o tramite tecniche di social engineering come il phising, andando ad inviare email o messaggi fasulli agli utenti interessati.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'attaccante, sempre dopo aver analizzato il sistema e sviluppato un malware, sfrutta una o più vulnerabilità riscontrate nel sistema per effettuare il deploy del malware.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore riesce ad eseguire malware mirati contro il sistema.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Garantire che il sistema effetui un monitoraggio avanzato per rilevare le minacce.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Mantenere aggiornati sistemi e software;
+        				\item Implementare strumenti di rilevamento come antivirus, firewall, etc;
+        				\item Effettuare degli audit del sistema andando ad analizzare manualmente processi e servizi in esecuzione.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Gli avversari spesso utilizzano tecniche di offuscamento quando sviluppano malware allo scopo di evitare il rilevamento o impedire al bersaglio di decodificare e comprendere un campione di malware catturato. Alcune di queste tecniche includono, ma non sono limitate a, il riempimento binario, l'imballaggio del software, la rimozione di simboli e stringhe da un payload e l'utilizzo di una risoluzione API dinamica.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+	}
+	\caption{Use Case Template}
+\end{table}
+
+%%%%%%%%%%%%%%%% Phishing (CAPEC 98) %%%%%%%%%%%%%%%%%%%
+
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-04 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Phishing (CAPEC 98) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Cliente, Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Il phishing è una tecnica di ingegneria sociale in cui un utente malintenzionato si maschera da entità legittima con la quale la vittima potrebbe fare affari al fine di indurre l'utente a rivelare alcune informazioni riservate (molto spesso credenziali di autenticazione) che possono essere successivamente utilizzate da un malintenzionato. Il phishing è essenzialmente una forma di raccolta di informazioni o "pesca" per informazioni	
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Presenza di una vulnerabilità nota nell’ambiente target, non ancora corretta o mitigata. 
+        				\item Un aggressore deve avere un modo per entrare in contatto con la vittima (per esempio tramite e-mail);
+        				\item Capacità dell’attaccante di raccogliere informazioni tramite ricognizione (OSINT, scansioni passive o altre tecniche non invasive)
+        				\item L'aggressore deve ottenere la fiducia della vittima, inducendola con l'inganno a compiere determinate azioni.
+        				\item Il servizio ingennevole deve assomigliare il più possibile a quello reale.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Un aggressore invia un'e-mail alla vittima malevola per indurre l'utente a cliccare sul link incluso nell'e-mail (che indirizza la vittima al sito web dell'aggressore) e ad accedere. La chiave è far credere alla vittima che l'e-mail provenga da un'entità legittima e che il sito web a cui rimanda l'URL nell'e-mail sia il sito web legittimo. Un invito all'azione deve solitamente suonare legittimo e sufficientemente urgente da indurre l'utente ad agire.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Una volta che l'aggressore ottiene alcune informazioni sensibili tramite phishing (credenziali di accesso, dati della carta di credito, ecc.), può sfruttare queste informazioni. Ad esempio, può utilizzare le credenziali di accesso della vittima per accedere al suo conto bancario e trasferire denaro su un conto a sua scelta.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+					Un aggressore crea un sito web che assomiglia molto al sito web che sta cercando di impersonare. Tale sito web in genere include un modulo di accesso in cui la vittima deve inserire le proprie credenziali di autenticazione.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore riesce ad ottenere le informazioni riservate.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Garantire l'implementazione di filtri avanzati, il monitoraggio e l'analisi delle attività anomale.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Non seguire alcun link che si riceve all'interno delle e-mail e non inserire credenziali di accesso su alcun sito web proveniente da e-mail sospette.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Questo CAPEC descrive un attacco in cui un avversario sviluppa malware su misura per sfruttare debolezze note dell’ambiente target.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+	}
+	\caption{Use Case Template}
+\end{table}
+
+%%%%%%%%%%%%%% Adversary in the middle(AiTM) (CAPEC 94) %%%%%%%%%%%%%%%
+
+% per tabelle troppo "lunghe" che strabordano in basso, allargare dimensione totale della
+% tabella e usare hspace per ricentrarlo
+
+\begin{table}[ht!]
+\hspace*{-1.8cm} % sposta la tabella verso sinistra
+\centering
+{\footnotesize
+\begin{tabular}{|l|l|l|}
+\hline
+\begin{minipage}[t]{4.5cm}\textbf{Case Type}\end{minipage} &
+\begin{minipage}[t]{7cm}\textbf{Abuse Case}\end{minipage} &
+\begin{minipage}[t]{4.5cm}\textbf{Case ID} AC-05\end{minipage} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+Adversary in the middle (AiTM) (CAPEC 94)
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+Cliente, Sistema, Attaccante
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+Ogni volta che un componente tenta di comunicare con l'altro, i dati fluiscono prima attraverso l'avversario, che può osservarli o alterarli, prima di essere trasmessi al destinatario previsto come se non fossero mai stati osservati. Questa interposizione è trasparente lasciando i due componenti compromessi inconsapevoli della potenziale corruzione o perdita delle loro comunicazioni. Il potenziale di questi attacchi produce un'implicita mancanza di fiducia nella comunicazione o nell'identificazione tra due componenti.
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+\begin{itemize}
+\item Ci sono due componenti che comunicano tra loro;
+\item Un utente malintenzionato è in grado di identificare la natura e il meccanismo di comunicazione tra i due componenti bersaglio;
+\item Un utente malintenzionato può origliare la comunicazione tra i componenti bersaglio;
+\item Una forte autenticazione reciproca non viene utilizzata tra i due componenti bersaglio;
+\item La comunicazione avviene in chiaro (non crittografato) o con crittografia insufficiente e falsificabile.
+\end{itemize}
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+L'attaccante si interpone nella rete con uno spyware installato sul sistema. Ciò permette di registrare tutto il traffico che transita nella rete. Se il traffico non è criptato, l'attaccante può leggere tutte le comunicazioni in chiaro, altrimenti deve decriptarle.
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+L'attaccante può "avvelenare" la cache ARP (Address Resolution Protocol) per posizionarsi tra le comunicazioni di due o più dispositivi in rete.
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+L'attaccante può reindirizzare il traffico di rete verso sistemi di sua proprietà falsificando il traffico DHCP e comportandosi come server DHCP dannoso. Raggiungendo la posizione di "avversario nel mezzo" (AiTM), gli aggressori possono raccogliere le comunicazioni di rete, comprese le credenziali in transito tramite protocolli non sicuri.
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+L’aggressore riesce ad inserirsi nel canale di comunicazione tra due o più componenti.
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+\begin{itemize}
+\item Comunicazioni sicure tramite TLS 1.3, SSH, SSL.
+\item Gestione sicura di chiavi, certificati, handshake.
+\item Integrità dei messaggi tramite MAC o firme digitali.
+\end{itemize}
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+\begin{itemize}
+\item Chiavi pubbliche firmate da CA attendibili.
+\item Crittografia del traffico (SSL/TLS/SSH).
+\item Autenticazione reciproca forte.
+\item Scambio sicuro delle chiavi pubbliche.
+\end{itemize}
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\begin{minipage}[t]{4.5cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+\multicolumn{2}{|l|}{
+\begin{minipage}[t]{11.5cm}\raggedright
+Il rischio di manipolazione delle transazioni tramite API è elevato quando la protezione non è adeguata, mediante attacchi AiTM. Questi attacchi differiscono dagli attacchi di sniffing perché modificano i messaggi prima che raggiungano il destinatario previsto.
+\vspace{0.5em}\end{minipage}} \\ \hline
+
+\end{tabular}
+}
+\caption{Use Case Template}
+\end{table}
+
+
+
+%%%%%%%Reusing session ID (CAPEC 60)%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\resizebox{\textwidth}{!}{
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-06 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Reusing session ID (CAPEC 60) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Utente, Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Questo attacco mira al riutilizzo di un ID di sessione valido per falsificare il sistema di destinazione al fine di ottenere privilegi. L'attaccante cerca di riutilizzare un ID di sessione rubato utilizzato in precedenza durante una transazione per eseguire lo spoofing e il dirottamento della sessione.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item L'host di destinazione utilizza gli ID di sessione/session token per tenere traccia degli utenti;
+        				\item Gli ID di sessione/session token vengono utilizzati per controllare l'accesso alle risorse;
+        				\item Gli ID di sessione/session token utilizzati dall'host di destinazione non sono ben protetti dal furto di sessione.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore interagisce con l'host di destinazione e scopre che gli ID di sessione/token di sessione vengono utilizzati per autenticare gli utenti. Successivamente ruba un ID di sessione/token di sessione da un utente valido e lo usa per eseguire azioni per suo conto.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+				L'aggressore tenta di utilizzare l'ID di sessione rubato per ottenere l'accesso al sistema con i privilegi del proprietario originale dell'ID di sessione.	
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore riesce ad utilizzare lo stesso ID di sessione di un altro utente loggato nel sistema.				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Garantire una gestione sicura delle sessioni, implementando tecniche specifiche per evitare il furto di sessione.			
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+            			\item Invalidare sempre un ID di sessione dopo il logout dell'utente.
+
+            			\item Impostare un timeout di sessione per gli ID di sessione.
+
+            			\item Non codificare l'ID di invio della sessione con il metodo GET, altrimenti l'ID della sessione verrà copiato nell'URL. In generale, evitare di scrivere gli ID di sessione negli URL. Gli URL possono accedere ai file di registro, che sono vulnerabili a un utente malintenzionato.
+
+            			\item Crittografare i dati della sessione associati all'ID della sessione.
+
+            			\item Usare l'autenticazione a più fattori.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Questo attacco descrive un attacco in cui l’avversario riutilizza o intercetta un ID di sessione valido per assumere l’identità dell’utente legittimo, sfruttando debolezze nei meccanismi di gestione e protezione delle sessioni.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+	}
+	\caption{Use Case Template}
+\end{table}
+
+%%%%%%%%%%%%%Password brute forcing (CAPEC 49)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-07 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Password brute forcing (CAPEC 49) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un avversario prova ogni possibile valore per una password finché non ci riesce. Un attacco brute force passerà in rassegna tutte le password possibili, dato l'alfabeto utilizzato (lettere minuscole, lettere maiuscole, numeri, simboli, ecc.) e la lunghezza massima della password.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item L'host di destinazione utilizza gli ID di sessione/session token per tenere traccia degli utenti;
+        				\item Gli ID di sessione/session token vengono utilizzati per controllare l'accesso alle risorse;
+        				\item Gli ID di sessione/session token utilizzati dall'host di destinazione non sono ben protetti dal furto di sessione.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore interagisce con l'host di destinazione e scopre che gli ID di sessione/token di sessione vengono utilizzati per autenticare gli utenti. Successivamente ruba un ID di sessione/token di sessione da un utente valido e lo usa per eseguire azioni per suo conto.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore tenta di utilizzare l'ID di sessione rubato per ottenere l'accesso al sistema con i privilegi del proprietario originale dell'ID di sessione.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore riesce ad utilizzare lo stesso ID di sessione di un altro utente loggato nel sistema.				
+				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Garantire una gestione sicura delle sessioni, implementando tecniche specifiche per evitare il furto di sessione.			
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+            			\item Invalidare sempre un ID di sessione dopo il logout dell'utente.
+
+            			\item Impostare un timeout di sessione per gli ID di sessione.
+
+            			\item Non codificare l'ID di invio della sessione con il metodo GET, altrimenti l'ID della sessione verrà copiato nell'URL. In generale, evitare di scrivere gli ID di sessione negli URL. Gli URL possono accedere ai file di registro, che sono vulnerabili a un utente malintenzionato.
+
+            			\item Crittografare i dati della sessione associati all'ID della sessione.
+
+            			\item Usare l'autenticazione a più fattori.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Questo attacco descrive un attacco in cui l’avversario riutilizza o intercetta un ID di sessione valido per assumere l’identità dell’utente legittimo, sfruttando debolezze nei meccanismi di gestione e protezione delle sessioni.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+	}
+	\caption{Use Case Template}
+\end{table}

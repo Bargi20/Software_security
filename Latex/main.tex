@@ -1,0 +1,39 @@
+\documentclass[a4paper,11pt,oneside,reqno,table]{book}
+
+\usepackage{array}  % permette colonne p{} e comandi avanzati nelle tabelle
+\usepackage{packages}
+\usepackage{pdfpages}
+\usepackage{pdflscape}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{longtable}
+\usepackage{ragged2e}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+
+\begin{document}
+
+% FRONTISPIECE %
+\include{frontmatter/frontispiece}
+
+\frontmatter
+
+% TOCs %
+\tableofcontents
+
+
+\mainmatter
+
+\include{chapter1/chapter1}
+\include{chapter2/chapter2}
+\include{chapter3/chapter3}
+\include{chapter4/chapter4}
+\include{chapter5/chapter5}
+
+
+\backmatter
+
+% INDEX %
+\end{document}
