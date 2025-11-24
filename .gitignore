@@ -90,3 +90,18 @@ Latex/*.pdf
 # Keep only .tex source files
 # Everything else in Latex/ is ignored by the rules above
 Latex/main.fls
+Latex/main.aux
+Latex/main.fdb_latexmk
+Latex/main.fls
+Latex/main.ist
+Latex/main.log
+Latex/main.out
+Latex/main.pdf
+Latex/main.synctex.gz
+Latex/main.toc
+Latex/chapter1/chapter1.aux
+Latex/chapter2/chapter2.aux
+Latex/chapter3/chapter3.aux
+Latex/chapter4/chapter4.aux
+Latex/chapter5/chapter5.aux
+Latex/frontmatter/frontispiece.aux
