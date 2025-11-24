@@ -23,6 +23,5 @@
 hardhat.config.ts
 
 # File ambiente
-.env
 .env.local
 .env.production
