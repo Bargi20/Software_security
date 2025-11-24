@@ -25,3 +25,68 @@ hardhat.config.ts
 # File ambiente
 .env.local
 .env.production
+
+# LaTeX auxiliary files
+*.aux
+*.lof
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+# LaTeX intermediate documents
+*.dvi
+*.xdv
+*-converted-to.*
+
+# Bibliography auxiliary files
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+# Build tool auxiliary files
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# Glossaries
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.lzo
+*.lzs
+*.slg
+*.slo
+*.sls
+
+# Makeindex
+*.idx
+*.ilg
+*.ind
+*.ist
+
+# Misspelled fonts log
+missfont.log
+
+# PDF output (uncomment if you don't want to track PDFs)
+Latex/*.pdf
+
+*.log
+
+# Keep only .tex source files
+# Everything else in Latex/ is ignored by the rules above
+Latex/main.fls
