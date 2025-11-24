@@ -168,7 +168,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
+
 \end{table}
 
 %%%%%%%%%%%%%%%%%%% Privilage Escalation (CAPEC 233) %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -288,7 +288,6 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%%%%%% Targeted Malware (CAPEC 542) %%%%%%%%%%%%%%%%%%%%%%
@@ -408,7 +407,6 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%%%% Phishing (CAPEC 98) %%%%%%%%%%%%%%%%%%%
@@ -527,7 +525,6 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%% Adversary in the middle(AiTM) (CAPEC 94) %%%%%%%%%%%%%%%
@@ -634,7 +631,6 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 
 \end{tabular}
 }
-\caption{Use Case Template}
 \end{table}
 
 
@@ -763,7 +759,6 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 		\end{tabular}
 		}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%Password brute forcing (CAPEC 49)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -889,5 +884,126 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
 \end{table}
+%%%%%%%%%%%%%%%%%% Try common or default usernames and passwords (CAPEC 70) %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-08 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Try common or default usernames and passwords (CAPEC 70) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un avversario può provare alcuni nomi utente e password comuni o predefiniti per ottenere l'accesso al sistema ed eseguire azioni non autorizzate. Un avversario può provare una forza bruta intelligente usando password vuote, credenziali predefinite del fornitore note, nonché un dizionario di nomi utente e password comuni. Molti prodotti del fornitore sono preconfigurati con nomi utente e password predefiniti (e quindi ben noti) che dovrebbero essere eliminati prima dell'utilizzo in un ambiente di produzione. È un errore comune dimenticare di rimuovere queste credenziali di accesso predefinite. Un altro problema è che gli utenti sceglierebbero password molto semplici (comuni) (ad esempio "12345" o "password") che rendono più facile per l'attaccante ottenere l'accesso al sistema rispetto all'utilizzo di un attacco di forza bruta o anche di un attacco dizionario utilizzando un dizionario completo.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Il sistema utilizza l'autenticazione basata su password a un fattore. L'avversario ha i mezzi per interagire con il sistema;
+        				\item Elenco specifico della tecnologia o del fornitore di nomi utente e password predefiniti.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Un utente imposta la propria password su "password" o la lascia intenzionalmente vuota. Se il sistema non dispone di un'applicazione della forza della password rispetto a una politica di password valida, questa password potrebbe essere ammessa. L'attaccante tenta di utilizzare una serie di nomi utente e password comuni, tra cui "password" ed ottiene l'accesso al sistema.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'attaccante analizza il sistema per identificare le credenziali predefinite del fornitore. Successivamente, l'attaccante tenta di utilizzare queste credenziali per ottenere l'accesso al sistema.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore riesce ad ottenere mediante la prova di password comuni entrando nel sistema.				
+				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Controllare l'input della password e dello username nella registrazione di un utente, obbligandolo a non utilizzare password o username comuni.			
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+            			 \item Elimina tutte le credenziali predefinite dell'account che possono essere inserite dal fornitore del prodotto.
+
+        \item Implementare un meccanismo di limitazione delle password. Questo meccanismo dovrebbe prendere in considerazione sia l'indirizzo IP che il nome di accesso dell'utente.
+
+        \item Metti insieme una politica di password forte e assicurati che tutte le password create dagli utenti siano conformi. In alternativa, genera automaticamente password complesse per gli utenti.
+
+        \item Le password devono essere riciclate per prevenire l'invecchiamento, cioè ogni tanto deve essere scelta una nuova password.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un utente imposta la propria password su "123" o lascia intenzionalmente la sua password vuota. Se il sistema non ha il controllo della password rispetto a una solida politica di password, questa password può essere ammessa. Password come questi due esempi sono due password semplici e comuni che possono essere facilmente indovinate dall'avversario.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+	}
+\end{table}
+
