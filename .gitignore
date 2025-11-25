@@ -105,3 +105,9 @@ Latex/chapter3/chapter3.aux
 Latex/chapter4/chapter4.aux
 Latex/chapter5/chapter5.aux
 Latex/frontmatter/frontispiece.aux
+package-lock.json
+ignition/deployments/chain-1338/deployed_addresses.json
+ignition/deployments/chain-1338/journal.jsonl
+ignition/deployments/chain-1338/artifacts/ParityCheckerModule#ParityChecker.json
+ignition/deployments/chain-1338/build-info/solc-0_8_19-aea2f5d9b41ab22f9a42ec6abc0fd12b581c32f4.json
+package-lock.json
