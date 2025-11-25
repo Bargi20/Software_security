@@ -1,4 +1,3 @@
-import { network } from "hardhat";
 import { ethers } from "ethers";
 
 async function main() {

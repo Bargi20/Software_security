@@ -1,5 +1,5 @@
-
 \chapter{Valutazione del rischio}
+
 
 
 \section{Diagrammi i*}
@@ -37,7 +37,11 @@
 \end{figure}
 % Prima pagina: sezione + PDF in landscape
 
-\newgeometry{paperwidth=297mm,paperheight=210mm,margin=2cm}
+\newpage
+\pdfpagewidth=297mm
+\pdfpageheight=210mm
+\newgeometry{margin=2cm} % solo margini
+
 \includepdf[
   pages=1,
   fitpaper=true,
@@ -45,12 +49,22 @@
   pagecommand={\section{Tabella Dual Stride} %qui si può scrivere
   }
 ]{chapter2/dual-stride.pdf}
-\restoregeometry
 
-\newgeometry{paperwidth=297mm,paperheight=210mm,margin=2cm} % A4 landscape
+\restoregeometry
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
+
+\newpage
+\pdfpagewidth=297mm
+\pdfpageheight=210mm
+\newgeometry{margin=2cm} % solo margini
+
 \includepdf[pages=2-,fitpaper=true,pagecommand={}]{chapter2/dual-stride.pdf}
 \restoregeometry % torna al layout originale portrait
 
+\restoregeometry
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
 
 \section{Abuse Case}
 In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse case. In particolare si analizzerà ogni tipologia di attacco individuato nella tabella Dual Stride.
@@ -169,7 +183,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
+
 \end{table}
 
 %%%%%%%%%%%%%%%%%%% Privilage Escalation (CAPEC 233) %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -289,7 +303,6 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%%%%%% Targeted Malware (CAPEC 542) %%%%%%%%%%%%%%%%%%%%%%
@@ -392,7 +405,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 				\begin{minipage}[t]{11cm}\raggedright
 					\begin{itemize}
         				\item Mantenere aggiornati sistemi e software;
-        				\item Implementare strumenti di rilevamento come antivirus, firewall, etc;
+        				\item Implementare strumenti di rilevamento come antivirus e firewall;
         				\item Effettuare degli audit del sistema andando ad analizzare manualmente processi e servizi in esecuzione.
       				\end{itemize}
 				\vspace{0.5em}\end{minipage}
@@ -409,7 +422,6 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%%%% Phishing (CAPEC 98) %%%%%%%%%%%%%%%%%%%
@@ -528,7 +540,6 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%% Adversary in the middle(AiTM) (CAPEC 94) %%%%%%%%%%%%%%%
@@ -537,7 +548,8 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 % tabella e usare hspace per ricentrarlo
 
 \begin{table}[ht!]
-\hspace*{-1.8cm} % sposta la tabella verso sinistra
+\hspace*{-1.8cm}
+\hfuzz=5pt % sposta la tabella verso sinistra
 \centering
 {\footnotesize
 \begin{tabular}{|l|l|l|}
@@ -635,9 +647,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 
 \end{tabular}
 }
-\caption{Use Case Template}
 \end{table}
-
 
 
 %%%%%%%Reusing session ID (CAPEC 60)%%%%%%%%%%%%%%%%%%%%%
@@ -764,7 +774,6 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 		\end{tabular}
 		}
 	}
-	\caption{Use Case Template}
 \end{table}
 
 %%%%%%%%%%%%%Password brute forcing (CAPEC 49)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -772,7 +781,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 \begin{table}[ht!]
 	\centering
 	{\footnotesize
-		\begin{tabular}{|l |l| l|}
+			\begin{tabular}{|l |l| l|}
 			\hline
 			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
 			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
@@ -890,5 +899,763 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 		\end{tabular}
 	}
-	\caption{Use Case Template}
+\end{table}
+%%%%%%%%%%%%%%%%%% Try common or default usernames and passwords (CAPEC 70) %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-08 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Try common or default usernames and passwords (CAPEC 70) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un avversario può provare alcuni nomi utente e password comuni o predefiniti per ottenere l'accesso al sistema ed eseguire azioni non autorizzate. Un avversario può provare una forza bruta intelligente usando password vuote, credenziali predefinite del fornitore note, nonché un dizionario di nomi utente e password comuni. Molti prodotti del fornitore sono preconfigurati con nomi utente e password predefiniti (e quindi ben noti) che dovrebbero essere eliminati prima dell'utilizzo in un ambiente di produzione. È un errore comune dimenticare di rimuovere queste credenziali di accesso predefinite. Un altro problema è che gli utenti sceglierebbero password molto semplici (comuni) (ad esempio "12345" o "password") che rendono più facile per l'attaccante ottenere l'accesso al sistema rispetto all'utilizzo di un attacco di forza bruta o anche di un attacco dizionario utilizzando un dizionario completo.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Il sistema utilizza l'autenticazione basata su password a un fattore. L'avversario ha i mezzi per interagire con il sistema;
+        				\item Elenco specifico della tecnologia o del fornitore di nomi utente e password predefiniti.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Un utente imposta la propria password su "password" o la lascia intenzionalmente vuota. Se il sistema non dispone di un'applicazione della forza della password rispetto a una politica di password valida, questa password potrebbe essere ammessa. L'attaccante tenta di utilizzare una serie di nomi utente e password comuni, tra cui "password" ed ottiene l'accesso al sistema.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'attaccante analizza il sistema per identificare le credenziali predefinite del fornitore. Successivamente, l'attaccante tenta di utilizzare queste credenziali per ottenere l'accesso al sistema.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'aggressore riesce ad ottenere mediante la prova di password comuni entrando nel sistema.				
+				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Controllare l'input della password e dello username nella registrazione di un utente, obbligandolo a non utilizzare password o username comuni.			
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+            			 \item Elimina tutte le credenziali predefinite dell'account che possono essere inserite dal fornitore del prodotto.
+
+        \item Implementare un meccanismo di limitazione delle password. Questo meccanismo dovrebbe prendere in considerazione sia l'indirizzo IP che il nome di accesso dell'utente.
+
+        \item Metti insieme una politica di password forte e assicurati che tutte le password create dagli utenti siano conformi. In alternativa, genera automaticamente password complesse per gli utenti.
+
+        \item Le password devono essere riciclate per prevenire l'invecchiamento, cioè ogni tanto deve essere scelta una nuova password.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un utente imposta la propria password su "123" o lascia intenzionalmente la sua password vuota. Se il sistema non ha il controllo della password rispetto a una solida politica di password, questa password può essere ammessa. Password come questi due esempi sono due password semplici e comuni che possono essere facilmente indovinate dall'avversario.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+	}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%% Dictionary-based password attack (CAPEC 16) %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-09 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dictionary-based password attack (CAPEC 16) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un utente malintenzionato prova ciascuna delle parole in un dizionario come password per ottenere l'accesso al sistema tramite l'account di un utente. Se la password scelta dall'utente era una parola all'interno del dizionario, questo attacco avrà successo (in assenza di altre mitigazioni). Questa è un'istanza specifica del modello di attacco di forzatura bruta della password.
+
+    Gli attacchi del dizionario differiscono da attacchi simili come Password Spraying (CAPEC-565) e Credential Stuffing (CAPEC-600), poiché sfruttano combinazioni sconosciute di nome utente/password e non si preoccupano di indurre blocchi dell'account.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        \item Il sistema utilizza l'autenticazione basata su password a un fattore;
+
+        \item Il sistema non ha una politica di password solida che viene applicata;
+
+        \item Il sistema non implementa un meccanismo di limitazione della password efficace;
+        
+      \end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Determinare i criteri di password dell'applicazione/sistema di destinazione, come ad esempio la lunghezza consentita e il formato richiesto
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Determinare i nomi utente di cui decifrare le password, ad esempio attraverso lo sniffing della rete, interrogando il sistema oppure dal file system			
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						Utilizza uno strumento di deciframento delle password che sfrutti il dizionario per fornire le password al sistema e verificare se funzionano.
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+						L’aggressore ottiene l’accesso non autorizzato ed effettua azioni
+    					malevole.			
+				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+						Controllo da parte del sistema di obbligare l'utente a non utilizzare come password parole prese dal dizionario, effettuando un controllo di tutte le parole comuni.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+						\begin{itemize}
+        \item Crea una politica di password complessa e assicurati che il tuo sistema applichi questa politica;
+
+        \item Implementare un meccanismo intelligente di limitazione delle password. È necessario fare attenzione a garantire che questi meccanismi non consentano eccessivamente gli attacchi di blocco dell'account come CAPEC-2;
+
+        \item Sfrutta l'autenticazione a più fattori per tutti i servizi di autenticazione.
+      \end{itemize}			
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Gli attacchi all’autenticazione sono una delle cause principali di compro
+    missioni. La combinazione di MFA, auditing continuo e training degli utenti può ridurre significativamente il rischio.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%% Carry-Off GPS Attack (CAPEC 628) %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-12 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Carry-Off GPS Attack (CAPEC 628) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Una forma comune di attacco di spoofing GPS, comunemente definito attacco carry-off, inizia con la trasmissione da parte di un avversario di segnali sincronizzati con i segnali autentici rilevati dal ricevitore bersaglio. La potenza dei segnali contraffatti viene quindi gradualmente aumentata e allontanata dai segnali autentici. Col tempo, l'avversario può allontanare il bersaglio dalla destinazione prevista e dirigerlo verso una posizione scelta dall'avversario.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Per eseguire operazioni critiche, il bersaglio deve poter contare su un segnale GPS valido.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					 /			
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+						/			
+				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+					/
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+						/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+%%%%%%%%%%%%%%%%%% Credential stuffing (CAPEC 600)  %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	\resizebox{\textwidth}{!}{
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-10 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Credential stuffing (CAPEC 600)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+	Attacchi di questo tipo spesso prendono di mira i servizi di gestione su porte comunemente utilizzate come SSH, FTP, Telnet, LDAP, Kerberos, MySQL e altro ancora. Ulteriori obiettivi includono Single Sign-On (SSO) o applicazioni/servizi basati su cloud che utilizzano protocolli di autenticazione federati e applicazioni rivolte verso l'esterno.
+
+    L'obiettivo principale di Credential Stuffing è ottenere il movimento laterale e ottenere l'accesso autenticato a sistemi, applicazioni e/o servizi aggiuntivi. Un attacco Credential Stuffing eseguito con successo potrebbe far sì che l'avversario impersoni la vittima o esegua qualsiasi azione che la vittima è autorizzata a eseguire.
+
+    Sebbene non sia tecnicamente un attacco di forza bruta, gli attacchi Credential Stuffing possono funzionare come tali se un avversario possiede più password note per lo stesso account utente. Ciò può verificarsi nel caso in cui un avversario ottenga le credenziali utente da più fonti o se l'avversario ottiene la cronologia delle password di un utente per un account.
+
+    Gli attacchi di riempimento delle credenziali sono simili agli attacchi di spruzzatura di password (CAPEC-565) per quanto riguarda i loro obiettivi e i loro obiettivi complessivi. Tuttavia, gli attacchi di spruzzatura di password non hanno alcuna intuizione sulle combinazioni note di nome utente/password e sfruttano invece password comuni o previste. Ciò significa anche che gli attacchi di Spruzzamento delle password devono evitare di indurre blocchi dell'account, che generalmente non è una preoccupazione per gli attacchi di riempimento delle credenziali. Gli attacchi di spruzzatura della password possono inoltre portare ad attacchi di riempimento delle credenziali, una volta scoperta una combinazione di successo di nome utente/password.				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dati utente di sistema
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Il sistema/applicazione utilizza l'autenticazione basata su password a un fattore, SSO e/o l'autenticazione basata su cloud;
+
+        \item Il sistema/applicazione non ha una solida politica di password che viene applicata;
+
+        \item Il sistema/applicazione non implementa un meccanismo di limitazione della password efficace;
+
+        \item L'avversario possiede un elenco di account utente noti e password corrispondenti che potrebbero esistere sul bersaglio;
+        \item Un attacco Credential Stuffing è molto semplice;
+
+        \item Una macchina con risorse sufficienti per il lavoro (ad es. CPU, RAM, HD);
+
+        \item Un elenco noto di combinazioni nome utente/password;
+
+        \item Uno script personalizzato che sfrutta l'elenco delle credenziali per avviare l'attacco.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{3cm}\raggedright 
+				Brute Force: Credential Stuffing	(T1110.004)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{8cm}\raggedright 
+				Gli aggressori possono utilizzare le credenziali ottenute dai dump di violazioni di account non correlati per accedere agli account target tramite la sovrapposizione delle credenziali. Occasionalmente, un gran numero di coppie di nome utente e password viene diffuso online quando un sito web o un servizio viene compromesso e le credenziali dell'account utente vengono utilizzate. Le informazioni possono essere utili a un aggressore che tenta di compromettere gli account, sfruttando la tendenza degli utenti a utilizzare le stesse password per account personali e aziendali.
+
+				Il credential stuffing è un'opzione rischiosa perché potrebbe causare numerosi errori di autenticazione e blocchi degli account, a seconda delle policy di errore di accesso dell'organizzazione.				\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					/				
+					\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L’aggressore ottiene l’accesso non autorizzato ed effettua azioni malevole.				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Garantire il monitoraggio dei registri di sistema e l'implementazione dell'autentificazione a più fattori.			
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+            			\item Sfrutta l'autenticazione a più fattori per tutti i servizi di autenticazione e prima di concedere a un'entità l'accesso alla rete di domini;
+
+        \item Crea una politica di password complessa e assicurati che il tuo sistema applichi questa politica;
+
+        \item Assicurati che gli utenti non riutilizzino le combinazioni di nome utente/password per più sistemi, applicazioni o servizi;
+
+        \item Non riutilizzare le credenziali dell'account amministratore locale su tutti i sistemi;
+
+        \item Nega l'uso remoto delle credenziali di amministratore locali per accedere ai sistemi di dominio;
+
+        \item Non consentire agli account di essere un amministratore locale su più di un sistema;
+
+        \item Implementare un meccanismo intelligente di limitazione delle password. È necessario fare attenzione a garantire che questi meccanismi non consentano eccessivamente gli attacchi di blocco dell'account come CAPEC-2;
+
+        \item Monitorare i registri di sistema e di dominio per l'accesso anomalo alle credenziali.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un utente sfrutta la password "Password123" per una manciata di accessi alle applicazioni. Un avversario ottiene la combinazione nome utente/password di una vittima da una violazione di un'applicazione di social media ed esegue un attacco Credential Stuffing contro più applicazioni bancarie e di carte di credito. Poiché l'utente sfrutta le stesse credenziali per l'accesso al proprio conto bancario, l'avversario si autentica con successo sul conto bancario dell'utente e trasferisce denaro su un conto offshore.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+	}
+\end{table}
+
+%%%%%%%%%%%%%%%%%% Traffic Injection (CAPEC 594) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	\resizebox{\textwidth}{!}{
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-11 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Traffic Injection (CAPEC 594)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+	Un avversario inietta traffico nella connessione di rete del bersaglio. L'avversario è quindi in grado di degradare o interrompere la connessione e potenzialmente modificarne il contenuto. Non si tratta di un attacco flooding, poiché l'avversario non si concentra sull'esaurimento delle risorse. Piuttosto, sta elaborando un input specifico per influenzare il sistema in un modo particolare.		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item L'applicazione di destinazione deve sfruttare un canale di comunicazione aperto.
+        \item Il canale su cui comunica il bersaglio deve essere vulnerabile all'intercettazione.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+				\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					L'attaccante intercetta il traffico di rete tra due endpoint comunicanti. Utilizzando tecniche come la spoofing degli indirizzi IP o ARP, l'attaccante si posiziona come intermediario nella comunicazione. Successivamente, l'attaccante inietta pacchetti di dati malevoli o manipolati nel flusso di traffico esistente, alterando il contenuto delle comunicazioni tra gli endpoint.
+				\vspace{0.5em}\end{minipage}
+			} 
+			\\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					L'attaccante monitora il traffico di rete per identificare pacchetti specifici da iniettare. Utilizzando strumenti di analisi del traffico, l'attaccante seleziona i momenti opportuni per inserire i pacchetti malevoli, cercando di evitare rilevamenti e garantire che i pacchetti iniettati vengano accettati dagli endpoint di destinazione.		
+					\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					 \begin{itemize}
+        \item L’attacco altera il traffico di rete, causando risposte errate o blocchi che rendono il servizio non affidabile.
+        \item L’attaccante modifica o inserisce dati nel traffico, compromettendo l’accuratezza e la coerenza delle informazioni scambiate. 
+      \end{itemize}				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Garantire la protezione dell’integrità del traffico tramite autenticazione delle comunicazioni e il rilevamento di pacchetti anomali o non autorizzati.		
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+            			 \item Usare TLS per tutte le comunicazioni di rete, così da proteggere confidenzialità e integrità, rendendo più difficile l’iniezione di pacchetti malevoli.
+        \item Verificare l’identità degli endpoint di rete tramite protocolli sicuri (TLS, IPsec) per assicurarsi che i dati provengano da fonti legittime.
+        \item Implementare ingress filtering per bloccare pacchetti con indirizzi IP falsificati, riducendo la possibilità di spoofing e injection.
+        \item Deployare sistemi di rilevamento/prevenzione delle intrusioni per analizzare il traffico di rete e bloccare pattern sospetti o iniettati.
+        \item Configurare policy di rete che negano per default il traffico non autorizzato, consentendo solo le comunicazioni esplicitamente permesse.
+        \item In ambienti aziendali, usare la decrittazione controllata del TLS presso punti di sicurezza per permettere l’analisi del traffico cifrato senza compromettere la sicurezza.
+        \item Usare firewall e limiti di traffico per evitare sovraccarichi o pacchetti in eccesso.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+	}
+\end{table}
+
+%%%%%%%%%%%%%%%%%% Traffic Injection (CAPEC 594) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	\resizebox{\textwidth}{!}{
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-13 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Counterfeit GPS Signals (CAPEC 627)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+	Un avversario tenta di ingannare un ricevitore GPS trasmettendo segnali GPS contraffatti, strutturati in modo da assomigliare a un insieme di segnali GPS normali. Questi segnali falsificati possono essere strutturati in modo tale da indurre il ricevitore a stimare la propria posizione in un luogo diverso da quello in cui si trova effettivamente, oppure a considerarla localizzata in un luogo diverso ma in un momento diverso, come determinato dall'avversario.		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        				\item Per eseguire operazioni critiche, il bersaglio deve poter contare su un segnale GPS valido.
+
+        \item Capacità di creare segnali GPS falsificati.
+        \item La capacità di falsificare i segnali GPS non è banale.
+      				\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{3cm}\raggedright 
+				Defacement: Internal Defacement	(T1491.001)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{8cm}\raggedright 
+				Un avversario può deturpare i sistemi interni di un'organizzazione nel tentativo di intimidire o fuorviare gli utenti, screditando così l'integrità dei sistemi. Ciò può assumere la forma di modifiche ai siti web interni o ai messaggi di accesso al server, o direttamente ai sistemi degli utenti con la sostituzione dello sfondo del desktop. Immagini inquietanti o offensive possono essere utilizzate come parte di un deturpamento interno per causare disagio all'utente o per esercitare pressioni sull'osservanza dei messaggi di accompagnamento. Poiché il deturpamento interno dei sistemi espone la presenza di un avversario, spesso avviene dopo che altri obiettivi di intrusione sono stati raggiunti. 			\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{3cm}\raggedright 
+				Defacement: External Defacement	(T1491.002)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{8cm}\raggedright 
+				Un avversario può deturpare sistemi esterni a un'organizzazione nel tentativo di inviare messaggi, intimidire o in altro modo fuorviare un'organizzazione o gli utenti. Il defacement esterno può in ultima analisi indurre gli utenti a diffidare dei sistemi e a mettere in dubbio/screditare l'integrità del sistema. I siti web rivolti all'esterno sono una vittima comune del defacement; spesso presi di mira da avversari e gruppi di hacktivisti al fine di diffondere un messaggio politico o propaganda. Il defacement esterno può essere utilizzato come catalizzatore per innescare eventi o come risposta ad azioni intraprese da un'organizzazione o da un governo. Allo stesso modo, il defacement di un sito web può anche essere utilizzato come impostazione o precursore per attacchi futuri come il Drive-by Compromise.			\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					 \begin{itemize}
+        \item Quando il sistema riconosce segnali GPS contraffatti, deve informare immediatamente l’utente o i componenti interni che il dato non è affidabile.
+		\item La posizione deve smettere di influenzare funzioni critiche e deve essere usata una modalità alternativa basata su sensori interni o logiche di stima del movimento.
+		\item Una volta che il segnale torna a essere normale, il sistema deve verificare che i valori siano coerenti prima di ripristinare il funzionamento completo.
+		\item Dopo l’evento, devono essere conservate informazioni utili per capire cosa è successo e per adattare i controlli futuri, così da evitare che un attacco simile abbia successo di nuovo.
+      \end{itemize}				\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+				Il sistema deve essere in grado di mantenere la propria affidabilità anche se il GPS diventa non attendibile, reagendo rapidamente a variazioni sospette della posizione e deve continuare a funzionare grazie a fonti alternative, evitando improvvisi malfunzionamenti.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+            			 \item Le principali mitigazioni consistono nel riconoscere quando un segnale GPS non è autentico e nel ridurre la dipendenza dal GPS stesso.
+						\item È utile confrontare continuamente la posizione ricevuta con altre fonti, come sensori interni, mappe, altri sistemi satellitari o dati provenienti da reti terrestri.
+						\item La coerenza del movimento deve essere monitorata: cambiamenti troppo rapidi o improvvisi sono indizi di spoofing.
+						\item Anche l’analisi della potenza del segnale permette di rilevare comportamenti anomali, perché i segnali falsi spesso risultano più forti dei segnali dei satelliti reali.
+						\item A livello hardware si possono usare ricevitori avanzati e antenne progettate per filtrare segnali sospetti.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+	}
 \end{table}
