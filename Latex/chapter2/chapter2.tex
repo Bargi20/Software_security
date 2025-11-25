@@ -1,6 +1,7 @@
 \chapter{Valutazione del rischio}
 
 
+
 \section{Diagrammi i*}
 
 \subsection{SD/SR ruoli senza sistema}
@@ -36,7 +37,11 @@
 \end{figure}
 % Prima pagina: sezione + PDF in landscape
 
-\newgeometry{paperwidth=297mm,paperheight=210mm,margin=2cm}
+\newpage
+\pdfpagewidth=297mm
+\pdfpageheight=210mm
+\newgeometry{margin=2cm} % solo margini
+
 \includepdf[
   pages=1,
   fitpaper=true,
@@ -44,12 +49,22 @@
   pagecommand={\section{Tabella Dual Stride} %qui si può scrivere
   }
 ]{chapter2/dual-stride.pdf}
-\restoregeometry
 
-\newgeometry{paperwidth=297mm,paperheight=210mm,margin=2cm} % A4 landscape
+\restoregeometry
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
+
+\newpage
+\pdfpagewidth=297mm
+\pdfpageheight=210mm
+\newgeometry{margin=2cm} % solo margini
+
 \includepdf[pages=2-,fitpaper=true,pagecommand={}]{chapter2/dual-stride.pdf}
 \restoregeometry % torna al layout originale portrait
 
+\restoregeometry
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
 
 \section{Abuse Case}
 In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse case. In particolare si analizzerà ogni tipologia di attacco individuato nella tabella Dual Stride.
@@ -533,7 +548,8 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 % tabella e usare hspace per ricentrarlo
 
 \begin{table}[ht!]
-\hspace*{-1.8cm} % sposta la tabella verso sinistra
+\hspace*{-1.8cm}
+\hfuzz=5pt % sposta la tabella verso sinistra
 \centering
 {\footnotesize
 \begin{tabular}{|l|l|l|}
@@ -632,7 +648,6 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 \end{tabular}
 }
 \end{table}
-
 
 
 %%%%%%%Reusing session ID (CAPEC 60)%%%%%%%%%%%%%%%%%%%%%
@@ -1007,3 +1022,241 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 	}
 \end{table}
 
+
+%%%%%%%%%%%%%%%%%% Dictionary-based password attack (CAPEC 16) %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-09 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Dictionary-based password attack (CAPEC 16) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Un utente malintenzionato prova ciascuna delle parole in un dizionario come password per ottenere l'accesso al sistema tramite l'account di un utente. Se la password scelta dall'utente era una parola all'interno del dizionario, questo attacco avrà successo (in assenza di altre mitigazioni). Questa è un'istanza specifica del modello di attacco di forzatura bruta della password.
+
+    Gli attacchi del dizionario differiscono da attacchi simili come Password Spraying (CAPEC-565) e Credential Stuffing (CAPEC-600), poiché sfruttano combinazioni sconosciute di nome utente/password e non si preoccupano di indurre blocchi dell'account.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					\begin{itemize}
+        \item Il sistema utilizza l'autenticazione basata su password a un fattore;
+
+        \item Il sistema non ha una politica di password solida che viene applicata;
+
+        \item Il sistema non implementa un meccanismo di limitazione della password efficace;
+        
+      \end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Determinare i criteri di password dell'applicazione/sistema di destinazione, come ad esempio la lunghezza consentita e il formato richiesto
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					Determinare i nomi utente di cui decifrare le password, ad esempio attraverso lo sniffing della rete, interrogando il sistema oppure dal file system			
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						Utilizza uno strumento di deciframento delle password che sfrutti il dizionario per fornire le password al sistema e verificare se funzionano.
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+						L’aggressore ottiene l’accesso non autorizzato ed effettua azioni
+    					malevole.			
+				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+						Controllo da parte del sistema di obbligare l'utente a non utilizzare come password parole prese dal dizionario, effettuando un controllo di tutte le parole comuni.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+						\begin{itemize}
+        \item Crea una politica di password complessa e assicurati che il tuo sistema applichi questa politica;
+
+        \item Implementare un meccanismo intelligente di limitazione delle password. È necessario fare attenzione a garantire che questi meccanismi non consentano eccessivamente gli attacchi di blocco dell'account come CAPEC-2;
+
+        \item Sfrutta l'autenticazione a più fattori per tutti i servizi di autenticazione.
+      \end{itemize}			
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Gli attacchi all’autenticazione sono una delle cause principali di compro
+    missioni. La combinazione di MFA, auditing continuo e training degli utenti può ridurre significativamente il rischio.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%% Carry-Off GPS Attack (CAPEC 628) %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht!]
+	\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-12 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Carry-Off GPS Attack (CAPEC 628) 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Una forma comune di attacco di spoofing GPS, comunemente definito attacco carry-off, inizia con la trasmissione da parte di un avversario di segnali sincronizzati con i segnali autentici rilevati dal ricevitore bersaglio. La potenza dei segnali contraffatti viene quindi gradualmente aumentata e allontanata dai segnali autentici. Col tempo, l'avversario può allontanare il bersaglio dalla destinazione prevista e dirigerlo verso una posizione scelta dall'avversario.				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					Per eseguire operazioni critiche, il bersaglio deve poter contare su un segnale GPS valido.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+					 /			
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright 
+						/			
+				\vspace{0.5em}\end{minipage}
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\raggedright\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{11cm}\raggedright
+					/
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+						/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{11cm}\raggedright
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+		\end{tabular}
+	}
+\end{table}

@@ -25,10 +25,6 @@
 \usepackage{makeidx}
 \makeindex
 
-% To enable and print the glossary and index of symbols
-\usepackage[acronym]{glossaries}
-\makeglossaries
-
 %
 % BIBLIOGRAPHY
 %
@@ -196,10 +192,10 @@ bindingoffset=15mm,marginpar=1.5cm,reversemp]{geometry}
 %\fancyfoot[LO,RE]{\slshape Nicola Rainiero, 421449/ICG}
 %\renewcommand{\footrulewidth}{0.4pt}
 % Style used for my thesis
-\fancyhead[LE,RO]{\bfseries \thepage}
-\fancyhead[LO]{\slshape \rightmark}
-\fancyhead[RE]{\bfseries \leftmark}
-\fancyfoot[CE,CO]{}
+\fancyhead[L]{\slshape \rightmark}    % Titolo sezione a sinistra
+\fancyhead[C]{}                        % Centro vuoto
+\fancyhead[R]{\bfseries \thepage}      % Numero a destra
+\fancyfoot[C]{}                        % Piè di pagina vuoto
 \renewcommand{\footrulewidth}{0.0pt}
 % In both styles:
 \renewcommand{\headrulewidth}{0.4pt}
