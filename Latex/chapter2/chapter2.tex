@@ -1,6 +1,6 @@
 \chapter{Valutazione del rischio}
 
-
+\hbadness=10000
 
 \section{Diagrammi i*}
 
@@ -1266,7 +1266,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
         \begin{minipage}[t]{3cm}\textbf{Comments}\end{minipage} &
         \multicolumn{2}{|l|}{%
             \begin{minipage}[t]{14cm} 
-				Un proof‑of‑concept di questo attacco ha dimostrato che segnali GPS falsificati, introdotti gradualmente con potenza superiore a quelli autentici, possono alterare la rotta di un sistema di navigazione senza attivare allarmi, evidenziando la praticità e l’efficacia del carry‑off spoofing.
+				Un attacco "proof-of-concept" è stato eseguito con successo nel giugno 2013, quando lo yacht di lusso "White Rose" è stato deviato con segnali GPS falsificati da Monaco all'isola di Rodi da un gruppo di studenti di ingegneria aerospaziale della Cockrell School of Engineering dell'Università del Texas ad Austin. Gli studenti erano a bordo dello yacht e hanno permesso alle loro apparecchiature di spoofing di sopraffare gradualmente la potenza del segnale dei satelliti della costellazione GPS effettiva, alterando la rotta dello yacht.
             \vspace*{0.5em}\end{minipage}%
         } \\ \hline
     \end{tabular}
@@ -1316,7 +1316,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			} \\
 			\hline
 			
-			\begin{minipage}[t]{2cm}\raggedright\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{2cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{17cm}
 					\begin{itemize}
@@ -1356,7 +1356,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 				} \\
 			\hline
 			
-			\begin{minipage}[t]{2cm}\raggedright
+			\begin{minipage}[t]{2cm}
 \textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{17cm} 
@@ -1364,7 +1364,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 					} \\
 			\hline
 			
-			\begin{minipage}[t]{2cm}\raggedright
+			\begin{minipage}[t]{2cm}
 \textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
 			\begin{minipage}[t]{17cm}
@@ -1583,7 +1583,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{4.5cm} 
-				\raggedright Defacement: Internal Defacement	(T1491.001)	
+				 Defacement: Internal Defacement	(T1491.001)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{10cm}
 				Un avversario può modificare o rovinare i sistemi interni di un’organizzazione per intimidire o confondere gli utenti, mettendo in dubbio l’affidabilità dell’infrastruttura. Questo può includere la modifica di pagine web interne, dei messaggi di accesso ai server o perfino dei computer degli utenti, ad esempio cambiando lo sfondo del desktop. A volte vengono usate immagini offensive o inquietanti per creare disagio o spingere gli utenti a seguire falsi messaggi o istruzioni.	In genere questo tipo di deturpamento avviene dopo che l’attaccante ha già ottenuto accesso ai sistemi e raggiunto altri obiettivi più importanti, perché rende evidente la sua presenza.		\vspace{0.5em}\end{minipage}
@@ -1591,7 +1591,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{4cm} \raggedright
+				\begin{minipage}[t]{4cm} 
 				Defacement: External Defacement	(T1491.002)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{10cm}
@@ -1709,7 +1709,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{4.5cm} 
-				\raggedright Process Injection	(T1055.001)	
+				 Process Injection	(T1055.001)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{10cm}
 				Gli aggressori possono iniettare librerie a collegamento dinamico (DLL) nei processi per eludere le difese basate sui processi e, eventualmente, elevare i privilegi. L'iniezione di DLL è un metodo per eseguire codice arbitrario nello spazio degli indirizzi di un processo attivo separato.
@@ -1719,7 +1719,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{4cm} \raggedright
+				\begin{minipage}[t]{4cm} 
 				Defacement: External Defacement	(T1055.002)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{10cm}
@@ -1783,7 +1783,6 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 %%%%%%%%%%%%%%%%%% Server Side Request Forgery (CAPEC 664)  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
 	    \resizebox{\textwidth}{!}{%
-		\hspace*{-3.4cm}
 		\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -1838,7 +1837,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{5.5cm} 
-				\raggedright Abuse Elevation Control Mechanism: Sudo and Sudo Caching	(T1548.003)	
+				 Abuse Elevation Control Mechanism: Sudo and Sudo Caching	(T1548.003)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{11cm}
 				Gli avversari possono eseguire il caching sudo e/o utilizzare il file sudoers per elevare i privilegi. Gli avversari possono farlo per eseguire comandi al posto di altri utenti o per generare processi con privilegi più elevati.
@@ -1847,16 +1846,16 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 			
 			\begin{minipage}[t]{4cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{5cm} \raggedright
+				\begin{minipage}[t]{5cm} 
 				Abuse Elevation Control Mechanism: Elevated Execution with Prompt	(T1548.004)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{11cm}
-				Gli avversari potrebbero sfruttare l' AuthorizationExecuteWithPrivilegesAPI per aumentare i privilegi richiedendo all'utente le credenziali. Lo scopo di questa API è fornire agli sviluppatori di applicazioni un modo semplice per eseguire operazioni con privilegi di root, come l'installazione o l'aggiornamento di applicazioni. Questa API non convalida che il programma che richiede i privilegi di root provenga da una fonte attendibile o sia stato modificato in modo dannoso.
+				Gli avversari potrebbero sfruttare l'AuthorizationExecuteWithPrivilegesAPI per aumentare i privilegi richiedendo all'utente le credenziali. Lo scopo di questa API è fornire agli sviluppatori di applicazioni un modo semplice per eseguire operazioni con privilegi di root, come l'installazione o l'aggiornamento di applicazioni. Questa API non convalida che il programma che richiede i privilegi di root provenga da una fonte attendibile o sia stato modificato in modo dannoso.
 				\vspace{0.5em}\end{minipage}
 			\\
 			\hline
 			\begin{minipage}[t]{4cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
-			\begin{minipage}[t]{5cm} \raggedright
+			\begin{minipage}[t]{5cm} 
 				Abuse Elevation Control Mechanism: TCC Manipulation	(T1548.006)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{11cm}
@@ -1866,13 +1865,14 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{4cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{18cm} 
+				\begin{minipage}[t]{18cm}
 					 Il sistema effettua una richiesta a se stesso o a servizi esterni, utilizzando il livello di privilegio del server, consentendo all'attaccante di accedere a dati sensibili o eseguire comandi non autorizzati.
 					 		\vspace{0.5em}\end{minipage}	
 					} \\
 			\hline
 			
-			\begin{minipage}[t]{4cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{4cm}
+				\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
 			\begin{minipage}[t]{18cm}
 				Il sistema deve convalidare l'input ricevuto, impedendo di effettuare richieste non autorizzate utilizzando i privilegi del server.
@@ -1927,8 +1927,7 @@ vulnerableService=http://localhost/server-status
 			\hline
 			
 		\end{tabular}
-		}
-		}
+		}}
 \end{table}
 
 
@@ -1962,7 +1961,7 @@ vulnerableService=http://localhost/server-status
 			\hline
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{16.5cm}
+				\begin{minipage}[t]{17.5cm}
 	Un aggressore sfrutta una debolezza nella convalida dell'input controllando il formato, la struttura e la composizione dei dati in un'interfaccia di elaborazione dell'input. Fornendo input in un formato non standard o inaspettato, un aggressore può compromettere la sicurezza del bersaglio.
 	Ad esempio, l'utilizzo di una codifica dei caratteri diversa potrebbe far sì che un testo pericoloso venga trattato come testo sicuro. In alternativa, l'attaccante può utilizzare determinati flag, come le estensioni dei file, per indurre un'applicazione target a credere che i dati forniti debbano essere gestiti tramite un determinato interprete, quando in realtà i dati non sono del tipo appropriato. Ciò può portare a bypassare i meccanismi di protezione, costringendo il target a utilizzare componenti specifici per l'elaborazione dell'input o, in altro modo, causando una gestione dei dati dell'utente diversa da quella prevista. Questo attacco differisce dalla Manipolazione delle Variabili in quanto la Manipolazione delle Variabili tenta di sovvertire l'elaborazione del target tramite il valore dell'input, mentre la Manipolazione dei Dati di Input cerca di controllare il modo in cui l'input viene elaborato.
 		\vspace{0.5em}\end{minipage}
@@ -1985,7 +1984,7 @@ vulnerableService=http://localhost/server-status
 			} \\
 			\hline
 			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
-			\begin{minipage}[t]{5cm} \raggedright
+			\begin{minipage}[t]{5cm} 
 				Exploit Public-Facing Application	(T1190)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{11cm}
@@ -1995,7 +1994,7 @@ vulnerableService=http://localhost/server-status
 			
 			
 			\begin{minipage}[t]{4cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
-			\begin{minipage}[t]{5cm} \raggedright
+			\begin{minipage}[t]{5cm} 
 				Server Software Component: Web Shell (T1505.003)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{11cm}
@@ -2021,7 +2020,7 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{13cm}
+			\begin{minipage}[t]{17.5cm}
 				Il sistema deve validare il formato, la struttura e la composizione dei dati in un'interfaccia di elaborazione dell'input, rifiutando input in un formato non standard o inaspettato.
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -2082,7 +2081,7 @@ vulnerableService=http://localhost/server-status
 			\hline
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{16.5cm}
+				\begin{minipage}[t]{17.5cm}
 	Un avversario sfrutta un'autenticazione impropria per fornire dati o servizi con un'identità falsificata. Lo scopo dell'utilizzo dell'identità falsificata potrebbe essere quello di impedire la tracciabilità dei dati forniti o di appropriarsi dei diritti concessi a un altro individuo. Una delle forme più semplici di questo attacco sarebbe la creazione di un messaggio di posta elettronica con un campo "Da" modificato per far sembrare che il messaggio sia stato inviato da qualcuno diverso dal mittente effettivo. La radice dell'attacco (in questo caso il sistema di posta elettronica) non riesce ad autenticare correttamente la fonte e questo fa sì che il lettore esegua erroneamente l'azione richiesta. I risultati dell'attacco variano a seconda dei dettagli dell'attacco, ma tra i risultati più comuni figurano l'escalation dei privilegi, l'offuscamento di altri attacchi e la corruzione/manipolazione dei dati.
 		\vspace{0.5em}\end{minipage}
 			} \\
@@ -2098,7 +2097,7 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{17.5cm}
 					\begin{itemize}
 						\item Questo attacco è applicabile solo quando un'entità vulnerabile associa dati o servizi a un'identità. Senza tale associazione, non ci sarebbe motivo di falsificare la fonte;
 						\item Le risorse richieste variano a seconda della natura dell'attacco. Tra gli strumenti di cui un aggressore potrebbe aver bisogno ci sono strumenti per creare pacchetti di rete personalizzati, software client specifici e strumenti per catturare il traffico di rete. Tuttavia, molte varianti di questo attacco non richiedono risorse da parte dell'aggressore.
@@ -2107,7 +2106,7 @@ vulnerableService=http://localhost/server-status
 			} \\
 			\hline
 			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
-			\begin{minipage}[t]{5cm} \raggedright
+			\begin{minipage}[t]{5cm} 
 				URL Redirector Abuse	(WASC-38)	
 				\vspace{0.5em}\end{minipage} &
 				\begin{minipage}[t]{11cm}
@@ -2142,7 +2141,7 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{13cm}
+			\begin{minipage}[t]{17cm}
 				Il sistema deve verificare l’identità della sorgente per ogni dato ricevuto, impedendo di accettare dati provenienti da fonti non autorizzate.
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -2177,50 +2176,51 @@ vulnerableService=http://localhost/server-status
 
 %%%%%%%%%%%%%%%%%% Content Spoofing (CAPEC 148) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
-	
+
 	    \resizebox{\textwidth}{!}{%
 		\centering
+		\hspace*{-3cm}
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
-			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
-			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
-			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-18 \end{minipage} \\ \hline
+			\begin{minipage}[t]{3.6cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{7.2cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{8.4cm}\textbf{Case ID} AC-18 \end{minipage} \\ \hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{15.6cm}
 					 Content Spoofing (CAPEC 148)
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{15.6cm}
 					 Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
-			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{16.5cm}
+				\begin{minipage}[t]{21cm}
 	Un aggressore modifica il contenuto per renderlo diverso da ciò che il produttore del contenuto originale intendeva, mantenendo invariata la fonte apparente del contenuto. Il termine "spoofing di contenuto" viene spesso utilizzato per descrivere la modifica di pagine web ospitate da un bersaglio per visualizzare il contenuto dell'aggressore anziché quello del proprietario. Tuttavia, qualsiasi contenuto può essere falsificato, inclusi il contenuto di messaggi di posta elettronica, trasferimenti di file o il contenuto di altri protocolli di comunicazione di rete. Il contenuto può essere modificato all'origine (ad esempio, modificando il file sorgente di una pagina web) o in transito (ad esempio, intercettando e modificando un messaggio tra il mittente e il destinatario). Di solito, l'aggressore tenterà di nascondere il fatto che il contenuto è stato modificato, ma in alcuni casi, come nel caso del defacement di un sito web, questo non è necessario. Il content spoofing può portare all'esposizione a malware, frodi finanziarie (se il contenuto regola transazioni finanziarie), violazioni della privacy e altri effetti indesiderati.
 		\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{15.6cm}
 					DATA
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{21cm}
 					\begin{itemize}
 						\item Il bersaglio deve fornire contenuti, ma non proteggerli adeguatamente dalle modifiche. L'avversario deve avere i mezzi per alterare dati a cui non è autorizzato. Se il contenuto deve essere modificato durante il transito, l'avversario deve essere in grado di intercettare i messaggi presi di mira;
 						\item Se il contenuto deve essere modificato durante il transito, l'avversario necessita di uno strumento in grado di intercettare la comunicazione del bersaglio e di generare/creare pacchetti personalizzati per influenzare le comunicazioni;
@@ -2229,58 +2229,54 @@ vulnerableService=http://localhost/server-status
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
-			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{4.5cm} 
-				\raggedright Defacement: Internal Defacement	(T1491.001)	
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{5cm} 
+				 Defacement: Internal Defacement	(T1491.001)	
 				\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{10cm}
+				\begin{minipage}[t]{13.5cm}
 				Un avversario può modificare o rovinare i sistemi interni di un’organizzazione per intimidire o confondere gli utenti, mettendo in dubbio l’affidabilità dell’infrastruttura. Questo può includere la modifica di pagine web interne, dei messaggi di accesso ai server o perfino dei computer degli utenti, ad esempio cambiando lo sfondo del desktop. A volte vengono usate immagini offensive o inquietanti per creare disagio o spingere gli utenti a seguire falsi messaggi o istruzioni.	In genere questo tipo di deturpamento avviene dopo che l’attaccante ha già ottenuto accesso ai sistemi e raggiunto altri obiettivi più importanti, perché rende evidente la sua presenza.		\vspace{0.5em}\end{minipage}
 			\\
 			\hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{4cm} \raggedright
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{5cm} 
 				Defacement: External Defacement	(T1491.002)	
 				\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{10cm}
+				\begin{minipage}[t]{13.5cm}
 				Un avversario può deturpare sistemi esterni di un’organizzazione per inviare messaggi, intimidire o ingannare l’azienda e i suoi utenti. Questo tipo di attacco può far perdere fiducia nei servizi online e far dubitare dell’integrità del sistema. I siti web pubblici sono i bersagli più comuni: spesso vengono modificati da attaccanti per diffondere propaganda o messaggi politici. L' external defacement esterno può essere usato come reazione a decisioni prese da un’organizzazione o da un governo, oppure per attirare attenzione e generare ulteriori eventi.
 				\vspace{0.5em}\end{minipage}
 			\\
 			\hline
 
 
-			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{4cm} \raggedright
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{5cm} 
 				Content Spoofing (WASC-12)
 				\vspace{0.5em}\end{minipage} &
-				\begin{minipage}[t]{10cm}
-				Alcune pagine web vengono servite utilizzando sorgenti di contenuto HTML create dinamicamente. Ad esempio, la posizione sorgente di un frame (\texttt{<frame src="http://foo.example/file.html">}) potrebbe essere specificata tramite un valore di parametro URL (\texttt{http://foo.example/page?frame\_src=http://foo.example \linebreak /file.html}). 
-				Un aggressore potrebbe essere in grado di sostituire il valore del parametro \texttt{frame\_src} con \texttt{frame\_src=http://attacker.example/spoof.html}. A differenza dei redirector, quando la pagina web risultante viene servita, la barra degli indirizzi del browser rimane visibilmente sotto il dominio previsto dall'utente (\texttt{foo.example}), ma i dati esterni (\texttt{attacker.example}) sono nascosti da contenuti legittimi.
-
-				Link appositamente creati possono essere inviati a un utente tramite e-mail, messaggi istantanei, lasciati su post di bacheche elettroniche o imposti agli utenti tramite un attacco Cross-site Scripting. 
-				Se un aggressore induce un utente a visitare una pagina web designata dal suo URL dannoso, l'utente crederà di visualizzare contenuti autentici da una posizione, quando in realtà non è così. Gli utenti si fideranno implicitamente del contenuto contraffatto, poiché la barra degli indirizzi del browser visualizza \texttt{http://foo.example}, quando in realtà il frame HTML sottostante fa riferimento a \texttt{http://attacker.example}.
+				\begin{minipage}[t]{13.5cm}
+				Alcune pagine web vengono servite utilizzando sorgenti di contenuto HTML create dinamicamente. Ad esempio, la posizione sorgente di un frame (\texttt{<frame src="http://foo.example/file.html">}) potrebbe essere specificata tramite un valore di parametro URL (\texttt{http://foo.example/page?frame\_src=http://foo.example \linebreak /file.html}). Un aggressore potrebbe essere in grado di sostituire il valore del parametro \texttt{frame\_src} con \text {frame\_src=http://attacker.example/spoof.html}. A differenza dei redirector, quando la pagina web risultante viene servita, la barra degli indirizzi del browser rimane visibilmente sotto il dominio previsto dall'utente (\texttt{foo.example}), ma i dati esterni (\texttt{attacker.example}) sono nascosti da contenuti legittimi. Link appositamente creati possono essere inviati a un utente tramite e-mail, messaggi istantanei, lasciati su post di bacheche elettroniche o imposti agli utenti tramite un attacco Cross-site Scripting. Se un aggressore induce un utente a visitare una pagina web designata dal suo URL dannoso, l'utente crederà di visualizzare contenuti autentici da una posizione, quando in realtà non è così. Gli utenti si fideranno implicitamente del contenuto contraffatto, poiché la barra degli indirizzi del browser visualizza \texttt{http://foo.example}, quando in realtà il frame HTML sottostante fa riferimento a \texttt{http://attacker.example}.
 				\vspace{0.5em}\end{minipage}\\
 				\hline
 
 			
-			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm} 
+				\begin{minipage}[t]{15.6cm} 
 					 Il sistema riceve messaggi ed input inviati dall'aggressore, mediante un fonte falsificata.		\vspace{0.5em}\end{minipage}	
 					} \\
 			\hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{13cm}
+			\begin{minipage}[t]{15.6cm}
 				Il sistema deve garantire che i contenuti mostrati all’utente non possano essere alterati da attori non autorizzati.
 			\vspace{0.5em}\end{minipage}
 				} \\
 			\hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{15.6cm}
 					\begin{itemize}
             			 \item Validazione e sanitizzazione dell’input;
 						\item Crittografia e integrità dei contenuti;
@@ -2290,9 +2286,133 @@ vulnerableService=http://localhost/server-status
 			} \\
 			\hline
 			
-			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{3.6cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{15.6cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table}
+
+%%%%%%%%%%%%%%%%%% Identity Spoofing                (CAPEC 151) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	    \resizebox{\textwidth}{!}{%
+		\centering
+		\hspace*{-3cm}
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{7.2cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{8.4cm}\textbf{Case ID} AC-19 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					Identity Spoofing (CAPEC 151)  
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm}
+						L'Identity Spoofing si riferisce all'azione di assumere (ossia, assumere) l'identità di un'altra entità (umana o non umana) e quindi utilizzare tale identità per raggiungere un obiettivo. Un avversario può creare messaggi che sembrano provenire da un principio diverso o utilizzare credenziali di autenticazione rubate/contraffatte.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm}
+					L'identità associata al messaggio o alla risorsa deve essere rimovibile o modificabile in modo non rilevabile.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} & 
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm} 
+						L’avversario ottiene o costruisce credenziali che imitano un’altra identità e le utilizza per inviare richieste o comunicazioni che appaiono legittime. Una volta accettato come entità autorizzata, può accedere a servizi, dati o funzionalità altrimenti non disponibili, manipolando processi o ingannando sistemi che si basano sull’autenticità dell’identità presentata. L’attacco prosegue fino a quando l'attaccante riesce a mantenere viva la falsa identità o fino a quando non ha raggiunto il suo scopo, come l’accesso non autorizzato o l'esfiltrazione di informazioni.
+				\vspace{0.5em}\end{minipage}
+			}\\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{17.5cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			}\\
+			\hline
+
+
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{17.5cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			}\\
+				\hline
+
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18.6cm} 
+					 \begin{itemize}
+						\item Il sistema invalida immediatamente la sessione o il token associato all’identità falsificata.
+						\item Le credenziali sospette vengono bloccate o revocate e viene richiesta una ri-verifica dell’identità agli utenti coinvolti.
+						\item Vengono registrati log dettagliati dell’evento e inviati alert ai responsabili della sicurezza.
+						\item Le attività dell’attaccante vengono isolate e analizzate, assicurando che non restino accessi persistenti o credenziali compromesse.
+						\item Il sistema ristabilisce la piena integrità delle operazioni, garantendo che la falsa identità non possa essere riutilizzata.
+					 \end{itemize}
+				\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{19.5cm}
+				\begin{itemize}
+					\item L’autenticazione deve essere robusta e resistente alla falsificazione, garantendo sicurezza senza compromettere la fruibilità.
+					\item I log di monitoraggio devono essere completi, immutabili e sempre disponibili per audit o indagini.
+					\item Il sistema deve rilevare attività anomale in tempo reale e rispondere rapidamente a tentativi di impersonificazione.
+					\item L’infrastruttura deve mantenere continuità operativa anche durante incidenti di sicurezza o processi di verifica.
+				\end{itemize}
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					Utilizzare processi di autenticazione robusti (ad esempio, autenticazione a più fattori).
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
 					/
 				\vspace{0.5em}\end{minipage}
 			} \\
