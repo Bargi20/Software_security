@@ -1908,8 +1908,127 @@ Content-Length: 200
 vulnerableService=http://localhost/server-status
 \end{tcolorbox}
 
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table}
 
 
+
+%%%%%%%%%%%%%%%%%% Input data manipulation (CAPEC 153) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-16 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Input data manipulation (CAPEC 153)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{16.5cm}
+	Un aggressore sfrutta una debolezza nella convalida dell'input controllando il formato, la struttura e la composizione dei dati in un'interfaccia di elaborazione dell'input. Fornendo input in un formato non standard o inaspettato, un aggressore può compromettere la sicurezza del bersaglio.
+	Ad esempio, l'utilizzo di una codifica dei caratteri diversa potrebbe far sì che un testo pericoloso venga trattato come testo sicuro. In alternativa, l'attaccante può utilizzare determinati flag, come le estensioni dei file, per indurre un'applicazione target a credere che i dati forniti debbano essere gestiti tramite un determinato interprete, quando in realtà i dati non sono del tipo appropriato. Ciò può portare a bypassare i meccanismi di protezione, costringendo il target a utilizzare componenti specifici per l'elaborazione dell'input o, in altro modo, causando una gestione dei dati dell'utente diversa da quella prevista. Questo attacco differisce dalla Manipolazione delle Variabili in quanto la Manipolazione delle Variabili tenta di sovvertire l'elaborazione del target tramite il valore dell'input, mentre la Manipolazione dei Dati di Input cerca di controllare il modo in cui l'input viene elaborato.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					Il target deve accettare i dati dell'utente per l'elaborazione e il modo in cui tali dati vengono elaborati deve dipendere da qualche aspetto del formato o dei flag che l'aggressore può controllare.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				Exploit Public-Facing Application	(T1190)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli aggressori potrebbero tentare di sfruttare una debolezza in un host o sistema connesso a Internet per accedere inizialmente a una rete. La debolezza del sistema può essere un bug del software, un problema temporaneo o una configurazione errata, mediante l'utilizzo di tecniche come l'iniezione SQL, il cross-site scripting (XSS) o il buffer overflow.
+				\vspace{0.5em}\end{minipage} \\
+			\hline
+			
+			
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				Server Software Component: Web Shell (T1505.003)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli avversari possono sfruttare le backdoor dei server web con web shell per stabilire un accesso persistente ai sistemi. Una web shell è uno script web che viene installato su un server web accessibile pubblicamente per consentire a un avversario di accedere al server web come gateway in una rete. Una web shell può fornire un set di funzioni da eseguire o un'interfaccia a riga di comando sul sistema che ospita il server web. Le web shell possono essere caricate sul server web tramite vari metodi, tra cui l'upload di file dannosi, lo sfruttamento di vulnerabilità del software del server web o l'abuso di funzionalità legittime del server web.
+				\vspace{0.5em}\end{minipage} \\	
+			\hline
+
+
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+					 Il sistema riceve messaggi ed input inviati dall'aggressore.		\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{13cm}
+				Il sistema deve validare il formato, la struttura e la composizione dei dati in un'interfaccia di elaborazione dell'input, rifiutando input in un formato non standard o inaspettato.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+            			 \item Convalida rigorosa dell'input;
+						\item Utilizzo di librerie sicure per il parsing dei dati;
+						\item Limitazione dei valori sensibili modificabili dall’utente.
+						\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					/
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
