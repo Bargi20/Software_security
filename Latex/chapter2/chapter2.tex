@@ -2052,3 +2052,253 @@ vulnerableService=http://localhost/server-status
 		}
 \end{table}
 
+
+%%%%%%%%%%%%%%%%%% Fake the Source of Data (CAPEC 194) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-17 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Fake the Source of Data (CAPEC 194)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{16.5cm}
+	Un avversario sfrutta un'autenticazione impropria per fornire dati o servizi con un'identità falsificata. Lo scopo dell'utilizzo dell'identità falsificata potrebbe essere quello di impedire la tracciabilità dei dati forniti o di appropriarsi dei diritti concessi a un altro individuo. Una delle forme più semplici di questo attacco sarebbe la creazione di un messaggio di posta elettronica con un campo "Da" modificato per far sembrare che il messaggio sia stato inviato da qualcuno diverso dal mittente effettivo. La radice dell'attacco (in questo caso il sistema di posta elettronica) non riesce ad autenticare correttamente la fonte e questo fa sì che il lettore esegua erroneamente l'azione richiesta. I risultati dell'attacco variano a seconda dei dettagli dell'attacco, ma tra i risultati più comuni figurano l'escalation dei privilegi, l'offuscamento di altri attacchi e la corruzione/manipolazione dei dati.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+						\item Questo attacco è applicabile solo quando un'entità vulnerabile associa dati o servizi a un'identità. Senza tale associazione, non ci sarebbe motivo di falsificare la fonte;
+						\item Le risorse richieste variano a seconda della natura dell'attacco. Tra gli strumenti di cui un aggressore potrebbe aver bisogno ci sono strumenti per creare pacchetti di rete personalizzati, software client specifici e strumenti per catturare il traffico di rete. Tuttavia, molte varianti di questo attacco non richiedono risorse da parte dell'aggressore.
+					\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				URL Redirector Abuse	(WASC-38)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				I redirector URL rappresentano una funzionalità comune utilizzata dai siti web per inoltrare una richiesta in arrivo a una risorsa alternativa. Questa operazione può essere eseguita per diversi motivi e spesso viene eseguita per consentire lo spostamento delle risorse all'interno della struttura delle directory ed evitare di interrompere la funzionalità per gli utenti che richiedono la risorsa nella sua posizione precedente. I redirector URL possono anche essere utilizzati per implementare il bilanciamento del carico, sfruttando URL abbreviati o registrando i link in uscita. È quest'ultima implementazione che viene spesso utilizzata negli attacchi di phishing, come descritto nell'esempio seguente. I redirector URL non rappresentano necessariamente una vulnerabilità di sicurezza diretta, ma possono essere sfruttati in modo improprio dagli aggressori che cercano di indurre le vittime a credere di stare navigando verso un sito diverso da quello di destinazione effettivo.
+				\vspace{0.5em}\end{minipage} \\
+			\hline
+			
+			
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+
+
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+					 Il sistema riceve messaggi ed input inviati dall'aggressore, mediante un fonte falsificata.		\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{13cm}
+				Il sistema deve verificare l’identità della sorgente per ogni dato ricevuto, impedendo di accettare dati provenienti da fonti non autorizzate.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+            			 \item Autenticazione forte della sorgente dei dati;
+						\item Validazione della provenienza;
+						\item Crittografia end-to-end;
+						\item Limitazione dei canali di input.
+						\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%% Content Spoofing (CAPEC 148) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-18 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Content Spoofing (CAPEC 148)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{16.5cm}
+	Un aggressore modifica il contenuto per renderlo diverso da ciò che il produttore del contenuto originale intendeva, mantenendo invariata la fonte apparente del contenuto. Il termine "spoofing di contenuto" viene spesso utilizzato per descrivere la modifica di pagine web ospitate da un bersaglio per visualizzare il contenuto dell'aggressore anziché quello del proprietario. Tuttavia, qualsiasi contenuto può essere falsificato, inclusi il contenuto di messaggi di posta elettronica, trasferimenti di file o il contenuto di altri protocolli di comunicazione di rete. Il contenuto può essere modificato all'origine (ad esempio, modificando il file sorgente di una pagina web) o in transito (ad esempio, intercettando e modificando un messaggio tra il mittente e il destinatario). Di solito, l'aggressore tenterà di nascondere il fatto che il contenuto è stato modificato, ma in alcuni casi, come nel caso del defacement di un sito web, questo non è necessario. Il content spoofing può portare all'esposizione a malware, frodi finanziarie (se il contenuto regola transazioni finanziarie), violazioni della privacy e altri effetti indesiderati.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+						\item Il bersaglio deve fornire contenuti, ma non proteggerli adeguatamente dalle modifiche. L'avversario deve avere i mezzi per alterare dati a cui non è autorizzato. Se il contenuto deve essere modificato durante il transito, l'avversario deve essere in grado di intercettare i messaggi presi di mira;
+						\item Se il contenuto deve essere modificato durante il transito, l'avversario necessita di uno strumento in grado di intercettare la comunicazione del bersaglio e di generare/creare pacchetti personalizzati per influenzare le comunicazioni;
+						\item il contenuto preso di mira viene modificato in modo che tutto o parte di esso venga reindirizzato verso contenuti pubblicati dall'aggressore (ad esempio, immagini e frame nel sito web del bersaglio potrebbero essere modificati per essere caricati da una fonte controllata dall'aggressore). In questi casi, l'aggressore necessita delle risorse necessarie per ospitare il contenuto sostitutivo.
+					\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{4.5cm} 
+				\raggedright Defacement: Internal Defacement	(T1491.001)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{10cm}
+				Un avversario può modificare o rovinare i sistemi interni di un’organizzazione per intimidire o confondere gli utenti, mettendo in dubbio l’affidabilità dell’infrastruttura. Questo può includere la modifica di pagine web interne, dei messaggi di accesso ai server o perfino dei computer degli utenti, ad esempio cambiando lo sfondo del desktop. A volte vengono usate immagini offensive o inquietanti per creare disagio o spingere gli utenti a seguire falsi messaggi o istruzioni.	In genere questo tipo di deturpamento avviene dopo che l’attaccante ha già ottenuto accesso ai sistemi e raggiunto altri obiettivi più importanti, perché rende evidente la sua presenza.		\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{4cm} \raggedright
+				Defacement: External Defacement	(T1491.002)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{10cm}
+				Un avversario può deturpare sistemi esterni di un’organizzazione per inviare messaggi, intimidire o ingannare l’azienda e i suoi utenti. Questo tipo di attacco può far perdere fiducia nei servizi online e far dubitare dell’integrità del sistema. I siti web pubblici sono i bersagli più comuni: spesso vengono modificati da attaccanti per diffondere propaganda o messaggi politici. L' external defacement esterno può essere usato come reazione a decisioni prese da un’organizzazione o da un governo, oppure per attirare attenzione e generare ulteriori eventi.
+				\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+
+
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{4cm} \raggedright
+				Content Spoofing (WASC-12)
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{10cm}
+				Alcune pagine web vengono servite utilizzando sorgenti di contenuto HTML create dinamicamente. Ad esempio, la posizione sorgente di un frame (\texttt{<frame src="http://foo.example/file.html">}) potrebbe essere specificata tramite un valore di parametro URL (\texttt{http://foo.example/page?frame\_src=http://foo.example \linebreak /file.html}). 
+				Un aggressore potrebbe essere in grado di sostituire il valore del parametro \texttt{frame\_src} con \texttt{frame\_src=http://attacker.example/spoof.html}. A differenza dei redirector, quando la pagina web risultante viene servita, la barra degli indirizzi del browser rimane visibilmente sotto il dominio previsto dall'utente (\texttt{foo.example}), ma i dati esterni (\texttt{attacker.example}) sono nascosti da contenuti legittimi.
+
+				Link appositamente creati possono essere inviati a un utente tramite e-mail, messaggi istantanei, lasciati su post di bacheche elettroniche o imposti agli utenti tramite un attacco Cross-site Scripting. 
+				Se un aggressore induce un utente a visitare una pagina web designata dal suo URL dannoso, l'utente crederà di visualizzare contenuti autentici da una posizione, quando in realtà non è così. Gli utenti si fideranno implicitamente del contenuto contraffatto, poiché la barra degli indirizzi del browser visualizza \texttt{http://foo.example}, quando in realtà il frame HTML sottostante fa riferimento a \texttt{http://attacker.example}.
+				\vspace{0.5em}\end{minipage}\\
+				\hline
+
+			
+			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+					 Il sistema riceve messaggi ed input inviati dall'aggressore, mediante un fonte falsificata.		\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{13cm}
+				Il sistema deve garantire che i contenuti mostrati all’utente non possano essere alterati da attori non autorizzati.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+            			 \item Validazione e sanitizzazione dell’input;
+						\item Crittografia e integrità dei contenuti;
+						\item Prevenzione dello spoofing dell’interfaccia.
+						\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table}
