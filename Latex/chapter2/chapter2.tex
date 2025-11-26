@@ -1534,8 +1534,8 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 
 %%%%%%%%%%%%%%%%%% Counterfeit GPS Signals (CAPEC 627) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
-	\centering
 	    \resizebox{\textwidth}{!}{%
+		\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -1609,14 +1609,12 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{16.5cm} 
-					 \begin{itemize}
-        \item  Quando il sistema riconosce segnali GPS contraffatti, deve informare immediatamente l’utente o i componenti interni che il dato non è affidabile.
-		\item La posizione deve smettere di influenzare funzioni critiche e deve essere usata una modalità alternativa basata su sensori interni o logiche di stima del movimento.
-		\item Una volta che il segnale torna a essere normale, il sistema deve verificare che i valori siano coerenti prima di ripristinare il funzionamento completo.
-		\item Dopo l’evento, devono essere conservate informazioni utili per capire cosa è successo e per adattare i controlli futuri, così da evitare che un attacco simile abbia successo di nuovo.
-      \end{itemize}				\vspace{0.5em}\end{minipage}	
-					} \\
+				\begin{minipage}[t]{13cm} 
+					 
+        Il sistema riceve segnali GPS falsi, che lo inducono a calcolare una posizione errata o un orario sbagliato, comportando errori di navigazioni e di localizzazione.
+      			
+	  \vspace{0.5em}\end{minipage}	
+	} \\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
@@ -1631,7 +1629,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{16.5cm}
 					\begin{itemize}
-            			 \item Le principali mitigazioni consistono nel riconoscere quando un segnale GPS non è autentico e nel ridurre la dipendenza dal GPS stesso.
+            			 \item Riconoscere quando un segnale GPS non è autentico e nel ridurre la dipendenza dal GPS stesso.
 						\item È utile confrontare continuamente la posizione ricevuta con altre fonti, come sensori interni, mappe, altri sistemi satellitari o dati provenienti da reti terrestri.
 						\item La coerenza del movimento deve essere monitorata: cambiamenti troppo rapidi o improvvisi sono indizi di spoofing.
 						\item A livello hardware si possono usare ricevitori avanzati e antenne progettate per filtrare segnali sospetti.
@@ -1652,3 +1650,405 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 		}
 		}
 \end{table}
+
+
+
+%%%%%%%%%%%%%%%%%% Transaction or Event Tampering via Application API Manipulation (CAPEC 385) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-14 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					Transaction or Event Tampering via Application API Manipulation (CAPEC 385)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{16.5cm}
+	Un aggressore ospita o si unisce a un evento o a una transazione all'interno di un framework applicativo per modificare il contenuto dei messaggi o degli elementi scambiati. L'esecuzione di questo attacco consente all'aggressore di manipolare il contenuto in modo tale da produrre messaggi o contenuti apparentemente autentici, ma che potrebbero contenere link ingannevoli, sostituire un elemento o un altro, falsificare un elemento esistente ed effettuare uno scambio falso, o altrimenti modificare gli importi o l'identità di ciò che viene scambiato. Le tecniche richiedono l'utilizzo di software specializzati che consentono all'aggressore di stabilire comunicazioni di tipo man-in-the-middle tra il browser web e il sistema remoto al fine di modificare il contenuto di vari elementi dell'applicazione. Spesso, gli elementi scambiati nel gioco possono essere monetizzati tramite vendite di monete, dollari virtuali, ecc. Lo scopo dell'attacco è truffare la vittima intrappolando i pacchetti di dati coinvolti nello scambio e alterando l'integrità del processo di trasferimento.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+						\item Il software mirato utilizza le API del framework applicativo;
+						\item Un programma software che consente l'uso di comunicazioni Adversary-in-the-Middle ( CAPEC-94 ) tra client e server, come un proxy man-in-the-middle.
+					\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{4.5cm} 
+				\raggedright Process Injection	(T1055.001)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{10cm}
+				Gli aggressori possono iniettare librerie a collegamento dinamico (DLL) nei processi per eludere le difese basate sui processi e, eventualmente, elevare i privilegi. L'iniezione di DLL è un metodo per eseguire codice arbitrario nello spazio degli indirizzi di un processo attivo separato.
+
+				L'iniezione di DLL viene comunemente eseguita scrivendo il percorso di una DLL nello spazio di indirizzamento virtuale del processo di destinazione prima di caricare la DLL invocando un nuovo thread. La scrittura può essere eseguita con chiamate API Windows native come VirtualAllocExe WriteProcessMemory, quindi invocata con CreateRemoteThread. \vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{4cm} \raggedright
+				Defacement: External Defacement	(T1055.002)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{10cm}
+				Gli avversari possono iniettare file eseguibili portatili (PE) nei processi per eludere le difese basate sui processi e, eventualmente, elevare i privilegi. L'iniezione di PE è un metodo per eseguire codice arbitrario nello spazio degli indirizzi di un processo attivo separato.
+
+				L'iniezione PE viene comunemente eseguita copiando il codice  nello spazio di indirizzamento virtuale del processo di destinazione prima di invocarlo tramite un nuovo thread. La scrittura può essere eseguita con chiamate API Windows native come VirtualAllocExe WriteProcessMemory, quindi invocata con CreateRemoteThreado codice aggiuntivo. Lo spostamento del codice iniettato introduce il requisito aggiuntivo di funzionalità per rimappare i riferimenti di memoria.
+				\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+					 Il sistema riceve messaggi falsificati, che potrebbero contenere link ingannevoli o informazioni false, modificando dati nel DataBase e causando, così, disagi al sistema. 		\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{13cm}
+				Il sistema deve validare l'integrità del payload dei messaggi delle API, applicando una validazione rigorosa dei parametri e rifiutando campi non previsti all'interno delle richiste API.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+            			 \item Validazione dei parametri delle API;
+						\item Utilizzo di un "Schema Validation", rifiutando le richieste con uno schema strutturale differente dallo schema previsto;
+						\item Implementazione di meccanismi di autenticazione e autorizzazione robusti per limitare l'accesso alle API solo agli utenti e ai sistemi autorizzati.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table}
+
+
+
+
+%%%%%%%%%%%%%%%%%% Server Side Request Forgery (CAPEC 664)  %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	    \resizebox{\textwidth}{!}{%
+		\hspace*{-3.4cm}
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{4cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{8cm}\textbf{Case ID} AC-15 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					Server Side Request Forgery (CAPEC 664) 	
+									\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{4cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18cm}
+	Un avversario sfrutta una convalida di input non corretta inviando input creati in modo dannoso a un'applicazione target in esecuzione su un server, con l'obiettivo di costringere il server a effettuare una richiesta a se stesso, ai servizi web in esecuzione nella rete interna del server o a terze parti esterne. In caso di successo, la richiesta dell'avversario verrà effettuata con il livello di privilegio del server, aggirandone i controlli di autenticazione. Ciò consente all'avversario di accedere a dati sensibili, eseguire comandi sulla rete del server ed effettuare richieste esterne con l'identità rubata del server. Gli attacchi Server Side Request Forgery differiscono dagli attacchi Cross Site Request Forgery in quanto prendono di mira il server stesso, mentre gli attacchi CSRF sfruttano un meccanismo di autenticazione utente non sicuro per eseguire azioni non autorizzate per conto dell'utente.
+
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18cm}
+					\begin{itemize}
+						\item Il server deve eseguire un'applicazione web che elabora le richieste HTTP;
+						\item L'avversario dovrà rilevare la vulnerabilità tramite un servizio intermediario o specificare URL creati in modo dannoso e analizzare la risposta del server;
+						\item L'avversario dovrà accedere alle risorse interne, estrarre informazioni o sfruttare i servizi in esecuzione sul server per eseguire azioni non autorizzate, come attraversare la rete locale o instradare un attacco DDoS TCP riflesso attraverso di essi.
+					\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{5.5cm} 
+				\raggedright Abuse Elevation Control Mechanism: Sudo and Sudo Caching	(T1548.003)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli avversari possono eseguire il caching sudo e/o utilizzare il file sudoers per elevare i privilegi. Gli avversari possono farlo per eseguire comandi al posto di altri utenti o per generare processi con privilegi più elevati.
+\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{5cm} \raggedright
+				Abuse Elevation Control Mechanism: Elevated Execution with Prompt	(T1548.004)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli avversari potrebbero sfruttare l' AuthorizationExecuteWithPrivilegesAPI per aumentare i privilegi richiedendo all'utente le credenziali. Lo scopo di questa API è fornire agli sviluppatori di applicazioni un modo semplice per eseguire operazioni con privilegi di root, come l'installazione o l'aggiornamento di applicazioni. Questa API non convalida che il programma che richiede i privilegi di root provenga da una fonte attendibile o sia stato modificato in modo dannoso.
+				\vspace{0.5em}\end{minipage}
+			\\
+			\hline
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				Abuse Elevation Control Mechanism: TCC Manipulation	(T1548.006)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli aggressori possono manipolare o abusare del servizio o del database Transparency, Consent \& Control (TCC) per concedere autorizzazioni elevate agli eseguibili dannosi. TCC è un meccanismo di controllo Privacy \& Security di macOS utilizzato per determinare se il processo in esecuzione ha l'autorizzazione ad accedere ai dati o ai servizi protetti da TCC, come la condivisione dello schermo, la fotocamera, il microfono o l'accesso completo al disco (FDA).
+				\vspace{0.5em}\end{minipage} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18cm} 
+					 Il sistema effettua una richiesta a se stesso o a servizi esterni, utilizzando il livello di privilegio del server, consentendo all'attaccante di accedere a dati sensibili o eseguire comandi non autorizzati.
+					 		\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{18cm}
+				Il sistema deve convalidare l'input ricevuto, impedendo di effettuare richieste non autorizzate utilizzando i privilegi del server.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18cm}
+					\begin{itemize}
+            			 \item La prima linea d'azione per mitigare questa vulnerabilità è la gestione sicura delle richieste in arrivo. Questo può essere fatto tramite la convalida degli URL;
+            			 \item Più avanti nel flusso del processo, un altro modo per proteggere il server è esaminare la risposta e verificare che sia come previsto prima dell'invio;
+            			 \item Un'altra efficace misura di sicurezza è quella di consentire l'accesso al nome DNS o all'indirizzo IP di ogni servizio che l'applicazione web deve utilizzare. In questo modo, il server non può effettuare richieste esterne a servizi arbitrari;
+            			 \item Richiedere l'autenticazione per i servizi locali aggiunge un ulteriore livello di sicurezza tra l'avversario e i servizi interni in esecuzione sul server. Imponendo l'autenticazione locale, un avversario non potrà accedere a tutti i servizi interni solo tramite l'accesso al server.
+        			\end{itemize}				
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{4cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18cm}
+					Un sito di e-commerce consente al cliente di filtrare i risultati per categorie specifiche. Quando il cliente seleziona la categoria desiderata, il negozio online interroga un servizio back-end per recuperare i prodotti richiesti. La richiesta potrebbe essere simile a questa:
+
+					\begin{tcolorbox}[verbatim,
+colback=yellow!5!white, colframe=yellow!75!black, title=Richiesta]
+\small
+POST /prodotto/categoria HTTP/1.0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 200
+
+vulnerableService=http://vulnerableshop.net:8080/product \linebreak /category/check?categoryName=someCategory
+\end{tcolorbox}
+
+
+
+Un utente malintenzionato può modificare l'URL della richiesta in modo che appaia in questo modo:
+
+\begin{tcolorbox}[verbatim,
+colback=red!5!white, colframe=red!75!black, title=Richiesta Manipolata]
+\small
+POST /prodotto/categoria HTTP/1.0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 200
+
+vulnerableService=http://localhost/server-status
+\end{tcolorbox}
+
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table}
+
+
+
+%%%%%%%%%%%%%%%%%% Input data manipulation (CAPEC 153) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-16 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Input data manipulation (CAPEC 153)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{16.5cm}
+	Un aggressore sfrutta una debolezza nella convalida dell'input controllando il formato, la struttura e la composizione dei dati in un'interfaccia di elaborazione dell'input. Fornendo input in un formato non standard o inaspettato, un aggressore può compromettere la sicurezza del bersaglio.
+	Ad esempio, l'utilizzo di una codifica dei caratteri diversa potrebbe far sì che un testo pericoloso venga trattato come testo sicuro. In alternativa, l'attaccante può utilizzare determinati flag, come le estensioni dei file, per indurre un'applicazione target a credere che i dati forniti debbano essere gestiti tramite un determinato interprete, quando in realtà i dati non sono del tipo appropriato. Ciò può portare a bypassare i meccanismi di protezione, costringendo il target a utilizzare componenti specifici per l'elaborazione dell'input o, in altro modo, causando una gestione dei dati dell'utente diversa da quella prevista. Questo attacco differisce dalla Manipolazione delle Variabili in quanto la Manipolazione delle Variabili tenta di sovvertire l'elaborazione del target tramite il valore dell'input, mentre la Manipolazione dei Dati di Input cerca di controllare il modo in cui l'input viene elaborato.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					Il target deve accettare i dati dell'utente per l'elaborazione e il modo in cui tali dati vengono elaborati deve dipendere da qualche aspetto del formato o dei flag che l'aggressore può controllare.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				Exploit Public-Facing Application	(T1190)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli aggressori potrebbero tentare di sfruttare una debolezza in un host o sistema connesso a Internet per accedere inizialmente a una rete. La debolezza del sistema può essere un bug del software, un problema temporaneo o una configurazione errata, mediante l'utilizzo di tecniche come l'iniezione SQL, il cross-site scripting (XSS) o il buffer overflow.
+				\vspace{0.5em}\end{minipage} \\
+			\hline
+			
+			
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				Server Software Component: Web Shell (T1505.003)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli avversari possono sfruttare le backdoor dei server web con web shell per stabilire un accesso persistente ai sistemi. Una web shell è uno script web che viene installato su un server web accessibile pubblicamente per consentire a un avversario di accedere al server web come gateway in una rete. Una web shell può fornire un set di funzioni da eseguire o un'interfaccia a riga di comando sul sistema che ospita il server web. Le web shell possono essere caricate sul server web tramite vari metodi, tra cui l'upload di file dannosi, lo sfruttamento di vulnerabilità del software del server web o l'abuso di funzionalità legittime del server web.
+				\vspace{0.5em}\end{minipage} \\	
+			\hline
+
+
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+					 Il sistema riceve messaggi ed input inviati dall'aggressore.		\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{13cm}
+				Il sistema deve validare il formato, la struttura e la composizione dei dati in un'interfaccia di elaborazione dell'input, rifiutando input in un formato non standard o inaspettato.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+            			 \item Convalida rigorosa dell'input;
+						\item Utilizzo di librerie sicure per il parsing dei dati;
+						\item Limitazione dei valori sensibili modificabili dall’utente.
+						\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table}
+
