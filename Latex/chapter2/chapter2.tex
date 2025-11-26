@@ -71,6 +71,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 %%%%%%%%%% Authentication Abuse (CAPEC 116) %%%%%%%%%%%%%%%
 \renewcommand{\arraystretch}{1.5} % aumenta l'altezza delle righe del 50%
 \begin{table}[ht!]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -81,7 +82,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Authentication Abuse (CAPEC 116) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -89,7 +90,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -97,7 +98,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Un aggressore ottiene l'accesso non autorizzato a un'applicazione, un servizio o un dispositivo conoscendo le debolezze intrinseche di un meccanismo di autenticazione o sfruttando una falla nell'implementazione dello schema di autenticazione. In un attacco di questo tipo, un meccanismo di autenticazione funziona, ma una sequenza di eventi attentamente controllata fa sì che il meccanismo conceda l'accesso all'aggressore.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -105,7 +106,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Dati utente di sistema
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -113,7 +114,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
 						\item Un meccanismo o sottosistema di autenticazione che implementa una qualche forma di autenticazione, come password, certificati di sicurezza, ecc., che presenta qualche difetto/vulnerabilità;
 						\item Un'applicazione client, un accesso da riga di comando a un file binario o un linguaggio di programmazione in grado di interagire con il meccanismo di autenticazione.
@@ -124,7 +125,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Un attaccante sfrutta una debolezza nel meccanismo di autenticazione, permettendogli di eseguire azioni illegalmente. Per esempio, dopo aver bypassato l'autenticazione, potrebbe effettuare azioni come visionare i dati contenuti nel sistema o azioni di modifica dei dati.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -132,7 +133,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					/
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -140,7 +141,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					/
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -148,7 +149,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L’aggressore ottiene l’accesso non autorizzato ed effettua azioni malevoli.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -156,7 +157,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 				Garantire che tutti i meccanismi di autenticazione siano sicuri e a più fattori, includendo protezioni contro l’elevazione dei privilegi non autorizzata. Effettuare audit regolari per rilevare configurazioni errate o credenziali
 				compromesse.
 			\vspace{0.5em}\end{minipage}
@@ -165,7 +166,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
 						\item Utilizzare autenticazione MFA;
 					\end{itemize}
@@ -175,7 +176,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Gli attacchi sui sistemi di autenticazione sono una delle cause principali di compromissioni. La combinazione di MFA, auditing continuo e l'uso di password robuste può ridurre significativamente il rischio.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -189,6 +190,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 %%%%%%%%%%%%%%%%%%% Privilage Escalation (CAPEC 233) %%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -199,7 +201,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Privilage Escalation (CAPEC 233) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -207,7 +209,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -215,14 +217,14 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Un avversario sfrutta una debolezza che gli consente di elevare i propri privilegi ed eseguire azioni che non dovrebbe essere autorizzato a eseguire.				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -230,7 +232,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item Il sistema contiene un meccanismo di controllo dei privilegi mal configurato o vulnerabile
         				\item L'attaccante ha un accesso limitato al sistema.
@@ -242,7 +244,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Gli attaccanti possono eseguire il caching sudo e/o utilizzare il file "sudoers" per elevare i propri privilegi. Ciò permette di eseguire comandi al posto di altri utenti o per generare processi con privilegi più elevati.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -250,7 +252,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L’attaccante sfrutta la configurazione errata del meccanismo di controllo degli account utente, consentendo l’esecuzione di codice arbitrario con privilegi elevati senza richiedere autorizzazioni
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -258,7 +260,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					/
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -266,7 +268,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					I privilegi aumentati vengono utilizzati per eseguire operazioni non autorizzate.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -274,7 +276,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 				Deve essere garantita una gestione dei privilegi sicura, proteggendo i meccanismi di escalation e prevenendo configurazioni usate. Monitoraggio continuo e auditing dei privilegi devono essere implementati per rilevare tentativi di escalation non autorizzati
 			\vspace{0.5em}\end{minipage}
 		} \\
@@ -282,7 +284,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item Applicare MFA per azioni sensibili;
         				\item Controllare periodicamente file di configurazione;
@@ -295,7 +297,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					È fondamentale combinare l'autenticazione MFA, monitorare continuamente il sistema, mantenere aggiornate le varei tecnologie in uso e gestire rigorosamente i privilegi e i file di configurazione per prevenire vulnerabilità di questo tipo.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -308,6 +310,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 %%%%%%%%%%%%%%%%%% Targeted Malware (CAPEC 542) %%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -318,7 +321,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Targeted Malware (CAPEC 542) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -326,7 +329,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Cliente, Corriere, Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -334,7 +337,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Un avversario sviluppa un malware mirato che sfrutta una vulnerabilità nota in un ambiente informatico organizzativo. Il malware creato per questi attacchi si basa specificamente sulle informazioni raccolte sull'ambiente tecnologico. L'esecuzione con successo del malware consente a un avversario di ottenere un'ampia varietà di impatti tecnici negativi	
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -342,7 +345,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -350,7 +353,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item L'attaccante deve raccogliere informazioni sull'ambiente target.
         				\item L'attaccante deve provare modi di social engineering come il phising per far eseguire il malware sul sistema. 
@@ -362,7 +365,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'attaccante analizza il sistema cercando di ottenere informazioni utili per lo sviluppo di un malware ed il suo deploy. Successivamente, dopo lo sviluppo del malware, l'attaccante tenta il deploy di quest'ultimo o tramite tecniche di social engineering come il phising, andando ad inviare email o messaggi fasulli agli utenti interessati.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -370,7 +373,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'attaccante, sempre dopo aver analizzato il sistema e sviluppato un malware, sfrutta una o più vulnerabilità riscontrate nel sistema per effettuare il deploy del malware.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -378,7 +381,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					/
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -386,7 +389,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore riesce ad eseguire malware mirati contro il sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -394,7 +397,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 				Garantire che il sistema effetui un monitoraggio avanzato per rilevare le minacce.
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -402,7 +405,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item Mantenere aggiornati sistemi e software;
         				\item Implementare strumenti di rilevamento come antivirus e firewall;
@@ -414,7 +417,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Gli avversari spesso utilizzano tecniche di offuscamento quando sviluppano malware allo scopo di evitare il rilevamento o impedire al bersaglio di decodificare e comprendere un campione di malware catturato. Alcune di queste tecniche includono, ma non sono limitate a, il riempimento binario, l'imballaggio del software, la rimozione di simboli e stringhe da un payload e l'utilizzo di una risoluzione API dinamica.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -428,6 +431,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 
 
 \begin{table}[ht!]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -438,7 +442,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Phishing (CAPEC 98) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -446,7 +450,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Cliente, Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -454,7 +458,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Il phishing è una tecnica di ingegneria sociale in cui un utente malintenzionato si maschera da entità legittima con la quale la vittima potrebbe fare affari al fine di indurre l'utente a rivelare alcune informazioni riservate (molto spesso credenziali di autenticazione) che possono essere successivamente utilizzate da un malintenzionato. Il phishing è essenzialmente una forma di raccolta di informazioni o "pesca" per informazioni	
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -462,7 +466,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -470,7 +474,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item Presenza di una vulnerabilità nota nell’ambiente target, non ancora corretta o mitigata. 
         				\item Un aggressore deve avere un modo per entrare in contatto con la vittima (per esempio tramite e-mail);
@@ -484,7 +488,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Un aggressore invia un'e-mail alla vittima malevola per indurre l'utente a cliccare sul link incluso nell'e-mail (che indirizza la vittima al sito web dell'aggressore) e ad accedere. La chiave è far credere alla vittima che l'e-mail provenga da un'entità legittima e che il sito web a cui rimanda l'URL nell'e-mail sia il sito web legittimo. Un invito all'azione deve solitamente suonare legittimo e sufficientemente urgente da indurre l'utente ad agire.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -492,7 +496,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Una volta che l'aggressore ottiene alcune informazioni sensibili tramite phishing (credenziali di accesso, dati della carta di credito, ecc.), può sfruttare queste informazioni. Ad esempio, può utilizzare le credenziali di accesso della vittima per accedere al suo conto bancario e trasferire denaro su un conto a sua scelta.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -500,7 +504,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Un aggressore crea un sito web che assomiglia molto al sito web che sta cercando di impersonare. Tale sito web in genere include un modulo di accesso in cui la vittima deve inserire le proprie credenziali di autenticazione.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -508,7 +512,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore riesce ad ottenere le informazioni riservate.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -516,7 +520,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 				Garantire l'implementazione di filtri avanzati, il monitoraggio e l'analisi delle attività anomale.
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -524,7 +528,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Non seguire alcun link che si riceve all'interno delle e-mail e non inserire credenziali di accesso su alcun sito web proveniente da e-mail sospette.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -532,7 +536,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Questo CAPEC descrive un attacco in cui un avversario sviluppa malware su misura per sfruttare debolezze note dell’ambiente target.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -664,7 +668,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Reusing session ID (CAPEC 60) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -672,7 +676,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Utente, Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -680,7 +684,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Questo attacco mira al riutilizzo di un ID di sessione valido per falsificare il sistema di destinazione al fine di ottenere privilegi. L'attaccante cerca di riutilizzare un ID di sessione rubato utilizzato in precedenza durante una transazione per eseguire lo spoofing e il dirottamento della sessione.				
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -688,7 +692,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Dati utente di sistema
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -696,7 +700,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item L'host di destinazione utilizza gli ID di sessione/session token per tenere traccia degli utenti;
         				\item Gli ID di sessione/session token vengono utilizzati per controllare l'accesso alle risorse;
@@ -708,7 +712,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore interagisce con l'host di destinazione e scopre che gli ID di sessione/token di sessione vengono utilizzati per autenticare gli utenti. Successivamente ruba un ID di sessione/token di sessione da un utente valido e lo usa per eseguire azioni per suo conto.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -716,7 +720,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 				L'aggressore tenta di utilizzare l'ID di sessione rubato per ottenere l'accesso al sistema con i privilegi del proprietario originale dell'ID di sessione.	
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -724,7 +728,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 						/
 					\vspace{0.5em}\end{minipage}
 				} \\
@@ -732,14 +736,14 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore riesce ad utilizzare lo stesso ID di sessione di un altro utente loggato nel sistema.				\vspace{0.5em}\end{minipage}
 					} \\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 				Garantire una gestione sicura delle sessioni, implementando tecniche specifiche per evitare il furto di sessione.			
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -747,7 +751,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
             			\item Invalidare sempre un ID di sessione dopo il logout dell'utente.
 
@@ -765,7 +769,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Questo attacco descrive un attacco in cui l’avversario riutilizza o intercetta un ID di sessione valido per assumere l’identità dell’utente legittimo, sfruttando debolezze nei meccanismi di gestione e protezione delle sessioni.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -779,6 +783,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 %%%%%%%%%%%%%Password brute forcing (CAPEC 49)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 			\begin{tabular}{|l |l| l|}
@@ -789,7 +794,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Password brute forcing (CAPEC 49) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -797,7 +802,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -805,7 +810,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Un avversario prova ogni possibile valore per una password finché non ci riesce. Un attacco brute force passerà in rassegna tutte le password possibili, dato l'alfabeto utilizzato (lettere minuscole, lettere maiuscole, numeri, simboli, ecc.) e la lunghezza massima della password.				
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -813,7 +818,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Dati utente di sistema
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -821,7 +826,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item L'host di destinazione utilizza gli ID di sessione/session token per tenere traccia degli utenti;
         				\item Gli ID di sessione/session token vengono utilizzati per controllare l'accesso alle risorse;
@@ -833,7 +838,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore interagisce con l'host di destinazione e scopre che gli ID di sessione/token di sessione vengono utilizzati per autenticare gli utenti. Successivamente ruba un ID di sessione/token di sessione da un utente valido e lo usa per eseguire azioni per suo conto.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -841,7 +846,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore tenta di utilizzare l'ID di sessione rubato per ottenere l'accesso al sistema con i privilegi del proprietario originale dell'ID di sessione.				
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -849,7 +854,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 						/
 					\vspace{0.5em}\end{minipage}
 				} \\
@@ -857,7 +862,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore riesce ad utilizzare lo stesso ID di sessione di un altro utente loggato nel sistema.				
 				\vspace{0.5em}\end{minipage}
 					} \\
@@ -865,7 +870,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 				Garantire una gestione sicura delle sessioni, implementando tecniche specifiche per evitare il furto di sessione.			
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -873,7 +878,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
             			\item Invalidare sempre un ID di sessione dopo il logout dell'utente.
 
@@ -891,7 +896,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Questo attacco descrive un attacco in cui l’avversario riutilizza o intercetta un ID di sessione valido per assumere l’identità dell’utente legittimo, sfruttando debolezze nei meccanismi di gestione e protezione delle sessioni.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -903,6 +908,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 %%%%%%%%%%%%%%%%%% Try common or default usernames and passwords (CAPEC 70) %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -913,7 +919,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Try common or default usernames and passwords (CAPEC 70) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -921,7 +927,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -929,7 +935,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Un avversario può provare alcuni nomi utente e password comuni o predefiniti per ottenere l'accesso al sistema ed eseguire azioni non autorizzate. Un avversario può provare una forza bruta intelligente usando password vuote, credenziali predefinite del fornitore note, nonché un dizionario di nomi utente e password comuni. Molti prodotti del fornitore sono preconfigurati con nomi utente e password predefiniti (e quindi ben noti) che dovrebbero essere eliminati prima dell'utilizzo in un ambiente di produzione. È un errore comune dimenticare di rimuovere queste credenziali di accesso predefinite. Un altro problema è che gli utenti sceglierebbero password molto semplici (comuni) (ad esempio "12345" o "password") che rendono più facile per l'attaccante ottenere l'accesso al sistema rispetto all'utilizzo di un attacco di forza bruta o anche di un attacco dizionario utilizzando un dizionario completo.				
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -937,7 +943,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Dati utente di sistema
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -945,7 +951,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item Il sistema utilizza l'autenticazione basata su password a un fattore. L'avversario ha i mezzi per interagire con il sistema;
         				\item Elenco specifico della tecnologia o del fornitore di nomi utente e password predefiniti.
@@ -956,7 +962,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Un utente imposta la propria password su "password" o la lascia intenzionalmente vuota. Se il sistema non dispone di un'applicazione della forza della password rispetto a una politica di password valida, questa password potrebbe essere ammessa. L'attaccante tenta di utilizzare una serie di nomi utente e password comuni, tra cui "password" ed ottiene l'accesso al sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -964,7 +970,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'attaccante analizza il sistema per identificare le credenziali predefinite del fornitore. Successivamente, l'attaccante tenta di utilizzare queste credenziali per ottenere l'accesso al sistema.				
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -972,7 +978,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 						/
 					\vspace{0.5em}\end{minipage}
 				} \\
@@ -980,7 +986,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					L'aggressore riesce ad ottenere mediante la prova di password comuni entrando nel sistema.				
 				\vspace{0.5em}\end{minipage}
 					} \\
@@ -988,7 +994,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 				Controllare l'input della password e dello username nella registrazione di un utente, obbligandolo a non utilizzare password o username comuni.			
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -996,7 +1002,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
             			 \item Elimina tutte le credenziali predefinite dell'account che possono essere inserite dal fornitore del prodotto.
 
@@ -1012,7 +1018,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Un utente imposta la propria password su "123" o lascia intenzionalmente la sua password vuota. Se il sistema non ha il controllo della password rispetto a una solida politica di password, questa password può essere ammessa. Password come questi due esempi sono due password semplici e comuni che possono essere facilmente indovinate dall'avversario.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1026,6 +1032,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 %%%%%%%%%%%%%%%%%% Dictionary-based password attack (CAPEC 16) %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -1036,7 +1043,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Dictionary-based password attack (CAPEC 16) 
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1044,7 +1051,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1052,7 +1059,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Un utente malintenzionato prova ciascuna delle parole in un dizionario come password per ottenere l'accesso al sistema tramite l'account di un utente. Se la password scelta dall'utente era una parola all'interno del dizionario, questo attacco avrà successo (in assenza di altre mitigazioni). Questa è un'istanza specifica del modello di attacco di forzatura bruta della password.
 
     Gli attacchi del dizionario differiscono da attacchi simili come Password Spraying (CAPEC-565) e Credential Stuffing (CAPEC-600), poiché sfruttano combinazioni sconosciute di nome utente/password e non si preoccupano di indurre blocchi dell'account.				
@@ -1062,7 +1069,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					DATA
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1070,7 +1077,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         \item Il sistema utilizza l'autenticazione basata su password a un fattore;
 
@@ -1085,7 +1092,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Determinare i criteri di password dell'applicazione/sistema di destinazione, come ad esempio la lunghezza consentita e il formato richiesto
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1093,7 +1100,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 					Determinare i nomi utente di cui decifrare le password, ad esempio attraverso lo sniffing della rete, interrogando il sistema oppure dal file system			
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1101,7 +1108,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 						Utilizza uno strumento di deciframento delle password che sfrutti il dizionario per fornire le password al sistema e verificare se funzionano.
 					\vspace{0.5em}\end{minipage}
 				} \\
@@ -1109,7 +1116,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 						L’aggressore ottiene l’accesso non autorizzato ed effettua azioni
     					malevole.			
 				\vspace{0.5em}\end{minipage}
@@ -1118,7 +1125,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{12cm}
 						Controllo da parte del sistema di obbligare l'utente a non utilizzare come password parole prese dal dizionario, effettuando un controllo di tutte le parole comuni.
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -1126,7 +1133,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 						\begin{itemize}
         \item Crea una politica di password complessa e assicurati che il tuo sistema applichi questa politica;
 
@@ -1140,7 +1147,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Gli attacchi all’autenticazione sono una delle cause principali di compro
     missioni. La combinazione di MFA, auditing continuo e training degli utenti può ridurre significativamente il rischio.
 				\vspace{0.5em}\end{minipage}
@@ -1154,112 +1161,118 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 %%%%%%%%%%%%%%%%%% Carry-Off GPS Attack (CAPEC 628) %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
-	\centering
-	{\footnotesize
-		\begin{tabular}{|l |l| l|}
-			\hline
-			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
-			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
-			\begin{minipage}[t]{5cm}\textbf{Case ID} AC-10 \end{minipage} \\ \hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
-					Carry-Off GPS Attack (CAPEC 628) 
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
-					Sistema, Attaccante
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
-					Una forma comune di attacco di spoofing GPS, comunemente definito attacco carry-off, inizia con la trasmissione da parte di un avversario di segnali sincronizzati con i segnali autentici rilevati dal ricevitore bersaglio. La potenza dei segnali contraffatti viene quindi gradualmente aumentata e allontanata dai segnali autentici. Col tempo, l'avversario può allontanare il bersaglio dalla destinazione prevista e dirigerlo verso una posizione scelta dall'avversario.				
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
-					DATA
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
-					Per eseguire operazioni critiche, il bersaglio deve poter contare su un segnale GPS valido.
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
-					/
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
-					 /			
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
-						/
-					\vspace{0.5em}\end{minipage}
-				} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
-						/			
-				\vspace{0.5em}\end{minipage}
-					} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
-		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
-					/
-			\vspace{0.5em}\end{minipage}
-				} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
-						/
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-			
-			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
-			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
-					/
-				\vspace{0.5em}\end{minipage}
-			} \\
-			\hline
-		\end{tabular}
-	}
+	\hspace*{-2.3cm}
+	\hfuzz=20pt
+    \centering
+    {\footnotesize
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+        \begin{minipage}[t]{7cm}\textbf{Abuse Case}\end{minipage} &
+        \begin{minipage}[t]{7cm}\textbf{Case ID} AC-10\end{minipage} \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Case Name}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            Carry-Off GPS Attack (CAPEC 628)
+            \end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Actors}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            Sistema, Attaccante
+            \end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Description}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            Una forma comune di attacco di spoofing GPS, comunemente definito attacco carry-off, inizia con la trasmissione da parte di un avversario di segnali sincronizzati con i segnali autentici rilevati dal ricevitore bersaglio. La potenza dei segnali contraffatti viene quindi gradualmente aumentata e allontanata dai segnali autentici. Col tempo, l'avversario può allontanare il bersaglio dalla destinazione prevista e dirigerlo verso una posizione scelta dall'avversario.
+            \vspace{0.5em}\end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Data}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            DATA
+            \end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            Per eseguire operazioni critiche, il bersaglio deve poter contare su un segnale GPS valido.
+            \end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            L’avversario crea una copia quasi indistinguibile del segnale GPS reale, mantenendo una potenza quasi identica per evitare rilevazioni. Dopo aver ottenuto il controllo del segnale, modifica la posizione in modo estremamente graduale, così che la deviazione sembri naturale e non venga percepita come anomala.
+            \vspace{0.5em}\end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            L’attaccante replica i segnali GPS autentici del bersaglio, li sincronizza perfettamente e inizia a trasmetterli con una potenza leggermente superiore. Man mano che il ricevitore inizia a fidarsi dei segnali falsi, l’avversario introduce un lento spostamento della posizione stimata, trascinando il bersaglio lontano dal percorso reale verso una destinazione scelta.
+            \vspace{0.5em}\end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm} /
+            \end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm}
+            \begin{itemize}
+                \item Il sistema nota incoerenze o potenza anomala nel segnale e sospetta spoofing.
+                \item Il ricevitore ignora il segnale sospetto e passa a una modalità di navigazione sicura.
+                \item Il segnale falso viene ignorato, la posizione rimane corretta e la navigazione resta affidabile.
+                \item Il sistema accetta il segnale spoofato, la posizione diventa errata e il bersaglio viene deviato verso una destinazione scelta dall’attaccante.
+            \end{itemize}
+            \vspace{0.5em}\end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm} 
+				\begin{itemize}
+					\item Il sistema deve mantenere una posizione coerente anche in presenza di segnali GPS anomali o degradati.
+					\item Il ricevitore deve essere in grado di continuare a funzionare correttamente anche se il GPS viene spoofato o manipolato.
+					\item Il sistema deve reagire rapidamente quando il segnale GPS mostra comportamenti sospetti, riducendo al minimo la deviazione potenziale.
+					\item Il sistema deve garantire continuità operativa tramite sensori ridondanti (INS, bussola, odometria) quando il GPS è inattendibile.
+					\item La piattaforma deve verificare che le informazioni di navigazione siano coerenti e non violate, prevenendo modifiche silenziose alla posizione.
+				\end{itemize}
+            \vspace*{0.5em}\end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Mitigations}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm} 
+				\begin{itemize}
+					\item Integrare dati non‑GPS per verificare e correggere la posizione quando il segnale appare sospetto.
+					\item Utilizzare segnali autenticati.
+					\item Escludere automaticamente il GPS dalla navigazione quando rilevato come inattendibile.
+					\item Passare a una modalità di guida/navigazione degradata ma affidabile quando il GPS risulta compromesso.
+				\end{itemize}
+            \vspace*{0.5em}\end{minipage}%
+        } \\ \hline
+        
+        \begin{minipage}[t]{3cm}\textbf{Comments}\end{minipage} &
+        \multicolumn{2}{|l|}{%
+            \begin{minipage}[t]{14cm} 
+				Un proof‑of‑concept di questo attacco ha dimostrato che segnali GPS falsificati, introdotti gradualmente con potenza superiore a quelli autentici, possono alterare la rotta di un sistema di navigazione senza attivare allarmi, evidenziando la praticità e l’efficacia del carry‑off spoofing.
+            \vspace*{0.5em}\end{minipage}%
+        } \\ \hline
+    \end{tabular}
+    }
 \end{table}
+
 %%%%%%%%%%%%%%%%%% Credential stuffing (CAPEC 600)  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
 	\hspace*{-3cm}
@@ -1398,6 +1411,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 
 %%%%%%%%%%%%%%%%%% Traffic Injection (CAPEC 594) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht]
+	\hfuzz=12pt
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -1408,7 +1422,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					Traffic Injection (CAPEC 594)
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1416,21 +1430,21 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					 Sistema, Attaccante
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{11.5cm}
 	Un avversario inietta traffico nella connessione di rete del bersaglio. L'avversario è quindi in grado di degradare o interrompere la connessione e potenzialmente modificarne il contenuto. Non si tratta di un attacco flooding, poiché l'avversario non si concentra sull'esaurimento delle risorse. Piuttosto, sta elaborando un input specifico per influenzare il sistema in un modo particolare.		\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					DATA
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1438,7 +1452,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{11.5cm}
 					\begin{itemize}
         				\item L'applicazione di destinazione deve sfruttare un canale di comunicazione aperto.
         \item Il canale su cui comunica il bersaglio deve essere vulnerabile all'intercettazione.
@@ -1449,7 +1463,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 				\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{11.5cm}
 					L'attaccante intercetta il traffico di rete tra due endpoint comunicanti. Utilizzando tecniche come la spoofing degli indirizzi IP o ARP, l'attaccante si posiziona come intermediario nella comunicazione. Successivamente, l'attaccante inietta pacchetti di dati malevoli o manipolati nel flusso di traffico esistente, alterando il contenuto delle comunicazioni tra gli endpoint.
 				\vspace{0.5em}\end{minipage}
 			} 
@@ -1458,7 +1472,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{11.5cm} 
 					L'attaccante monitora il traffico di rete per identificare pacchetti specifici da iniettare. Utilizzando strumenti di analisi del traffico, l'attaccante seleziona i momenti opportuni per inserire i pacchetti malevoli, cercando di evitare rilevamenti e garantire che i pacchetti iniettati vengano accettati dagli endpoint di destinazione.		
 					\vspace{0.5em}\end{minipage}
 			} \\
@@ -1466,7 +1480,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{12cm} 
 						/
 					\vspace{0.5em}\end{minipage}
 				} \\
@@ -1474,7 +1488,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm} 
+				\begin{minipage}[t]{11.5cm} 
 					 \begin{itemize}
         \item L’attacco altera il traffico di rete, causando risposte errate o blocchi che rendono il servizio non affidabile.
         \item L’attaccante modifica o inserisce dati nel traffico, compromettendo l’accuratezza e la coerenza delle informazioni scambiate. 
@@ -1484,7 +1498,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{11cm}
+			\begin{minipage}[t]{11.5cm}
 				Garantire la protezione dell’integrità del traffico tramite autenticazione delle comunicazioni e il rilevamento di pacchetti anomali o non autorizzati.		
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -1492,7 +1506,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{11.5cm}
 					\begin{itemize}
             			 \item Usare TLS per tutte le comunicazioni di rete, così da proteggere confidenzialità e integrità, rendendo più difficile l’iniezione di pacchetti malevoli.
         \item Verificare l’identità degli endpoint di rete tramite protocolli sicuri (TLS, IPsec) per assicurarsi che i dati provengano da fonti legittime.
@@ -1508,7 +1522,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{11cm}
+				\begin{minipage}[t]{12cm}
 					/
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1561,7 +1575,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{16.5cm}
 					Per eseguire operazioni critiche, il bersaglio deve poter contare su un segnale GPS valido.
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1595,7 +1609,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm} 
+				\begin{minipage}[t]{16.5cm} 
 					 \begin{itemize}
         \item  Quando il sistema riconosce segnali GPS contraffatti, deve informare immediatamente l’utente o i componenti interni che il dato non è affidabile.
 		\item La posizione deve smettere di influenzare funzioni critiche e deve essere usata una modalità alternativa basata su sensori interni o logiche di stima del movimento.
@@ -1607,7 +1621,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{13cm}
+			\begin{minipage}[t]{16.5cm}
 				Il sistema deve essere in grado di mantenere la propria affidabilità anche se il GPS diventa non attendibile, reagendo rapidamente a variazioni sospette della posizione e deve continuare a funzionare grazie a fonti alternative, evitando improvvisi malfunzionamenti.
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -1615,7 +1629,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{16.5cm}
 					\begin{itemize}
             			 \item Le principali mitigazioni consistono nel riconoscere quando un segnale GPS non è autentico e nel ridurre la dipendenza dal GPS stesso.
 						\item È utile confrontare continuamente la posizione ricevuta con altre fonti, come sensori interni, mappe, altri sistemi satellitari o dati provenienti da reti terrestri.
@@ -1628,7 +1642,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{16.5cm}
 					Un attaccante invia segnali GPS falsi per far credere a un sistema di trovarsi in un’altra posizione o in un altro momento. Un aspetto importante è che lo spoofing può restare invisibile se il dispositivo non controlla l’integrità del segnale. Ad esempio, un drone potrebbe essere indotto a deviare rotta verso un’area non sicura.
 				\vspace{0.5em}\end{minipage}
 			} \\
