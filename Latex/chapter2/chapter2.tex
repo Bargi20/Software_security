@@ -2423,6 +2423,234 @@ vulnerableService=http://localhost/server-status
 		}
 \end{table} \clearpage
 
+%%%%%%%%%%%%%%%%%% Log Injection-Tampering-Forging (CAPEC 93) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-20 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Log Injection-Tampering-Forging (CAPEC 93)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{16.5cm}
+	Questo attacco prende di mira i file di registro dell'host di destinazione. L'attaccante inietta, manipola o finge voci di registro dannose nel file di registro, consentendogli di indurre in errore un audit di registro, coprire le tracce di attacco o eseguire altre azioni dannose. L'host di destinazione non controlla correttamente l'accesso al registro. Di conseguenza, i dati contaminati si traducono nei file di registro che portano a un fallimento nella capacità di responsabilità, non ripudio e capacità forense degli incidenti.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+				L'host di destinazione protegge in modo insufficiente l'accesso ai registri o ai meccanismi di registrazione.				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				Indicator Removal on Host	(T1070)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+					Gli avversari possono eliminare o modificare gli artefatti generati all'interno dei sistemi per rimuovere le prove della loro presenza o ostacolare le difese. Vari artefatti possono essere creati da un avversario o qualcosa che può essere attribuito alle azioni di un avversario. In genere questi artefatti vengono utilizzati come indicatori difensivi relativi agli eventi monitorati, come stringhe da file scaricati, registri generati dalle azioni dell'utente e altri dati analizzati dai difensori. La posizione, il formato e il tipo di artefatto (come il comando o la cronologia di accesso) sono spesso specifici per ogni piattaforma.
+					\vspace{0.5em}\end{minipage} \\
+			\hline
+			
+			
+			\begin{minipage}[t]{4cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\begin{minipage}[t]{5cm} \raggedright
+				Impair Defenses: Disable Windows Event Logging (T1562.002)	
+				\vspace{0.5em}\end{minipage} &
+				\begin{minipage}[t]{11cm}
+				Gli avversari disabilitano la registrazione degli eventi Windows per eliminare le tracce delle loro attività, ostacolando i rilevamenti e gli audit di sicurezza. Il servizio EventLog registra attività critiche come accessi e creazioni di processi, essenziali per le indagini forensi.				\vspace{0.5em}\end{minipage} \\	
+			\hline
+
+
+			\begin{minipage}[t]{3cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+						/
+					\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm} 
+					 L'attaccante riesce ad eludere i meccanismi di registrazione e monitoraggio, inserendo valori di input falsificati.		\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{13cm}
+				Il sistema deve validare e normalizzare il formato dell'input prima della registrazione, l'uso di logging sicuro per prevenire l'iniezione di log e l'implementazione di meccanismi di monitoraggio per rilevare attività sospette nei file di registro.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					\begin{itemize}
+            			 \item Controlla attentamente l'accesso ai file di registro fisici;
+
+						\item Non consentire che i dati contaminati siano scritti nel file di registro senza previa convalida dell'input. Un elenco di permessi può essere utilizzato per convalidare correttamente i dati;
+
+						\item Usa la sincronizzazione per controllare il flusso di esecuzione;
+
+						\item Usa gli strumenti di analisi statica per identificare le vulnerabilità di log forging;
+
+						\item Evita di visualizzare i registri con strumenti che possono interpretare i caratteri di controllo nel file, come le shell della riga di comando.
+						\end{itemize}
+				\vspace{0.5em}\end{minipage}
+			} end{minipage}\\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table} \clearpage
+
+
+
+%%%%%%%%%%%%%%%%%% Clickjacking (CAPEC 103) %%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht!]
+	
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-21 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Clickjacking (CAPEC 103)
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					 Sistema, Attaccante, Utente
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{16.5cm}
+			Mentre è connessa a qualche sistema di destinazione, la vittima visita il sito dannoso dell'avversario che mostra un'interfaccia utente con cui la vittima desidera interagire. In realtà, la pagina clickjacked ha un livello trasparente sopra l'interfaccia utente visibile con controlli di azione che l'avversario desidera che la vittima esegua. La vittima fa clic su pulsanti o altri elementi dell'interfaccia utente che vede sulla pagina che in realtà attivano i controlli di azione nel livello di sovrapposizione trasparente. A seconda di quale sia quel controllo dell'azione, l'avversario potrebbe aver appena ingannato la vittima nell'esecuzione di alcune funzionalità potenzialmente privilegiate (e certamente indesiderate) nel sistema di destinazione a cui la vittima è autenticata. Il problema di base qui è che c'è una dicotomia tra ciò su cui la vittima pensa di fare clic rispetto a ciò su cui sta effettivamente facendo clic.		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{13cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+            \multicolumn{2}{|l|}{
+                \begin{minipage}[t]{13cm}
+                    L'attacco è realizzabile quando una vittima, autenticata con una sessione attiva su un'applicazione web, utilizza un browser moderno che supporta tecnologie come iFrames o JavaScript e mantiene aperta la finestra del sistema di destinazione, esponendosi così all'esecuzione involontaria di azioni sensibili.
+                \vspace{0.5em}\end{minipage}
+            } \\
+            \hline
+            
+            \begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+            \begin{minipage}[t]{5cm}\raggedright
+                //
+            \vspace{0.5em}\end{minipage} &
+            \begin{minipage}[t]{11cm}
+                Tecnica in cui un attaccante utilizza livelli (layer) trasparenti o opachi per ingannare l'utente, inducendolo a cliccare su un elemento diverso da quello visibile. In pratica, l'attaccante 'dirotta' i clic destinati alla pagina visibile verso un'altra pagina sottostante, spesso appartenente a un'applicazione o dominio sensibile.
+            \vspace{0.5em}\end{minipage}
+            \\
+            \hline
+            
+            \begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+            \multicolumn{2}{|l|}{
+                \begin{minipage}[t]{13cm}
+                    Il clickjacking, noto anche come "attacco di riparazione dell'interfaccia utente", è quando un utente malintenzionato utilizza più livelli trasparenti o opachi per indurre un utente a fare clic su un pulsante o un link su un'altra pagina quando intendeva fare clic sulla pagina di primo livello. Pertanto, l'attaccante sta "dirottando" i clic destinati alla loro pagina e li indirizza a un'altra pagina, molto probabilmente di proprietà di un'altra applicazione, dominio o entrambi. Utilizzando una tecnica simile, le sequenze di tasti possono anche essere dirottate. Con una combinazione accuratamente realizzata di fogli di stile, iframe e caselle di testo, un utente può essere portato a credere che stia digitando la password della propria email o conto bancario, ma sta invece digitando in una cornice invisibile controllata dall'attaccante.
+                \vspace{0.5em}\end{minipage}
+            } \\
+            \hline
+            
+            \begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+            \multicolumn{2}{|l|}{
+                \begin{minipage}[t]{13cm}
+                    In primo luogo, il sistema deve implementare restrizioni rigorose sul framing. Ogni risposta HTTP generata dall'applicazione che contiene codice HTML deve includere l'header di sicurezza Content-Security-Policy (CSP) configurato con la direttiva frame-ancestors. Questa direttiva deve esplicitamente elencare le origini autorizzate a incorporare l'applicazione (tipicamente impostata su 'self' per consentire il framing solo dallo stesso dominio o 'none' per bloccarlo del tutto). Per garantire la compatibilità con browser meno recenti che non supportano pienamente le CSP, il sistema deve includere ridondantemente anche l'header X-Frame-Options impostato su SAMEORIGIN o DENY.
+
+                    In secondo luogo, deve essere applicata una politica di isolamento della sessione. Tutti i cookie utilizzati per la gestione della sessione e l'autenticazione devono essere contrassegnati con l'attributo SameSite, impostato preferibilmente su Strict (o quantomeno su Lax). Questo requisito assicura che il browser non invii i cookie di sessione se l'applicazione viene caricata all'interno di un contesto di terze parti (come un iframe nascosto), rendendo inefficace l'attacco anche qualora il framing non venisse bloccato.
+
+                    Infine, per le funzionalità critiche (quali transazioni finanziarie, modifiche delle credenziali o eliminazione di dati), il sistema deve adottare un approccio di difesa in profondità nell'interfaccia utente. Tali operazioni non devono essere eseguibili tramite un singolo clic o interazione immediata; il sistema deve richiedere una conferma esplicita (ad esempio tramite una finestra modale, l'inserimento della password o un token OTP) che interrompa il flusso automatico e richieda la consapevolezza attiva dell'utente.
+                \vspace{0.5em}\end{minipage}
+            } \\
+            \hline
+            
+            \begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+            \multicolumn{2}{|l|}{
+                \begin{minipage}[t]{13cm}
+                    \begin{itemize}
+                        \item Se usi il browser Firefox, usa il plug-in NoScript che aiuterà a vietare iFrames;
+                        \item Disattiva JavaScript, Flash e disabilita CSS;
+                        \item Quando si mantiene una sessione autenticata con un sistema di destinazione privilegiato, non utilizzare lo stesso browser per navigare su siti sconosciuti per eseguire altre attività. Termina di lavorare con il sistema di destinazione e disconnetti prima di procedere ad altre attività.
+                    \end{itemize}
+                \vspace{0.5em}\end{minipage}
+            } \\
+            \hline
+            
+            \begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+            \multicolumn{2}{|l|}{
+                \begin{minipage}[t]{13cm}
+                    /
+                \vspace{0.5em}\end{minipage}
+            } \\
+            \hline
+            
+        \end{tabular}
+        }
+        }
+\end{table} \clearpage
 
 
 \section{Misuse Case}
