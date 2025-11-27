@@ -60,7 +60,6 @@
 \newgeometry{margin=2cm} % solo margini
 
 \includepdf[pages=2-,fitpaper=true,pagecommand={}]{chapter2/dual-stride.pdf}
-\restoregeometry % torna al layout originale portrait
 
 \restoregeometry
 \pdfpagewidth=\paperwidth
@@ -73,6 +72,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 \begin{table}[ht!]
 	\hfuzz=12pt
 	\centering
+	\resizebox{\textwidth}{!}{
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -183,7 +183,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\hline
 			
 		\end{tabular}
-	}
+	}}
 
 \end{table} \clearpage
 
@@ -192,6 +192,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 \begin{table}[ht!]
 	\hfuzz=12pt
 	\centering
+	\resizebox{\textwidth}{!}{
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -304,7 +305,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\hline
 			
 		\end{tabular}
-	}
+	}}
 \end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Targeted Malware (CAPEC 542) %%%%%%%%%%%%%%%%%%%%%%
@@ -312,6 +313,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 \begin{table}[ht!]
 	\hfuzz=12pt
 	\centering
+	\resizebox{\textwidth}{!}{
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -424,7 +426,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\hline
 			
 		\end{tabular}
-	}
+	}}
 \end{table} \clearpage
 
 %%%%%%%%%%%%%%%% Phishing (CAPEC 98) %%%%%%%%%%%%%%%%%%%
@@ -433,6 +435,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 \begin{table}[ht!]
 	\hfuzz=12pt
 	\centering
+	\resizebox{\textwidth}{!}{
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -543,7 +546,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\hline
 			
 		\end{tabular}
-	}
+	}}
 \end{table} \clearpage
 
 %%%%%%%%%%%%%% Adversary in the middle(AiTM) (CAPEC 94) %%%%%%%%%%%%%%%
@@ -552,9 +555,9 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 % tabella e usare hspace per ricentrarlo
 
 \begin{table}[ht!]
-\hspace*{-1.8cm}
 \hfuzz=5pt % sposta la tabella verso sinistra
 \centering
+\resizebox{\textwidth}{!}{
 {\footnotesize
 \begin{tabular}{|l|l|l|}
 \hline
@@ -650,7 +653,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 \vspace{0.5em}\end{minipage}} \\ \hline
 
 \end{tabular}
-}
+}}
 \end{table} \clearpage
 
 
@@ -785,6 +788,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 \begin{table}[ht!]
 	\hfuzz=12pt
 	\centering
+	\resizebox{\textwidth}{!}{
 	{\footnotesize
 			\begin{tabular}{|l |l| l|}
 			\hline
@@ -903,13 +907,14 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 			
 		\end{tabular}
-	}
+	}}
 \end{table} \clearpage
 %%%%%%%%%%%%%%%%%% Try common or default usernames and passwords (CAPEC 70) %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
 	\hfuzz=12pt
 	\centering
+	\resizebox{\textwidth}{!}{
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -1025,7 +1030,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 			
 		\end{tabular}
-	}
+	}}
 \end{table} \clearpage
 
 
@@ -1161,9 +1166,9 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 %%%%%%%%%%%%%%%%%% Carry-Off GPS Attack (CAPEC 628) %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
-	\hspace*{-2.3cm}
 	\hfuzz=20pt
     \centering
+	\resizebox{\textwidth}{!}{
     {\footnotesize
     \begin{tabular}{|l|l|l|}
         \hline
@@ -1270,14 +1275,15 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
             \vspace*{0.5em}\end{minipage}%
         } \\ \hline
     \end{tabular}
-    }
+    }}
 \end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Credential stuffing (CAPEC 600)  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
-	\hspace*{-3cm}
+
 	\hfuzz=42pt % sposta la tabella verso sinistra
 	\centering
+	\resizebox{\textwidth}{!}{
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -1406,12 +1412,13 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 			
 		\end{tabular}
-		}
+		}}
 \end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Traffic Injection (CAPEC 594) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht]
 	\hfuzz=12pt
+	\resizebox{\textwidth}{!}{
 	\centering
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
@@ -1529,7 +1536,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 			
 		\end{tabular}
-		}
+		}}
 \end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Counterfeit GPS Signals (CAPEC 627) %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2303,7 +2310,6 @@ vulnerableService=http://localhost/server-status
 \begin{table}[ht!]
 	    \resizebox{\textwidth}{!}{%
 		\centering
-		\hspace*{-3cm}
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
@@ -2425,7 +2431,6 @@ vulnerableService=http://localhost/server-status
 
 %%%%%%%%%%%%%%%%%% Log Injection-Tampering-Forging (CAPEC 93) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
-	
 	    \resizebox{\textwidth}{!}{%
 		\centering
 	{\footnotesize
@@ -2452,7 +2457,7 @@ vulnerableService=http://localhost/server-status
 			\hline
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{16.5cm}
+				\begin{minipage}[t]{17.3cm}
 	Questo attacco prende di mira i file di registro dell'host di destinazione. L'attaccante inietta, manipola o finge voci di registro dannose nel file di registro, consentendogli di indurre in errore un audit di registro, coprire le tracce di attacco o eseguire altre azioni dannose. L'host di destinazione non controlla correttamente l'accesso al registro. Di conseguenza, i dati contaminati si traducono nei file di registro che portano a un fallimento nella capacità di responsabilità, non ripudio e capacità forense degli incidenti.
 		\vspace{0.5em}\end{minipage}
 			} \\
@@ -2468,7 +2473,7 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{17.3cm}
 				L'host di destinazione protegge in modo insufficiente l'accesso ai registri o ai meccanismi di registrazione.				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2501,14 +2506,14 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm} 
+				\begin{minipage}[t]{17.3cm} 
 					 L'attaccante riesce ad eludere i meccanismi di registrazione e monitoraggio, inserendo valori di input falsificati.		\vspace{0.5em}\end{minipage}	
 					} \\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{13cm}
+			\begin{minipage}[t]{17.3cm}
 				Il sistema deve validare e normalizzare il formato dell'input prima della registrazione, l'uso di logging sicuro per prevenire l'iniezione di log e l'implementazione di meccanismi di monitoraggio per rilevare attività sospette nei file di registro.
 			\vspace{0.5em}\end{minipage}
 				} \\
@@ -2516,7 +2521,7 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{17.3cm}
 					\begin{itemize}
             			 \item Controlla attentamente l'accesso ai file di registro fisici;
 
@@ -2529,7 +2534,7 @@ vulnerableService=http://localhost/server-status
 						\item Evita di visualizzare i registri con strumenti che possono interpretare i caratteri di controllo nel file, come le shell della riga di comando.
 						\end{itemize}
 				\vspace{0.5em}\end{minipage}
-			} end{minipage}\\
+			}\\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
@@ -2549,19 +2554,18 @@ vulnerableService=http://localhost/server-status
 
 %%%%%%%%%%%%%%%%%% Clickjacking (CAPEC 103) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
-	
-	    \resizebox{\textwidth}{!}{%
-		\centering
+	\centering
+	\resizebox{\textwidth}{!}{%
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
 			\begin{minipage}[t]{3cm}\textbf{Case Type}\end{minipage} &
-			\begin{minipage}[t]{6cm}\textbf{Abuse Case}\end{minipage} &
-			\begin{minipage}[t]{7cm}\textbf{Case ID} AC-21 \end{minipage} \\ \hline
+			\begin{minipage}[t]{10cm}\textbf{Abuse Case}\end{minipage} &
+			\begin{minipage}[t]{3.5cm}\textbf{Case ID} AC-21 \end{minipage} \\ \hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{14cm}
 					 Clickjacking (CAPEC 103)
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -2569,21 +2573,21 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{14cm}
 					 Sistema, Attaccante, Utente
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{16.5cm}
+				\begin{minipage}[t]{14cm}
 			Mentre è connessa a qualche sistema di destinazione, la vittima visita il sito dannoso dell'avversario che mostra un'interfaccia utente con cui la vittima desidera interagire. In realtà, la pagina clickjacked ha un livello trasparente sopra l'interfaccia utente visibile con controlli di azione che l'avversario desidera che la vittima esegua. La vittima fa clic su pulsanti o altri elementi dell'interfaccia utente che vede sulla pagina che in realtà attivano i controlli di azione nel livello di sovrapposizione trasparente. A seconda di quale sia quel controllo dell'azione, l'avversario potrebbe aver appena ingannato la vittima nell'esecuzione di alcune funzionalità potenzialmente privilegiate (e certamente indesiderate) nel sistema di destinazione a cui la vittima è autenticata. Il problema di base qui è che c'è una dicotomia tra ciò su cui la vittima pensa di fare clic rispetto a ciò su cui sta effettivamente facendo clic.		\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
-				\begin{minipage}[t]{13cm}
+				\begin{minipage}[t]{14cm}
 					DATA
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -2591,25 +2595,23 @@ vulnerableService=http://localhost/server-status
 			
 			\begin{minipage}[t]{3cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
             \multicolumn{2}{|l|}{
-                \begin{minipage}[t]{13cm}
+                \begin{minipage}[t]{14cm}
                     L'attacco è realizzabile quando una vittima, autenticata con una sessione attiva su un'applicazione web, utilizza un browser moderno che supporta tecnologie come iFrames o JavaScript e mantiene aperta la finestra del sistema di destinazione, esponendosi così all'esecuzione involontaria di azioni sensibili.
                 \vspace{0.5em}\end{minipage}
             } \\
             \hline
             
-            \begin{minipage}[t]{4cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
-            \begin{minipage}[t]{5cm}\raggedright
-                //
-            \vspace{0.5em}\end{minipage} &
-            \begin{minipage}[t]{11cm}
+            \begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+            \begin{minipage}[t]{14cm}
                 Tecnica in cui un attaccante utilizza livelli (layer) trasparenti o opachi per ingannare l'utente, inducendolo a cliccare su un elemento diverso da quello visibile. In pratica, l'attaccante 'dirotta' i clic destinati alla pagina visibile verso un'altra pagina sottostante, spesso appartenente a un'applicazione o dominio sensibile.
             \vspace{0.5em}\end{minipage}
-            \\
+			}\\
             \hline
             
             \begin{minipage}[t]{3cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
             \multicolumn{2}{|l|}{
-                \begin{minipage}[t]{13cm}
+                \begin{minipage}[t]{14cm}
                     Il clickjacking, noto anche come "attacco di riparazione dell'interfaccia utente", è quando un utente malintenzionato utilizza più livelli trasparenti o opachi per indurre un utente a fare clic su un pulsante o un link su un'altra pagina quando intendeva fare clic sulla pagina di primo livello. Pertanto, l'attaccante sta "dirottando" i clic destinati alla loro pagina e li indirizza a un'altra pagina, molto probabilmente di proprietà di un'altra applicazione, dominio o entrambi. Utilizzando una tecnica simile, le sequenze di tasti possono anche essere dirottate. Con una combinazione accuratamente realizzata di fogli di stile, iframe e caselle di testo, un utente può essere portato a credere che stia digitando la password della propria email o conto bancario, ma sta invece digitando in una cornice invisibile controllata dall'attaccante.
                 \vspace{0.5em}\end{minipage}
             } \\
@@ -2617,7 +2619,7 @@ vulnerableService=http://localhost/server-status
             
             \begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
             \multicolumn{2}{|l|}{
-                \begin{minipage}[t]{13cm}
+                \begin{minipage}[t]{14cm}
                     In primo luogo, il sistema deve implementare restrizioni rigorose sul framing. Ogni risposta HTTP generata dall'applicazione che contiene codice HTML deve includere l'header di sicurezza Content-Security-Policy (CSP) configurato con la direttiva frame-ancestors. Questa direttiva deve esplicitamente elencare le origini autorizzate a incorporare l'applicazione (tipicamente impostata su 'self' per consentire il framing solo dallo stesso dominio o 'none' per bloccarlo del tutto). Per garantire la compatibilità con browser meno recenti che non supportano pienamente le CSP, il sistema deve includere ridondantemente anche l'header X-Frame-Options impostato su SAMEORIGIN o DENY.
 
                     In secondo luogo, deve essere applicata una politica di isolamento della sessione. Tutti i cookie utilizzati per la gestione della sessione e l'autenticazione devono essere contrassegnati con l'attributo SameSite, impostato preferibilmente su Strict (o quantomeno su Lax). Questo requisito assicura che il browser non invii i cookie di sessione se l'applicazione viene caricata all'interno di un contesto di terze parti (come un iframe nascosto), rendendo inefficace l'attacco anche qualora il framing non venisse bloccato.
@@ -2629,7 +2631,7 @@ vulnerableService=http://localhost/server-status
             
             \begin{minipage}[t]{3cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
             \multicolumn{2}{|l|}{
-                \begin{minipage}[t]{13cm}
+                \begin{minipage}[t]{14cm}
                     \begin{itemize}
                         \item Se usi il browser Firefox, usa il plug-in NoScript che aiuterà a vietare iFrames;
                         \item Disattiva JavaScript, Flash e disabilita CSS;
@@ -2641,18 +2643,17 @@ vulnerableService=http://localhost/server-status
             
             \begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
             \multicolumn{2}{|l|}{
-                \begin{minipage}[t]{13cm}
+                \begin{minipage}[t]{14cm}
                     /
                 \vspace{0.5em}\end{minipage}
             } \\
             \hline
             
         \end{tabular}
-        }
-        }
+        }}
 \end{table} \clearpage
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Misuse Case}
 
 %%%%% Invio dati su canali non autorizzati %%%%%%%%
@@ -2660,13 +2661,12 @@ vulnerableService=http://localhost/server-status
 \begin{table}[ht!]
 	    \resizebox{\textwidth}{!}{%
 		\centering
-		\hspace*{-3cm}
 	{\footnotesize
 		\begin{tabular}{|l |l| l|}
 			\hline
 			\begin{minipage}[t]{3.6cm}\textbf{Case Type}\end{minipage} &
 			\begin{minipage}[t]{7.2cm}\textbf{Misuse Case}\end{minipage} &
-			\begin{minipage}[t]{8.4cm}\textbf{Case ID} MS-01 \end{minipage} \\ \hline
+			\begin{minipage}[t]{8.4cm}\textbf{Case ID} MC-01 \end{minipage} \\ \hline
 			
 			\begin{minipage}[t]{3.6cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
@@ -2686,7 +2686,7 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3.6cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{21cm}
-					Un utente malintenzionato o un attaccante interno invia dati sensibili o riservati attraverso canali di comunicazione non autorizzati o insicuri, bypassando le politiche di sicurezza dell'organizzazione. Questo può includere l'invio di informazioni tramite email personali, servizi di cloud storage non approvati, dispositivi di archiviazione esterni o applicazioni di messaggistica non sicure.
+					Un utente malintenzionato o un attaccante interno invia dati sensibili o riservati attraverso canali di comunicazione non autorizzati o insicuri, bypassando le politiche di sicurezza dell'organizzazione. Questo può includere l'invio di informazioni tramite email personali e dispositivi di archiviazione esterni.
 		\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2735,20 +2735,15 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3.6cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{18.6cm} 
-					 
+					 L'utente maldestro riesce a inviare dati sensibili attraverso canali non autorizzati, compromettendo la riservatezza delle informazioni.
 				\vspace{0.5em}\end{minipage}	
 					} \\
 			\hline
 			
 			\begin{minipage}[t]{3.6cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
-			\begin{minipage}[t]{19.5cm}
-				\begin{itemize}
-					\item L’autenticazione deve essere robusta e resistente alla falsificazione, garantendo sicurezza senza compromettere la fruibilità.
-					\item I log di monitoraggio devono essere completi, immutabili e sempre disponibili per audit o indagini.
-					\item Il sistema deve rilevare attività anomale in tempo reale e rispondere rapidamente a tentativi di impersonificazione.
-					\item L’infrastruttura deve mantenere continuità operativa anche durante incidenti di sicurezza o processi di verifica.
-				\end{itemize}
+			\begin{minipage}[t]{20.5cm}
+				Il sistema deve implementare controlli di accesso rigorosi, monitorare le attività degli utenti e utilizzare la crittografia per proteggere i dati sensibili durante la trasmissione.
 			\vspace{0.5em}\end{minipage}
 				} \\
 			\hline
@@ -2756,8 +2751,12 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3.6cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{15.6cm}
-					Utilizzare processi di autenticazione robusti (ad esempio, autenticazione a più fattori).
-				\vspace{0.5em}\end{minipage}
+					\begin{itemize}
+						\item Implementare politiche di sicurezza rigorose per l'uso dei canali di comunicazione;
+						\item Monitorare e registrare le attività degli utenti per rilevare comportamenti sospetti;
+						\item Utilizzare la crittografia per proteggere i dati sensibili durante la trasmissione.
+					\end{itemize}
+				\vspace{0.1em}\end{minipage}
 			} \\
 			\hline
 			
