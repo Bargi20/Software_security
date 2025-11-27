@@ -2658,6 +2658,9 @@ vulnerableService=http://localhost/server-status
 
 %%%%% Invio dati su canali non autorizzati %%%%%%%%
 
+In questa sezione, vengono riportati gli schemi di Jacobson relativi ai misuse case.
+
+
 \begin{table}[ht!]
 	    \resizebox{\textwidth}{!}{%
 		\centering
@@ -2755,6 +2758,126 @@ vulnerableService=http://localhost/server-status
 						\item Implementare politiche di sicurezza rigorose per l'uso dei canali di comunicazione;
 						\item Monitorare e registrare le attività degli utenti per rilevare comportamenti sospetti;
 						\item Utilizzare la crittografia per proteggere i dati sensibili durante la trasmissione.
+					\end{itemize}
+				\vspace{0.1em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table} \clearpage
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%   Attività CRUD accidentali     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{table}[ht!]
+	    \resizebox{\textwidth}{!}{%
+		\centering
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{7.2cm}\textbf{Misuse Case}\end{minipage} &
+			\begin{minipage}[t]{8.4cm}\textbf{Case ID} MC-02 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					Attività CRUD accidentali  
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					 Sistema, Utente maldestro
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm}
+					Un utente maldestro effettua operazioni di CRUD (Create, Read, Update, Delete) in modo accidentale o non intenzionale, causando modifiche indesiderate ai dati o alle risorse del sistema. Queste azioni possono portare a perdita di dati, corruzione delle informazioni o interruzione del servizio.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm}
+					L'utente maldestro ha accesso ai dati sensibili.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} & 
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm} 
+						L'utente maldestro effettua operazioni di Create, Read, Update o Delete in modo accidentale, violando l'integrità dei dati.
+				\vspace{0.5em}\end{minipage}
+			}\\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{17.5cm}
+					L'utente maldestro effettua operazioni di Create, Read, Update o Delete in modo accidentale, violando la disponibilità dei dati.
+				\vspace{0.5em}\end{minipage}
+			}\\
+			\hline
+
+
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{17.5cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			}\\
+				\hline
+
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18.6cm} 
+					 L'utente maldestro riesce a effettuare operazioni di CRUD in modo accidentale, compromettendo l'integrità e la disponibilità dei dati.
+				\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{20.5cm}
+				Il sistema deve implementare sistemi di conferma per le operazioni critiche, fornire messaggi di avviso chiari e implementare meccanismi di rollback per mitigare gli effetti delle operazioni accidentali. Inoltre, il sistema deve effettuare continui backup per garantire il recupero dei dati in caso di perdita o corruzione.
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					\begin{itemize}
+						\item Implementare sistemi di conferma per le operazioni critiche;
+						\item Effettuare backup regolari dei dati per garantire il recupero in caso di perdita o corruzione;
+						\item Implementare sistemi di rollback per il recupero di dati modificati accidentalmente;
 					\end{itemize}
 				\vspace{0.1em}\end{minipage}
 			} \\
