@@ -185,7 +185,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 		\end{tabular}
 	}
 
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%%% Privilage Escalation (CAPEC 233) %%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -305,7 +305,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Targeted Malware (CAPEC 542) %%%%%%%%%%%%%%%%%%%%%%
 
@@ -425,7 +425,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%%%% Phishing (CAPEC 98) %%%%%%%%%%%%%%%%%%%
 
@@ -544,7 +544,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			
 		\end{tabular}
 	}
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%% Adversary in the middle(AiTM) (CAPEC 94) %%%%%%%%%%%%%%%
 
@@ -651,7 +651,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 
 \end{tabular}
 }
-\end{table}
+\end{table} \clearpage
 
 
 %%%%%%%Reusing session ID (CAPEC 60)%%%%%%%%%%%%%%%%%%%%%
@@ -778,7 +778,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 		\end{tabular}
 		}
 	}
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%Password brute forcing (CAPEC 49)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -904,7 +904,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 		\end{tabular}
 	}
-\end{table}
+\end{table} \clearpage
 %%%%%%%%%%%%%%%%%% Try common or default usernames and passwords (CAPEC 70) %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
@@ -1026,7 +1026,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 		\end{tabular}
 	}
-\end{table}
+\end{table} \clearpage
 
 
 %%%%%%%%%%%%%%%%%% Dictionary-based password attack (CAPEC 16) %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1155,7 +1155,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\hline
 		\end{tabular}
 	}
-\end{table}
+\end{table} \clearpage
 
 
 %%%%%%%%%%%%%%%%%% Carry-Off GPS Attack (CAPEC 628) %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1271,7 +1271,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
         } \\ \hline
     \end{tabular}
     }
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Credential stuffing (CAPEC 600)  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
@@ -1407,7 +1407,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 		\end{tabular}
 		}
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Traffic Injection (CAPEC 594) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht]
@@ -1530,7 +1530,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			
 		\end{tabular}
 		}
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Counterfeit GPS Signals (CAPEC 627) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
@@ -1649,7 +1649,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 		\end{tabular}
 		}
 		}
-\end{table}
+\end{table} \clearpage
 
 
 
@@ -1775,7 +1775,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 		\end{tabular}
 		}
 		}
-\end{table}
+\end{table} \clearpage
 
 
 
@@ -1928,7 +1928,7 @@ vulnerableService=http://localhost/server-status
 			
 		\end{tabular}
 		}}
-\end{table}
+\end{table} \clearpage
 
 
 
@@ -2049,7 +2049,7 @@ vulnerableService=http://localhost/server-status
 		\end{tabular}
 		}
 		}
-\end{table}
+\end{table} \clearpage
 
 
 %%%%%%%%%%%%%%%%%% Fake the Source of Data (CAPEC 194) %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2171,7 +2171,7 @@ vulnerableService=http://localhost/server-status
 		\end{tabular}
 		}
 		}
-\end{table}
+\end{table} \clearpage
 
 
 %%%%%%%%%%%%%%%%%% Content Spoofing (CAPEC 148) %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2297,7 +2297,7 @@ vulnerableService=http://localhost/server-status
 		\end{tabular}
 		}
 		}
-\end{table}
+\end{table} \clearpage
 
 %%%%%%%%%%%%%%%%%% Identity Spoofing                (CAPEC 151) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[ht!]
@@ -2421,4 +2421,127 @@ vulnerableService=http://localhost/server-status
 		\end{tabular}
 		}
 		}
-\end{table}
+\end{table} \clearpage
+
+
+
+\section{Misuse Case}
+
+%%%%% Invio dati su canali non autorizzati %%%%%%%%
+
+\begin{table}[ht!]
+	    \resizebox{\textwidth}{!}{%
+		\centering
+		\hspace*{-3cm}
+	{\footnotesize
+		\begin{tabular}{|l |l| l|}
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Case Type}\end{minipage} &
+			\begin{minipage}[t]{7.2cm}\textbf{Misuse Case}\end{minipage} &
+			\begin{minipage}[t]{8.4cm}\textbf{Case ID} MS-01 \end{minipage} \\ \hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					Invio dati su canali non autorizzati
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Actors}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					 Sistema, Utente maldestro
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm}
+					Un utente malintenzionato o un attaccante interno invia dati sensibili o riservati attraverso canali di comunicazione non autorizzati o insicuri, bypassando le politiche di sicurezza dell'organizzazione. Questo può includere l'invio di informazioni tramite email personali, servizi di cloud storage non approvati, dispositivi di archiviazione esterni o applicazioni di messaggistica non sicure.
+		\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					DATA
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm}
+					L'utente maldestro ha accesso ai dati sensibili.
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} & 
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{21cm} 
+						L'utente maldestro invia dati sensibili attraverso  email personali.
+				\vspace{0.5em}\end{minipage}
+			}\\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 2}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{17.5cm}
+					L'utente maldestro utilizza dispositivi di archiviazione esterni per conservare i dati in locale.
+				\vspace{0.5em}\end{minipage}
+			}\\
+			\hline
+
+
+			\begin{minipage}[t]{3.6cm}\textbf{Attack Flow 3}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{17.5cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			}\\
+				\hline
+
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Response and Postconditions}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{18.6cm} 
+					 
+				\vspace{0.5em}\end{minipage}	
+					} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
+		\multicolumn{2}{|l|}{
+			\begin{minipage}[t]{19.5cm}
+				\begin{itemize}
+					\item L’autenticazione deve essere robusta e resistente alla falsificazione, garantendo sicurezza senza compromettere la fruibilità.
+					\item I log di monitoraggio devono essere completi, immutabili e sempre disponibili per audit o indagini.
+					\item Il sistema deve rilevare attività anomale in tempo reale e rispondere rapidamente a tentativi di impersonificazione.
+					\item L’infrastruttura deve mantenere continuità operativa anche durante incidenti di sicurezza o processi di verifica.
+				\end{itemize}
+			\vspace{0.5em}\end{minipage}
+				} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Mitigations}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					Utilizzare processi di autenticazione robusti (ad esempio, autenticazione a più fattori).
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+			\begin{minipage}[t]{3.6cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
+			\multicolumn{2}{|l|}{
+				\begin{minipage}[t]{15.6cm}
+					/
+				\vspace{0.5em}\end{minipage}
+			} \\
+			\hline
+			
+		\end{tabular}
+		}
+		}
+\end{table} \clearpage
