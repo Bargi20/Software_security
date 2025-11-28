@@ -34,15 +34,41 @@ Inoltre, calcola la probabilità a posteriori degli elementi presenti nel livell
 
 \section{Design degli asset}
 
- In questa sezione, riportiamo la fase di design degli asset. Essa consiste nello scegliere
- alcune linee guida proposte da OWASP, Saltzer \& Schroeder e Sommerville, le quali verranno
- illustrate nelle successive sottosezioni.
+ In questa sezione, riportiamo la fase di design degli asset. Essa consiste nello scegliere alcune linee guida proposte da OWASP, Saltzer \& Schroeder Sommerville, le quali verranno illustrate nelle successive sottosezioni.
  
- \subsection{Sommerville}
- \subsection{OWASP}
- \subsection{Saltzer \& Schroeder}
+ Si precisa che alcune linee guida sono comuni tra i vari modelli e sono state selezionate una sola volta.
 
+\subsection{OWASP}
 
+Le linee guida scelte tra quelle proposte da \textit{OWASP} sono state scelte le seguenti:
+
+\begin{itemize}
+    \item \textbf{Principle of Least privilege}, che consiste nel fornire agli account i privilegi minini richiesti per eseguire tutte le azioni possibili;
+    \item \textbf{Fail securely}, che consiste nel permettere al sistema di affrontare dei fallimenti in maniera sicura;
+    \item \textbf{Separation of duties}, che consiste nel separare le funzionalità permesse alle varie tipologie di utenti;
+    \item \textbf{Fix security issues correctly}, che consiste nel correggere problematiche di sicurezza correttammente, evitando di peggiorare altre funzionalità non coinvolte.
+\end{itemize}
+
+\subsection{Sommerville}
+
+Le linee guida scelte tra quelle proposte da \textit{Sommerville} sono state scelte le seguenti:
+
+\begin{itemize}
+    \item \textbf{Balance security and usability}, che consiste nel trovare un equilibrio tra la sicurezza e l'usabilità del sistema;
+    \item \textbf{Log user actions}, che consiste nel registrare mediante un \textit{log} tutte le attività effettuate all'interno del sistema;
+    \item \textbf{Use redundancy and diversity to reduce risk}, che consiste nell'utilizzare ridondanza e diversità per ridurre i rischi di attacchi esterni;
+    \item \textbf{Specify the format of all system inputs}, che consiste nello specificare il formato dei valori in output del sistema.
+\end{itemize}
+
+\subsection{Saltzer \& Schroeder}
+
+Le linee guida scelte tra quelle proposte da \textit{Saltzer \& Schroeder} sono state scelte le seguenti:
+
+\begin{itemize}
+    \item \textbf{KISS Principle}, che consiste nel realizzare il sistema di difesa nella maniera più semplice possibile;
+    \item \textbf{Complete mediation}, che consiste nel controllare ogni tentativo di accesso al sistema prima di fornire all'utente la possibilità di eseguire qualsiasi azione;
+    \item \textbf{Psychological acceptability}, che consiste nel rendere l'interazione tra il sistema e dell'utente il più intuitiva possibile.
+\end{itemize}
 
 \section{Scelte tecnologiche}
 
