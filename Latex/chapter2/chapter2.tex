@@ -67,6 +67,8 @@
 
 \section{Abuse Case}
 In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse case. In particolare si analizzerà ogni tipologia di attacco individuato nella tabella Dual Stride.
+
+
 %%%%%%%%%% Authentication Abuse (CAPEC 116) %%%%%%%%%%%%%%%
 \renewcommand{\arraystretch}{1.5} % aumenta l'altezza delle righe del 50%
 \begin{table}[ht!]
@@ -219,14 +221,15 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Description}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Un avversario sfrutta una debolezza che gli consente di elevare i propri privilegi ed eseguire azioni che non dovrebbe essere autorizzato a eseguire.				\vspace{0.5em}\end{minipage}
+					Un avversario sfrutta una debolezza che gli consente di elevare i propri privilegi ed eseguire azioni che non dovrebbe essere autorizzato a eseguire.				
+					\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
 			
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Sistema, Attaccante
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -348,7 +351,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -470,7 +473,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -586,7 +589,7 @@ Ogni volta che un componente tenta di comunicare con l'altro, i dati fluiscono p
 \begin{minipage}[t]{4.5cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 \multicolumn{2}{|l|}{
 \begin{minipage}[t]{11.5cm}
-Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere
+Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 \vspace{0.5em}\end{minipage}} \\ \hline
 
 \begin{minipage}[t]{4.5cm}\textbf{Stimulus and Preconditions}\vspace{0.5em}\end{minipage} &
@@ -696,7 +699,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Dati utente di sistema
+					Dati utente di sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -783,7 +786,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 	}
 \end{table} \clearpage
 
-%%%%%%%%%%%%%Password brute forcing (CAPEC 49)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% Password brute forcing (CAPEC 49)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
 	\hfuzz=12pt
@@ -823,7 +826,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Dati utente di sistema
+					Dati utente di sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -949,7 +952,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Dati utente di sistema
+					Dati utente di sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -1075,7 +1078,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					DATA
+				Dati utente di sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -1200,7 +1203,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
         \begin{minipage}[t]{3cm}\textbf{Data}\end{minipage} &
         \multicolumn{2}{|l|}{%
             \begin{minipage}[t]{14cm}
-            DATA
+            	Dati GPS.
             \end{minipage}%
         } \\ \hline
         
@@ -1317,7 +1320,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{2cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{17cm}
-					Dati utente di sistema
+					Dati utente di sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -1452,7 +1455,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					DATA
+				Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere, Dati GPS.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -1575,7 +1578,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{13cm}
-					DATA
+					Dati GPS.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -1698,7 +1701,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{13cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -1825,7 +1828,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{4cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{13cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -1978,7 +1981,7 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{13cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2097,7 +2100,7 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{13cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere, Dati GPS.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2220,7 +2223,7 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{15.6cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere, Dati GPS.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2343,7 +2346,7 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{15.6cm}
-					DATA
+					Dati utente di sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2466,7 +2469,7 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{13cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere, Dati GPS.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2588,7 +2591,7 @@ vulnerableService=http://localhost/server-status
 			\begin{minipage}[t]{3cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{14cm}
-					DATA
+					Dati utente di sistema.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2697,7 +2700,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi ai misuse c
 			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{15.6cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -2817,7 +2820,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi ai misuse c
 			\begin{minipage}[t]{3.6cm}\textbf{Data}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{15.6cm}
-					DATA
+					Dati utente di sistema, Dati cliente, Dati pagamento, Dati corriere.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline

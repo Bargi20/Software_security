@@ -1,8 +1,52 @@
 \chapter{Design sicuro} 
 
+In questo capitolo sono esposte le scelte utilizzate per la realizzazione di un design sicuro, in modo tale da garantire elevati livelli di \textit{perfomance, usability e acceptability}, rendendo, però, il sistema sicuro da attacchi esterni.
+
+Nelle successive Sezioni sono riportate le scelte effettuate nei seguenti campi:
+\begin{itemize}
+    \item \textbf{Architettura}, nella quale saranno trattate le scelte architetturali utilizzate;
+    \item \textbf{Design degli asset}, nella quale saranano trattati i design utilizzati per modellare gli asset;
+    \item \textbf{Scelte tecnologiche}. nella quale saranno trattate le scelte tecnologiche adottate;
+    \item \textbf{Modellazione di una unità mediante Markov Chain}, nella quale sarà espostata la modellazione di una unità mediante Markov Chain.
+\end{itemize}
+
+
 \section{Architettura}
+
+Il sistema progettato utilizza una blockchain per il calcolo e la validazione dei valori ottenuti dall'oracolo della rete bayesiana.
+
+La rete bayesiana è composta da due livelli di: 
+
+\begin{itemize}
+    \item \textbf{livello dei fatti}, nel quale sono presenti elementi non conosciuti;
+    \item \textbf{livello delle prove}, nel quale sono presenti elementi conoscibili.
+\end{itemize}
+
+Tutti gli elementi presenti nella rete bayesiana sono rappresentati da variabili casuali booleane.
+Inoltre, è possibile stimare la probabilità di avvenimento degli elementi presenti nel livello dei fatti mediante il processo di \textbf{inferenza diagnostica}, basandosi, quindi, sui valori booleani delle prove osservate.
+
+L'architettura scelta per l'oracolo bayesiano è divisa in una parte \textit{on-chain} ed una parte \textit{off-chain}; il sistema off-chain contiene le probabilità a priori degli elementi presenti nel livello dei fatti; inoltre, nella parte off-chain è presente la tabella delle probabilità condizionate degli elementi presenti nel livello dei fatti, in funzione delle prove osservate.
+
+La parte on-chain, invece, fornisce le probabilità a priori degli elementi presenti nel livello dei fatti, se non sono stato osservate delle prove.
+
+Inoltre, calcola la probabilità a posteriori degli elementi presenti nel livello dei fatti, mediante l'inferenza diagnostica, in base alle prove osservate.
+
 
 \section{Design degli asset}
 
+ In questa sezione, riportiamo la fase di design degli asset. Essa consiste nello scegliere
+ alcune linee guida proposte da OWASP, Saltzer \& Schroeder e Sommerville, le quali verranno
+ illustrate nelle successive sottosezioni.
+ 
+ \subsection{Sommerville}
+ \subsection{OWASP}
+ \subsection{Saltzer \& Schroeder}
+
+
+
 \section{Scelte tecnologiche}
+
+
+
+
 
