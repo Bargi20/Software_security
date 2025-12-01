@@ -209,7 +209,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 
 \end{table} \clearpage
 
-%%%%%%%%%%%%%%%%%%% Privilage Escalation (CAPEC 233) %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% Privilege Escalation (CAPEC 233) %%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht!]
 	\hfuzz=12pt
@@ -225,7 +225,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Privilage Escalation (CAPEC 233) 
+					Privilege Escalation (CAPEC 233) 
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -322,7 +322,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Comments}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					È fondamentale combinare l'autenticazione MFA, monitorare continuamente il sistema, mantenere aggiornate le varei tecnologie in uso e gestire rigorosamente i privilegi e i file di configurazione per prevenire vulnerabilità di questo tipo.
+					È fondamentale combinare l'autenticazione MFA, monitorare continuamente il sistema, mantenere aggiornate le varie tecnologie in uso e gestire rigorosamente i privilegi e i file di configurazione per prevenire vulnerabilità di questo tipo.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -381,7 +381,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 				\begin{minipage}[t]{12cm}
 					\begin{itemize}
         				\item L'attaccante deve raccogliere informazioni sull'ambiente target.
-        				\item L'attaccante deve provare modi di social engineering come il phising per far eseguire il malware sul sistema. 
+        				\item L'attaccante deve provare modi di social engineering come il phishing per far eseguire il malware sul sistema. 
         				\item Identificare vulnerabilità e creare malware ad hoc per sfruttarle.
       				\end{itemize}
 				\vspace{0.5em}\end{minipage}
@@ -391,7 +391,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Attack Flow 1}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm} 
-					L'attaccante analizza il sistema cercando di ottenere informazioni utili per lo sviluppo di un malware ed il suo deploy. Successivamente, dopo lo sviluppo del malware, l'attaccante tenta il deploy di quest'ultimo o tramite tecniche di social engineering come il phising, andando ad inviare email o messaggi fasulli agli utenti interessati.
+					L'attaccante analizza il sistema cercando di ottenere informazioni utili per lo sviluppo di un malware ed il suo deploy. Successivamente, dopo lo sviluppo del malware, l'attaccante tenta il deploy di quest'ultimo o tramite tecniche di social engineering come il phishing, andando ad inviare email o messaggi fasulli agli utenti interessati.
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
@@ -423,7 +423,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
 			\begin{minipage}[t]{12cm}
-				Garantire che il sistema effetui un monitoraggio avanzato per rilevare le minacce.
+				Garantire che il sistema effettui un monitoraggio avanzato per rilevare le minacce.
 			\vspace{0.5em}\end{minipage}
 				} \\
 			\hline
@@ -506,7 +506,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
         				\item Un aggressore deve avere un modo per entrare in contatto con la vittima (per esempio tramite e-mail);
         				\item Capacità dell’attaccante di raccogliere informazioni tramite ricognizione (OSINT, scansioni passive o altre tecniche non invasive)
         				\item L'aggressore deve ottenere la fiducia della vittima, inducendola con l'inganno a compiere determinate azioni.
-        				\item Il servizio ingennevole deve assomigliare il più possibile a quello reale.
+        				\item Il servizio ingannevole deve assomigliare il più possibile a quello reale.
       				\end{itemize}
 				\vspace{0.5em}\end{minipage}
 			} \\
@@ -1273,7 +1273,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 					\item Il sistema deve mantenere una posizione coerente anche in presenza di segnali GPS anomali o degradati.
 					\item Il ricevitore deve essere in grado di continuare a funzionare correttamente anche se il GPS viene spoofato o manipolato.
 					\item Il sistema deve reagire rapidamente quando il segnale GPS mostra comportamenti sospetti, riducendo al minimo la deviazione potenziale.
-					\item Il sistema deve garantire continuità operativa tramite sensori ridondanti (INS, bussola, odometria) quando il GPS è inattendibile.
+					\item Il sistema deve garantire continuità operativa tramite sensori ridondanti quando il GPS è inattendibile.
 					\item La piattaforma deve verificare che le informazioni di navigazione siano coerenti e non violate, prevenendo modifiche silenziose alla posizione.
 				\end{itemize}
             \vspace*{0.5em}\end{minipage}%
@@ -1755,7 +1755,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 				\begin{minipage}[t]{10cm}
 				Gli avversari possono iniettare file eseguibili portatili (PE) nei processi per eludere le difese basate sui processi e, eventualmente, elevare i privilegi. L'iniezione di PE è un metodo per eseguire codice arbitrario nello spazio degli indirizzi di un processo attivo separato.
 
-				L'iniezione PE viene comunemente eseguita copiando il codice  nello spazio di indirizzamento virtuale del processo di destinazione prima di invocarlo tramite un nuovo thread. La scrittura può essere eseguita con chiamate API Windows native come VirtualAllocExe WriteProcessMemory, quindi invocata con CreateRemoteThreado codice aggiuntivo. Lo spostamento del codice iniettato introduce il requisito aggiuntivo di funzionalità per rimappare i riferimenti di memoria.
+				L'iniezione PE viene comunemente eseguita copiando il codice  nello spazio di indirizzamento virtuale del processo di destinazione prima di invocarlo tramite un nuovo thread. La scrittura può essere eseguita con chiamate API Windows native come VirtualAllocExe WriteProcessMemory, quindi invocata con CreateRemoteThread codice aggiuntivo. Lo spostamento del codice iniettato introduce il requisito aggiuntivo di funzionalità per rimappare i riferimenti di memoria.
 				\vspace{0.5em}\end{minipage}
 			\\
 			\hline
@@ -1777,7 +1777,7 @@ Il rischio di manipolazione delle transazioni tramite API è elevato quando la p
 			\begin{minipage}[t]{3cm}\textbf{Non Functional Requirements}\vspace{0.5em}\end{minipage} &
 		\multicolumn{2}{|l|}{
 			\begin{minipage}[t]{13cm}
-				Il sistema deve validare l'integrità del payload dei messaggi delle API, applicando una validazione rigorosa dei parametri e rifiutando campi non previsti all'interno delle richiste API.
+				Il sistema deve validare l'integrità del payload dei messaggi delle API, applicando una validazione rigorosa dei parametri e rifiutando campi non previsti all'interno delle richieste API.
 			\vspace{0.5em}\end{minipage}
 				} \\
 			\hline
@@ -2308,7 +2308,7 @@ vulnerableService=http://localhost/server-status
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{15.6cm}
 					\begin{itemize}
-            			 \item Validazione e sanitizzazione dell’input;
+            			 \item Validazione e sanificazione dell’input;
 						\item Crittografia e integrità dei contenuti;
 						\item Prevenzione dello spoofing dell’interfaccia.
 						\end{itemize}
