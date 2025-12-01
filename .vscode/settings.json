@@ -5,9 +5,9 @@
         "clickjacked",
         "Clickjacking",
         "Cockrell",
-        "dall’attaccante",
+        "dall'attaccante",
         "dall'host",
-        "dall’utente",
+        "dall'utente",
         "Deployare",
         "disconnetti",
         "hspace",
@@ -18,7 +18,7 @@
         "ricentrarlo",
         "SAMEORIGIN",
         "spoofato",
-        "sull’autenticità",
+        "sull'autenticità",
         "WASC",
         "bayesiana",
         "Sommerville",
@@ -28,5 +28,31 @@
         "validatori",
         "containerizzare",
         "Besu",
-    ]
+        "QBFT"
+    ],
+    "cSpell.language": "en,it",
+    "cSpell.ignorePaths": [
+        "app",
+        "node_modules",
+        "contracts",
+        "ignition",
+        "QBFT-Network",
+        "scripts",
+        ".git",
+        ".gitignore"
+    ],
+    "[latex]": {
+        "cSpell.enabled": true
+    },
+    "[python]": {
+        "cSpell.enabled": false
+    },
+    "[json]": {
+        "cSpell.enabled": false
+    },
+    "[plaintext]": {
+        "cSpell.enabled": false
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
 }
