@@ -11,7 +11,7 @@ In questa sezione verranno riportati i diagrammi i* realizzati per la modellazio
 Il seguente diagramma rappresenta gli attori principali coinvolti nel sistema, senza considerare il sistema stesso, con le relative dipendenze. Sono stati identificati i seguenti attori principali:
 
 \begin{itemize}
-	\item \textbf{Cliente}: questo attore rappresenta il cliente finale che utilizza il sistema per effettuare acquisti online. L'azione di effettuare l'ordine richiede l'inserimeno dei dati personali e di spedizione. Per effettuare il pagamento, dovrà inserire i propri dati della carta di credito, i quali saranno gestiti e validati dall'attore "Gestore circuito di pagamento". I dati del cliente comprendono i dati anagrafici, l'indirizzo di consegna ed informazioni aggiuntive come il numero di telefono, l'email ed il citofono.
+	\item \textbf{Cliente}: questo attore rappresenta il cliente finale che utilizza il sistema per effettuare acquisti online. L'azione di effettuare l'ordine richiede l'inserimento dei dati personali e di spedizione. Per effettuare il pagamento, dovrà inserire i propri dati della carta di credito, i quali saranno gestiti e validati dall'attore "Gestore circuito di pagamento". I dati del cliente comprendono i dati anagrafici, l'indirizzo di consegna ed informazioni aggiuntive come il numero di telefono, l'email ed il citofono.
 	
 	\item \textbf{Corriere}: questo attore rappresenta il corriere responsabile della consegna degli ordini ai clienti. Riceve le informazioni di spedizione dall'azienda di spedizione per effettuare le consegne.
 	
@@ -21,7 +21,7 @@ Il seguente diagramma rappresenta gli attori principali coinvolti nel sistema, s
 \end{itemize}
 
 % Diagramma i* attori senza sistema
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[width=1\columnwidth]{chapter2/immagini/2\_model\_solo\_attori\_principali\_no\_sistema.png}
 \end{figure}
@@ -30,8 +30,13 @@ Il seguente diagramma rappresenta gli attori principali coinvolti nel sistema, s
 
 \subsection{SD/SR ruoli con sistema}
 
+Il seguente diagramma aggiunge l'attore sistema oltre agli attori precedenti.
+\begin{itemize}
+	\item \textbf{Sistema}: questo attore rappresenta il sistema che gestisce gli ordini, i pagamenti, le spedizioni e l'accesso a sé stesso. Esso interagisce con tutti gli altri attori per garantire il corretto funzionamento del processo di effettuazione degli ordini.
+\end{itemize}
+
 % Diagramma i* attori con sistema
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\columnwidth]{chapter2/immagini/3\_model\_con\_sistema.png}
 \end{figure}
@@ -39,14 +44,14 @@ Il seguente diagramma rappresenta gli attori principali coinvolti nel sistema, s
 \subsection{SD/SR sistema e attaccanti con alberi di attacco}
 
 % Diagramma i* attori con alberi di attacco
-\begin{figure}[h!]	\centering
+\begin{figure}[ht!]	\centering
 	\includegraphics[width=0.9\columnwidth]{chapter2/immagini/4\_model\_con\_alberi\_di\_attacco.png}
 \end{figure}
 \clearpage
 \subsection{SD/SR sistema e oracolo bayesiano}
 
 % Diagramma i* attori con oracolo
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[width=1\columnwidth]{chapter2/immagini/5\_model\_con\_oracolo.png}
 \end{figure}
