@@ -111,3 +111,4 @@ ignition/deployments/chain-1338/journal.jsonl
 ignition/deployments/chain-1338/artifacts/ParityCheckerModule#ParityChecker.json
 ignition/deployments/chain-1338/build-info/solc-0_8_19-aea2f5d9b41ab22f9a42ec6abc0fd12b581c32f4.json
 package-lock.json
+Latex/.DS_Store
