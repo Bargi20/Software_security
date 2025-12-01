@@ -67,9 +67,9 @@ Il seguente diagramma aggiunge l'attore sistema oltre agli attori precedenti.
 \includepdf[
   pages=1,
   fitpaper=true,
-  scale=0.80,     %DOPO MODIFICA TOGLIERE COMMENTO E RIMETTERE A 0.85   
+  scale=0.85,        
   pagecommand={\section{Tabella Dual Stride} %qui si può scrivere
-  DA MODIFICARE COLONNA CONTROL CON MITIGATIONS DEGLI ABUSE CASE}
+  }
 ]{chapter2/dual-stride.pdf}
 
 \restoregeometry
@@ -91,7 +91,7 @@ Il seguente diagramma aggiunge l'attore sistema oltre agli attori precedenti.
 In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse case. In particolare si analizzerà ogni tipologia di attacco individuato nella tabella Dual Stride.
 
 
-%%%%%%%%%% Authentication Abuse (CAPEC 116) %%%%%%%%%%%%%%%
+%%%%%%%%%% Authentication Abuse (CAPEC 114) %%%%%%%%%%%%%%%
 \renewcommand{\arraystretch}{1.5} % aumenta l'altezza delle righe del 50%
 \begin{table}[ht!]
 	\hfuzz=12pt
@@ -107,7 +107,7 @@ In questa sezione, vengono riportati gli schemi di Jacobson relativi agli abuse 
 			\begin{minipage}[t]{3cm}\textbf{Case Name}\vspace{0.5em}\end{minipage} &
 			\multicolumn{2}{|l|}{
 				\begin{minipage}[t]{12cm}
-					Authentication Abuse (CAPEC 116) 
+					Authentication Abuse (CAPEC 114) 
 				\vspace{0.5em}\end{minipage}
 			} \\
 			\hline
