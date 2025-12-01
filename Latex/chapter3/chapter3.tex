@@ -73,6 +73,84 @@ Le linee guida scelte tra quelle proposte da \textit{Saltzer \& Schroeder} sono 
 \section{Scelte tecnologiche}
 
 
+In questa sezione sono riportate le scelte tecnologiche adottate per la realizzazione del sistema. Come annunciato in precedenza, il sistema sarà composto da due differenti parti: una parte on-chain ed una parte off-chain. 
+
+\begin{itemize}
+            \item \textbf{Linguaggio off-chain}
+             \begin{itemize}
+                \item \textbf{Python}: la scelta di utilizzare Python come linguaggio off-chain è dovuta alla presenza di numerose librerie che facilitano la connessione con l'oracolo on-chain. Inoltre, Python offre diversi strumenti per garantire la sicurezza del sistema, mediante l'uso di librerie specifiche per la crittografia e la gestione delle vulnerabilità. 
+                \item \textbf{JavaScript}: la scelta di utilizzare JavaScript come linguaggio è stata presa per la sua potenzialità e fruibilità nel contesto web, poiché permette l'interfacciamento diretto con il backend, garantendo migliore flessibilità per il sistema.
+             \end{itemize}
+
+            \item \textbf{Linguaggio on-chain}
+            
+             \begin{itemize}
+                \item \textbf{Solidity}: abbiamo scelto l'utilizzo di Solidity poiché è un linguaggio di programmazione diffuso per scrivere smart contract sulla blockchain di Ethereum. Inoltre, Solidity, essendo versatile, può essere utilizzato per una vasta gamma di applicazioni, come la creazione di token e la gestione di pagamenti.
+                
+                Un ulteriore motivo della scelta di Solidity è la similitudine del linguaggio con JavaScript, poiché entrambi sono un linguaggio orientato ad oggetti.
+             \end{itemize}
+
+            \item \textbf{Database}
+            
+            \begin{itemize}
+                \item \textbf{Supabase}: per la gestione del database, è stato scelto Supabase, una piattaforma
+            open-source su cloud che offre un backend-as-a-service basato su PostgreSQL. Inoltre, grazie ai meccanismi nativi di quest’ultimo, esso permette di ottenere risposte in tempo reale, di avere una gestione avanzata delle transazioni e di consentire una scalabilità orizzontale, rendendolo una soluzione solida e affidabile per il nostro
+            sistema.
+            \end{itemize}
+
+            \item \textbf{User Interface}   
+            
+            \begin{itemize}
+            \item \textbf{Django}: Django, framework web basato su Python, si è affermato negli anni come una delle soluzioni più mature e affidabili per lo sviluppo di applicazioni web complesse. La sua filosofia
+            "batteries included" e l’approccio pragmatico al problem-solving lo rendono particolarmente
+            adatto per progetti dove la sicurezza, la scalabilità e la rapidità di
+            sviluppo sono requisiti imprescindibili. 
+
+            \item \textbf{HTML}: HTML è il linguaggio di markup standard utilizzato per creare pagine web. La sua semplicità e versatilità lo rendono uno strumento essenziale per la progettazione di interfacce utente efficaci e accessibili. Inoltre, HTML consente una facile integrazione con altri linguaggi e tecnologie web, facilitando lo sviluppo di applicazioni web dinamiche e interattive.
+            
+            \item \textbf{CSS}: CSS è un linguaggio di stile utilizzato per descrivere la presentazione di un documento HTML. La sua capacità di separare il contenuto dalla presentazione consente una maggiore flessibilità e controllo nella progettazione delle interfacce utente. Inoltre, CSS offre una vasta gamma di funzionalità per la gestione del layout, dei colori, dei font e delle animazioni.
+            \end{itemize}
+
+            \item \textbf{Containerizzazione}
+            
+            \begin{itemize}
+                \item \textbf{Docker}:  abbiamo utilizzato Docker per gestire i nodi validatori della blockchain,
+                        sfruttando la sua capacità di creare ambienti isolati e facilmente scalabili. Docker
+                        consente di containerizzare i nodi, garantendo che ognuno di essi esegua il suo
+                        ambiente in modo indipendente e uniforme su qualsiasi sistema, semplificando la
+                        gestione, il deployment e il monitoraggio. Inoltre, grazie alla sua portabilità e alla
+                        rapida configurazione, Docker permette di distribuire i nodi validatori in modo
+                        efficiente e sicuro, migliorando la resilienza dell’infrastruttura. Per orchestrare
+                        e gestire container in modo coordinato, una tecnologia utile è Docker Compose,
+                        uno strumento che permette di definire e avviare applicazioni multi-container
+                        attraverso un file di configurazione YAML. Grazie a Docker Compose, è possibile specificare facilmente le dipendenze tra i vari servizi, automatizzare l’avvio
+                        dei nodi validatori e gestire la configurazione dell’intera infrastruttura in modo
+                        centralizzato, facilitando il deployment e la scalabilità del sistema.
+            \end{itemize}
+
+            \item \textbf{Blockchain}
+            
+            \begin{itemize}
+                \item \textbf{Ethereum}: abbiamo utilizzato Ethereum come piattaforma blockchain per la sua robustezza, sicurezza e ampia adozione. Ethereum offre un'infrastruttura solida per la creazione e l'esecuzione di smart contract, consentendo lo sviluppo di applicazioni decentralizzate con funzionalità avanzate. Inoltre, la vasta comunità di sviluppatori e le risorse disponibili rendono Ethereum una scelta ideale per progetti che richiedono scalabilità e interoperabilità.
+                \item \textbf{Besu}: abbiamo scelto Besu come client Ethereum per la sua flessibilità, sicurezza e supporto per diverse reti blockchain. Besu è un client open-source che offre funzionalità avanzate per la gestione dei nodi, la sincronizzazione della blockchain e l'esecuzione di smart contract. Inoltre, Besu supporta sia reti pubbliche che private, consentendo una maggiore personalizzazione e controllo sull'infrastruttura blockchain.
+                In particolare, è stato utilizzato per la gestione dei validatori tramite l'algoritmo bizantino di consenso Proof of Authority (PoA), che garantisce un'elevata sicurezza e affidabilità nella validazione delle transazioni.
+                \item \textbf{OpenZeppelin}: abbiamo scelto OpenZeppelin come framework per lo sviluppo di smart contract su Ethereum per la sua affidabilità, sicurezza e facilità d'uso. OpenZeppelin offre una vasta libreria di contratti predefiniti e testati, che consentono agli sviluppatori di creare applicazioni decentralizzate in modo rapido ed efficiente. Inoltre, OpenZeppelin fornisce strumenti avanzati per la gestione della sicurezza, la verifica del codice e l'aggiornamento dei contratti, garantendo un elevato livello di protezione contro le vulnerabilità.
+            \end{itemize}
+
+
+            
+            \item \textbf{Strategie di difesa}
+            
+            \begin{itemize}
+                    \item \textbf{MFA}: adottata in ottica di defense in depth per rafforzare gli accessi. La MultiFactor Authentication richiede più fattori durante il login, riducendo il rischio di compromissione anche se uno dei fattori viene esposto.
+                    \item \textbf{Log user action}: registrazione e monitoraggio sistematico delle attività utente per garantire tracciabilità e conformità. La raccolta e l’analisi dei log permettono di individuare anomalie, supportare audit e indagini forensi e prevenire minacce.
+                    \item \textbf{Recupero password}: previsto un reset tramite link email per ripristinare l’accesso in caso di smarrimento. La misura applica il principio Avoid a single point of failure, evitando blocchi definitivi e incrementando la resilienza.
+                    \item \textbf{Validare tutti gli input al sistema}: la validazione impone formati e vincoli attesi sui dati in ingresso, prevenendo errori e manipolazioni. È in linea con Specify the format of all system inputs, poiché ogni input viene verificato prima dell’elaborazione.
+                    \item \textbf{Crittografia per dati sensibili}: uso di algoritmi aggiornati per proteggere informazioni riservate di sistema e utenti. La cifratura rende i dati illeggibili senza le chiavi corrette, tutela la privacy e favorisce la conformità al GDPR.
+                    \item \textbf{Limitare tentativi di log‑in}: introdotta una soglia ai tentativi in una finestra temporale per mitigare attacchi di Brute Force, abbassando la probabilità di successo e l’esposizione del sistema.
+                    \item \textbf{Politiche di password robuste}: richieste credenziali complesse, come l'utilizzo di lettere maiuscole, minuscole, numeri e simboli per ostacolare furti di account e forza bruta, riducendo gli accessi non autorizzati.
+        \end{itemize}
+\end{itemize}
 
 
 
