@@ -59,5 +59,7 @@
         "cSpell.enabled": false
     },
     "python-envs.defaultEnvManager": "ms-python.python:system",
-    "python-envs.pythonProjects": []
+    "python-envs.pythonProjects": [],
+    "python.terminal.useEnvFile": true,
+    "python.envFile": "${workspaceFolder}/app/.env",
 }

@@ -9,7 +9,8 @@ certifi==2025.11.12
 charset-normalizer==3.4.4
 ckzg==2.1.5
 cytoolz==1.1.0
-Django==5.2.8
+dj-database-url==3.0.1
+Django==6.0
 djangorestframework==3.16.1
 eth-account==0.13.7
 eth-hash==0.7.1
