@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company_name }} - Spedizioni Veloci</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Un po' di personalizzazione per l'immagine di sfondo */
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50">
+
+    <nav class="bg-white shadow-md fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
+                        <svg class="w-8 h-8 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        {{ company_name }}
+                    </span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Servizi</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Chi siamo</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Contatti</a>
+                    <a href="#" class="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">Area Clienti</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-bg h-screen flex items-center justify-center text-center px-4">
+        <div class="max-w-3xl text-white">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">La tua merce, ovunque nel mondo.</h1>
+            <p class="text-xl mb-8 text-gray-200">Spedizioni veloci, sicure e tracciabili in tempo reale.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-xl max-w-xl mx-auto text-gray-800">
+                <label class="block text-left font-bold text-gray-700 mb-2 text-sm uppercase">Traccia la tua spedizione</label>
+                <form action="{% url 'home' %}" method="GET" class="flex flex-col md:flex-row gap-3">
+                    <input 
+                        type="text" 
+                        name="tracking_code" 
+                        placeholder="Inserisci il codice (es. TRK-12345)" 
+                        class="flex-1 border border-gray-300 p-3 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        required
+                    >
+                    <button type="submit" class="bg-blue-600 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition duration-300">
+                        CERCA
+                    </button>
+                </form>
+                
+                {% if tracking_code %}
+                <div class="mt-4 p-3 bg-blue-50 text-blue-800 rounded border border-blue-200 text-left text-sm">
+                    <strong>Risultato per:</strong> {{ tracking_code }} <br>
+                    <span class="text-gray-500 italic">Funzionalità di tracking da implementare col database!</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-gray-900">I nostri servizi</h2>
+                <p class="mt-4 text-gray-500">Soluzioni logistiche su misura per il tuo business.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 border border-gray-100 rounded-xl shadow-sm hover:shadow-lg transition">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 text-2xl">✈️</div>
+                    <h3 class="text-xl font-bold mb-2">Trasporto Aereo</h3>
+                    <p class="text-gray-600">Per le spedizioni urgenti che devono arrivare a destinazione in 24/48 ore.</p>
+                </div>
+                <div class="p-6 border border-gray-100 rounded-xl shadow-sm hover:shadow-lg transition">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4 text-2xl">🚛</div>
+                    <h3 class="text-xl font-bold mb-2">Trasporto su Gomma</h3>
+                    <p class="text-gray-600">Copertura capillare su tutto il territorio nazionale ed europeo.</p>
+                </div>
+                <div class="p-6 border border-gray-100 rounded-xl shadow-sm hover:shadow-lg transition">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4 text-2xl">📦</div>
+                    <h3 class="text-xl font-bold mb-2">Logistica & Magazzino</h3>
+                    <p class="text-gray-600">Stoccaggio sicuro e gestione ordini per e-commerce e aziende.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-blue-800 py-16 text-white">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-4xl font-bold mb-2">10k+</div>
+                <div class="text-blue-200">Clienti soddisfatti</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">50+</div>
+                <div class="text-blue-200">Paesi serviti</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">1M+</div>
+                <div class="text-blue-200">Pacchi consegnati</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">24/7</div>
+                <div class="text-blue-200">Supporto dedicato</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                <span class="text-2xl font-bold text-white tracking-wider">{{ company_name }}</span>
+                <p class="mt-4 text-sm">
+                    Il partner ideale per le tue spedizioni. Connettiamo persone e aziende in tutto il mondo con velocità e sicurezza.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-sm">Link Utili</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-white">Home</a></li>
+                    <li><a href="#" class="hover:text-white">Servizi</a></li>
+                    <li><a href="#" class="hover:text-white">Preventivo</a></li>
+                    <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase text-sm">Contatti</h4>
+                <ul class="space-y-2 text-sm">
+                    <li>Via Roma 123, Milano (MI)</li>
+                    <li>info@{{ company_name|lower }}.it</li>
+                    <li>+39 02 12345678</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-12 pt-8 text-center text-sm">
+            &copy; 2024 {{ company_name }}. Tutti i diritti riservati.
+        </div>
+    </footer>
+
+</body>
+</html>
