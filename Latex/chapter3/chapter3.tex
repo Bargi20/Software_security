@@ -146,5 +146,17 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
         \end{itemize}
 \end{itemize}
 
+\section{Modellazione tramite Catena di Markov}
 
+Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi che evolvono nel tempo in modo stocastico, cioè in modo probabilistico, basandosi sul principio di Markov, secondo cui il futuro stato del sistema dipende solo dallo stato attuale e non dalla storia passata, ma solo dall'ultima osservazione. Nel nostro caso, le catene di Markov sono state utilizzate per modellare il comportamento di una parte del sistema, rappresentando i vari stati in cui esso può trovarsi e le transizioni tra questi stati, descritte da funzioni di probabilità di transizione.
 
+\subsection{Catena di Markov per la funzione di login}
+
+È stato deciso di modellare la funzione di login del sistema mediante una catena di Markov, al fine di analizzare il comportamento degli utenti durante il processo di autenticazione, fondamentale nei sistemi informatici. La catena di Markov per la funzione di login è composta da 12 stati e 4 contatori:
+
+\begin{itemize}
+    \item \textbf{$C_L$}: contatore dei tentativi di login (inserimento username e password);
+    \item \textbf{$C_R$}: contatore dell'invio delle email di reset della password;
+    \item \textbf{$C_M$}: contatore dei tentativi d'inserimento del codice MFA;
+    \item \textbf{$C_E$}: contatore dell'invio delle email del codice MFA.
+\end{itemize}
