@@ -4,10 +4,10 @@ In questo capitolo sono esposte le scelte utilizzate per la realizzazione di un 
 
 Nelle successive Sezioni sono riportate le scelte effettuate nei seguenti campi:
 \begin{itemize}
-    \item \textbf{Architettura}, nella quale saranno trattate le scelte architetturali utilizzate;
-    \item \textbf{Design degli asset}, nella quale saranno trattati i design utilizzati per modellare gli asset;
-    \item \textbf{Scelte tecnologiche}. nella quale saranno trattate le scelte tecnologiche adottate;
-    \item \textbf{Modellazione di una unità mediante Markov Chain}, nella quale sarà esposta la modellazione di una unità mediante Markov Chain.
+    \item \textbf{Architettura}: saranno trattate le scelte architetturali utilizzate;
+    \item \textbf{Design degli asset}: saranno trattati i design utilizzati per modellare gli asset;
+    \item \textbf{Scelte tecnologiche}: saranno trattate le scelte tecnologiche adottate;
+    \item \textbf{Modellazione di una unità mediante Markov Chain}: sarà esposta la modellazione di una unità mediante Markov Chain.
 \end{itemize}
 
 
@@ -22,7 +22,7 @@ La rete bayesiana è composta da due livelli di:
     \item \textbf{livello delle prove}, nel quale sono presenti elementi conoscibili.
 \end{itemize}
 
-Tutti gli elementi presenti nella rete bayesiana sono rappresentati da variabili casuali booleane.
+Tutti gli elementi presenti nella rete bayesiana sono rappresentati da variabili aleatorie booleane.
 Inoltre, è possibile stimare la probabilità di avvenimento degli elementi presenti nel livello dei fatti mediante il processo di \textbf{inferenza diagnostica}, basandosi, quindi, sui valori booleani delle prove osservate.
 
 L'architettura scelta per l'oracolo bayesiano è divisa in una parte \textit{on-chain} ed una parte \textit{off-chain}; il sistema off-chain contiene le probabilità a priori degli elementi presenti nel livello dei fatti; inoltre, nella parte off-chain è presente la tabella delle probabilità condizionate degli elementi presenti nel livello dei fatti, in funzione delle prove osservate.
@@ -34,19 +34,20 @@ Inoltre, calcola la probabilità a posteriori degli elementi presenti nel livell
 
 \section{Design degli asset}
 
- In questa sezione, riportiamo la fase di design degli asset. Essa consiste nello scegliere alcune linee guida proposte da OWASP, Saltzer \& Schroeder Sommerville, le quali verranno illustrate nelle successive sottosezioni.
+ In questa sezione, riportiamo la fase di design degli asset. Essa consiste nello scegliere alcune linee guida proposte da OWASP, Saltzer \& Schroeder e Sommerville, le quali verranno illustrate nelle successive sottosezioni.
  
  Si precisa che alcune linee guida sono comuni tra i vari modelli e sono state selezionate una sola volta.
 
-\subsection{OWASP}
+\subsection{OWASP (Open Worldwide Application Security Project)}
 
 Le linee guida scelte tra quelle proposte da \textit{OWASP} sono state scelte le seguenti:
 
 \begin{itemize}
-    \item \textbf{Principle of Least privilege}, che consiste nel fornire agli account i privilegi minimi richiesti per eseguire tutte le azioni possibili;
-    \item \textbf{Fail securely}, che consiste nel permettere al sistema di affrontare dei fallimenti in maniera sicura;
-    \item \textbf{Separation of duties}, che consiste nel separare le funzionalità permesse alle varie tipologie di utenti;
-    \item \textbf{Fix security issues correctly}, che consiste nel correggere problematiche di sicurezza correttamente, evitando di peggiorare altre funzionalità non coinvolte.
+    \item \textbf{Principle of Least privilege}, che consiste nel fornire agli account, processi e programmi i privilegi minimi richiesti per eseguire le azioni previste. Ciò riduce il rischio potenziale di provocare danni a seguito di una compromissione del sistema;
+    \item \textbf{Fail securely}, che consiste nel permettere al sistema di affrontare dei fallimenti in maniera sicura, cioè evitando che un fallimento porti ad un comportamento insicuro del sistema;
+    \item \textbf{Separation of duties}, che consiste nel separare le funzionalità permesse alle varie tipologie di utenti ed al sistema, in modo che nessun utente o processo abbia il controllo completo, riducendo così il rischio di abusi. Questo principio è strettamente collegato al principio del minimo privilegio;
+    \item \textbf{Fix security issues correctly}, che consiste nel correggere problematiche di sicurezza correttamente, evitando di peggiorare altre funzionalità non coinvolte;
+    \item \textbf{Minimize Attack surface Area}, che consiglia di ridurre la superficie di attacco al fine di diminuire il rischio, limitando i modi che un utente malevolo ha per attaccare il sistema.
 \end{itemize}
 
 \subsection{Sommerville}
@@ -57,7 +58,9 @@ Le linee guida scelte tra quelle proposte da \textit{Sommerville} sono state sce
     \item \textbf{Balance security and usability}, che consiste nel trovare un equilibrio tra la sicurezza e l'usabilità del sistema;
     \item \textbf{Log user actions}, che consiste nel registrare mediante un \textit{log} tutte le attività effettuate all'interno del sistema;
     \item \textbf{Use redundancy and diversity to reduce risk}, che consiste nell'utilizzare ridondanza e diversità per ridurre i rischi di attacchi esterni;
-    \item \textbf{Specify the format of all system inputs}, che consiste nello specificare il formato dei valori in output del sistema.
+    \item \textbf{Specify the format of all system inputs}, che consiste nello specificare il formato dei valori in output del sistema;
+    \item \textbf{Avoid a single point of failure}, che consiste nel progettare il sistema in modo tale da evitare che un singolo componente possa causare il malfunzionamento dell'intero sistema;
+    \item \textbf{Fail securely}, molto simile alla linea guida di OWASP, che consiste nel permettere al sistema di affrontare dei fallimenti in maniera sicura, evitando l'esposizione d'informazioni sensibili.
 \end{itemize}
 
 \subsection{Saltzer \& Schroeder}
@@ -65,13 +68,14 @@ Le linee guida scelte tra quelle proposte da \textit{Sommerville} sono state sce
 Le linee guida scelte tra quelle proposte da \textit{Saltzer \& Schroeder} sono state scelte le seguenti:
 
 \begin{itemize}
-    \item \textbf{KISS Principle}, che consiste nel realizzare il sistema di difesa nella maniera più semplice possibile;
-    \item \textbf{Complete mediation}, che consiste nel controllare ogni tentativo di accesso al sistema prima di fornire all'utente la possibilità di eseguire qualsiasi azione;
-    \item \textbf{Psychological acceptability}, che consiste nel rendere l'interazione tra il sistema e dell'utente il più intuitiva possibile.
+    \item \textbf{Least Privilege}, simile al principio del minimo privilegio di OWASP, che consiste nel fornire agli account, processi e programmi i privilegi minimi richiesti per eseguire le azioni previste;
+    \item \textbf{KISS Principle}, che consiste nel realizzare il sistema di difesa nella maniera più semplice e piccola possibile;
+    \item \textbf{Complete mediation}, che consiste nel controllare ogni tentativo di accesso al sistema prima di fornire all'utente o ad altri processi la possibilità di eseguire qualsiasi azione;
+    \item \textbf{Psychological acceptability/Easy to use}, che consiste nel rendere l'interazione tra il sistema e dell'utente il più intuitiva possibile, avvalendosi d'interfacce facili da usare.
+    \item \textbf{Separation of privilege (defense in-depth)}, che consiste nel far dipendere l'accesso ai vari oggetti da più condizioni, in modo che se una sia bypassata, un attaccante deve anche riuscire a superare le altre condizioni. Un classico esempio è l'autenticazione a più fattori, dove oltre alla password, l'utente deve fornire un secondo fattore per poter accedere al sistema, di solito un codice OTP.
 \end{itemize}
 
 \section{Scelte tecnologiche}
-
 
 In questa sezione sono riportate le scelte tecnologiche adottate per la realizzazione del sistema. Come annunciato in precedenza, il sistema sarà composto da due differenti parti: una parte on-chain ed una parte off-chain. 
 
@@ -85,7 +89,7 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
             \item \textbf{Linguaggio on-chain}
             
              \begin{itemize}
-                \item \textbf{Solidity}: abbiamo scelto l'utilizzo di Solidity poiché è un linguaggio di programmazione diffuso per scrivere smart contract sulla blockchain di Ethereum. Inoltre, Solidity, essendo versatile, può essere utilizzato per una vasta gamma di applicazioni, come la creazione di token e la gestione di pagamenti.
+                \item \textbf{Solidity}: è stato scelto di utilizzare Solidity poiché è un linguaggio di programmazione diffuso per scrivere smart contract sulla blockchain di Ethereum. Inoltre, Solidity, essendo versatile, può essere utilizzato per una vasta gamma di applicazioni, come la creazione di token e la gestione di pagamenti.
                 
                 Un ulteriore motivo della scelta di Solidity è la similitudine del linguaggio con JavaScript, poiché entrambi sono un linguaggio orientato ad oggetti.
              \end{itemize}
@@ -97,16 +101,15 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
             open-source su cloud che offre un backend-as-a-service basato su PostgreSQL. Inoltre, grazie ai meccanismi nativi di quest’ultimo, esso permette di ottenere risposte in tempo reale, di avere una gestione avanzata delle transazioni e di consentire una scalabilità orizzontale, rendendolo una soluzione solida e affidabile per il nostro
             sistema.
             \end{itemize}
+            \clearpage
 
             \item \textbf{User Interface}   
             
             \begin{itemize}
             \item \textbf{Django}: Django, framework web basato su Python, si è affermato negli anni come una delle soluzioni più mature e affidabili per lo sviluppo di applicazioni web complesse. La sua filosofia
-            "batteries included" e l’approccio pragmatico al problem-solving lo rendono particolarmente
-            adatto per progetti dove la sicurezza, la scalabilità e la rapidità di
-            sviluppo sono requisiti imprescindibili. 
+            "batteries included" (cioè comprende molte funzionalità built-in come un pannello admin, ORM, sistema di autenticazione ed altre) e l’approccio pragmatico al problem-solving lo rendono particolarmente adatto per progetti dove la sicurezza, la scalabilità e la rapidità di sviluppo sono requisiti imprescindibili. 
 
-            \item \textbf{HTML}: HTML è il linguaggio di markup standard utilizzato per creare pagine web. La sua semplicità e versatilità lo rendono uno strumento essenziale per la progettazione di interfacce utente efficaci e accessibili. Inoltre, HTML consente una facile integrazione con altri linguaggi e tecnologie web, facilitando lo sviluppo di applicazioni web dinamiche e interattive.
+            \item \textbf{HTML}: HTML è il linguaggio di markup standard utilizzato per creare pagine web. La sua semplicità, versatilità e documentazione approfondita lo rendono uno strumento essenziale per la progettazione di interfacce utente efficaci e accessibili. Inoltre, HTML consente una facile integrazione con altri linguaggi e tecnologie web, facilitando lo sviluppo di applicazioni web dinamiche e interattive.
             
             \item \textbf{CSS}: CSS è un linguaggio di stile utilizzato per descrivere la presentazione di un documento HTML. La sua capacità di separare il contenuto dalla presentazione consente una maggiore flessibilità e controllo nella progettazione delle interfacce utente. Inoltre, CSS offre una vasta gamma di funzionalità per la gestione del layout, dei colori, dei font e delle animazioni.
             \end{itemize}
@@ -114,27 +117,18 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
             \item \textbf{Containerizzazione}
             
             \begin{itemize}
-                \item \textbf{Docker}:  abbiamo utilizzato Docker per gestire i nodi validatori della blockchain,
-                        sfruttando la sua capacità di creare ambienti isolati e facilmente scalabili. Docker
-                        consente di containerizzare i nodi, garantendo che ognuno di essi esegua il suo
-                        ambiente in modo indipendente e uniforme su qualsiasi sistema, semplificando la
-                        gestione, il deployment e il monitoraggio. Inoltre, grazie alla sua portabilità e alla
-                        rapida configurazione, Docker permette di distribuire i nodi validatori in modo
-                        efficiente e sicuro, migliorando la resilienza dell’infrastruttura. Per orchestrare
-                        e gestire container in modo coordinato, una tecnologia utile è Docker Compose,
-                        uno strumento che permette di definire e avviare applicazioni multi-container
-                        attraverso un file di configurazione YAML. Grazie a Docker Compose, è possibile specificare facilmente le dipendenze tra i vari servizi, automatizzare l’avvio
-                        dei nodi validatori e gestire la configurazione dell’intera infrastruttura in modo
-                        centralizzato, facilitando il deployment e la scalabilità del sistema.
+                \item \textbf{Docker}: si è scelto Docker per gestire i nodi validatori della blockchain, sfruttando la sua capacità di creare ambienti isolati e facilmente scalabili. Docker consente di containerizzare i nodi, garantendo che ognuno di essi esegua il suo ambiente in modo indipendente e uniforme su qualsiasi sistema, semplificando la gestione, il deployment e il monitoraggio. Inoltre, grazie alla sua portabilità e alla rapida configurazione, Docker permette di distribuire i nodi validatori in modo efficiente e sicuro, migliorando la resilienza dell’infrastruttura. Per orchestrare e gestire i container in modo coordinato, una tecnologia utile è Docker Compose, uno strumento che permette di definire e avviare applicazioni multi-container attraverso un file di configurazione YAML. Grazie a Docker Compose, è possibile specificare facilmente le dipendenze tra i vari servizi, automatizzare l’avvio dei nodi validatori e gestire la configurazione dell’intera infrastruttura in modo centralizzato, facilitando il deployment e la scalabilità del sistema.
             \end{itemize}
 
             \item \textbf{Blockchain}
             
             \begin{itemize}
-                \item \textbf{Ethereum}: abbiamo utilizzato Ethereum come piattaforma blockchain per la sua robustezza, sicurezza e ampia adozione. Ethereum offre un'infrastruttura solida per la creazione e l'esecuzione di smart contract, consentendo lo sviluppo di applicazioni decentralizzate con funzionalità avanzate. Inoltre, la vasta comunità di sviluppatori e le risorse disponibili rendono Ethereum una scelta ideale per progetti che richiedono scalabilità e interoperabilità.
-                \item \textbf{Besu}: abbiamo scelto Besu come client Ethereum per la sua flessibilità, sicurezza e supporto per diverse reti blockchain. Besu è un client open-source che offre funzionalità avanzate per la gestione dei nodi, la sincronizzazione della blockchain e l'esecuzione di smart contract. Inoltre, Besu supporta sia reti pubbliche che private, consentendo una maggiore personalizzazione e controllo sull'infrastruttura blockchain.
-                In particolare, è stato utilizzato per la gestione dei validatori tramite l'algoritmo bizantino di consenso Proof of Authority (PoA), che garantisce un'elevata sicurezza e affidabilità nella validazione delle transazioni.
-                \item \textbf{OpenZeppelin}: abbiamo scelto OpenZeppelin come framework per lo sviluppo di smart contract su Ethereum per la sua affidabilità, sicurezza e facilità d'uso. OpenZeppelin offre una vasta libreria di contratti predefiniti e testati, che consentono agli sviluppatori di creare applicazioni decentralizzate in modo rapido ed efficiente. Inoltre, OpenZeppelin fornisce strumenti avanzati per la gestione della sicurezza, la verifica del codice e l'aggiornamento dei contratti, garantendo un elevato livello di protezione contro le vulnerabilità.
+                \item \textbf{Ethereum}: è stato scelto Ethereum come piattaforma blockchain per la sua robustezza, sicurezza e ampia adozione. Ethereum offre un'infrastruttura solida per la creazione e l'esecuzione di smart contract, consentendo lo sviluppo di applicazioni decentralizzate con funzionalità avanzate. Inoltre, la vasta comunità di sviluppatori e le risorse disponibili rendono Ethereum una scelta ideale per progetti che richiedono scalabilità e interoperabilità.
+                
+                \item \textbf{Besu}: è stato scelto Besu come client Ethereum per la sua flessibilità, sicurezza e supporto per diverse reti blockchain. Besu è un client open-source che offre funzionalità avanzate per la gestione dei nodi, la sincronizzazione della blockchain e l'esecuzione di smart contract. Inoltre, Besu supporta sia reti pubbliche che private, consentendo una maggiore personalizzazione e controllo sull'infrastruttura blockchain.
+                In particolare, è stato utilizzato per la gestione dei validatori tramite l'algoritmo bizantino di consenso Proof of Authority (PoA), abbreviato con la sigla QBFT (Quorum Byzantine Fault Tolerance), che garantisce un'elevata sicurezza e affidabilità nella validazione delle transazioni. Esso è un evoluzione dell'algoritmo IBFT (Istanbul Byzantine Fault Tolerance).
+
+                \item \textbf{OpenZeppelin}: è stato scelto OpenZeppelin come framework per lo sviluppo di smart contract su Ethereum per la sua affidabilità, sicurezza e facilità d'uso. OpenZeppelin offre una vasta libreria di contratti predefiniti e testati, che consentono agli sviluppatori di creare applicazioni decentralizzate in modo rapido ed efficiente. Inoltre, OpenZeppelin fornisce strumenti avanzati per la gestione della sicurezza, la verifica del codice e l'aggiornamento dei contratti, garantendo un elevato livello di protezione contro le vulnerabilità.
             \end{itemize}
 
 
@@ -142,13 +136,13 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
             \item \textbf{Strategie di difesa}
             
             \begin{itemize}
-                    \item \textbf{MFA}: adottata in ottica di defense in depth per rafforzare gli accessi. La MultiFactor Authentication richiede più fattori durante il login, riducendo il rischio di compromissione anche se uno dei fattori viene esposto.
+                    \item \textbf{Multi Factor Authentication (MFA)}: adottata in ottica di \textit{defense in-depth} per rafforzare gli accessi. La Multi Factor Authentication richiede più fattori durante il login, riducendo il rischio di compromissione anche se uno dei fattori viene esposto.
                     \item \textbf{Log user action}: registrazione e monitoraggio sistematico delle attività utente per garantire tracciabilità e conformità. La raccolta e l’analisi dei log permettono di individuare anomalie, supportare audit e indagini forensi e prevenire minacce.
-                    \item \textbf{Recupero password}: previsto un reset tramite link email per ripristinare l’accesso in caso di smarrimento. La misura applica il principio Avoid a single point of failure, evitando blocchi definitivi e incrementando la resilienza.
-                    \item \textbf{Validare tutti gli input al sistema}: la validazione impone formati e vincoli attesi sui dati in ingresso, prevenendo errori e manipolazioni. È in linea con Specify the format of all system inputs, poiché ogni input viene verificato prima dell’elaborazione.
+                    \item \textbf{Recupero password}: previsto un reset tramite link email per ripristinare l’accesso in caso di smarrimento. La misura applica il principio \textit{Avoid a single point of failure}, evitando blocchi definitivi e incrementando la resilienza.
+                    \item \textbf{Validare tutti gli input al sistema}: la validazione impone formati e vincoli attesi sui dati in ingresso, prevenendo errori e manipolazioni. È in linea con \textit{Specify the format of all system inputs}, poiché ogni input viene verificato prima dell’elaborazione.
                     \item \textbf{Crittografia per dati sensibili}: uso di algoritmi aggiornati per proteggere informazioni riservate di sistema e utenti. La cifratura rende i dati illeggibili senza le chiavi corrette, tutela la privacy e favorisce la conformità al GDPR.
-                    \item \textbf{Limitare tentativi di log‑in}: introdotta una soglia ai tentativi in una finestra temporale per mitigare attacchi di Brute Force, abbassando la probabilità di successo e l’esposizione del sistema.
-                    \item \textbf{Politiche di password robuste}: richieste credenziali complesse, come l'utilizzo di lettere maiuscole, minuscole, numeri e simboli per ostacolare furti di account e forza bruta, riducendo gli accessi non autorizzati.
+                    \item \textbf{Limitare tentativi di log‑in (Rate limiter)}: introdotta una soglia ai tentativi in una finestra temporale per mitigare attacchi di Brute Force, abbassando drasticamente la probabilità di successo e l’esposizione del sistema.
+                    \item \textbf{Politiche di password robuste}: richieste credenziali complesse, come l'utilizzo di lettere maiuscole e minuscole, numeri, simboli ed una lunghezza minima per ostacolare furti di account e forza bruta, riducendo gli accessi non autorizzati.
         \end{itemize}
 \end{itemize}
 
