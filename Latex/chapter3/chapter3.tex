@@ -10,7 +10,7 @@ Nelle successive Sezioni sono riportate le scelte effettuate nei seguenti campi:
     \item \textbf{Modellazione di una unità mediante Markov Chain}: sarà esposta la modellazione di una unità mediante Markov Chain.
 \end{itemize}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Architettura}
 
 Il sistema progettato utilizza una blockchain per il calcolo e la validazione dei valori ottenuti dall'oracolo della rete bayesiana.
@@ -31,7 +31,7 @@ La parte on-chain, invece, fornisce le probabilità a priori degli elementi pres
 
 Inoltre, calcola la probabilità a posteriori degli elementi presenti nel livello dei fatti, mediante l'inferenza diagnostica, in base alle prove osservate.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Design degli asset}
 
  In questa sezione, riportiamo la fase di design degli asset. Essa consiste nello scegliere alcune linee guida proposte da OWASP, Saltzer \& Schroeder e Sommerville, le quali verranno illustrate nelle successive sottosezioni.
@@ -75,6 +75,7 @@ Le linee guida scelte tra quelle proposte da \textit{Saltzer \& Schroeder} sono 
     \item \textbf{Separation of privilege (defense in-depth)}, che consiste nel far dipendere l'accesso ai vari oggetti da più condizioni, in modo che se una sia bypassata, un attaccante deve anche riuscire a superare le altre condizioni. Un classico esempio è l'autenticazione a più fattori, dove oltre alla password, l'utente deve fornire un secondo fattore per poter accedere al sistema, di solito un codice OTP.
 \end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Scelte tecnologiche}
 
 In questa sezione sono riportate le scelte tecnologiche adottate per la realizzazione del sistema. Come annunciato in precedenza, il sistema sarà composto da due differenti parti: una parte on-chain ed una parte off-chain. 
@@ -101,7 +102,6 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
             open-source su cloud che offre un backend-as-a-service basato su PostgreSQL. Inoltre, grazie ai meccanismi nativi di quest’ultimo, esso permette di ottenere risposte in tempo reale, di avere una gestione avanzata delle transazioni e di consentire una scalabilità orizzontale, rendendolo una soluzione solida e affidabile per il nostro
             sistema.
             \end{itemize}
-            \clearpage
 
             \item \textbf{User Interface}   
             
@@ -130,8 +130,6 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
 
                 \item \textbf{OpenZeppelin}: è stato scelto OpenZeppelin come framework per lo sviluppo di smart contract su Ethereum per la sua affidabilità, sicurezza e facilità d'uso. OpenZeppelin offre una vasta libreria di contratti predefiniti e testati, che consentono agli sviluppatori di creare applicazioni decentralizzate in modo rapido ed efficiente. Inoltre, OpenZeppelin fornisce strumenti avanzati per la gestione della sicurezza, la verifica del codice e l'aggiornamento dei contratti, garantendo un elevato livello di protezione contro le vulnerabilità.
             \end{itemize}
-
-
             
             \item \textbf{Strategie di difesa}
             
@@ -146,6 +144,7 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
         \end{itemize}
 \end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modellazione tramite Catena di Markov}
 
 Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi che evolvono nel tempo in modo stocastico, cioè in modo probabilistico, basandosi sul principio di Markov, secondo cui il futuro stato del sistema dipende solo dallo stato attuale e non dalla storia passata, ma solo dall'ultima osservazione. Nel nostro caso, le catene di Markov sono state utilizzate per modellare il comportamento di una parte del sistema, rappresentando i vari stati in cui esso può trovarsi e le transizioni tra questi stati, descritte da funzioni di probabilità di transizione.
@@ -168,3 +167,8 @@ Vediamo la transizione che riguarda l'inserimento dei dati di login: dallo stato
 Invece, se l'utente sceglie di recuperare la propria password, si passa allo stato \textbf{5}. Qui, dopo che l'utente ha inserito l'email su cui effettuare il recupero della password, viene incrementato il contatore $C_{EMAIL}$ di 1. Si passa allo stato \textbf{6}, in cui il sistema controlla se l'email è presente nel database. Se l'email non esiste ed il contatore $C_{EMAIL}$ è minore di 5, si torna allo stato \textbf{5} e viene chiesto nuovamente all'utente d'inserire un'email valida. Se il contatore è uguale a 5, si va nello stato \textbf{11} con la transizione etichettata con \textit{?EmailKO}. Se l'email è corretta, si passa allo stato \textbf{7} tramite la transizione etichettata con \textit{?EmailOK}. In questo stato, il sistema invia una email all'utente con un codice per reimpostare la password; a questo punto l'utente deve inserire il codice ricevuto, incrementando il contatore $C_{RPASS}$ di 1 e si transita allo stato \textbf{8} con l'etichetta \textit{/InserimentoCodice}. Se il codice è corretto, si passa allo stato \textbf{9} tramite la transizione etichettata con \textit{?CodiceOK}. In questo stato si chiede all'utente d'inserire una nuova password. Dopo averla inserita si transita nello stato \textbf{10} con etichetta \textit{/!InserimentoNuovaPassword}; se la password soddisfa i criteri richiesti dal sistema, si transita allo stato \textbf{0} tramite l'etichetta \textit{?NuovaPasswordOK}, e l'utente può iniziare nuovamente la fase di login. Invece, se la nuova password non soddisfa i criteri richiesti, si torna nello stato \textbf{9} tramite la transizione etichettata con \textit{?NuovaPasswordKO}, quindi viene chiesto nuovamente all'utente d'inserire una nuova password.
 
 Tornando indietro allo stato \textbf{8}, se il codice di recupero password è errato ed il contatore $C_{RPASS}$ è minore di 5, si torna allo stato \textbf{7} tramite la transizione etichettata con \textit{?CodiceKO}, quindi viene chiesto nuovamente all'utente d'inserire il codice; se il contatore è uguale a 5, si va nello stato \textbf{11} di timeout. Infine, nello stato \textbf{7} vi è un'ultima transizione etichettata \textit{/RinvioCodicePASS}, che permette all'utente di farsi rinviare il codice per il recupero della password, rimanendo nello stato \textbf{7}; se il contatore $C_{RPASS}$ arriva a 5, si va nello stato di timeout \textbf{11}, rappresenta una limitazione nell'invio da parte del sistema dei codici per il recupero della password.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/catenaDiMarkov.png}
+\end{figure}
