@@ -1,1 +1,16 @@
-\chapter{Deployment e management} 
+\chapter{Deployment} 
+
+In questo capitolo verrà descritto il processo di Deployment del nostro software Ledger Logistic. In particolare, viene illustrato, tramite una guida, come installare, configurare e avviare l'applicazione web. Ledger Logistic è un'applicazione web che interagisce con una rete blockchain privata di ETH, progettata per garantire sicurezza, trasparenza e tracciabilità nelle operazioni di logistica. L'obiettivo di questa sezione è quello di riportare in modo chiaro e dettagliato tutti i passaggi necessari per mettere in esecuzione l'applicazione in un ambiente di produzione o di test. Verranno presentati i prerequisiti, i passaggi e le configurazioni necessarie per l'installazione e l'avvio dell'applicazione web, nonché le considerazioni finali per garantire un funzionamento ottimale del sistema.
+
+\section{Prerequisiti} 
+Prima di procedere con l'installazione dell'applicazione web Ledger Logistic, è necessario assicurarsi di rispettare i seguenti prerequisiti:
+
+\begin{itemize}
+    \item \textbf{Python 3.10+} : assicurarsi di avere Python 3.10 o una versione successiva installata sul sistema, per la corretta esecuzione dell'applicazione web.
+    \item \textbf{Node.js e npm} : installare Node.js (version 24.x) e npm la 11.6.2 (Node Package Manager) per gestire le dipendenze JavaScript necessarie per l'interfaccia web.
+    \item \textbf{Hardhat} : installare Hardhat, un ambiente di sviluppo per la compilazione, il deployment e il testing di smart contract su Ethereum.
+    \item \textbf{Git} : installare Git per la possibilità di clonare il repository del progetto Ledger Logistic.
+    \item \textbf{Docker e Docker Compose} : installare Docker e Docker Compose per la gestione dei container necessari per eseguire la blockchain privata con algoritmo QBFT. 
+    \item \textbf{MetaMask} : avere un account MetaMask configurato per test e per interagire con la rete blockchain privata.
+    \item \textbf{Supabase} : avere un account Supabase per la corretta gestione del database PostgreSQL. 
+\end{itemize}
