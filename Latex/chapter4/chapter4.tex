@@ -1,2 +1,14 @@
 \chapter{Programmazione Sicura} 
 
+In questo capitolo, saranno presentate le pratiche e le tecniche per garantire la sicurezza nella programmazione. La sicurezza del software è diventata una preoccupazione fondamentale nello sviluppo di applicazioni moderne, poiché le vulnerabilità possono essere sfruttate da attori malintenzionati per compromettere i dati e le funzionalità del sistema. Si tratteranno gli aspetti dell'applicazione sia a livello \textit{off-chain}, sia a livello \textit{on-chain}, con particolare attenzione alle best practice per la scrittura di codice sicuro, riportate nei seguenti paragrafi.
+
+\section{Programmazione off-chain e best practices}
+
+In questa sezione, verranno discusse le migliori pratiche per la programmazione sicura in ambienti off-chain, che, nel nostro caso, includono lo sviluppo di applicazioni web. Si affronteranno argomenti come l'uso di librerie sicure, la validazione degli input e la protezione dei dati sensibili. Per l'analisi statica del codice è stato deciso di usare \textit{SonarQube}, una piattaforma open-source per l'integrazione nei flussi di lavoro di sviluppo software che garantisce la qualità e la sicurezza del codice, andando ad esaminarlo per trovare vulnerabilità, problemi di sicurezza ed altro. Inoltre, per una buona progettazione del sistema, sono state seguite alcune linee guida:
+
+\begin{itemize}
+    \item \textbf{Validare tutti gli input del programma}: ogni informazione in ingresso al programma è stata validato. In particolare, sono stati controlli per prevenire attacchi di tipo \textit{SQL Injection} e \textit{Cross-Site Scripting (XSS)}.
+    \item \textbf{Creare un handler per ogni eccezione}: ogni possibile eccezione che può essere generata dal programma è stata gestita in modo appropriato con degli handler, cioè dei costrutti del tipo \textit{try/except}, evitando che il programma termini in modo anomalo.
+    \item \textbf{}
+\end{itemize}
+
