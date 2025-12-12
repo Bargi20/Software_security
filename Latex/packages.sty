@@ -247,4 +247,27 @@ bindingoffset=15mm,marginpar=1.5cm,reversemp]{geometry}
 \usepackage{subfig}
 
 
+%
+% TERMINAL BOX CONFIGURATION
+%
 \usepackage{tcolorbox}
+\tcbuselibrary{listings,breakable}
+
+\newtcblisting{terminal}{
+    colback=black!90,
+    colframe=black!70,
+    colupper=green!80!white,
+    fontupper=\ttfamily\small,
+    listing only,
+    listing options={
+        language=bash, 
+        basicstyle=\ttfamily\color{green!80!white},
+        breaklines=true,
+        showstringspaces=false
+    },
+    breakable,
+    left=5mm,
+    right=5mm,
+    top=3mm,
+    bottom=3mm
+}

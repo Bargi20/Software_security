@@ -46,7 +46,8 @@
         "QBFT-Network",
         "scripts",
         ".git",
-        ".gitignore"
+        ".gitignore",
+        "Latex/packages.sty"
     ],
     "[latex]": {
         "cSpell.enabled": true

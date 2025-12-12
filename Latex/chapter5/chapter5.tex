@@ -14,3 +14,43 @@ Prima di procedere con l'installazione dell'applicazione web Ledger Logistic, è
     \item \textbf{MetaMask} : avere un account MetaMask configurato per test e per interagire con la rete blockchain privata.
     \item \textbf{Supabase} : avere un account Supabase per la corretta gestione del database PostgreSQL. 
 \end{itemize}
+
+\section{Installazione e configurazione}
+Il primo procedimento da eseguire dopo aver soddisfatto i prerequisiti è quello di clonare il repository del progetto da GitHub in locale. Quindi creiamo una nuova cartella sul nostro dispositivo e, tramite terminale, ci spostiamo al suo interno per digitare il seguente comando: 
+
+\begin{terminal}
+git clone https://github.com/username/software_security.git
+cd software_security
+\end{terminal}
+
+In seguito, bisogna installare le dipendenze e le librerie necessarie per l'esecuzione dell'applicazione web. 
+\begin{terminal}
+cd app 
+python -m venv venv
+source venv/bin/activate    # UTENTE MAC/LINUX
+venv\\Scripts\\activate       # UTENTE WINDOWS
+pip install -r requirements.txt
+\end{terminal}
+
+Dopo aver installato le dipendenze, a questo punto bisogna passare alla directory software\_security (ovvero la root del progetto) per installare le dipendenze necessarie per l'utilizzo degli smart contract. 
+
+\begin{terminal}
+cd ..
+npm install
+\end{terminal}
+
+Infine, è necessario avviare i container Docker per inizializzare la rete blockchain privata. Per fare ciò, basta scrivere questo comando nella root del progetto: 
+\begin{terminal}
+docker-compose up -d
+\end{terminal}
+
+\section{Configurazione dopo l'avvio del sistema}
+
+Dopo aver inizializzato tutto il necessario per l'applicazione web, bisogna configurare corettamente MetaMask per interagire con la rete blockchain. Aggiungendo la rete personalizzata con i seguenti parametri: 
+\begin{itemize}
+    \item \textbf{Nome della rete} : ExpressChain
+    \item \textbf{Nuovo URL RPC} : http://localhost:8545
+    \item \textbf{ID catena} : 1337
+    \item \textbf{Simbolo valuta} : ETH
+\end{itemize}
+
