@@ -172,3 +172,9 @@ Tornando indietro allo stato \textbf{8}, se il codice di recupero password è er
 	\centering
 	\includegraphics[width=1\columnwidth]{chapter3/immagini/catenaDiMarkov.png}
 \end{figure}
+
+\subsection{Modellazione della funzione di login tramite PRISM}
+
+Per analizzare la catena di Markov della funzione di login, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. Di seguito è riportato il codice PRISM utilizzato per il modello:
+
+\lstinputlisting[style=prismstyle]{chapter3/login_function.prism}

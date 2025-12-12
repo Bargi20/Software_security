@@ -1,53 +1,45 @@
-  \usepackage{colortbl}
-  \usepackage{listings}
+\ProvidesPackage{my_listings}
 
+\RequirePackage{listings}
+\RequirePackage{xcolor}
 
-%-- Sfondo dei listati:
-  %\definecolor{colore_sfondo}{gray}{1.00}
-  \definecolor{colore_sfondo}{rgb}{0.50,0.50,0.50}
+% Colori personalizzati
+\definecolor{prismKeyword}{RGB}{0,0,150}
+\definecolor{prismConst}{RGB}{120,0,0}
+\definecolor{prismType}{RGB}{0,100,0}
+\definecolor{prismComment}{RGB}{100,100,100}
+\definecolor{prismBackground}{RGB}{248,248,248}
 
-%-- nome nella caption nella toc
-\renewcommand{\lstlistingname}{Listato}
-
-%-- comandi comuni a tutti i listati
-\lstset{
-  basicstyle=\tiny\tt,
-  stringstyle=\tiny\tt,
-  keywordstyle=\tiny\tt,
-  showstringspaces=false,
-  captionpos=b,
-  columns=flexible,
-  aboveskip=10pt,
-  %backgroundcolor=\color{colore_sfondo},
-  frameround=fttt,
-  %frame=trBL,
-  framerule=0pt,
-  xleftmargin=11.5mm,
-  xrightmargin=8.5mm,
-  breaklines=true,
-  language=Java,
-  extendedchars=true,
-  %numbers=left,
-  %numberstyle=\tiny
-  %tabsize=3,
-  framexleftmargin=5mm,
-  frame=shadowbox,
-  rulesepcolor=\color{colore_sfondo},
-  literate=
-  {à}{{\ttfamily\`a}}1
-  {è}{{\ttfamily\`e}}1
-  {ì}{{\ttfamily\`i}}1
-  {ò}{{\ttfamily\`o}}1
-  {ù}{{\ttfamily\`u}}1
+% Linguaggio PRISM per listings
+\lstdefinelanguage{prism}{
+  morekeywords={
+    module, endmodule, const, formula, init, true, false,
+    global, label, rewards, endrewards, prob, dtmc, ctmc,
+    min, max
+  },
+  morekeywords=[2]{double,int,bool}, % tipi
+  morekeywords=[3]{s,cl,cm,ce}, % variabili tipiche di modelli (modificabili)
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
 }
 
-
-%-- Esempio di utilizzo del pacchetto
-%
-%\begin{lstlisting}[float=t, caption=Titolo del listato, label=lst:etichetta]
-%for (int i; i < 10; i++)
-%{
-%    cout << "Ciao mondo";
-%    cout << endl;
-%}
-%\end{lstlisting}
+% Stile PRISM
+\lstdefinestyle{prismStyle}{
+  language=prism,
+  backgroundcolor=\color{prismBackground},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{prismKeyword}\bfseries,
+  keywordstyle=[2]\color{prismType}\bfseries,
+  keywordstyle=[3]\color{prismConst},
+  commentstyle=\color{prismComment}\itshape,
+  stringstyle=\color{prismConst},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  breaklines=true,
+  tabsize=2,
+  frame=single,
+  rulecolor=\color{gray},
+  showstringspaces=false
+}

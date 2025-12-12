@@ -39,6 +39,7 @@ hardhat.config.ts
 *.cb2
 .*.lb
 *.idx
+*.listing
 
 # LaTeX intermediate documents
 *.dvi
