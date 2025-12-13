@@ -251,3 +251,12 @@ La figura 3.5 mostra la simulazione di un utente che inserisce correttamente l'e
 \end{figure}
 
 La figura 3.6 mostra la simulazione di un utente che effettua la procedura di recupero della password in modo corretto e, successivamente, effettua il login con successo usando la nuova password appena cambiata.
+
+\subsection{Verifica di una proprietà di Safety}
+
+La proprietà di Safety rappresenta il concetto che "qualcosa di brutto non accada mai" durante l'esecuzione di un sistema. In altre parole, una proprietà di Safety garantisce che il sistema non raggiunga mai uno stato indesiderato o pericoloso. Nel contesto della funzione di login modellata tramite la catena di Markov, una proprietà di Safety potrebbe essere formulata come segue: "Un utente non deve mai superare il numero massimo di tentativi di login errati senza essere bloccato". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
+\begin{verbatim}
+    P<=0 [ F ((c_log=5|c_mfa=5|c_email=5|c_rpass=5)&p1!=11) ]
+\end{verbatim}{}
+
+Essa afferma che la probabilità di raggiungere uno stato in cui uno dei contatori ($C_{LOG}$, $C_{MFA}$, $C_{EMAIL}$, $C_{RPASS}$) è uguale a 5 (cioè il numero massimo di tentativi errati) e lo stato corrente (p1) non è lo stato di timeout (stato 11), deve essere minore o uguale a 0. In altre parole, questa proprietà garantisce che il sistema bloccherà l'utente dopo un certo numero di tentativi errati, prevenendo così accessi non autorizzati.
