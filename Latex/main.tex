@@ -15,10 +15,12 @@
 \addtolength{\topmargin}{-1.6pt} % opzionale
 \usepackage{my_listings} % pacchetto personalizzato per il linguaggio PRISM negli snippet
 
+\setcounter{tocdepth}{3} %numerazione per indice
+\setcounter{secnumdepth}{3} %grado di sottosezioni con numerazioni nei capitoli
+
+
 \begin{document}
 
-
-% FRONTISPIECE %
 \include{frontmatter/frontispiece}
 
 \frontmatter
@@ -26,7 +28,6 @@
 % TOCs %
 \tableofcontents
 \setlength{\headheight}{14pt}  % valore maggiore di 13.6pt
-
 
 
 \mainmatter
@@ -40,5 +41,5 @@
 
 \backmatter
 
-% INDEX %
+
 \end{document}

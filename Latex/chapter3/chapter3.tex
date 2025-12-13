@@ -178,3 +178,77 @@ Tornando indietro allo stato \textbf{8}, se il codice di recupero password è er
 Per analizzare la catena di Markov della funzione di login, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. Di seguito è riportato il codice PRISM utilizzato per il modello:
 
 \lstinputlisting[style=prismstyle]{chapter3/login_function.prism}
+
+\subsection{Simulazione tramite PRISM}
+
+Sfruttando il simulatore di PRISM, sono state eseguite delle simulazioni per analizzare il comportamento del sistema in diversi scenari. Di seguito sono riportate alcune simulazioni:
+
+\subsubsection{Simulazione login corretto}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_login_corretto.png}
+    \caption{Utente che effettua il login correttamente.}
+\end{figure}
+
+La figura 3.1 mostra la simulazione del login da parte di un utente che inserisce correttamente le proprie credenziali e il codice MFA. Si può notare che si arriva in una situazione di deadlock dopo aver effettuato il login con successo, ciò equivale a rimanere indefinitamente nello stato 4.
+
+\clearpage
+
+\subsubsection{Simulazione login errato}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_credenziali_sbagliate_x5.png}
+    \caption{Timeout login con credenziali sbagliate 5 volte.}
+\end{figure}
+
+La figura 3.2 mostra la simulazione del login da parte di un utente che inserisce credenziali errate per 5 volte consecutive, raggiungendo così lo stato di timeout.
+
+\clearpage
+
+\subsubsection{Simulazione recupero password corretto}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_recupero_password_corretto.png}
+    \caption{Utente che effettua il recupero della propria password correttamente.}
+\end{figure}
+
+La figura 3.3 mostra la simulazione del recupero della password da parte di un utente che inserisce correttamente l'email, il codice di recupero e la nuova password. Alla fine del processo di recupero, l'utente torna allo stato iniziale per effettuare nuovamente il login.
+
+\clearpage
+
+\subsubsection{Simulazione MFA errato}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_sbaglio_codice_MFA.png}
+    \caption{Utente che inserisce correttamente le credenziali, ma sbaglia il codice MFA.}
+\end{figure}
+
+La figura 3.4 mostra la simulazione di un utente che inserisce correttamente le credenziali, ma sbaglia il codice MFA per 5 volte consecutive, raggiungendo così lo stato di timeout. Questo scenario evidenzia l'importanza dei sistemi di autenticazione a più fattori.
+
+\clearpage
+
+\subsubsection{Simulazione codice recupero password errato}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_codice_recupero_password_sbagliato.png}
+    \caption{Utente che inserisce correttamente l'email, ma sbaglia il codice di recupero password.}
+\end{figure}
+
+La figura 3.5 mostra la simulazione di un utente che inserisce correttamente l'email per il recupero della password, ma sbaglia il codice di recupero per 5 volte consecutive, raggiungendo così lo stato di timeout.
+
+\clearpage
+
+\subsubsection{Simulazione recupero password e login corretto}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_recupero_password_e_login_corretto.png}
+    \caption{Utente effettua la procedura di recupero password e poi effettua il login correttamente.}
+\end{figure}
+
+La figura 3.6 mostra la simulazione di un utente che effettua la procedura di recupero della password in modo corretto e, successivamente, effettua il login con successo usando la nuova password appena cambiata.
