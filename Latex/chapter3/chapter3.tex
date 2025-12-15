@@ -367,15 +367,32 @@ La figura 3.6 mostra la simulazione di un utente che effettua la procedura di re
 
 \subsection{Verifica di una proprietà di Safety}
 
-La proprietà di Safety rappresenta il concetto che "qualcosa di brutto non accada mai" durante l'esecuzione di un sistema. In altre parole, una proprietà di Safety garantisce che il sistema non raggiunga mai uno stato indesiderato o pericoloso. Nel contesto della funzione di login modellata tramite la catena di Markov, una proprietà di Safety potrebbe essere formulata come segue: "Un utente non deve mai superare il numero massimo di tentativi di login errati senza essere bloccato". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
+La proprietà di \textit{Safety} rappresenta il concetto che "qualcosa di brutto non accada mai" durante l'esecuzione di un sistema. In altre parole, una proprietà di Safety garantisce che il sistema non raggiunga mai uno stato indesiderato o pericoloso. Nel contesto della funzione di login modellata tramite la catena di Markov, una proprietà di Safety potrebbe essere formulata come segue: "Un utente non deve mai superare il numero massimo di tentativi di login errati senza essere bloccato". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
 \begin{verbatim}
     P=? [ F ((c_log=5|c_mfa=5|c_email=5|c_rpass=5)&p1!=11) ]
 \end{verbatim}
 
-Essa afferma che la probabilità di raggiungere uno stato in cui uno dei contatori ($C_{LOG}$, $C_{MFA}$, $C_{EMAIL}$, $C_{RPASS}$) è uguale a 5 (cioè il numero massimo di tentativi errati) e lo stato corrente (p1) non è lo stato di timeout (stato 11), deve essere minore o uguale a 0. In altre parole, questa proprietà garantisce che il sistema bloccherà l'utente dopo un certo numero di tentativi errati, prevenendo così accessi non autorizzati.
+Ci chiediamo qual'è la probabilità di raggiungere uno stato in cui uno dei contatori ($C_{LOG}$, $C_{MFA}$, $C_{EMAIL}$, $C_{RPASS}$) è uguale a 5 (cioè il numero massimo di tentativi errati) e lo stato corrente (p1) non è lo stato di timeout (stato 11)? In altre parole, questa proprietà garantisce che il sistema bloccherà l'utente dopo un certo numero di tentativi errati, prevenendo così accessi non autorizzati.
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/safety.png}
+	\includegraphics[width=0.6\columnwidth]{chapter3/immagini/safety.png}
     \caption{Verifica della proprietà di Safety tramite PRISM.}
 \end{figure}
+
+Usando la funzione \textit{Verify} di PRISM, è stato possibile verificare questa proprietà di Safety sul modello della funzione di login. La verifica ha confermato che la proprietà è soddisfatta, infatti figura 3.7 mostra che la probabilità di raggiungere uno stato in cui uno dei contatori è uguale a 5 e lo stato corrente non è lo stato di timeout è praticamente pari a 0. Ciò significa che il sistema bloccherà sempre l'utente dopo un certo numero di tentativi errati, garantendo così la sicurezza del processo di autenticazione.
+
+\subsection{Verifica di una proprietà di response}
+
+La proprietà di \textit{Response} rappresenta il concetto che "se qualcosa di buono accade, allora qualcosa di buono deve accadere sempre". In altre parole, una proprietà di response garantisce che se un evento desiderato si verifica, allora un altro evento desiderato deve seguire. Si è deciso di modellare la "un utente con le credenziali corrette deve riuscire ad acceder al sistema infinitamente spesso". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
+\begin{verbatim}
+    P=? [ F p1=4 ]
+\end{verbatim}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{chapter3/immagini/response.png}
+    \caption{Verifica della proprietà di Response tramite PRISM.}
+\end{figure}
+
+Anche questa proprietà è stata verificata utilizzando la funzione \textit{Verify} di PRISM sul modello della funzione di login. La verifica ha confermato che la proprietà è soddisfatta, infatti figura 3.8 mostra che la probabilità di raggiungere lo stato 4 (login effettuato con successo) è praticamente pari a 1. Ciò significa che un utente con le credenziali corrette riuscirà sempre ad accedere al sistema, garantendo così l'accessibilità del processo di autenticazione.

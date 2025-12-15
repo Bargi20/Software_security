@@ -1,6 +1,17 @@
 \chapter{Programmazione Sicura} 
 
-In questo capitolo, saranno presentate le pratiche e le tecniche per garantire la sicurezza nella programmazione. La sicurezza del software è diventata una preoccupazione fondamentale nello sviluppo di applicazioni moderne, poiché le vulnerabilità possono essere sfruttate da attori malintenzionati per compromettere i dati e le funzionalità del sistema. Si tratteranno gli aspetti dell'applicazione sia a livello \textit{off-chain}, sia a livello \textit{on-chain}, con particolare attenzione alle best practice per la scrittura di codice sicuro, riportate nei seguenti paragrafi.
+In questo capitolo, saranno presentate le pratiche e le tecniche per garantire la sicurezza nella programmazione. La sicurezza del software è diventata una preoccupazione fondamentale nello sviluppo di applicazioni moderne, poiché le vulnerabilità possono essere sfruttate da attori malintenzionati per compromettere i dati e le funzionalità del sistema. Sarà presentato un \textit{Runtime enforcement Monitor} per assicurare che le proprietà modellate nel capitolo precedente siano soddisfatte a tempo di esecuzione. Inoltre si tratterà di aspetti dell'applicazione sia a livello \textit{off-chain}, sia a livello \textit{on-chain}, con particolare attenzione alle best practice per la scrittura di codice sicuro.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Modellazione di un monitor Runtime Enforcement}
+Per garantire che le proprietà di sicurezza identificate nel capitolo precedente siano rispettate durante l'esecuzione del sistema, è stato implementato un monitor di \textit{Runtime Enforcement}. Questo monitor agisce come un supervisore che osserva le azioni del sistema in tempo reale e interviene quando rileva una violazione delle proprietà di sicurezza.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{chapter4/immagini/Monitor_RE.png}
+    \caption{Modello del monitor di Runtime Enforcement.}
+\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Programmazione off-chain e best practices}
