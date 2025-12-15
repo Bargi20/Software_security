@@ -1,0 +1,68 @@
+\ProvidesPackage{prism}
+
+\RequirePackage{xcolor}
+\RequirePackage{etoolbox}
+
+% -----------------------------
+% Definizione colori
+% -----------------------------
+\definecolor{keywordblack}{RGB}{0,0,0}
+\definecolor{varred}{RGB}{255,0,0}
+\definecolor{commentgreen}{RGB}{0,128,0}
+\definecolor{numblue}{RGB}{0,0,255}
+\definecolor{dotblack}{RGB}{0,0,0}
+
+\newcommand{\lt}{\textless}
+\newcommand{\gt}{\textgreater}
+\newcommand{\n}[1]{\numberb{#1}}
+
+
+% -----------------------------
+% Comandi personalizzati
+% -----------------------------
+\newcommand{\keyword}[1]{\textbf{\textcolor{keywordblack}{#1}}}
+\newcommand{\variable}[1]{\textcolor{varred}{#1}}
+\newcommand{\numberb}[1]{\textcolor{numblue}{#1}}
+\newcommand{\cmt}[1]{\textcolor{commentgreen}{#1}}
+\newcommand{\dotblack}[1]{\textcolor{dotblack}{#1}}
+
+% -----------------------------
+% Evidenziare contenuto tra parentesi quadre
+% Numeri blu, tutto il resto rosso, quadre nere
+% -----------------------------
+\newcommand{\bracketcontent}[1]{%
+    [%
+    \begingroup
+        \def\do##1{%
+            \ifcat 0##1\relax
+                \numberb{##1}% se è un numero → blu
+            \else
+                \variable{##1}% altrimenti rosso
+            \fi
+        }%
+        \docsvlist{#1}%
+    \endgroup
+    ]%
+}
+
+% -----------------------------
+% Ambiente per codice Prism
+% -----------------------------
+\newenvironment{highlightPrism}
+{%
+  \begingroup
+  \ttfamily\small
+  \catcode`\_=12
+  \catcode`\&=12
+  \catcode`\<=12
+  \catcode`\>=12
+}
+{%
+  \endgroup
+}
+
+
+% -----------------------------
+% Comando per inserire codice inline
+% -----------------------------
+\newcommand{\prism}[1]{\begin{highlightPrism}#1\end{highlightPrism}}
