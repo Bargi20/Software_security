@@ -133,79 +133,117 @@ def custom_login(request):
         })
 
 
-def verify_otp(request):
-    """Vista per verificare il codice OTP con contatore tentativi"""
+# ============= OTP VERIFICATION HELPER FUNCTIONS =============
+
+def _check_otp_session(request):
+    """Verifica se la sessione OTP è valida"""
     if 'otp_user_email' not in request.session:
         messages.error(request, 'Sessione scaduta. Effettua nuovamente il login.')
+        return None
+    return request.session.get('otp_user_email')
+
+
+def _check_otp_blocked(login_attempt, request):
+    """Verifica se l'OTP è bloccato per troppi tentativi"""
+    if not login_attempt.is_otp_blocked():
+        return False
+    
+    remaining_time = (login_attempt.otp_blocked_until - timezone.now()).seconds // 60
+    messages.error(
+        request,
+        f'Troppi tentativi OTP falliti. Account bloccato per {remaining_time} minuti.'
+    )
+    _clear_otp_session(request)
+    return True
+
+
+def _clear_otp_session(request):
+    """Pulisce i dati OTP dalla sessione"""
+    if 'otp_user_email' in request.session:
+        del request.session['otp_user_email']
+    if 'otp_verified' in request.session:
+        del request.session['otp_verified']
+
+
+def _get_latest_otp_code(user):
+    """Recupera il codice OTP più recente non usato"""
+    return CodiceOTP.objects.filter(
+        utente=user,
+        usato=False
+    ).order_by('-creato_il').first()
+
+
+def _handle_correct_otp(request, user, login_attempt):
+    """Gestisce il caso di codice OTP corretto"""
+    login_attempt.reset_otp_attempts()
+    django_login(request, user)
+    request.session['otp_verified'] = True
+    _clear_otp_session(request)
+    messages.success(request, f'✅ Benvenuto {user.username}!')
+    return redirect('home')
+
+
+def _handle_incorrect_otp(request, login_attempt):
+    """Gestisce il caso di codice OTP errato"""
+    login_attempt.increment_otp_failed_attempts()
+    remaining_attempts = 5 - login_attempt.otp_failed_attempts
+    
+    if login_attempt.otp_is_blocked:
+        messages.error(
+            request,
+            '🚫 Troppi tentativi falliti. Account bloccato per 30 minuti.'
+        )
+        _clear_otp_session(request)
         return redirect('login')
     
-    email = request.session.get('otp_user_email')
+    messages.error(
+        request,
+        f'❌ Codice OTP non valido. Ti rimangono {remaining_attempts} tentativi.'
+    )
+    return None
+
+
+def _process_otp_verification(request, email, codice_inserito):
+    """Processa la verifica del codice OTP"""
+    try:
+        user = Utente.objects.get(email=email)
+    except Utente.DoesNotExist:
+        messages.error(request, 'Utente non trovato.')
+        return redirect('login')
+    
+    login_attempt, _ = TentativiDiLogin.objects.get_or_create(email=email)
+    ultimo_codice = _get_latest_otp_code(user)
+    
+    if ultimo_codice and ultimo_codice.verifica(codice_inserito):
+        return _handle_correct_otp(request, user, login_attempt)
+    
+    return _handle_incorrect_otp(request, login_attempt)
+
+
+# ============= MAIN OTP VERIFICATION VIEW =============
+
+def verify_otp(request):
+    """Vista per verificare il codice OTP con contatore tentativi"""
+    # Early return se sessione non valida
+    email = _check_otp_session(request)
+    if email is None:
+        return redirect('login')
     
     # Recupera il record dei tentativi
     login_attempt, _ = TentativiDiLogin.objects.get_or_create(email=email)
     
-    # Controlla se l'OTP è bloccato
-    if login_attempt.is_otp_blocked():
-        remaining_time = (login_attempt.otp_blocked_until - timezone.now()).seconds // 60
-        messages.error(
-            request,
-            f'Troppi tentativi OTP falliti. Account bloccato per {remaining_time} minuti.'
-        )
-        # Pulisci la sessione
-        if 'otp_user_email' in request.session:
-            del request.session['otp_user_email']
+    # Early return se OTP è bloccato
+    if _check_otp_blocked(login_attempt, request):
         return redirect('login')
     
+    # Processa POST request
     if request.method == 'POST':
         codice_inserito = request.POST.get('otp_code', '').strip()
-        
-        try:
-            user = Utente.objects.get(email=email)
-            
-            # Trova il codice OTP più recente non usato
-            ultimo_codice = CodiceOTP.objects.filter(
-                utente=user,
-                usato=False
-            ).order_by('-creato_il').first()
-            
-            if ultimo_codice and ultimo_codice.verifica(codice_inserito):
-                # Codice corretto - completa il login
-                login_attempt.reset_otp_attempts()
-                
-                django_login(request, user)
-                request.session['otp_verified'] = True
-                
-                # Pulisci la sessione
-                if 'otp_user_email' in request.session:
-                    del request.session['otp_user_email']
-                
-                messages.success(request, f'✅ Benvenuto {user.username}!')
-                return redirect('home')
-            else:
-                # Codice errato - incrementa contatore
-                login_attempt.increment_otp_failed_attempts()
-                remaining_attempts = 5 - login_attempt.otp_failed_attempts
-                
-                if login_attempt.otp_is_blocked:
-                    messages.error(
-                        request,
-                        '🚫 Troppi tentativi falliti. Account bloccato per 30 minuti.'
-                    )
-                    # Pulisci la sessione
-                    if 'otp_user_email' in request.session:
-                        del request.session['otp_user_email']
-                    return redirect('login')
-                else:
-                    messages.error(
-                        request,
-                        f'❌ Codice OTP non valido. Ti rimangono {remaining_attempts} tentativi.'
-                    )
-                
-        except Utente.DoesNotExist:
-            messages.error(request, 'Utente non trovato.')
-            return redirect('login')
+        result = _process_otp_verification(request, email, codice_inserito)
+        if result:
+            return result
     
-    # Calcola tentativi rimanenti
+    # Calcola tentativi rimanenti e mostra form
     otp_remaining_attempts = 5 - login_attempt.otp_failed_attempts
     
     return render(request, 'Ledger_Logistic/verify_otp.html', {
