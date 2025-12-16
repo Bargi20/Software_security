@@ -1,11 +1,82 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
 from datetime import timedelta
 
-# Create your models here.
 
-class LoginAttempt(models.Model):
+# ============= CUSTOM USER MANAGER =============
+
+class UtenteManager(BaseUserManager):
+    """Manager personalizzato per il modello Utente"""
+    
+    def create_user(self, email, username, password=None, **extra_fields):
+        """Crea e salva un utente normale"""
+        if not email:
+            raise ValueError('L\'email è obbligatoria')
+        if not username:
+            raise ValueError('Lo username è obbligatorio')
+        
+        email = self.normalize_email(email)
+        user = self.model(email=email, username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, email, username, password=None, **extra_fields):
+        """Crea e salva un superuser"""
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Il superuser deve avere is_staff=True')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Il superuser deve avere is_superuser=True')
+        
+        return self.create_user(email, username, password, **extra_fields)
+
+
+# ============= CUSTOM USER MODEL =============
+
+class Utente(AbstractBaseUser, PermissionsMixin):
+    """Modello User personalizzato che usa email per l'autenticazione"""
+    
+    email = models.EmailField(max_length=254, unique=True, verbose_name='Email')
+    username = models.CharField(max_length=150, unique=True, verbose_name='Username')
+    first_name = models.CharField(max_length=30, blank=True, verbose_name='Nome')
+    last_name = models.CharField(max_length=30, blank=True, verbose_name='Cognome')
+    phone_number = models.CharField(max_length=15, blank=True, verbose_name='Telefono')
+    address = models.TextField(blank=True, verbose_name='Indirizzo')
+    data_nascita = models.DateField(blank=True, null=True, verbose_name='Data di nascita')
+    
+    is_active = models.BooleanField(default=True, verbose_name='Attivo')
+    is_staff = models.BooleanField(default=False, verbose_name='Staff')
+    date_joined = models.DateTimeField(default=timezone.now, verbose_name='Data registrazione')
+    
+    objects = UtenteManager()
+    
+    USERNAME_FIELD = 'email'  # Campo usato per il login
+    REQUIRED_FIELDS = ['username']  # Campi obbligatori oltre a email e password
+    
+    class Meta:
+        verbose_name = "Utente"
+        verbose_name_plural = "Utenti"
+    
+    def __str__(self):
+        return self.email
+    
+    def get_full_name(self):
+        """Ritorna nome e cognome"""
+        return f"{self.first_name} {self.last_name}".strip()
+    
+    def get_short_name(self):
+        """Ritorna il nome"""
+        return self.first_name
+
+
+# ============= LOGIN ATTEMPT MODEL =============
+
+class TentativiDiLogin(models.Model):
     """Modello per tracciare i tentativi di login falliti tramite email"""
     email = models.EmailField(max_length=254)
     failed_attempts = models.IntegerField(default=0)
@@ -45,15 +116,3 @@ class LoginAttempt(models.Model):
                 return False
             return True
         return False
-    
-
-class UserProfile(models.Model):
-    """Estende il modello User per informazioni aggiuntive"""
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=15, blank=True, null=False)
-    address = models.TextField(blank=True, null=False, default='')
-    data = models.DateField(blank=True, null=True)
-    email = models.EmailField(blank=True, null=False, default='non definita')
-
-    def __str__(self):
-        return self.user.username

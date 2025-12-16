@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-=@n2r*1%_7s^*8i*2t3i^#^_bou**2v^^a0cy0mmtbcptj@vw^')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
@@ -78,7 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'software_security.wsgi.application'
 
-
+AUTH_USER_MODEL = 'Ledger_Logistic.Utente'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -92,14 +92,6 @@ if SUPABASE_DB_URL:
             conn_max_age=600,
             ssl_require=True
         )
-    }
-else:
-    # Fallback a SQLite per sviluppo locale
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
     }
 
 

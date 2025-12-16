@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as django_login, logout
+from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User
-from .models import LoginAttempt
+from .models import TentativiDiLogin
 from django.utils import timezone
 from django.db import IntegrityError
+
+# Ottieni il modello User personalizzato
+Utente = get_user_model()
+
 
 def home(request):
     # Se l'utente cerca un pacco (logica base)
@@ -31,8 +34,6 @@ def custom_login(request):
     # POST request - processa il login
     email = request.POST.get('email', '').strip()
     password = request.POST.get('password', '')
-    user = User.objects.filter(email=email).first()
-    username = user.username
     
     # Verifica che i campi non siano vuoti
     if not email or not password:
@@ -40,7 +41,7 @@ def custom_login(request):
         return render(request, root)
     
     # Recupera o crea un record di tentativo di login
-    login_attempt, _ = LoginAttempt.objects.get_or_create(username=username)
+    login_attempt, _ = TentativiDiLogin.objects.get_or_create(email=email)
     
     # Controlla se l'account è bloccato
     if login_attempt.is_account_blocked():
@@ -56,9 +57,9 @@ def custom_login(request):
             'email': email
         })
     
-    # Verifica che l'utente esista
+    # Verifica che l'utente esista tramite email
     try:
-        user_exists = User.objects.filter(username=email).exists()
+        user_exists = Utente.objects.filter(email=email).exists()
         if not user_exists:
             login_attempt.increment_failed_attempts()
             remaining_attempts = 5 - login_attempt.failed_attempts
@@ -68,18 +69,19 @@ def custom_login(request):
                 'remaining_attempts': remaining_attempts,
                 'failed_attempts': login_attempt.failed_attempts
             })
+        
     except Exception:
         messages.error(request, 'Errore durante la verifica dell\'utente.')
         return render(request, root)
     
-    # Tenta l'autenticazione
+    # Tenta l'autenticazione con email e password
     user = authenticate(request, email=email, password=password)
     
     if user is not None:
         # Login riuscito - reset del contatore
         login_attempt.reset_attempts()
         django_login(request, user)
-        messages.success(request, f'Benvenuto {user.nome}!')
+        messages.success(request, f'Benvenuto {user.username}!')
         return redirect('home')
     else:
         # Login fallito - incrementa il contatore
@@ -145,14 +147,14 @@ def _validate_password_match(password, password_confirm):
 
 def _check_username_exists(username):
     """Controlla se lo username esiste già"""
-    if User.objects.filter(username=username).exists():
+    if Utente.objects.filter(username=username).exists():
         return 'Questo username è già in uso.'
     return None
 
 
 def _check_email_exists(email):
     """Controlla se l'email è già registrata"""
-    if User.objects.filter(email=email).exists():
+    if Utente.objects.filter(email=email).exists():
         return 'Questa email è già registrata.'
     return None
 
@@ -194,29 +196,22 @@ def _validate_registration_data(username, email, password, password_confirm):
     return errors
 
 
-def _create_user_account(username, email, password, first_name, last_name, phone_number, address, data):
+def _create_user_account(username, email, password, first_name, last_name, phone_number, address, data_nascita):
     """
-    Crea un nuovo account utente con profilo esteso.
+    Crea un nuovo account utente.
     Ritorna (success: bool, error_message: str or None)
     """
     try:
-        # Prima crea l'utente base di Django
-        user = User.objects.create_user(
-            username=username,
+        # Usa il manager del modello personalizzato
+        user = Utente.objects.create_user(
             email=email,
+            username=username,
             password=password,
             first_name=first_name,
-            last_name=last_name
-        )
-        
-        # Poi crea il profilo esteso
-        from .models import UserProfile
-        UserProfile.objects.create(
-            user=user,
+            last_name=last_name,
             phone_number=phone_number,
             address=address,
-            data=data,
-            email=email
+            data_nascita=data_nascita
         )
         
         # Verifica che l'utente sia stato creato correttamente
@@ -253,7 +248,7 @@ def register(request):
     last_name = request.POST.get('last_name', '').strip()
     phone_number = request.POST.get('phone_number', '').strip()
     address = request.POST.get('address', '').strip()
-    data = request.POST.get('data', '')
+    data_nascita = request.POST.get('data_nascita', None)
     
     # Valida i dati
     errors = _validate_registration_data(username, email, password, password_confirm)
@@ -269,13 +264,13 @@ def register(request):
             'last_name': last_name,
             'phone_number': phone_number,
             'address': address,
-            'data': data
+            'data_nascita': data_nascita
         })
     
-    # Crea l'utente con il profilo esteso
+    # Crea l'utente
     success, error_message = _create_user_account(
         username, email, password, first_name, last_name,
-        phone_number, address, data
+        phone_number, address, data_nascita
     )
     
     # Gestisci il risultato
@@ -285,7 +280,7 @@ def register(request):
     
     messages.success(
         request,
-        f'Account creato con successo! Benvenuto {username}, puoi ora effettuare il login.'
+        f'Account creato con successo! Benvenuto {username}, puoi ora effettuare il login con la tua email.'
     )
     return redirect('login')
 
