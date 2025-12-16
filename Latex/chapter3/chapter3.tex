@@ -179,114 +179,130 @@ Per analizzare la catena di Markov della funzione di login, è stato utilizzato 
 %%%%%%%%%%INSERISCI MODEL PRISM QUI%%%%%%%%%%%%
 %\mintedprism{chapter3/loginV2.prism}
 
+%%INIZIO MODEL PRISM%%%%%%%
+\\
 \begin{highlightPrism}
-\keyword{dtmc}
-
+\keyword{\hspace{0.4em}dtmc}
+\\
+\\
 \keyword{module} \variable{login\_function}
-
-\variable{p1} : [\numberb{0}..\numberb{27}] \keyword{init} \numberb{0};
-\variable{c\_log} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0};
-\variable{c\_mfa} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0};
-\variable{c\_rpass} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0};
+\\
+\\
+\variable{p1} : [\numberb{0}..\numberb{27}] \keyword{init} \numberb{0}; \\
+\variable{c\_log} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0}; \\
+\variable{c\_mfa} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0}; \\
+\variable{c\_rpass} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0}; \\
 \variable{c\_email} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0};
-
-% uscenti da stato 0
+\\
+\\
+\cmt{// uscenti da stato 0} \\
 \bracketcontent{} (\variable{p1}=\numberb{0}) -\gt \numberb{0.8}:(\variable{p1}'=\numberb{12}) \&
 (\variable{c\_log}' = \keyword{min}(\variable{c\_log} + \numberb{1}, \numberb{5}))
-+ \numberb{0.2}:(\variable{p1}'=\numberb{13});
-
++ \numberb{0.2}:(\variable{p1}'=\numberb{13}); \\
 \bracketcontent{inserimentodati} (\variable{p1}=\numberb{12}) -\gt (\variable{p1}'=\numberb{1});
-\bracketcontent{PasswordDimentica} (\variable{p1}=\numberb{13}) -\gt (\variable{p1}'=\numberb{5});
-
-% uscenti da stato 1
+\\
+\bracketcontent{PasswordDimenticata} (\variable{p1}=\numberb{13}) -\gt (\variable{p1}'=\numberb{5});
+\\
+\\
+\cmt{// uscenti da stato 1} \\
 \bracketcontent{} (\variable{p1}=\numberb{1}) \& (\variable{c\_log}\lt\numberb{5})
 -\gt \numberb{0.2}:(\variable{p1}'=\numberb{14})
-+ \numberb{0.8}:(\variable{p1}'=\numberb{15});
-
++ \numberb{0.8}:(\variable{p1}'=\numberb{15}); \\
 \bracketcontent{} (\variable{p1}=\numberb{1}) \& (\variable{c\_log}=\numberb{5})
 -\gt \numberb{0.2}:(\variable{p1}'=\numberb{11})
-+ \numberb{0.8}:(\variable{p1}'=\numberb{15});
-
++ \numberb{0.8}:(\variable{p1}'=\numberb{15}); \\
 \bracketcontent{datiKO} (\variable{p1}=\numberb{14}) \& (\variable{c\_log}\lt\numberb{5})
--\gt (\variable{p1}'=\numberb{0});
-
-\bracketcontent{datiOK} \variable{p1}=\numberb{15} -\gt (\variable{p1}'=\numberb{2});
+-\gt (\variable{p1}'=\numberb{0}); \\
+\bracketcontent{datiOK} \variable{p1}=\numberb{15} -\gt (\variable{p1}'=\numberb{2}); \\
 \bracketcontent{datiKO} \variable{p1}=\numberb{16} \& \variable{c\_log}=\numberb{5}
 -\gt (\variable{p1}'=\numberb{11});
-
-% uscenti da stato 2
+\\
+\\
+% stato 2
+\cmt{// uscenti da stato 2} \\
 \bracketcontent{} (\variable{p1}=\numberb{2}) -\gt
 \numberb{0.2}:(\variable{p1}'=\numberb{17})
 + \numberb{0.8}:(\variable{p1}'=\numberb{16}) \&
-(\variable{c\_mfa}' = \keyword{min}(\variable{c\_mfa} + \numberb{1}, \numberb{5}));
-
-\bracketcontent{inserimentoCodice} (\variable{p1}=\numberb{16}) -\gt (\variable{p1}'=\numberb{3});
+(\variable{c\_mfa}' = \keyword{min}(\variable{c\_mfa} + \numberb{1}, \numberb{5})); \\
+\bracketcontent{inserimentoCodice} (\variable{p1}=\numberb{16}) -\gt (\variable{p1}'=\numberb{3}); \\
 \bracketcontent{rinviocodicemfa} (\variable{p1}=\numberb{17}) -\gt (\variable{p1}'=\numberb{2});
-
-% uscenti dallo stato 3
+\\
+\\
+% stato 3
+\cmt{// uscenti da stato 3} \\
 \bracketcontent{} (\variable{p1}=\numberb{3}) \& (\variable{c\_mfa}\lt\numberb{5})
 -\gt \numberb{0.2}:(\variable{p1}'=\numberb{19})
-+ \numberb{0.8}:(\variable{p1}'=\numberb{18});
-
++ \numberb{0.8}:(\variable{p1}'=\numberb{18}); \\
 \bracketcontent{} (\variable{p1}=\numberb{3}) \& (\variable{c\_mfa}=\numberb{5})
 -\gt \numberb{0.2}:(\variable{p1}'=\numberb{11})
-+ \numberb{0.8}:(\variable{p1}'=\numberb{18});
-
++ \numberb{0.8}:(\variable{p1}'=\numberb{18}); \\
 \bracketcontent{codiceKO} (\variable{p1}=\numberb{19}) \& (\variable{c\_mfa}\lt\numberb{5})
--\gt (\variable{p1}'=\numberb{2});
+-\gt (\variable{p1}'=\numberb{2}); \\
 \bracketcontent{codiceOK} \variable{p1}=\numberb{18} -\gt (\variable{p1}'=\numberb{4});
-
-% uscenti da 5
+\\
+\\ 
+% stato 4
+\cmt{// uscenti da stato 4 -> stato di login effettuato} \\
+\\
+% stato 5
+\cmt{// uscenti da stato 5} \\
 \bracketcontent{inserimentoemail} \variable{p1}=\numberb{5} -\gt
 (\variable{p1}'=\numberb{6}) \&
 (\variable{c\_email}' = \keyword{min}(\variable{c\_email} + \numberb{1}, \numberb{5}));
-
-% uscenti da 6
+\\
+\\
+% stato 6
+\cmt{// uscenti da stato 6} \\
 \bracketcontent{} (\variable{p1}=\numberb{6}) \& (\variable{c\_email}\lt\numberb{5})
 -\gt \numberb{0.2}:(\variable{p1}'=\numberb{21})
-+ \numberb{0.8}:(\variable{p1}'=\numberb{20});
-
++ \numberb{0.8}:(\variable{p1}'=\numberb{20}); \\
 \bracketcontent{} (\variable{p1}=\numberb{6}) \& (\variable{c\_email}=\numberb{5})
 -\gt \numberb{0.2}:(\variable{p1}'=\numberb{11})
-+ \numberb{0.8}:(\variable{p1}'=\numberb{20});
-
++ \numberb{0.8}:(\variable{p1}'=\numberb{20}); \\
 \bracketcontent{emailKO} (\variable{p1}=\numberb{21}) \& (\variable{c\_email}\lt\numberb{5})
--\gt (\variable{p1}'=\numberb{5});
+-\gt (\variable{p1}'=\numberb{5}); \\
 \bracketcontent{emailOK} \variable{p1}=\numberb{20} -\gt (\variable{p1}'=\numberb{7});
-
-% uscenti da 7
+\\
+\\
+% stato 7
+\cmt{// uscenti da stato 7} \\
 \bracketcontent{} (\variable{p1}=\numberb{7}) -\gt
 \numberb{0.2}:(\variable{p1}'=\numberb{23})
 + \numberb{0.8}:(\variable{p1}'=\numberb{22}) \&
-(\variable{c\_rpass}' = \keyword{min}(\variable{c\_rpass} + \numberb{1}, \numberb{5}));
-
-\bracketcontent{rinviocodicepass} (\variable{p1}=\numberb{23}) -\gt (\variable{p1}'=\numberb{7});
+(\variable{c\_rpass}' = \keyword{min}(\variable{c\_rpass} + \numberb{1}, \numberb{5})); \\
+\bracketcontent{rinviocodicepass} (\variable{p1}=\numberb{23}) -\gt (\variable{p1}'=\numberb{7}); \\
 \bracketcontent{inserimentocodice} \variable{p1}=\numberb{22} -\gt (\variable{p1}'=\numberb{8});
-
-% uscenti da 8
+\\
+\\
+% stato 8
+\cmt{// uscenti da stato 8} \\
 \bracketcontent{} (\variable{p1}=\numberb{8}) \& (\variable{c\_rpass}\lt\numberb{5})
 -\gt \numberb{0.1}:(\variable{p1}'=\numberb{25})
-+ \numberb{0.9}:(\variable{p1}'=\numberb{24});
-
++ \numberb{0.9}:(\variable{p1}'=\numberb{24}); \\
 \bracketcontent{} (\variable{p1}=\numberb{8}) \& (\variable{c\_rpass}=\numberb{5})
 -\gt \numberb{0.1}:(\variable{p1}'=\numberb{11})
-+ \numberb{0.9}:(\variable{p1}'=\numberb{24});
-
++ \numberb{0.9}:(\variable{p1}'=\numberb{24}); \\
 \bracketcontent{codiceKO} (\variable{p1}=\numberb{25}) \& (\variable{c\_rpass}\lt\numberb{5})
--\gt (\variable{p1}'=\numberb{7});
+-\gt (\variable{p1}'=\numberb{7}); \\
 \bracketcontent{codiceOK} (\variable{p1}=\numberb{24}) -\gt (\variable{p1}'=\numberb{9});
-
-% uscenti da 9
+\\
+\\
+% stato 9
+\cmt{// uscenti da stato 9} \\
 \bracketcontent{inserimentonuovapassword} (\variable{p1}=\numberb{9}) -\gt (\variable{p1}'=\numberb{10});
-
-% uscenti da 10
+\\
+\\
+% stato 10
+\cmt{// uscenti da stato 10} \\
 \bracketcontent{} (\variable{p1}=\numberb{10})
 -\gt \numberb{0.1}:(\variable{p1}'=\numberb{27})
-+ \numberb{0.9}:(\variable{p1}'=\numberb{26});
-
-\bracketcontent{nuovapasswordKO} \variable{p1}=\numberb{27} -\gt (\variable{p1}'=\numberb{9});
++ \numberb{0.9}:(\variable{p1}'=\numberb{26}); \\
+\bracketcontent{nuovapasswordKO} \variable{p1}=\numberb{27} -\gt (\variable{p1}'=\numberb{9}); \\
 \bracketcontent{nuovapasswordOK} \variable{p1}=\numberb{26} -\gt (\variable{p1}'=\numberb{0});
-
+\\
+\\
+% stato 11
+\cmt{// uscenti da stato 11 -> stato di errore} \\ \\
 \keyword{endmodule}
 \end{highlightPrism}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
