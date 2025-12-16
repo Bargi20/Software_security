@@ -192,11 +192,11 @@ class CodiceOTP(models.Model):
 class Evento(models.Model):
     """Modello per tracciare eventi per l'oracolo bayesiano"""
     nomeEvento = models.CharField(max_length=100)
-    probabilita_priori = models.FloatField(max_length=5)
+    probabilita_priori = models.FloatField()  # Rimuovi max_length
     
     class Meta:
-        verbose_name = "Evento_per_oracolo"
-        verbose_name_plural = "Eventi_per_oracolo"
+        verbose_name = "Evento per oracolo"
+        verbose_name_plural = "Eventi per oracolo"
     
     def __str__(self):
         return f"{self.nomeEvento} - {self.probabilita_priori}"
@@ -204,12 +204,35 @@ class Evento(models.Model):
 class Prova(models.Model):
     """Prova per l'oracolo bayesiano"""
     nomeProva = models.CharField(max_length=100)
-    idEvento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='Evento_per_oracolo')
-    probabilita_condizionata = models.FloatField(max_length=5)
+    prob1 = models.BooleanField(default=False, null=True, blank=True)
+    prob2 = models.BooleanField(default=False, null=True, blank=True)
+    prob3 = models.BooleanField(default=False, null=True, blank=True)
+    idEvento1 = models.ForeignKey(
+        Evento, 
+        on_delete=models.CASCADE, 
+        related_name='prove_evento1',  # Cambiato
+        null=True, 
+        blank=True
+    )
+    idEvento2 = models.ForeignKey(
+        Evento, 
+        on_delete=models.CASCADE, 
+        related_name='prove_evento2',  # Cambiato
+        null=True,
+        blank=True
+    )
+    idEvento3 = models.ForeignKey(
+        Evento, 
+        on_delete=models.CASCADE, 
+        related_name='prove_evento3',  # Cambiato
+        null=True,
+        blank=True
+    )
+    probabilita_condizionata = models.FloatField()  # Rimuovi max_length
     
     class Meta:
-        verbose_name = "Prova_per_oracolo"
-        verbose_name_plural = "Prove_per_oracolo"
+        verbose_name = "Prova per oracolo"
+        verbose_name_plural = "Prove per oracolo"
     
     def __str__(self):
-        return f"{self.nomeProva} - {self.idEvento} - {self.probabilita_condizionata}"
+        return f"{self.nomeProva} - {self.probabilita_condizionata}"
