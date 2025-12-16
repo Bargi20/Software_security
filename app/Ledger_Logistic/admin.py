@@ -6,6 +6,11 @@ from .models import Utente, TentativiDiLogin, CodiceOTP
 # Usa admin normale, non OTP
 # admin.site.__class__ = OTPAdminSite
 
+# Personalizza i titoli dell'admin
+admin.site.site_header = "Amministrazione Ledger Logistics"
+admin.site.site_title = "Ledger Logistics"
+admin.site.index_title = "Pannello di Amministrazione"
+
 # Registra i modelli
 @admin.register(Utente)
 class UtenteAdmin(admin.ModelAdmin):
