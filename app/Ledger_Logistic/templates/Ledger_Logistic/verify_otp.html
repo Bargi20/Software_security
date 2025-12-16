@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styleButton.css' %}">
-    <title>Verifica OTP - Ledger Logistic</title>
+    <title>Verifica OTP - Ledger Logistics</title>
     <style>
         * {
             margin: 0;
@@ -181,12 +181,17 @@
         .back-link a:hover {
             color: #667eea;
         }
+        
+        .order {
+            margin: 0 auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="otp-container">
         <h2>🔐 Verifica OTP</h2>
-        <p class="subtitle">Ledger Logistic</p>
+        <p class="subtitle">Ledger Logistics</p>
         
         <div class="info-box">
             📧 Abbiamo inviato un codice di 6 cifre a:<br>
@@ -220,7 +225,24 @@
                 >
             </div>
             
-            <button type="submit" class="order">Verifica Codice</button>
+            <button type="submit" class="order">
+                <span class="default">Verifica Codice</span>
+                <span class="success">Codice verificato
+                    <svg viewbox="0 0 12 10">
+                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                    </svg>
+                </span>
+                <div class="box"></div>
+                <div class="truck">
+                    <div class="back"></div>
+                    <div class="front">
+                        <div class="window"></div>
+                    </div>
+                    <div class="light top"></div>
+                    <div class="light bottom"></div>
+                </div>
+                <div class="lines"></div>
+            </button>
             
             {% if otp_failed_attempts %}
                 <div class="attempts-counter {% if otp_failed_attempts >= 3 %}{% if otp_failed_attempts >= 4 %}danger{% else %}warning{% endif %}{% endif %}">
@@ -242,7 +264,7 @@
         
         <div style="text-align: center; margin-top: 2rem; font-size: 0.75rem; color: #999;">
             <p>🔒 Protetto da autenticazione a due fattori</p>
-            <p>© 2025 Ledger Logistic</p>
+            <p>© 2025 Ledger Logistics</p>
         </div>
     </div>
 
@@ -273,6 +295,7 @@
             this.value = numbers;
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/button.js' %}"></script>
 </body>
 </html>
