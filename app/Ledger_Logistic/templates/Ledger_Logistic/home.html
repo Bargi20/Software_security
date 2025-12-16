@@ -29,7 +29,12 @@
                     <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Servizi</a>
                     <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Chi siamo</a>
                     <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Contatti</a>
-                    <a href="#" class="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">Area Clienti</a>
+                    {% if user.is_authenticated %}
+                        <span class="text-gray-600 font-medium">Ciao, {{ user.first_name }}</span>
+                        <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">Login</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

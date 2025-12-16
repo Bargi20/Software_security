@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ledger Logistic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-login:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .message.error {
+            background-color: #fee;
+            color: #c33;
+            border-left: 4px solid #c33;
+        }
+        
+        .message.warning {
+            background-color: #fffbeb;
+            color: #b45309;
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .message.success {
+            background-color: #efe;
+            color: #3c3;
+            border-left: 4px solid #3c3;
+        }
+        
+        .attempts-counter {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .attempts-counter.warning {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+        
+        .attempts-counter.danger {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
+        .blocked-message {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .blocked-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>🔐 Login</h2>
+        <p class="subtitle">Ledger Logistic</p>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% if blocked %}
+            <div class="blocked-message">
+                <div class="blocked-icon">🚫</div>
+                <h3 style="color: #dc2626; margin-bottom: 1rem;">Account Bloccato</h3>
+                <p style="color: #666;">
+                    Il tuo account è stato temporaneamente bloccato per motivi di sicurezza.
+                    <br><br>
+                    Tempo rimanente: <strong>{{ remaining_time }} minuti</strong>
+                </p>
+            </div>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="text" 
+                        id="email" 
+                        name="email" 
+                        value="{{ email|default:'' }}"
+                        required 
+                        autofocus
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                    >
+                </div>
+                
+                <button type="submit" class="btn-login">Accedi</button>
+                
+                {% if failed_attempts %}
+                    <div class="attempts-counter {% if failed_attempts >= 3 %}{% if failed_attempts >= 4 %}danger{% else %}warning{% endif %}{% endif %}">
+                        {% if remaining_attempts > 0 %}
+                            ⚠️ Tentativi rimasti: {{ remaining_attempts }}/5
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </form>
+        {% endif %}
+        
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #999;">
+            <a href="{% url 'register' %}">Non hai un account? Registrati</a>
+            <p>© 2025 Ledger Logistic</p>
+        </div>
+    </div>
+</body>
+</html>
