@@ -11,11 +11,11 @@
 \definecolor{commentgreen}{RGB}{0,128,0}
 \definecolor{numblue}{RGB}{0,0,255}
 \definecolor{dotblack}{RGB}{0,0,0}
+\definecolor{gray}{RGB}{128,128,128}
 
 \newcommand{\lt}{\textless}
 \newcommand{\gt}{\textgreater}
 \newcommand{\n}[1]{\numberb{#1}}
-
 
 % -----------------------------
 % Comandi personalizzati
@@ -28,10 +28,9 @@
 
 % -----------------------------
 % Evidenziare contenuto tra parentesi quadre
-% Numeri blu, tutto il resto rosso, quadre nere
 % -----------------------------
 \newcommand{\bracketcontent}[1]{%
-    [%
+    [% 
     \begingroup
         \def\do##1{%
             \ifcat 0##1\relax
@@ -40,29 +39,47 @@
                 \variable{##1}% altrimenti rosso
             \fi
         }%
-        \docsvlist{#1}%
+        \docsvlist{#1}% 
     \endgroup
     ]%
 }
 
 % -----------------------------
-% Ambiente per codice Prism
+% Contatore globale per numeri di riga Prism
 % -----------------------------
+\newcounter{prismline}
+
 \newenvironment{highlightPrism}
 {%
   \begingroup
   \ttfamily\small
+  \parindent=0pt
+  \obeyspaces
   \catcode`\_=12
   \catcode`\&=12
   \catcode`\<=12
   \catcode`\>=12
+  \setcounter{prismline}{1}
+
+  % comando per stampare numero di riga
+  \newcommand{\printline}{%
+    \llap{\textcolor{gray}{\theprismline\hspace{0.7em}}}%
+    \stepcounter{prismline}%
+  }%
+
+  % aggiunge numero di riga all’inizio di ogni paragrafo
+  \everypar{\printline\everypar{}}%
+
+  % ridefinisco \\ per continuare numerazione su righe successive
+  \let\oldcr\\
+  \renewcommand{\\}{\oldcr\printline}%
 }
 {%
+  \par
   \endgroup
 }
 
 
-% -----------------------------
-% Comando per inserire codice inline
-% -----------------------------
-\newcommand{\prism}[1]{\begin{highlightPrism}#1\end{highlightPrism}}
+
+
+
