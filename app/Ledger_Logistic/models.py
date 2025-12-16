@@ -188,3 +188,30 @@ class CodiceOTP(models.Model):
             self.save()
             return True
         return False
+
+class Evento(models.Model):
+    """Modello per tracciare eventi per l'oracolo bayesiano"""
+    nomeEvento = models.CharField(max_length=100)
+    probabilita_priori = models.FloatField(max_length=5)
+    
+    class Meta:
+        verbose_name = "Evento per oracolo"
+        verbose_name_plural = "Eventi per oracolo"
+        ordering = ['-timestamp']
+    
+    def __str__(self):
+        return f"{self.nomeEvento} - {self.probabilita_priori}"
+    
+class Prova(models.Model):
+    """Prova per l'oracolo bayesiano"""
+    nomeProva = models.CharField(max_length=100)
+    idEvento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='Evento per oracolo')
+    probabilita_condizionata = models.FloatField(max_length=5)
+    
+    class Meta:
+        verbose_name = "Prova per oracolo"
+        verbose_name_plural = "Prove per oracolo"
+        ordering = ['-timestamp']
+    
+    def __str__(self):
+        return f"{self.nomeProva} - {self.idEvento} - {self.probabilita_condizionata}"
