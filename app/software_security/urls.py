@@ -26,4 +26,6 @@ urlpatterns = [
     path('verify-otp/', views.verify_otp, name='verify_otp'),
     path('logout/', views.custom_logout, name='logout'),
     path('register/', views.register, name='register'),
+    path('blockchain/invia-prova/<int:prova_id>/', views.invia_probabilita_blockchain, name='invia_prova_blockchain'),
+    path('blockchain/invia-tutte/', views.invia_tutte_probabilita_blockchain, name='invia_prob_blockchain'),
 ]

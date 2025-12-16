@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import TentativiDiLogin, CodiceOTP
+from .models import TentativiDiLogin, CodiceOTP,Evento, Prova
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
 from django.conf import settings
+from .blockchain import get_contract, is_connected, send_transaction
 
 # Ottieni il modello User personalizzato
 Utente = get_user_model()
@@ -431,3 +432,130 @@ def register(request):
 
 
 
+@login_required
+def invia_probabilita_blockchain(request, prova_id):
+    """
+    Recupera le probabilità da una Prova e le invia allo smart contract
+    
+    Args:
+        prova_id: ID della prova da inviare
+    """
+    # Verifica connessione blockchain
+    if not is_connected():
+        messages.error(request, '❌ Blockchain non disponibile')
+        return redirect('home')
+    
+    try:
+        # Recupera la prova dal database
+        prova = Prova.objects.select_related(
+            'idEvento1', 'idEvento2', 'idEvento3'
+        ).get(id=prova_id)
+        
+        # Prepara i dati delle probabilità
+        probabilita_priori = []
+        nomi_eventi = []
+        
+        # Aggiungi eventi se esistono
+        if prova.idEvento1:
+            probabilita_priori.append(int(prova.idEvento1.probabilita_priori * 100))
+            nomi_eventi.append(prova.idEvento1.nomeEvento)
+        
+        if prova.idEvento2:
+            probabilita_priori.append(int(prova.idEvento2.probabilita_priori * 100))
+            nomi_eventi.append(prova.idEvento2.nomeEvento)
+        
+        if prova.idEvento3:
+            probabilita_priori.append(int(prova.idEvento3.probabilita_priori * 100))
+            nomi_eventi.append(prova.idEvento3.nomeEvento)
+        
+        # Probabilità condizionata (moltiplicata per 100 per evitare decimali)
+        prob_condizionata = int(prova.probabilita_condizionata * 100)
+        
+        # Ottieni il contratto
+        contract = get_contract()
+        
+        # Chiama la funzione del contratto (adatta il nome alla tua funzione)
+        # Esempio: contract.functions.salvaProbabilita(nomeProva, probabilitaPriori[], probCondizionata)
+        success, tx_hash, error = send_transaction(
+            contract.functions.salvaProbabilita,
+            prova.nomeProva,
+            probabilita_priori,
+            prob_condizionata
+        )
+        
+        if success:
+            messages.success(
+                request, 
+                f'✅ Probabilità inviate alla blockchain!\n'
+                f'TX Hash: {tx_hash}\n'
+                f'Prova: {prova.nomeProva}\n'
+                f'Eventi: {", ".join(nomi_eventi)}'
+            )
+        else:
+            messages.error(request, f'❌ Errore nell\'invio: {error}')
+            
+    except Prova.DoesNotExist:
+        messages.error(request, '❌ Prova non trovata')
+    except Exception as e:
+        messages.error(request, f'❌ Errore: {str(e)}')
+    
+    return redirect('home')
+
+
+@login_required
+def invia_tutte_probabilita_blockchain(request):
+    """
+    Invia tutte le prove non ancora inviate alla blockchain
+    """
+    if not is_connected():
+        messages.error(request, '❌ Blockchain non disponibile')
+        return redirect('home')
+    
+    try:
+        # Recupera tutte le prove
+        prove = Prova.objects.select_related(
+            'idEvento1', 'idEvento2', 'idEvento3'
+        ).all()
+        
+        successi = 0
+        errori = 0
+        
+        for prova in prove:
+            # Prepara i dati
+            probabilita_priori = []
+            
+            if prova.idEvento1:
+                probabilita_priori.append(int(prova.idEvento1.probabilita_priori * 100))
+            if prova.idEvento2:
+                probabilita_priori.append(int(prova.idEvento2.probabilita_priori * 100))
+            if prova.idEvento3:
+                probabilita_priori.append(int(prova.idEvento3.probabilita_priori * 100))
+            
+            prob_condizionata = int(prova.probabilita_condizionata * 100)
+            
+            # Invia al contratto
+            contract = get_contract()
+            success, _ , error = send_transaction(
+                contract.functions.salvaProbabilita,
+                prova.nomeProva,
+                probabilita_priori,
+                prob_condizionata
+            )
+            
+            if success:
+                successi += 1
+            else:
+                errori += 1
+                print(f"Errore per prova {prova.nomeProva}: {error}")
+        
+        messages.success(
+            request,
+            f'✅ Invio completato!\n'
+            f'Successi: {successi}\n'
+            f'Errori: {errori}'
+        )
+        
+    except Exception as e:
+        messages.error(request, f'❌ Errore: {str(e)}')
+    
+    return redirect('home')
