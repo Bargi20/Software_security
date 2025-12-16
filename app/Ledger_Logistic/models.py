@@ -195,9 +195,8 @@ class Evento(models.Model):
     probabilita_priori = models.FloatField(max_length=5)
     
     class Meta:
-        verbose_name = "Evento per oracolo"
-        verbose_name_plural = "Eventi per oracolo"
-        ordering = ['-timestamp']
+        verbose_name = "Evento_per_oracolo"
+        verbose_name_plural = "Eventi_per_oracolo"
     
     def __str__(self):
         return f"{self.nomeEvento} - {self.probabilita_priori}"
@@ -205,13 +204,12 @@ class Evento(models.Model):
 class Prova(models.Model):
     """Prova per l'oracolo bayesiano"""
     nomeProva = models.CharField(max_length=100)
-    idEvento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='Evento per oracolo')
+    idEvento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='Evento_per_oracolo')
     probabilita_condizionata = models.FloatField(max_length=5)
     
     class Meta:
-        verbose_name = "Prova per oracolo"
-        verbose_name_plural = "Prove per oracolo"
-        ordering = ['-timestamp']
+        verbose_name = "Prova_per_oracolo"
+        verbose_name_plural = "Prove_per_oracolo"
     
     def __str__(self):
         return f"{self.nomeProva} - {self.idEvento} - {self.probabilita_condizionata}"
