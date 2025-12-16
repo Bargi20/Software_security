@@ -1,8 +1,11 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styleButton.css' %}">
     <title>Verifica OTP - Ledger Logistic</title>
     <style>
         * {
@@ -217,7 +220,7 @@
                 >
             </div>
             
-            <button type="submit" class="btn-verify">Verifica Codice</button>
+            <button type="submit" class="order">Verifica Codice</button>
             
             {% if otp_failed_attempts %}
                 <div class="attempts-counter {% if otp_failed_attempts >= 3 %}{% if otp_failed_attempts >= 4 %}danger{% else %}warning{% endif %}{% endif %}">
@@ -270,5 +273,6 @@
             this.value = numbers;
         });
     </script>
+    <script src="{% static 'js/button.js' %}"></script>
 </body>
 </html>
