@@ -28,7 +28,7 @@ In seguito, bisogna installare le dipendenze e le librerie necessarie per l'esec
 cd app 
 python -m venv venv
 source venv/bin/activate    # UTENTE MAC/LINUX
-venv\\Scripts\\activate       # UTENTE WINDOWS
+./venv/Scripts/Activate.ps1       # UTENTE WINDOWS
 pip install -r requirements.txt
 \end{terminal}
 
@@ -39,7 +39,7 @@ cd ..
 npm install
 \end{terminal}
 
-Infine, è necessario avviare i container Docker per inizializzare la rete blockchain privata. Per fare ciò, basta scrivere questo comando nella root del progetto: 
+Infine, è necessario avviare i container Docker (previa apertura ) per inizializzare la rete blockchain privata. Per fare ciò, basta scrivere questo comando nella root del progetto: 
 \begin{terminal}
 docker-compose up -d
 \end{terminal}
