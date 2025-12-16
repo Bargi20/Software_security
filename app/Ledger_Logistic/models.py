@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
 from datetime import timedelta
+import random
 
 
 # ============= CUSTOM USER MANAGER =============
@@ -55,8 +56,8 @@ class Utente(AbstractBaseUser, PermissionsMixin):
     
     objects = UtenteManager()
     
-    USERNAME_FIELD = 'email'  # Campo usato per il login
-    REQUIRED_FIELDS = ['username']  # Campi obbligatori oltre a email e password
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
     
     class Meta:
         verbose_name = "Utente"
@@ -78,11 +79,16 @@ class Utente(AbstractBaseUser, PermissionsMixin):
 
 class TentativiDiLogin(models.Model):
     """Modello per tracciare i tentativi di login falliti tramite email"""
-    email = models.EmailField(max_length=254)
+    email = models.EmailField(max_length=254, unique=True)
     failed_attempts = models.IntegerField(default=0)
     last_attempt = models.DateTimeField(auto_now=True)
     is_blocked = models.BooleanField(default=False)
     blocked_until = models.DateTimeField(null=True, blank=True)
+    
+    # Tentativi OTP separati
+    otp_failed_attempts = models.IntegerField(default=0)
+    otp_is_blocked = models.BooleanField(default=False)
+    otp_blocked_until = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         verbose_name = "Tentativo di Login"
@@ -96,8 +102,16 @@ class TentativiDiLogin(models.Model):
         self.failed_attempts += 1
         if self.failed_attempts >= 5:
             self.is_blocked = True
-            # Blocca per 30 minuti
+            #Blocco di 30 min
             self.blocked_until = timezone.now() + timedelta(minutes=30)
+        self.save()
+    
+    def increment_otp_failed_attempts(self):
+        """Incrementa il contatore dei tentativi OTP falliti"""
+        self.otp_failed_attempts += 1
+        if self.otp_failed_attempts >= 5:
+            self.otp_is_blocked = True
+            self.otp_blocked_until = timezone.now() + timedelta(minutes=30)
         self.save()
     
     def reset_attempts(self):
@@ -107,12 +121,70 @@ class TentativiDiLogin(models.Model):
         self.blocked_until = None
         self.save()
     
+    def reset_otp_attempts(self):
+        """Reset del contatore OTP"""
+        self.otp_failed_attempts = 0
+        self.otp_is_blocked = False
+        self.otp_blocked_until = None
+        self.save()
+    
     def is_account_blocked(self):
-        """Controlla se l'account è bloccato"""
+        """Controlla se l'account è bloccato (password)"""
         if self.is_blocked:
             if self.blocked_until and timezone.now() > self.blocked_until:
-                # Il tempo di blocco è scaduto, sblocca
                 self.reset_attempts()
                 return False
+            return True
+        return False
+    
+    def is_otp_blocked(self):
+        """Controlla se l'OTP è bloccato"""
+        if self.otp_is_blocked:
+            if self.otp_blocked_until and timezone.now() > self.otp_blocked_until:
+                self.reset_otp_attempts()
+                return False
+            return True
+        return False
+
+
+# ============= OTP CODE MODEL =============
+
+class CodiceOTP(models.Model):
+    """Modello per codici OTP temporanei inviati via email"""
+    utente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='codici_otp')
+    codice = models.CharField(max_length=6)
+    creato_il = models.DateTimeField(auto_now_add=True)
+    scade_il = models.DateTimeField()
+    usato = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = "Codice OTP"
+        verbose_name_plural = "Codici OTP"
+        ordering = ['-creato_il']
+    
+    def __str__(self):
+        return f"OTP per {self.utente.email} - {self.codice}"
+    
+    @classmethod
+    def genera_codice(cls, utente, durata_minuti=5):
+        """Genera un nuovo codice OTP di 6 cifre"""
+        codice = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        scadenza = timezone.now() + timedelta(minutes=durata_minuti)
+        
+        return cls.objects.create(
+            utente=utente,
+            codice=codice,
+            scade_il=scadenza
+        )
+    
+    def is_valido(self):
+        """Verifica se il codice è ancora valido"""
+        return not self.usato and timezone.now() < self.scade_il
+    
+    def verifica(self, codice_inserito):
+        """Verifica e marca come usato se corretto"""
+        if self.is_valido() and self.codice == codice_inserito:
+            self.usato = True
+            self.save()
             return True
         return False

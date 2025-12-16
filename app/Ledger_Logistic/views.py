@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import TentativiDiLogin
+from .models import TentativiDiLogin, CodiceOTP
 from django.utils import timezone
 from django.db import IntegrityError
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Ottieni il modello User personalizzato
 Utente = get_user_model()
@@ -24,6 +26,7 @@ def custom_login(request):
     """
     Vista di login personalizzata con contatore di tentativi falliti.
     Blocca l'utente dopo 5 tentativi falliti per 30 minuti.
+    Dopo la password corretta, richiede SEMPRE l'OTP.
     """
     root = "Ledger_Logistic/login.html"
     
@@ -78,11 +81,33 @@ def custom_login(request):
     user = authenticate(request, email=email, password=password)
     
     if user is not None:
-        # Login riuscito - reset del contatore
-        login_attempt.reset_attempts()
-        django_login(request, user)
-        messages.success(request, f'Benvenuto {user.username}!')
-        return redirect('home')
+        # Password corretta - SEMPRE richiedi OTP
+        # Genera e invia codice OTP via email
+        codice_otp = CodiceOTP.genera_codice(user)
+        
+        # Invia email con codice
+        try:
+            send_mail(
+                subject='Codice OTP - Ledger Logistic',
+                message=f'Il tuo codice OTP è: {codice_otp.codice}\n\nValido per 5 minuti.\n\nSe non hai richiesto questo accesso, ignora questa email.',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+            
+            # Salva l'email nella sessione per la verifica OTP
+            request.session['otp_user_email'] = user.email
+            request.session['otp_verified'] = False
+            
+            # Reset contatore password fallite
+            login_attempt.reset_attempts()
+            
+            messages.info(request, f'📧 Codice OTP inviato a {email}')
+            return redirect('verify_otp')
+            
+        except Exception as e:
+            messages.error(request, f'Errore nell\'invio dell\'email: {str(e)}')
+            return render(request, root)
     else:
         # Login fallito - incrementa il contatore
         login_attempt.increment_failed_attempts()
@@ -106,6 +131,88 @@ def custom_login(request):
             'remaining_attempts': remaining_attempts,
             'failed_attempts': login_attempt.failed_attempts
         })
+
+
+def verify_otp(request):
+    """Vista per verificare il codice OTP con contatore tentativi"""
+    if 'otp_user_email' not in request.session:
+        messages.error(request, 'Sessione scaduta. Effettua nuovamente il login.')
+        return redirect('login')
+    
+    email = request.session.get('otp_user_email')
+    
+    # Recupera il record dei tentativi
+    login_attempt, _ = TentativiDiLogin.objects.get_or_create(email=email)
+    
+    # Controlla se l'OTP è bloccato
+    if login_attempt.is_otp_blocked():
+        remaining_time = (login_attempt.otp_blocked_until - timezone.now()).seconds // 60
+        messages.error(
+            request,
+            f'Troppi tentativi OTP falliti. Account bloccato per {remaining_time} minuti.'
+        )
+        # Pulisci la sessione
+        if 'otp_user_email' in request.session:
+            del request.session['otp_user_email']
+        return redirect('login')
+    
+    if request.method == 'POST':
+        codice_inserito = request.POST.get('otp_code', '').strip()
+        
+        try:
+            user = Utente.objects.get(email=email)
+            
+            # Trova il codice OTP più recente non usato
+            ultimo_codice = CodiceOTP.objects.filter(
+                utente=user,
+                usato=False
+            ).order_by('-creato_il').first()
+            
+            if ultimo_codice and ultimo_codice.verifica(codice_inserito):
+                # Codice corretto - completa il login
+                login_attempt.reset_otp_attempts()
+                
+                django_login(request, user)
+                request.session['otp_verified'] = True
+                
+                # Pulisci la sessione
+                if 'otp_user_email' in request.session:
+                    del request.session['otp_user_email']
+                
+                messages.success(request, f'✅ Benvenuto {user.username}!')
+                return redirect('home')
+            else:
+                # Codice errato - incrementa contatore
+                login_attempt.increment_otp_failed_attempts()
+                remaining_attempts = 5 - login_attempt.otp_failed_attempts
+                
+                if login_attempt.otp_is_blocked:
+                    messages.error(
+                        request,
+                        '🚫 Troppi tentativi falliti. Account bloccato per 30 minuti.'
+                    )
+                    # Pulisci la sessione
+                    if 'otp_user_email' in request.session:
+                        del request.session['otp_user_email']
+                    return redirect('login')
+                else:
+                    messages.error(
+                        request,
+                        f'❌ Codice OTP non valido. Ti rimangono {remaining_attempts} tentativi.'
+                    )
+                
+        except Utente.DoesNotExist:
+            messages.error(request, 'Utente non trovato.')
+            return redirect('login')
+    
+    # Calcola tentativi rimanenti
+    otp_remaining_attempts = 5 - login_attempt.otp_failed_attempts
+    
+    return render(request, 'Ledger_Logistic/verify_otp.html', {
+        'email': email,
+        'otp_remaining_attempts': otp_remaining_attempts,
+        'otp_failed_attempts': login_attempt.otp_failed_attempts
+    })
 
 
 def custom_logout(request):
@@ -280,7 +387,7 @@ def register(request):
     
     messages.success(
         request,
-        f'Account creato con successo! Benvenuto {username}, puoi ora effettuare il login con la tua email.'
+        f'✅ Account creato con successo! Benvenuto {username}, puoi ora effettuare il login con la tua email.'
     )
     return redirect('login')
 

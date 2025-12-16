@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifica OTP - Ledger Logistic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .otp-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        .info-box strong {
+            color: #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 0.5rem;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-verify {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-verify:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-verify:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .message.error {
+            background-color: #fee;
+            color: #c33;
+            border-left: 4px solid #c33;
+        }
+        
+        .message.info {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border-left: 4px solid #0284c7;
+        }
+        
+        .message.success {
+            background-color: #efe;
+            color: #3c3;
+            border-left: 4px solid #3c3;
+        }
+        
+        .attempts-counter {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .attempts-counter.warning {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+        
+        .attempts-counter.danger {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
+        .resend-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .resend-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .resend-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .back-link a {
+            color: #999;
+            text-decoration: none;
+        }
+        
+        .back-link a:hover {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="otp-container">
+        <h2>🔐 Verifica OTP</h2>
+        <p class="subtitle">Ledger Logistic</p>
+        
+        <div class="info-box">
+            📧 Abbiamo inviato un codice di 6 cifre a:<br>
+            <strong>{{ email }}</strong><br>
+            <small style="color: #666;">Il codice scade tra 5 minuti.</small>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="otp_code">Codice OTP</label>
+                <input 
+                    type="text" 
+                    id="otp_code" 
+                    name="otp_code" 
+                    maxlength="6"
+                    pattern="[0-9]{6}"
+                    placeholder="000000"
+                    required 
+                    autofocus
+                    autocomplete="off"
+                >
+            </div>
+            
+            <button type="submit" class="btn-verify">Verifica Codice</button>
+            
+            {% if otp_failed_attempts %}
+                <div class="attempts-counter {% if otp_failed_attempts >= 3 %}{% if otp_failed_attempts >= 4 %}danger{% else %}warning{% endif %}{% endif %}">
+                    {% if otp_remaining_attempts > 0 %}
+                        ⚠️ Tentativi OTP rimasti: {{ otp_remaining_attempts }}/5
+                    {% endif %}
+                </div>
+            {% endif %}
+        </form>
+        
+        <div class="resend-link">
+            <p style="color: #666; margin-bottom: 0.5rem;">Non hai ricevuto il codice?</p>
+            <a href="{% url 'login' %}">← Torna al login per reinviare</a>
+        </div>
+        
+        <div class="back-link">
+            <a href="{% url 'logout' %}">Annulla e disconnetti</a>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; font-size: 0.75rem; color: #999;">
+            <p>🔒 Protetto da autenticazione a due fattori</p>
+            <p>© 2025 Ledger Logistic</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-focus sul campo e formattazione automatica
+        const otpInput = document.getElementById('otp_code');
+        
+        otpInput.addEventListener('input', function(e) {
+            // Permetti solo numeri - usando replaceAll invece di replace con regex
+            const nonNumericPattern = /\D/g;
+            this.value = this.value.replaceAll(nonNumericPattern, '');
+            
+            // Auto-submit quando raggiunge 6 cifre (opzionale)
+            if (this.value.length === 6) {
+                // Puoi decommentare per auto-submit
+                // this.form.submit();
+            }
+        });
+        const config = globalThis.APP_CONFIG;
+
+        // Previeni copia/incolla di testo non numerico
+        otpInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pastedText = (e.clipboardData || globalThis.APP_CONFIG.clipboardData).getData('text');
+            // Rimuovi tutti i caratteri non numerici - usando replaceAll
+            const nonNumericPattern = /\D/g;
+            const numbers = pastedText.replaceAll(nonNumericPattern, '').substring(0, 6);
+            this.value = numbers;
+        });
+    </script>
+</body>
+</html>
