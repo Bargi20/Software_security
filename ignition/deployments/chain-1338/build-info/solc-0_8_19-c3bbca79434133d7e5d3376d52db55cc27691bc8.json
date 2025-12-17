@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_19-c3bbca79434133d7e5d3376d52db55cc27691bc8",
+  "solcVersion": "0.8.19",
+  "solcLongVersion": "0.8.19+commit.7dd6d404",
+  "userSourceNameMap": {
+    "contracts/ordine.sol": "project/contracts/ordine.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "paris",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/ordine.sol": {
+        "content": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.8.19;\r\n\r\ncontract Ordine {\r\n\r\n    struct OrdineData {\r\n        string id;\r\n        string indirizzoConsegna;\r\n        string nomeCliente;\r\n        string cognomeCliente;\r\n        string citofono;\r\n    }\r\n\r\n    mapping(string => OrdineData) private ordini;\r\n\r\n    event OrdineCreato(\r\n        string id,\r\n        string indirizzoConsegna,\r\n        string nomeCliente,\r\n        string cognomeCliente,\r\n        string citofono\r\n    );\r\n\r\n    function creaOrdine(\r\n        string memory _id,\r\n        string memory _indirizzoConsegna,\r\n        string memory _nomeCliente,\r\n        string memory _cognomeCliente,\r\n        string memory _citofono\r\n    ) public {\r\n        ordini[_id] = OrdineData(\r\n            _id,\r\n            _indirizzoConsegna,\r\n            _nomeCliente,\r\n            _cognomeCliente,\r\n            _citofono\r\n        );\r\n\r\n        emit OrdineCreato(\r\n            _id,\r\n            _indirizzoConsegna,\r\n            _nomeCliente,\r\n            _cognomeCliente,\r\n            _citofono\r\n        );\r\n    }\r\n\r\n    function getOrdine(string memory _id)\r\n        public\r\n        view\r\n        returns (\r\n            string memory,\r\n            string memory,\r\n            string memory,\r\n            string memory,\r\n            string memory\r\n        )\r\n    {\r\n        OrdineData memory o = ordini[_id];\r\n        return (\r\n            o.id,\r\n            o.indirizzoConsegna,\r\n            o.nomeCliente,\r\n            o.cognomeCliente,\r\n            o.citofono\r\n        );\r\n    }\r\n}\r\n"
+      }
+    }
+  }
+}
