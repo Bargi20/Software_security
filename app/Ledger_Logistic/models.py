@@ -147,6 +147,77 @@ class TentativiDiLogin(models.Model):
         return False
 
 
+# ============= PASSWORD RECOVERY ATTEMPT MODEL =============
+
+class TentativiRecuperoPassword(models.Model):
+    """Modello per tracciare i tentativi di recupero password tramite email"""
+    email = models.EmailField(max_length=254, unique=True)
+    failed_attempts = models.IntegerField(default=0)
+    last_attempt = models.DateTimeField(auto_now=True)
+    is_blocked = models.BooleanField(default=False)
+    blocked_until = models.DateTimeField(null=True, blank=True)
+    
+    # Tentativi OTP separati
+    otp_failed_attempts = models.IntegerField(default=0)
+    otp_is_blocked = models.BooleanField(default=False)
+    otp_blocked_until = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Tentativo di Recupero Password"
+        verbose_name_plural = "Tentativi di Recupero Password"
+    
+    def __str__(self):
+        return f"{self.email} - {self.failed_attempts} tentativi recupero"
+    
+    def increment_failed_attempts(self):
+        """Incrementa il contatore dei tentativi falliti"""
+        self.failed_attempts += 1
+        if self.failed_attempts >= 5:
+            self.is_blocked = True
+            self.blocked_until = timezone.now() + timedelta(minutes=30)
+        self.save()
+    
+    def increment_otp_failed_attempts(self):
+        """Incrementa il contatore dei tentativi OTP falliti"""
+        self.otp_failed_attempts += 1
+        if self.otp_failed_attempts >= 5:
+            self.otp_is_blocked = True
+            self.otp_blocked_until = timezone.now() + timedelta(minutes=30)
+        self.save()
+    
+    def reset_attempts(self):
+        """Reset del contatore dopo richiesta riuscita"""
+        self.failed_attempts = 0
+        self.is_blocked = False
+        self.blocked_until = None
+        self.save()
+    
+    def reset_otp_attempts(self):
+        """Reset del contatore OTP"""
+        self.otp_failed_attempts = 0
+        self.otp_is_blocked = False
+        self.otp_blocked_until = None
+        self.save()
+    
+    def is_account_blocked(self):
+        """Controlla se il recupero password è bloccato"""
+        if self.is_blocked:
+            if self.blocked_until and timezone.now() > self.blocked_until:
+                self.reset_attempts()
+                return False
+            return True
+        return False
+    
+    def is_otp_blocked(self):
+        """Controlla se l'OTP è bloccato"""
+        if self.otp_is_blocked:
+            if self.otp_blocked_until and timezone.now() > self.otp_blocked_until:
+                self.reset_otp_attempts()
+                return False
+            return True
+        return False
+
+
 # ============= OTP CODE MODEL =============
 
 class CodiceOTP(models.Model):

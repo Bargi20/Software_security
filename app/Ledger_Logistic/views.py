@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import TentativiDiLogin, CodiceOTP,Evento, Prova
+from .models import TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
@@ -559,3 +559,273 @@ def invia_tutte_probabilita_blockchain(request):
         messages.error(request, f'❌ Errore: {str(e)}')
     
     return redirect('home')
+
+
+def reset_password_request(request):
+    """
+    Vista per richiedere il recupero password.
+    Permette all'utente di inserire la propria email.
+    Blocca dopo 5 tentativi falliti per 30 minuti.
+    """
+    root = "Ledger_Logistic/reset_password.html"
+    
+    # GET request - mostra il form
+    if request.method != 'POST':
+        return render(request, root)
+    
+    # POST request - processa la richiesta
+    email = request.POST.get('email', '').strip()
+    
+    # Verifica che l'email non sia vuota
+    if not email:
+        messages.error(request, 'L\'email è obbligatoria.')
+        return render(request, root)
+    
+    # Validazione formato email
+    import re
+    email_regex = r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$'
+    if not re.match(email_regex, email):
+        messages.error(request, '❌ Formato email non valido. L\'email deve contenere @ e un dominio valido (es: utente@dominio.com)')
+        return render(request, root, {'email': email})
+    
+    # Recupera o crea un record di tentativo di recupero
+    recovery_attempt, _ = TentativiRecuperoPassword.objects.get_or_create(email=email)
+    
+    # Controlla se l'account è bloccato
+    if recovery_attempt.is_account_blocked():
+        remaining_time = (recovery_attempt.blocked_until - timezone.now()).seconds // 60
+        messages.error(
+            request, 
+            f'Troppi tentativi falliti. Riprova tra {remaining_time} minuti.'
+        )
+        return render(request, root, {
+            'blocked': True,
+            'remaining_time': remaining_time,
+            'email': email
+        })
+    
+    # Verifica che l'email esista nel database
+    try:
+        user = Utente.objects.filter(email=email).first()
+        
+        if not user:
+            # Email non valida - incrementa tentativi
+            recovery_attempt.increment_failed_attempts()
+            remaining_attempts = 5 - recovery_attempt.failed_attempts
+            
+            messages.error(
+                request, 
+                f'Email non valida. Ti rimangono {remaining_attempts} tentativi.'
+            )
+            return render(request, root, {
+                'email': email,
+                'remaining_attempts': remaining_attempts,
+                'failed_attempts': recovery_attempt.failed_attempts
+            })
+        
+        # Email valida - reset tentativi email e genera OTP
+        recovery_attempt.reset_attempts()
+        
+        # Genera e invia codice OTP
+        codice_otp = CodiceOTP.genera_codice(user)
+        
+        try:
+            send_mail(
+                subject='Codice OTP - Recupero Password - Ledger Logistic',
+                message=f'Il tuo codice OTP per il recupero password è: {codice_otp.codice}\n\nValido per 5 minuti.\n\nSe non hai richiesto il recupero password, ignora questa email.',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+            
+            # Salva l'email nella sessione per la verifica OTP
+            request.session['reset_password_email'] = user.email
+            request.session['reset_password_otp_verified'] = False
+            
+            messages.success(request, f'📧 Codice OTP inviato a {email}')
+            return redirect('reset_password_verify_otp')
+            
+        except Exception as e:
+            messages.error(request, f'Errore nell\'invio dell\'email: {str(e)}')
+            return render(request, root)
+        
+    except Exception as e:
+        messages.error(request, f'Errore durante la verifica: {str(e)}')
+        return render(request, root)
+
+
+def reset_password_verify_otp(request):
+    """
+    Vista per verificare il codice OTP durante il recupero password.
+    Blocca dopo 5 tentativi falliti per 30 minuti.
+    """
+    root = "Ledger_Logistic/reset_password_verify_otp.html"
+    
+    # Verifica che ci sia una sessione attiva di reset password
+    if 'reset_password_email' not in request.session:
+        messages.error(request, 'Sessione scaduta. Richiedi nuovamente il recupero password.')
+        return redirect('reset_password')
+    
+    email = request.session.get('reset_password_email')
+    
+    # Recupera l'utente e i tentativi
+    try:
+        user = Utente.objects.get(email=email)
+        recovery_attempt = TentativiRecuperoPassword.objects.get(email=email)
+    except (Utente.DoesNotExist, TentativiRecuperoPassword.DoesNotExist):
+        messages.error(request, 'Errore di sessione. Riprova.')
+        if 'reset_password_email' in request.session:
+            del request.session['reset_password_email']
+        return redirect('reset_password')
+    
+    # Controlla se l'OTP è bloccato
+    if recovery_attempt.is_otp_blocked():
+        remaining_time = (recovery_attempt.otp_blocked_until - timezone.now()).seconds // 60
+        messages.error(
+            request,
+            f'Troppi tentativi OTP falliti. Riprova tra {remaining_time} minuti.'
+        )
+        return render(request, root, {
+            'blocked': True,
+            'remaining_time': remaining_time,
+            'email': email
+        })
+    
+    # GET request - mostra il form
+    if request.method != 'POST':
+        return render(request, root, {'email': email})
+    
+    # POST request - verifica l'OTP
+    codice_inserito = request.POST.get('otp', '').strip()
+    
+    if not codice_inserito:
+        messages.error(request, 'Il codice OTP è obbligatorio.')
+        return render(request, root, {'email': email})
+    
+    # Recupera il codice OTP più recente
+    ultimo_otp = CodiceOTP.objects.filter(
+        utente=user,
+        usato=False
+    ).order_by('-creato_il').first()
+    
+    if not ultimo_otp:
+        messages.error(request, 'Nessun codice OTP valido trovato. Richiedi un nuovo codice.')
+        return render(request, root, {'email': email})
+    
+    # Verifica se il codice è scaduto
+    if not ultimo_otp.is_valido():
+        messages.error(request, 'Il codice OTP è scaduto. Richiedi un nuovo codice.')
+        return render(request, root, {'email': email})
+    
+    # Verifica il codice OTP
+    if ultimo_otp.verifica(codice_inserito):
+        # OTP corretto - reset contatori OTP
+        recovery_attempt.reset_otp_attempts()
+        request.session['reset_password_otp_verified'] = True
+        
+        messages.success(request, '✅ Codice OTP verificato! Ora puoi impostare una nuova password.')
+        return redirect('reset_password_new')
+    else:
+        # OTP errato - incrementa contatore
+        recovery_attempt.increment_otp_failed_attempts()
+        remaining_attempts = 5 - recovery_attempt.otp_failed_attempts
+        
+        if recovery_attempt.otp_is_blocked:
+            messages.error(
+                request,
+                '🚫 Troppi tentativi falliti. Account bloccato per 30 minuti.'
+            )
+            if 'reset_password_email' in request.session:
+                del request.session['reset_password_email']
+            if 'reset_password_otp_verified' in request.session:
+                del request.session['reset_password_otp_verified']
+            return redirect('reset_password')
+        
+        messages.error(
+            request,
+            f'❌ Codice OTP errato. Ti rimangono {remaining_attempts} tentativi.'
+        )
+        
+        return render(request, root, {
+            'email': email,
+            'remaining_attempts': remaining_attempts,
+            'otp_failed_attempts': recovery_attempt.otp_failed_attempts
+        })
+
+
+def reset_password_new(request):
+    """
+    Vista per impostare una nuova password dopo verifica OTP.
+    Richiede: maiuscola, minuscola, numero, carattere speciale, min 8 caratteri.
+    """
+    root = "Ledger_Logistic/reset_password_new.html"
+    
+    # Verifica che ci sia una sessione attiva e OTP verificato
+    if 'reset_password_email' not in request.session or not request.session.get('reset_password_otp_verified'):
+        messages.error(request, 'Sessione scaduta o OTP non verificato. Riprova.')
+        return redirect('reset_password')
+    
+    email = request.session.get('reset_password_email')
+    
+    # GET request - mostra il form
+    if request.method != 'POST':
+        return render(request, root, {'email': email})
+    
+    # POST request - processa la nuova password
+    new_password = request.POST.get('new_password', '').strip()
+    confirm_password = request.POST.get('confirm_password', '').strip()
+    
+    # Validazione base
+    if not new_password or not confirm_password:
+        messages.error(request, 'Entrambi i campi sono obbligatori.')
+        return render(request, root, {'email': email})
+    
+    # Verifica che le password corrispondano
+    if new_password != confirm_password:
+        messages.error(request, 'Le password non corrispondono.')
+        return render(request, root, {'email': email})
+    
+    # Validazione requisiti password
+    import re
+    
+    errors = []
+    if len(new_password) < 8:
+        errors.append('La password deve essere lunga almeno 8 caratteri')
+    if not re.search(r'[A-Z]', new_password):
+        errors.append('Deve contenere almeno una lettera maiuscola')
+    if not re.search(r'[a-z]', new_password):
+        errors.append('Deve contenere almeno una lettera minuscola')
+    if not re.search(r'[0-9]', new_password):
+        errors.append('Deve contenere almeno un numero')
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>+]', new_password):
+        errors.append('Deve contenere almeno un carattere speciale (!@#$%^&*(),.?":{}|<>+)')
+    
+    if errors:
+        for error in errors:
+            messages.error(request, f'❌ {error}')
+        return render(request, root, {'email': email})
+    
+    # Password valida - aggiorna l'utente
+    try:
+        user = Utente.objects.get(email=email)
+        user.set_password(new_password)
+        user.save()
+        
+        # Pulisci la sessione
+        if 'reset_password_email' in request.session:
+            del request.session['reset_password_email']
+        if 'reset_password_otp_verified' in request.session:
+            del request.session['reset_password_otp_verified']
+        
+        messages.success(
+            request,
+            '✅ Password aggiornata con successo! Ora puoi effettuare il login con la nuova password.'
+        )
+        return redirect('login')
+        
+    except Utente.DoesNotExist:
+        messages.error(request, 'Errore: utente non trovato.')
+        return redirect('reset_password')
+    except Exception as e:
+        messages.error(request, f'Errore durante l\'aggiornamento della password: {str(e)}')
+        return render(request, root, {'email': email})
