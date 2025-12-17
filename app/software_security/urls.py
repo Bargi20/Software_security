@@ -32,6 +32,9 @@ urlpatterns = [
     path('reset-password/', views.reset_password_request, name='reset_password'),
     path('reset-password/verify-otp/', views.reset_password_verify_otp, name='reset_password_verify_otp'),
     path('reset-password/new/', views.reset_password_new, name='reset_password_new'),
+    path('dashboard/cliente/', views.dashboard_cliente, name='dashboard_cliente'),
+    path('dashboard/corriere/', views.dashboard_corriere, name='dashboard_corriere'),
+    path('dashboard/gestore/', views.dashboard_gestore, name='dashboard_gestore'),
     path('blockchain/invia-prova/<int:prova_id>/', views.invia_probabilita_blockchain, name='invia_prova_blockchain'),
     path('blockchain/invia-tutte/', views.invia_tutte_probabilita_blockchain, name='invia_prob_blockchain'),
 ]
