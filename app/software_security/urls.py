@@ -22,6 +22,9 @@ from Ledger_Logistic import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('servizi/', views.servizi, name='servizi'),
+    path('chi-siamo/', views.chi_siamo, name='chi_siamo'),
+    path('contatti/', views.contatti, name='contatti'),
     path('login/', views.custom_login, name='login'),
     path('verify-otp/', views.verify_otp, name='verify_otp'),
     path('logout/', views.custom_logout, name='logout'),

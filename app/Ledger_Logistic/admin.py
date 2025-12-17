@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django_otp.admin import OTPAdminSite
 from django_otp.decorators import otp_required
-from .models import Utente, TentativiDiLogin, CodiceOTP
+from .models import Utente, TentativiDiLogin, CodiceOTP, MessaggioContatto
 
 # Usa admin normale, non OTP
 # admin.site.__class__ = OTPAdminSite
@@ -31,3 +31,16 @@ class CodiceOTPAdmin(admin.ModelAdmin):
     search_fields = ['utente__email']
     list_filter = ['usato', 'creato_il']
     readonly_fields = ['creato_il']
+
+@admin.register(MessaggioContatto)
+class MessaggioContattoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'email', 'servizio', 'data_invio', 'letto')
+    list_filter = ('letto', 'servizio', 'data_invio')
+    search_fields = ('nome', 'email', 'messaggio')
+    readonly_fields = ('data_invio',)
+    actions = ['mark_as_read']
+    
+    def mark_as_read(self, request, queryset):
+        queryset.update(letto=True)
+        self.message_user(request, f'{queryset.count()} messaggi segnati come letti.')
+    mark_as_read.short_description = 'Segna come letto'

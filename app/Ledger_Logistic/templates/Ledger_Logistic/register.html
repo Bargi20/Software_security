@@ -83,10 +83,119 @@
             border-color: #667eea;
         }
         
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .password-toggle:hover {
+            color: #667eea;
+        }
+        
+        .password-strength {
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        .strength-weak { 
+            width: 25%; 
+            background: #dc3545; 
+        }
+        
+        .strength-fair { 
+            width: 50%; 
+            background: #ffc107; 
+        }
+        
+        .strength-good { 
+            width: 75%; 
+            background: #17a2b8; 
+        }
+        
+        .strength-strong { 
+            width: 100%; 
+            background: #28a745; 
+        }
+        
+        .strength-text {
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+        
+        .password-requirements {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .password-requirements ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+        
+        .password-requirements li {
+            margin: 0.25rem 0;
+        }
+        
+        .match-indicator {
+            font-size: 12px;
+            margin-top: 5px;
+            padding: 5px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .match-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .match-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
         .input-hint {
             font-size: 0.75rem;
             color: #999;
             margin-top: 0.25rem;
+        }
+        
+        .email-error {
+            color: #c33;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
         }
         
         .btn-register {
@@ -226,9 +335,12 @@
                     id="email" 
                     name="email" 
                     value="{{ email|default:'' }}"
+                    pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
                     required
                     placeholder="tua@email.com"
+                    title="Inserisci un indirizzo email valido"
                 >
+                <div class="email-error" id="emailError"></div>
             </div>
             
             <!-- Nome e Cognome (opzionali) -->
@@ -260,15 +372,39 @@
                 <label for="password">
                     Password <span class="required">*</span>
                 </label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    required
-                    minlength="8"
-                    placeholder="••••••••"
-                >
-                <div class="input-hint">Minimo 8 caratteri</div>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                        placeholder="••••••••"
+                    >
+                    <button type="button" class="password-toggle" id="togglePassword" title="Mostra/Nascondi password">
+                        <svg id="eyeOpen1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg id="eyeClosed1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="strengthBar"></div>
+                </div>
+                <div class="strength-text" id="strengthText"></div>
+                <div class="password-requirements">
+                    <strong>Requisiti password:</strong>
+                    <ul>
+                        <li>Almeno 8 caratteri</li>
+                        <li>Almeno una lettera maiuscola (A-Z)</li>
+                        <li>Almeno una lettera minuscola (a-z)</li>
+                        <li>Almeno un numero (0-9)</li>
+                        <li>Almeno un carattere speciale (!@#$%^&*(),.?":{}|<>+)</li>
+                    </ul>
+                </div>
             </div>
             
             <!-- Conferma Password -->
@@ -276,14 +412,26 @@
                 <label for="password_confirm">
                     Conferma Password <span class="required">*</span>
                 </label>
-                <input 
-                    type="password" 
-                    id="password_confirm" 
-                    name="password_confirm" 
-                    required
-                    minlength="8"
-                    placeholder="••••••••"
-                >
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password_confirm" 
+                        name="password_confirm" 
+                        required
+                        placeholder="••••••••"
+                    >
+                    <button type="button" class="password-toggle" id="togglePasswordConfirm" title="Mostra/Nascondi password">
+                        <svg id="eyeOpen2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg id="eyeClosed2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div id="matchIndicator" style="display: none;"></div>
             </div>
             
             <button type="submit" class="btn-register">
@@ -302,5 +450,176 @@
             <a href="{% url 'home' %}">← Torna alla home</a>
         </div>
     </div>
+    
+    <script>
+        // Validazione email
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+        
+        function validateEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        }
+        
+        function showEmailError(message) {
+            emailError.textContent = message;
+            emailError.style.display = 'block';
+            emailInput.style.borderColor = '#c33';
+        }
+        
+        function hideEmailError() {
+            emailError.style.display = 'none';
+            emailInput.style.borderColor = '';
+        }
+        
+        if (emailInput) {
+            emailInput.addEventListener('input', function() {
+                const email = this.value.trim();
+                
+                if (email === '') {
+                    hideEmailError();
+                    return;
+                }
+                
+                if (!email.includes('@')) {
+                    showEmailError('L\'email deve contenere il simbolo @');
+                } else if (!validateEmail(email)) {
+                    showEmailError('Inserisci un indirizzo email valido (es: utente@dominio.com)');
+                } else {
+                    hideEmailError();
+                }
+            });
+        }
+        
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeOpen1 = document.getElementById('eyeOpen1');
+        const eyeClosed1 = document.getElementById('eyeClosed1');
+        
+        const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+        const passwordConfirmInput = document.getElementById('password_confirm');
+        const eyeOpen2 = document.getElementById('eyeOpen2');
+        const eyeClosed2 = document.getElementById('eyeClosed2');
+        
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                if (type === 'password') {
+                    eyeOpen1.style.display = 'block';
+                    eyeClosed1.style.display = 'none';
+                } else {
+                    eyeOpen1.style.display = 'none';
+                    eyeClosed1.style.display = 'block';
+                }
+            });
+        }
+        
+        if (togglePasswordConfirm && passwordConfirmInput) {
+            togglePasswordConfirm.addEventListener('click', function() {
+                const type = passwordConfirmInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordConfirmInput.setAttribute('type', type);
+                
+                if (type === 'password') {
+                    eyeOpen2.style.display = 'block';
+                    eyeClosed2.style.display = 'none';
+                } else {
+                    eyeOpen2.style.display = 'none';
+                    eyeClosed2.style.display = 'block';
+                }
+            });
+        }
+        
+        // Validazione password
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+        const matchIndicator = document.getElementById('matchIndicator');
+        const submitBtn = document.querySelector('.btn-register');
+        
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const checks = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>+]/.test(password)
+            };
+            
+            for (let key in checks) {
+                if (checks[key]) strength++;
+            }
+            
+            return {
+                score: strength,
+                allValid: strength === 5
+            };
+        }
+        
+        function updateStrengthBar(password) {
+            if (!password) {
+                strengthBar.className = 'password-strength-bar';
+                strengthText.textContent = '';
+                return;
+            }
+            
+            const result = checkPasswordStrength(password);
+            const score = result.score;
+            
+            strengthBar.className = 'password-strength-bar';
+            
+            if (score <= 2) {
+                strengthBar.classList.add('strength-weak');
+                strengthText.textContent = 'Debole';
+                strengthText.style.color = '#dc3545';
+            } else if (score === 3) {
+                strengthBar.classList.add('strength-fair');
+                strengthText.textContent = 'Discreta';
+                strengthText.style.color = '#ffc107';
+            } else if (score === 4) {
+                strengthBar.classList.add('strength-good');
+                strengthText.textContent = 'Buona';
+                strengthText.style.color = '#17a2b8';
+            } else if (score === 5) {
+                strengthBar.classList.add('strength-strong');
+                strengthText.textContent = 'Forte ✓';
+                strengthText.style.color = '#28a745';
+            }
+            
+            checkPasswordMatch();
+        }
+        
+        function checkPasswordMatch() {
+            const pwd = passwordInput.value;
+            const confirmPwd = passwordConfirmInput.value;
+            
+            if (!confirmPwd) {
+                matchIndicator.style.display = 'none';
+                return;
+            }
+            
+            matchIndicator.style.display = 'block';
+            
+            if (pwd === confirmPwd) {
+                matchIndicator.className = 'match-indicator match-success';
+                matchIndicator.textContent = '✓ Le password corrispondono';
+            } else {
+                matchIndicator.className = 'match-indicator match-error';
+                matchIndicator.textContent = '✗ Le password non corrispondono';
+            }
+        }
+        
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                updateStrengthBar(this.value);
+            });
+        }
+        
+        if (passwordConfirmInput) {
+            passwordConfirmInput.addEventListener('input', checkPasswordMatch);
+        }
+    </script>
 </body>
 </html>

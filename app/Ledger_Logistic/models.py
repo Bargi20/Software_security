@@ -307,3 +307,29 @@ class Prova(models.Model):
     
     def __str__(self):
         return f"{self.nomeProva} - {self.probabilita_condizionata}"
+
+
+# ============= MESSAGGIO CONTATTO MODEL =============
+
+class MessaggioContatto(models.Model):
+    """Modello per salvare i messaggi inviati tramite il form contatti"""
+    nome = models.CharField(max_length=200, verbose_name='Nome e Cognome')
+    email = models.EmailField(max_length=254, verbose_name='Email')
+    telefono = models.CharField(max_length=20, blank=True, verbose_name='Telefono')
+    servizio = models.CharField(max_length=50, blank=True, verbose_name='Servizio di interesse')
+    messaggio = models.TextField(verbose_name='Messaggio')
+    data_invio = models.DateTimeField(auto_now_add=True, verbose_name='Data invio')
+    letto = models.BooleanField(default=False, verbose_name='Letto')
+    
+    class Meta:
+        verbose_name = "Messaggio di Contatto"
+        verbose_name_plural = "Messaggi di Contatto"
+        ordering = ['-data_invio']
+    
+    def __str__(self):
+        return f"{self.nome} - {self.email} ({self.data_invio.strftime('%d/%m/%Y %H:%M')})"
+    
+    def mark_as_read(self):
+        """Segna il messaggio come letto"""
+        self.letto = True
+        self.save()

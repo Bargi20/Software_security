@@ -17,10 +17,66 @@ def home(request):
     # Se l'utente cerca un pacco (logica base)
     tracking_code = request.GET.get('tracking_code')
     context = {
-        'company_name': 'Ledger Logistic',
+        'company_name': 'Ledger Logistics',
         'tracking_code': tracking_code
     }
     return render(request, 'Ledger_Logistic/home.html', context)
+
+
+def servizi(request):
+    """Vista per la pagina servizi"""
+    context = {
+        'company_name': 'Ledger Logistics'
+    }
+    return render(request, 'Ledger_Logistic/servizi.html', context)
+
+
+def chi_siamo(request):
+    """Vista per la pagina chi siamo"""
+    context = {
+        'company_name': 'Ledger Logistics'
+    }
+    return render(request, 'Ledger_Logistic/chi_siamo.html', context)
+
+
+def contatti(request):
+    """Vista per la pagina contatti con form"""
+    context = {
+        'company_name': 'Ledger Logistics'
+    }
+    
+    if request.method == 'POST':
+        # Recupera i dati del form
+        nome = request.POST.get('nome', '').strip()
+        email = request.POST.get('email', '').strip()
+        telefono = request.POST.get('telefono', '').strip()
+        servizio = request.POST.get('servizio', '')
+        messaggio = request.POST.get('messaggio', '').strip()
+        
+        # Validazione
+        if not nome or not email or not messaggio:
+            messages.error(request, 'Nome, email e messaggio sono obbligatori.')
+            return render(request, 'Ledger_Logistic/contatti.html', context)
+        
+        try:
+            # Salva nel database
+            from .models import MessaggioContatto
+            MessaggioContatto.objects.create(
+                nome=nome,
+                email=email,
+                telefono=telefono,
+                servizio=servizio,
+                messaggio=messaggio
+            )
+            
+            messages.success(
+                request,
+                f'Grazie {nome}! Abbiamo ricevuto il tuo messaggio e ti contatteremo presto all\'indirizzo {email}.'
+            )
+        except Exception as e:
+            messages.error(request, f'Errore durante l\'invio del messaggio: {str(e)}')
+    
+    return render(request, 'Ledger_Logistic/contatti.html', context)
 
 
 def custom_login(request):
@@ -180,7 +236,6 @@ def _handle_correct_otp(request, user, login_attempt):
     django_login(request, user)
     request.session['otp_verified'] = True
     _clear_otp_session(request)
-    messages.success(request, f'✅ Benvenuto {user.username}!')
     return redirect('home')
 
 
@@ -258,7 +313,7 @@ def custom_logout(request):
     """Vista personalizzata per il logout"""
     logout(request)
     messages.info(request, 'Logout effettuato con successo.')
-    return redirect('login')
+    return redirect('home')
 
 
 # ============= HELPER FUNCTIONS FOR REGISTRATION =============
