@@ -190,9 +190,11 @@
         
         {% if messages %}
             {% for message in messages %}
-                <div class="message {{ message.tags }}">
-                    {{ message }}
-                </div>
+                {% if 'Accesso negato' not in message and 'Logout effettuato con successo' not in message %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endif %}
         

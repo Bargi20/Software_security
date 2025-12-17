@@ -27,8 +27,7 @@
                 </div>
                 {% if user.is_authenticated %}
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Spedizioni in corso</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Area Personale</a>
+                    <a href="{% url 'dashboard_cliente' %}" class="text-gray-600 hover:text-blue-700 font-medium">Area Personale</a>
                     {% if user.is_authenticated %}
                         <span class="text-gray-600 font-medium">Ciao, {{ user.first_name }}</span>
                         <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>

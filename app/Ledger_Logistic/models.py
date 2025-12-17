@@ -49,6 +49,7 @@ class Utente(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=15, blank=True, verbose_name='Telefono')
     address = models.TextField(blank=True, verbose_name='Indirizzo')
     data_nascita = models.DateField(blank=True, null=True, verbose_name='Data di nascita')
+    ruolo = models.CharField(max_length=10, blank=False, default="cliente", verbose_name='Ruolo')
     
     is_active = models.BooleanField(default=True, verbose_name='Attivo')
     is_staff = models.BooleanField(default=False, verbose_name='Staff')

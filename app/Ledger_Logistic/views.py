@@ -236,7 +236,17 @@ def _handle_correct_otp(request, user, login_attempt):
     django_login(request, user)
     request.session['otp_verified'] = True
     _clear_otp_session(request)
-    return redirect('home')
+    
+    # Reindirizza in base al ruolo dell'utente
+    if user.ruolo == 'cliente':
+        return redirect('dashboard_cliente')
+    elif user.ruolo == 'corriere':
+        return redirect('dashboard_corriere')
+    elif user.ruolo == 'gestore':
+        return redirect('dashboard_gestore')
+    else:
+        # Default fallback
+        return redirect('home')
 
 
 def _handle_incorrect_otp(request, login_attempt):
@@ -884,3 +894,68 @@ def reset_password_new(request):
     except Exception as e:
         messages.error(request, f'Errore durante l\'aggiornamento della password: {str(e)}')
         return render(request, root, {'email': email})
+
+
+# ============= DASHBOARD VIEWS =============
+
+@login_required
+def dashboard_cliente(request):
+    """Dashboard per utenti con ruolo 'cliente'"""
+    # Verifica che l'utente abbia il ruolo cliente
+    if request.user.ruolo != 'cliente':
+        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        # Reindirizza alla dashboard corretta in base al ruolo
+        if request.user.ruolo == 'corriere':
+            return redirect('dashboard_corriere')
+        elif request.user.ruolo == 'gestore':
+            return redirect('dashboard_gestore')
+        else:
+            return redirect('home')
+    
+    context = {
+        'company_name': 'Ledger Logistics',
+        'user': request.user
+    }
+    return render(request, 'Ledger_Logistic/dashboard_cliente.html', context)
+
+
+@login_required
+def dashboard_corriere(request):
+    """Dashboard per utenti con ruolo 'corriere'"""
+    # Verifica che l'utente abbia il ruolo corriere
+    if request.user.ruolo != 'corriere':
+        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        # Reindirizza alla dashboard corretta in base al ruolo
+        if request.user.ruolo == 'cliente':
+            return redirect('dashboard_cliente')
+        elif request.user.ruolo == 'gestore':
+            return redirect('dashboard_gestore')
+        else:
+            return redirect('home')
+    
+    context = {
+        'company_name': 'Ledger Logistics',
+        'user': request.user
+    }
+    return render(request, 'Ledger_Logistic/dashboard_corriere.html', context)
+
+
+@login_required
+def dashboard_gestore(request):
+    """Dashboard per utenti con ruolo 'gestore'"""
+    # Verifica che l'utente abbia il ruolo gestore
+    if request.user.ruolo != 'gestore':
+        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        # Reindirizza alla dashboard corretta in base al ruolo
+        if request.user.ruolo == 'cliente':
+            return redirect('dashboard_cliente')
+        elif request.user.ruolo == 'corriere':
+            return redirect('dashboard_corriere')
+        else:
+            return redirect('home')
+    
+    context = {
+        'company_name': 'Ledger Logistics',
+        'user': request.user
+    }
+    return render(request, 'Ledger_Logistic/dashboard_gestore.html', context)
