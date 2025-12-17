@@ -38,9 +38,9 @@
                 </div>
                 {% else %}
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Servizi</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Chi siamo</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-700 font-medium">Contatti</a>
+                    <a href="{% url 'servizi' %}" class="text-gray-600 hover:text-blue-700 font-medium">Servizi</a>
+                    <a href="{% url 'chi_siamo' %}" class="text-gray-600 hover:text-blue-700 font-medium">Chi siamo</a>
+                    <a href="{% url 'contatti' %}" class="text-gray-600 hover:text-blue-700 font-medium">Contatti</a>
                     {% if user.is_authenticated %}
                         <span class="text-gray-600 font-medium">Ciao, {{ user.first_name }}</span>
                         <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
@@ -142,10 +142,9 @@
             <div>
                 <h4 class="text-white font-bold mb-4 uppercase text-sm">Link Utili</h4>
                 <ul class="space-y-2">
-                    <li><a href="#" class="hover:text-white">Home</a></li>
-                    <li><a href="#" class="hover:text-white">Servizi</a></li>
-                    <li><a href="#" class="hover:text-white">Preventivo</a></li>
-                    <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    <li><a href="{% url 'servizi' %}" class="hover:text-white">Servizi</a></li>
+                    <li><a href="{% url 'chi_siamo' %}" class="hover:text-white">Chi Siamo</a></li>
+                    <li><a href="{% url 'contatti' %}" class="hover:text-white">Contatti</a></li>
                 </ul>
             </div>
             <div>

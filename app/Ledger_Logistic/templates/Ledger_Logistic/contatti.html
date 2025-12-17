@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50">
+
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
+                        <svg class="w-8 h-8 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        {{ company_name }}
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'servizi' %}" class="text-gray-600 hover:text-blue-700 font-medium">Servizi</a>
+                    <a href="{% url 'chi_siamo' %}" class="text-gray-600 hover:text-blue-700 font-medium">Chi siamo</a>
+                    <a href="{% url 'contatti' %}" class="text-blue-700 hover:text-blue-900 font-medium border-b-2 border-blue-700">Contatti</a>
+                    {% if user.is_authenticated %}
+                        <span class="text-gray-600 font-medium">Ciao, {{ user.first_name }}</span>
+                        <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Contattaci</h1>
+            <p class="text-xl text-blue-100">Siamo qui per aiutarti. Scrivici o chiamaci!</p>
+        </div>
+    </header>
+
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Form di contatto -->
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Inviaci un messaggio</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="mb-4 p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="POST" class="space-y-6">
+                        {% csrf_token %}
+                        
+                        <div>
+                            <label for="nome" class="block text-sm font-medium text-gray-700 mb-2">Nome e Cognome *</label>
+                            <input 
+                                type="text" 
+                                id="nome" 
+                                name="nome" 
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Mario Rossi"
+                            >
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required
+                                pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="tua@email.com"
+                            >
+                        </div>
+                        
+                        <div>
+                            <label for="telefono" class="block text-sm font-medium text-gray-700 mb-2">Telefono</label>
+                            <input 
+                                type="tel" 
+                                id="telefono" 
+                                name="telefono" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="+39 123 456 7890"
+                            >
+                        </div>
+                        
+                        <div>
+                            <label for="servizio" class="block text-sm font-medium text-gray-700 mb-2">Servizio di interesse</label>
+                            <select 
+                                id="servizio" 
+                                name="servizio"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                                <option value="">Seleziona un servizio</option>
+                                <option value="aereo">Trasporto Aereo</option>
+                                <option value="gomma">Trasporto su Gomma</option>
+                                <option value="magazzino">Logistica & Magazzino</option>
+                                <option value="marittimo">Trasporto Marittimo</option>
+                                <option value="ferroviario">Trasporto Ferroviario</option>
+                                <option value="personalizzato">Soluzione Personalizzata</option>
+                                <option value="altro">Altro</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="messaggio" class="block text-sm font-medium text-gray-700 mb-2">Messaggio *</label>
+                            <textarea 
+                                id="messaggio" 
+                                name="messaggio" 
+                                rows="6"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Scrivi qui il tuo messaggio..."
+                            ></textarea>
+                        </div>
+                        
+                        <button 
+                            type="submit" 
+                            class="w-full bg-blue-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-800 transition"
+                        >
+                            Invia Messaggio
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Informazioni di contatto -->
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Informazioni di Contatto</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Indirizzo -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xl">
+                                    📍
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-bold text-gray-900">Sede Principale</h3>
+                                <p class="text-gray-600 mt-1">
+                                    Via Roma 123<br>
+                                    20121 Milano (MI)<br>
+                                    Italia
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Telefono -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center text-xl">
+                                    📞
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-bold text-gray-900">Telefono</h3>
+                                <p class="text-gray-600 mt-1">
+                                    <a href="tel:+390212345678" class="hover:text-blue-700">+39 02 12345678</a><br>
+                                    <span class="text-sm text-gray-500">Lun-Ven: 9:00-18:00</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-orange-100 text-orange-700 rounded-full flex items-center justify-center text-xl">
+                                    ✉️
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-bold text-gray-900">Email</h3>
+                                <p class="text-gray-600 mt-1">
+                                    <a href="mailto:info@ledgerlogistics.it" class="hover:text-blue-700">info@ledgerlogistics.it</a><br>
+                                    <a href="mailto:support@ledgerlogistics.it" class="hover:text-blue-700">support@ledgerlogistics.it</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Supporto -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-xl">
+                                    🕐
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-bold text-gray-900">Supporto Clienti</h3>
+                                <p class="text-gray-600 mt-1">
+                                    Disponibile 24/7<br>
+                                    <span class="text-sm text-gray-500">Assistenza dedicata sempre attiva</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Orari di apertura -->
+                    <div class="mt-8 p-6 bg-gray-100 rounded-lg">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Orari di Apertura</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Lunedì - Venerdì:</span>
+                                <span class="font-medium text-gray-900">9:00 - 18:00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Sabato:</span>
+                                <span class="font-medium text-gray-900">9:00 - 13:00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">Domenica:</span>
+                                <span class="font-medium text-gray-900">Chiuso</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Hai bisogno di assistenza immediata?</h2>
+            <p class="text-xl text-gray-600 mb-8">Il nostro team è sempre a tua disposizione</p>
+            <a href="tel:+390212345678" class="inline-block bg-blue-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-800 transition">
+                📞 Chiamaci Ora
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 {{ company_name }}. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
