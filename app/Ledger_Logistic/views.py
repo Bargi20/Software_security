@@ -258,7 +258,7 @@ def custom_logout(request):
     """Vista personalizzata per il logout"""
     logout(request)
     messages.info(request, 'Logout effettuato con successo.')
-    return redirect('login')
+    return redirect('home')
 
 
 # ============= HELPER FUNCTIONS FOR REGISTRATION =============
