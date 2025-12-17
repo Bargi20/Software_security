@@ -180,7 +180,6 @@ def _handle_correct_otp(request, user, login_attempt):
     django_login(request, user)
     request.session['otp_verified'] = True
     _clear_otp_session(request)
-    messages.success(request, f'✅ Benvenuto {user.username}!')
     return redirect('home')
 
 
