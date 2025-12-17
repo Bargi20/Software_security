@@ -333,3 +333,13 @@ class MessaggioContatto(models.Model):
         """Segna il messaggio come letto"""
         self.letto = True
         self.save()
+
+# In models.py, aggiungi:
+class FileViewer(models.Model):
+    """Modello dummy per visualizzare file nella dashboard admin"""
+    
+    class Meta:
+        verbose_name = "Visualizzatore File"
+        verbose_name_plural = "Visualizzatore File"
+        managed = False  # Non crea tabella nel database
+        app_label = 'Ledger_Logistic'

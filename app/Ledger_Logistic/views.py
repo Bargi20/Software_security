@@ -8,16 +8,24 @@ from django.db import IntegrityError
 from django.core.mail import send_mail
 from django.conf import settings
 from .blockchain import get_contract, is_connected, send_transaction
+from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse, FileResponse
+import os
+import json
 
 # Ottieni il modello User personalizzato
 Utente = get_user_model()
+
+# Costanti
+COMPANY_NAME = 'Ledger Logistics'
 
 
 def home(request):
     # Se l'utente cerca un pacco (logica base)
     tracking_code = request.GET.get('tracking_code')
     context = {
-        'company_name': 'Ledger Logistics',
+        'company_name': COMPANY_NAME,
         'tracking_code': tracking_code
     }
     return render(request, 'Ledger_Logistic/home.html', context)
@@ -26,7 +34,7 @@ def home(request):
 def servizi(request):
     """Vista per la pagina servizi"""
     context = {
-        'company_name': 'Ledger Logistics'
+        'company_name': COMPANY_NAME
     }
     return render(request, 'Ledger_Logistic/servizi.html', context)
 
@@ -34,7 +42,7 @@ def servizi(request):
 def chi_siamo(request):
     """Vista per la pagina chi siamo"""
     context = {
-        'company_name': 'Ledger Logistics'
+        'company_name': COMPANY_NAME
     }
     return render(request, 'Ledger_Logistic/chi_siamo.html', context)
 
@@ -42,7 +50,7 @@ def chi_siamo(request):
 def contatti(request):
     """Vista per la pagina contatti con form"""
     context = {
-        'company_name': 'Ledger Logistics'
+        'company_name': COMPANY_NAME
     }
     
     if request.method == 'POST':
@@ -485,8 +493,6 @@ def register(request):
     )
     return redirect('login')
 
-
-
 @login_required
 def invia_probabilita_blockchain(request, prova_id):
     """
@@ -709,138 +715,163 @@ def reset_password_request(request):
         return render(request, root)
 
 
-def reset_password_verify_otp(request):
-    """
-    Vista per verificare il codice OTP durante il recupero password.
-    Blocca dopo 5 tentativi falliti per 30 minuti.
-    """
-    root = "Ledger_Logistic/reset_password_verify_otp.html"
-    
-    # Verifica che ci sia una sessione attiva di reset password
+# ============= HELPER FUNCTIONS FOR PASSWORD RESET OTP =============
+
+def _check_reset_password_session(request):
+    """Verifica se la sessione di reset password è valida"""
     if 'reset_password_email' not in request.session:
         messages.error(request, 'Sessione scaduta. Richiedi nuovamente il recupero password.')
-        return redirect('reset_password')
-    
-    email = request.session.get('reset_password_email')
-    
-    # Recupera l'utente e i tentativi
+        return None
+    return request.session.get('reset_password_email')
+
+
+def _get_user_and_recovery_attempt(email):
+    """Recupera utente e tentativo di recupero"""
     try:
         user = Utente.objects.get(email=email)
         recovery_attempt = TentativiRecuperoPassword.objects.get(email=email)
+        return user, recovery_attempt, None
     except (Utente.DoesNotExist, TentativiRecuperoPassword.DoesNotExist):
-        messages.error(request, 'Errore di sessione. Riprova.')
-        if 'reset_password_email' in request.session:
-            del request.session['reset_password_email']
-        return redirect('reset_password')
-    
-    # Controlla se l'OTP è bloccato
+        return None, None, 'Errore di sessione. Riprova.'
+
+
+def _check_recovery_otp_blocked(recovery_attempt):
+    """Verifica se l'OTP di recupero è bloccato"""
     if recovery_attempt.is_otp_blocked():
         remaining_time = (recovery_attempt.otp_blocked_until - timezone.now()).seconds // 60
-        messages.error(
-            request,
-            f'Troppi tentativi OTP falliti. Riprova tra {remaining_time} minuti.'
-        )
-        return render(request, root, {
-            'blocked': True,
-            'remaining_time': remaining_time,
-            'email': email
-        })
-    
-    # GET request - mostra il form
-    if request.method != 'POST':
-        return render(request, root, {'email': email})
-    
-    # POST request - verifica l'OTP
-    codice_inserito = request.POST.get('otp', '').strip()
-    
-    if not codice_inserito:
-        messages.error(request, 'Il codice OTP è obbligatorio.')
-        return render(request, root, {'email': email})
-    
-    # Recupera il codice OTP più recente
+        return True, remaining_time
+    return False, 0
+
+
+def _validate_reset_otp_code(user):
+    """Valida il codice OTP per reset password"""
     ultimo_otp = CodiceOTP.objects.filter(
         utente=user,
         usato=False
     ).order_by('-creato_il').first()
     
     if not ultimo_otp:
-        messages.error(request, 'Nessun codice OTP valido trovato. Richiedi un nuovo codice.')
-        return render(request, root, {'email': email})
+        return None, 'Nessun codice OTP valido trovato. Richiedi un nuovo codice.'
     
-    # Verifica se il codice è scaduto
     if not ultimo_otp.is_valido():
-        messages.error(request, 'Il codice OTP è scaduto. Richiedi un nuovo codice.')
+        return None, 'Il codice OTP è scaduto. Richiedi un nuovo codice.'
+    
+    return ultimo_otp, None
+
+
+def _handle_correct_reset_otp(request, recovery_attempt):
+    """Gestisce OTP corretto per reset password"""
+    recovery_attempt.reset_otp_attempts()
+    request.session['reset_password_otp_verified'] = True
+    messages.success(request, '✅ Codice OTP verificato! Ora puoi impostare una nuova password.')
+    return redirect('reset_password_new')
+
+
+def _clear_reset_password_session(request):
+    """Pulisce la sessione di reset password"""
+    if 'reset_password_email' in request.session:
+        del request.session['reset_password_email']
+    if 'reset_password_otp_verified' in request.session:
+        del request.session['reset_password_otp_verified']
+
+
+def _handle_incorrect_reset_otp(request, recovery_attempt):
+    """Gestisce OTP errato per reset password"""
+    recovery_attempt.increment_otp_failed_attempts()
+    remaining_attempts = 5 - recovery_attempt.otp_failed_attempts
+    
+    if recovery_attempt.otp_is_blocked:
+        messages.error(request, '🚫 Troppi tentativi falliti. Account bloccato per 30 minuti.')
+        _clear_reset_password_session(request)
+        return redirect('reset_password'), None
+    
+    messages.error(request, f'❌ Codice OTP errato. Ti rimangono {remaining_attempts} tentativi.')
+    return None, remaining_attempts
+
+
+def reset_password_verify_otp(request):
+    """Vista per verificare il codice OTP durante il recupero password"""
+    root = "Ledger_Logistic/reset_password_verify_otp.html"
+    
+    # Early return se sessione non valida
+    email = _check_reset_password_session(request)
+    if email is None:
+        return redirect('reset_password')
+    
+    # Recupera utente e tentativo
+    user, recovery_attempt, error = _get_user_and_recovery_attempt(email)
+    if error:
+        messages.error(request, error)
+        _clear_reset_password_session(request)
+        return redirect('reset_password')
+    
+    # Verifica blocco OTP
+    is_blocked, remaining_time = _check_recovery_otp_blocked(recovery_attempt)
+    if is_blocked:
+        messages.error(request, f'Troppi tentativi OTP falliti. Riprova tra {remaining_time} minuti.')
+        return render(request, root, {
+            'blocked': True,
+            'remaining_time': remaining_time,
+            'email': email
+        })
+    
+    # GET request
+    if request.method != 'POST':
         return render(request, root, {'email': email})
     
-    # Verifica il codice OTP
+    # POST request - verifica OTP
+    codice_inserito = request.POST.get('otp', '').strip()
+    
+    if not codice_inserito:
+        messages.error(request, 'Il codice OTP è obbligatorio.')
+        return render(request, root, {'email': email})
+    
+    # Valida codice
+    ultimo_otp, error_msg = _validate_reset_otp_code(user)
+    if error_msg:
+        messages.error(request, error_msg)
+        return render(request, root, {'email': email})
+    
+    # Verifica codice
     if ultimo_otp.verifica(codice_inserito):
-        # OTP corretto - reset contatori OTP
-        recovery_attempt.reset_otp_attempts()
-        request.session['reset_password_otp_verified'] = True
-        
-        messages.success(request, '✅ Codice OTP verificato! Ora puoi impostare una nuova password.')
-        return redirect('reset_password_new')
-    else:
-        # OTP errato - incrementa contatore
-        recovery_attempt.increment_otp_failed_attempts()
-        remaining_attempts = 5 - recovery_attempt.otp_failed_attempts
-        
-        if recovery_attempt.otp_is_blocked:
-            messages.error(
-                request,
-                '🚫 Troppi tentativi falliti. Account bloccato per 30 minuti.'
-            )
-            if 'reset_password_email' in request.session:
-                del request.session['reset_password_email']
-            if 'reset_password_otp_verified' in request.session:
-                del request.session['reset_password_otp_verified']
-            return redirect('reset_password')
-        
-        messages.error(
-            request,
-            f'❌ Codice OTP errato. Ti rimangono {remaining_attempts} tentativi.'
-        )
-        
-        return render(request, root, {
-            'email': email,
-            'remaining_attempts': remaining_attempts,
-            'otp_failed_attempts': recovery_attempt.otp_failed_attempts
-        })
+        return _handle_correct_reset_otp(request, recovery_attempt)
+    
+    # OTP errato
+    result, remaining_attempts = _handle_incorrect_reset_otp(request, recovery_attempt)
+    if result:
+        return result
+    
+    return render(request, root, {
+        'email': email,
+        'remaining_attempts': remaining_attempts,
+        'otp_failed_attempts': recovery_attempt.otp_failed_attempts
+    })
 
 
 def reset_password_new(request):
-    """
-    Vista per impostare una nuova password dopo verifica OTP.
-    Richiede: maiuscola, minuscola, numero, carattere speciale, min 8 caratteri.
-    """
+    """Vista per impostare una nuova password dopo verifica OTP"""
     root = "Ledger_Logistic/reset_password_new.html"
     
-    # Verifica che ci sia una sessione attiva e OTP verificato
     if 'reset_password_email' not in request.session or not request.session.get('reset_password_otp_verified'):
         messages.error(request, 'Sessione scaduta o OTP non verificato. Riprova.')
         return redirect('reset_password')
     
     email = request.session.get('reset_password_email')
     
-    # GET request - mostra il form
     if request.method != 'POST':
         return render(request, root, {'email': email})
     
-    # POST request - processa la nuova password
     new_password = request.POST.get('new_password', '').strip()
     confirm_password = request.POST.get('confirm_password', '').strip()
     
-    # Validazione base
     if not new_password or not confirm_password:
         messages.error(request, 'Entrambi i campi sono obbligatori.')
         return render(request, root, {'email': email})
     
-    # Verifica che le password corrispondano
     if new_password != confirm_password:
         messages.error(request, 'Le password non corrispondono.')
         return render(request, root, {'email': email})
     
-    # Validazione requisiti password
     import re
     
     errors = []
@@ -850,7 +881,7 @@ def reset_password_new(request):
         errors.append('Deve contenere almeno una lettera maiuscola')
     if not re.search(r'[a-z]', new_password):
         errors.append('Deve contenere almeno una lettera minuscola')
-    if not re.search(r'[0-9]', new_password):
+    if not re.search(r'\d', new_password):
         errors.append('Deve contenere almeno un numero')
     if not re.search(r'[!@#$%^&*(),.?":{}|<>+]', new_password):
         errors.append('Deve contenere almeno un carattere speciale (!@#$%^&*(),.?":{}|<>+)')
@@ -860,17 +891,12 @@ def reset_password_new(request):
             messages.error(request, f'❌ {error}')
         return render(request, root, {'email': email})
     
-    # Password valida - aggiorna l'utente
     try:
         user = Utente.objects.get(email=email)
         user.set_password(new_password)
         user.save()
         
-        # Pulisci la sessione
-        if 'reset_password_email' in request.session:
-            del request.session['reset_password_email']
-        if 'reset_password_otp_verified' in request.session:
-            del request.session['reset_password_otp_verified']
+        _clear_reset_password_session(request)
         
         messages.success(
             request,
@@ -884,3 +910,87 @@ def reset_password_new(request):
     except Exception as e:
         messages.error(request, f'Errore durante l\'aggiornamento della password: {str(e)}')
         return render(request, root, {'email': email})
+
+
+@staff_member_required
+@require_POST
+def download_contract(request):
+    """Scarica un file contratto"""
+    data = json.loads(request.body)
+    filepath = data.get('filepath', '')
+    
+    if os.path.isfile(filepath) and filepath.endswith('.sol'):
+        return FileResponse(open(filepath, 'rb'), as_attachment=True)
+    return JsonResponse({'error': 'File non trovato'}, status=404)
+
+
+@staff_member_required
+@require_POST
+def edit_contract(request):
+    """Modifica un file contratto"""
+    data = json.loads(request.body)
+    filename = data.get('filename', '')
+    content = data.get('content', '')
+    
+    folder_path = os.path.join(settings.BASE_DIR, '..', 'contracts')
+    file_path = os.path.join(folder_path, filename)
+    
+    if filename.endswith('.sol') and os.path.isfile(file_path):
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    
+    return JsonResponse({'success': False, 'error': 'File non valido'})
+
+
+@staff_member_required
+@require_POST
+def deploy_contract(request):
+    """Deploy di un contratto sulla blockchain"""
+    from .blockchain import is_connected
+    
+    data = json.loads(request.body)
+    filename = data.get('filename', '')
+    params = data.get('params', {})
+    
+    folder_path = os.path.join(settings.BASE_DIR, '..', 'contracts')
+    file_path = os.path.join(folder_path, filename)
+    
+    if not filename.endswith('.sol') or not os.path.isfile(file_path):
+        return JsonResponse({'success': False, 'error': 'File non valido'})
+    
+    if not is_connected():
+        return JsonResponse({'success': False, 'error': 'Blockchain non disponibile'})
+    
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            contract_code = f.read()
+        
+        contract_name = filename.replace('.sol', '')
+        
+        success, contract_address, tx_hash, error = deploy_solidity_contract(
+            contract_name, 
+            contract_code,
+            params
+        )
+        
+        if success:
+            return JsonResponse({
+                'success': True,
+                'contract_address': contract_address,
+                'tx_hash': tx_hash
+            })
+        return JsonResponse({'success': False, 'error': error})
+            
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+
+def deploy_solidity_contract(contract_name, contract_code, deploy_params):
+    """Funzione helper per il deploy dei contratti"""
+    # TODO: Implementare la logica di deploy usando contract_name, contract_code e deploy_params
+    # Esempio: compilare con solc, deployare con web3.py
+    return (False, None, None, f"Deploy non implementato per {contract_name} - configurare la logica blockchain")

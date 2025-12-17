@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django_otp.admin import OTPAdminSite
 from django_otp.decorators import otp_required
-from .models import Utente, TentativiDiLogin, CodiceOTP, MessaggioContatto
+from .models import Utente, TentativiDiLogin, CodiceOTP, MessaggioContatto, FileViewer
+import os
+from django.utils.html import format_html
+from django.conf import settings
 
 # Usa admin normale, non OTP
 # admin.site.__class__ = OTPAdminSite
@@ -44,3 +47,60 @@ class MessaggioContattoAdmin(admin.ModelAdmin):
         queryset.update(letto=True)
         self.message_user(request, f'{queryset.count()} messaggi segnati come letti.')
     mark_as_read.short_description = 'Segna come letto'
+
+
+class FileViewerAdmin(admin.ModelAdmin):
+    """Admin custom per visualizzare e gestire contratti Solidity"""
+    change_list_template = 'admin/file_viewer_changelist.html'
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        return True
+    
+    def get_queryset(self, request):
+        return FileViewer.objects.none()
+    
+    def changelist_view(self, request, extra_context=None):
+        folder_path = os.path.join(settings.BASE_DIR, '..', 'contracts')
+        folder_path = os.path.abspath(folder_path)
+        
+        files_data = []
+        if os.path.isdir(folder_path):
+            for filename in sorted(os.listdir(folder_path)):
+                if filename.endswith('.sol'):
+                    file_path = os.path.join(folder_path, filename)
+                    if os.path.isfile(file_path):
+                        size = os.path.getsize(file_path)
+                        try:
+                            with open(file_path, 'r', encoding='utf-8') as f:
+                                content = f.read()
+                        except Exception as e:
+                            content = f'Errore lettura: {str(e)}'
+                        
+                        files_data.append({
+                            'name': filename,
+                            'path': file_path,
+                            'size': size,
+                            'size_kb': round(size / 1024, 2),
+                            'full_content': content,
+                            'lines': content.count('\n') + 1,
+                            'url_param': filename.replace('.sol', '')
+                        })
+        else:
+            files_data = [{'error': f'Cartella non trovata: {folder_path}'}]
+        
+        extra_context = extra_context or {}
+        extra_context['files'] = files_data
+        extra_context['title'] = 'Contratti Solidity'
+        extra_context['folder'] = folder_path
+        return super().changelist_view(request, extra_context)
+
+
+@admin.register(FileViewer)
+class FileViewerAdminClass(FileViewerAdmin):
+    pass

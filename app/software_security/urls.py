@@ -34,4 +34,8 @@ urlpatterns = [
     path('reset-password/new/', views.reset_password_new, name='reset_password_new'),
     path('blockchain/invia-prova/<int:prova_id>/', views.invia_probabilita_blockchain, name='invia_prova_blockchain'),
     path('blockchain/invia-tutte/', views.invia_tutte_probabilita_blockchain, name='invia_prob_blockchain'),
+    path('api/deploy-contract/', views.deploy_contract, name='deploy_contract'),
+    path('api/download-contract/', views.download_contract, name='download_contract'),
+    path('api/edit-contract/', views.edit_contract, name='edit_contract'),
+    path('api/deploy-contract/', views.deploy_contract, name='deploy_contract'),
 ]

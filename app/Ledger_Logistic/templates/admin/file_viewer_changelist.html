@@ -1,0 +1,277 @@
+{% extends "admin/change_list.html" %}
+{% load admin_urls static %}
+
+{% block content_title %}
+    <h1>📋 Contratti Solidity</h1>
+{% endblock %}
+
+{% block search %}{% endblock %}
+{% block date_hierarchy %}{% endblock %}
+{% block filters %}{% endblock %}
+
+{% block result_list %}
+<div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+    <p style="color: #666; margin-bottom: 20px;">
+        <strong>Cartella:</strong> <code>{{ folder }}</code>
+    </p>
+    
+    {% if files %}
+        {% if files.0.error %}
+            <div style="background: #fee; color: #c33; padding: 15px; border-radius: 5px; border-left: 4px solid #c33;">
+                ❌ {{ files.0.error }}
+            </div>
+        {% else %}
+            <table style="width: 100%; border-collapse: collapse; background: white;">
+                <thead>
+                    <tr style="background: #f0f0f0; border-bottom: 2px solid #ddd;">
+                        <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">📄 Nome</th>
+                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Dimensione</th>
+                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Righe</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in files %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px; border: 1px solid #ddd; font-weight: 600; color: #667eea;">
+                                {{ file.name }}
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">
+                                {{ file.size_kb }} KB
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #ddd; text-align: center;">
+                                {{ file.lines }}
+                            </td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">
+                                <button type="button" onclick="viewFile('{{ file.name|slice:':-4' }}'); return false;" 
+                                        style="background: #667eea; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px; font-size: 12px;">
+                                    👁️ Visualizza
+                                </button>
+                                <button type="button" onclick="downloadFile('{{ file.path }}'); return false;" 
+                                        style="background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px; font-size: 12px;">
+                                    ⬇️ Scarica
+                                </button>
+                                <button type="button" onclick="editFile('{{ file.name }}'); return false;" 
+                                        style="background: #ffc107; color: black; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px; font-size: 12px;">
+                                    ✏️ Modifica
+                                </button>
+                                <button type="button" onclick="deployContract('{{ file.name }}'); return false;" 
+                                        style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                    🚀 Deploy
+                                </button>
+                            </td>
+                        </tr>
+                        <tr id="content-{{ file.name|slice:':-4' }}" style="display: none;">
+                            <td colspan="4" style="padding: 15px; border: 1px solid #ddd; background: #f5f5f5;">
+                                <pre style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 12px; font-family: 'Courier New', monospace;">{{ file.full_content }}</pre>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% else %}
+        <div style="background: #efefef; color: #666; padding: 20px; border-radius: 5px; text-align: center;">
+            ℹ️ Nessun file Solidity trovato
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal Deploy -->
+<div id="deployModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%;">
+        <h3 style="margin-top: 0; color: #333;">🚀 Deploy Contratto sulla Blockchain</h3>
+        
+        <div style="margin: 20px 0;">
+            <label for="contractName" style="display: block; margin-bottom: 8px; color: #555; font-weight: 500;">Nome Contratto</label>
+            <input type="text" id="contractName" readonly style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5;">
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <label for="deployParams" style="display: block; margin-bottom: 8px; color: #555; font-weight: 500;">Parametri Deploy (JSON)</label>
+            <textarea id="deployParams" placeholder='{"param1": "value1"}' 
+                      style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; height: 100px; font-size: 12px;"></textarea>
+        </div>
+        
+        <div style="margin: 20px 0; padding: 15px; background: #efefef; border-radius: 4px; color: #666; font-size: 12px;">
+            <strong>⚠️ Nota:</strong> Il deploy avverrà sulla blockchain configurata nel progetto.
+        </div>
+        
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button type="button" onclick="closeDeployModal()" 
+                    style="background: #999; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+                Annulla
+            </button>
+            <button type="button" onclick="confirmDeploy()" id="deployBtn"
+                    style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                Conferma Deploy
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentDeployFile = '';
+    
+    function viewFile(filename) {
+        console.log('Toggling view for:', filename);
+        const contentId = 'content-' + filename;
+        const element = document.getElementById(contentId);
+        if (element) {
+            element.style.display = element.style.display === 'none' ? 'table-row' : 'none';
+        } else {
+            console.error('Element not found:', contentId);
+        }
+    }
+    
+    function downloadFile(filepath) {
+        console.log('Downloading:', filepath);
+        const filename = filepath.split('/').pop();
+        fetch('/api/download-contract/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ filepath: filepath })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response not ok');
+            return response.blob();
+        })
+        .then(blob => {
+            const url = globalThis.URL.createObjectURL(blob);
+            const a = globalThis.document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            globalThis.document.body.appendChild(a);
+            a.click();
+            globalThis.URL.revokeObjectURL(url);
+            a.remove();
+        })
+        .catch(err => {
+            console.error('Download error:', err);
+            alert('❌ Errore download: ' + err);
+        });
+    }
+    
+    function editFile(filename) {
+        const newContent = prompt('Modifica il contenuto del file ' + filename + ':\n(Inserisci il nuovo codice)', '');
+        if (newContent !== null && newContent.trim() !== '') {
+            fetch('/api/edit-contract/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ 
+                    filename: filename, 
+                    content: newContent 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ File salvato con successo!');
+                    globalThis.location.reload();
+                } else {
+                    alert('❌ Errore: ' + data.error);
+                }
+            })
+            .catch(err => {
+                console.error('Edit error:', err);
+                alert('❌ Errore: ' + err);
+            });
+        }
+    }
+    
+    function deployContract(filename) {
+        console.log('Opening deploy modal for:', filename);
+        currentDeployFile = filename;
+        globalThis.document.getElementById('contractName').value = filename;
+        globalThis.document.getElementById('deployModal').style.display = 'flex';
+    }
+    
+    function closeDeployModal() {
+        globalThis.document.getElementById('deployModal').style.display = 'none';
+        currentDeployFile = '';
+        globalThis.document.getElementById('deployParams').value = '';
+    }
+    
+    function confirmDeploy() {
+        const filename = currentDeployFile;
+        const params = globalThis.document.getElementById('deployParams').value;
+        
+        let parsedParams = {};
+        if (params.trim()) {
+            try {
+                parsedParams = JSON.parse(params);
+            } catch (e) {
+                alert('❌ JSON non valido nei parametri');
+                console.error('JSON parse error:', e);
+                return;
+            }
+        }
+        
+        const deployButton = globalThis.document.getElementById('deployBtn');
+        deployButton.disabled = true;
+        deployButton.textContent = '⏳ Deploy in corso...';
+        
+        fetch('/api/deploy-contract/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ 
+                filename: filename,
+                params: parsedParams
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Deploy completato!\n\nIndirizzo Contratto: ' + data.contract_address + '\n\nTX Hash: ' + data.tx_hash);
+                closeDeployModal();
+            } else {
+                alert('❌ Errore Deploy: ' + data.error);
+            }
+            deployButton.disabled = false;
+            deployButton.textContent = '🚀 Deploy';
+        })
+        .catch(err => {
+            console.error('Deploy error:', err);
+            alert('❌ Errore: ' + err);
+            deployButton.disabled = false;
+            deployButton.textContent = '🚀 Deploy';
+        });
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (globalThis.document.cookie && globalThis.document.cookie !== '') {
+            const cookies = globalThis.document.cookie.split(';');
+            for (const element of cookies) {
+                const cookie = element.trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    console.log('Contract viewer script loaded');
+</script>
+
+<style>
+    table tbody tr:hover {
+        background: #f5f5f5;
+    }
+    
+    button:hover {
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}
