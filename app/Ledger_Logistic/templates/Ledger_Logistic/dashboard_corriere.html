@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Corriere - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
+                        <svg class="w-8 h-8 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        {{ company_name }}
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'dashboard_corriere' %}" class="text-blue-700 hover:text-blue-900 font-semibold">Dashboard</a>
+                    <span class="text-gray-600 font-medium">Ciao, {{ user.first_name|default:user.username }}</span>
+                    <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-orange-600 to-orange-800 rounded-lg shadow-lg p-8 mb-8 text-white">
+                <h1 class="text-4xl font-bold mb-2">Benvenuto, {{ user.first_name|default:user.username }}!</h1>
+                <p class="text-orange-100 text-lg">Dashboard Corriere - Gestisci le tue consegne</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-orange-100 rounded-md p-3">
+                            <svg class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Consegne Oggi</dt>
+                                <dd class="text-2xl font-bold text-gray-900">{{ consegne_oggi }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-green-100 rounded-md p-3">
+                            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Completate</dt>
+                                <dd class="text-2xl font-bold text-gray-900">{{ consegne_completate }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-yellow-100 rounded-md p-3">
+                            <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">In Corso</dt>
+                                <dd class="text-2xl font-bold text-gray-900">{{ consegne_in_corso }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-blue-100 rounded-md p-3">
+                            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Totale Mese</dt>
+                                <dd class="text-2xl font-bold text-gray-900">{{ consegne_mese }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collegamento Pacco -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Pacchi in Consegna</h2>
+                
+                {% if spedizioni_in_corso %}
+                    {% for spedizione in spedizioni_in_corso %}
+                    <!-- Informazioni Pacco -->
+                    <div class="mb-6 p-4 bg-gray-50 rounded-lg border-l-4 border-orange-600">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-lg font-bold text-gray-900">Pacco {{ forloop.counter }}</h3>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full 
+                                {% if spedizione.stato == 'in_transito' %}bg-yellow-100 text-yellow-800
+                                {% elif spedizione.stato == 'in_consegna' %}bg-orange-100 text-orange-800
+                                {% else %}bg-blue-100 text-blue-800{% endif %}">
+                                {{ spedizione.get_stato_display }}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Codice Tracciamento</p>
+                                <p class="font-semibold text-gray-900">{{ spedizione.codice_tracciamento }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Destinazione</p>
+                                <p class="font-semibold text-gray-900">{{ spedizione.citta }}, {{ spedizione.provincia }} - {{ spedizione.cap }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Grandezza</p>
+                                <p class="font-semibold text-gray-900">{{ spedizione.get_grandezza_display }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Indirizzo Consegna</p>
+                                <p class="font-semibold text-gray-900">{{ spedizione.indirizzo_consegna }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Cliente</p>
+                                <p class="font-semibold text-gray-900">{{ spedizione.cliente.get_full_name|default:spedizione.cliente.username }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Descrizione</p>
+                                <p class="font-semibold text-gray-900">{{ spedizione.descrizione|truncatewords:5 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-8 text-gray-500">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                        <p class="mt-2 text-sm font-medium">Nessun pacco assegnato</p>
+                        <p class="mt-1 text-sm">I pacchi da consegnare appariranno qui</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-8 w-8 text-orange-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                        <h3 class="text-xl font-bold text-gray-900">Traffico</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Indica la presenza di traffico sulla tua rotta.</p>
+                    <div class="flex items-center space-x-3">
+                        <input 
+                            type="checkbox" 
+                            id="checkTraffic" 
+                            class="w-6 h-6 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                        >
+                        <label for="checkTraffic" class="text-lg font-medium text-gray-900">
+                            Presenza traffico
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-8 w-8 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        <h3 class="text-xl font-bold text-gray-900">Disponibilità Veicolo</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Indica se il tuo veicolo è disponibile per le consegne.</p>
+                    <div class="flex items-center space-x-3">
+                        <input 
+                            type="checkbox" 
+                            id="checkVehicle" 
+                            class="w-6 h-6 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                        >
+                        <label for="checkVehicle" class="text-lg font-medium text-gray-900">
+                            Veicolo disponibile
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-8 w-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h3 class="text-xl font-bold text-gray-900">Probabilità Ritardo Consegna</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Probabilità calcolata in base al traffico e disponibilità veicolo.</p>
+                    <div class="text-center">
+                        <div class="text-6xl font-bold text-blue-600" id="probabilitaRitardo">
+                            0%
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Aggiorna i parametri sopra per ricalcolare</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consegne Passate -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900">Consegne Passate</h2>
+                </div>
+                <div class="p-6">
+                    {% if spedizioni_passate %}
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Codice Tracciamento
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Destinazione
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Cliente
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Grandezza
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Stato
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Data Completamento
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                {% for spedizione in spedizioni_passate %}
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ spedizione.codice_tracciamento }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ spedizione.citta }}, {{ spedizione.provincia }}</div>
+                                        <div class="text-sm text-gray-500">{{ spedizione.cap }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ spedizione.cliente.get_full_name|default:spedizione.cliente.username }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            {% if spedizione.grandezza == 'piccolo' %}bg-green-100 text-green-800
+                                            {% elif spedizione.grandezza == 'medio' %}bg-yellow-100 text-yellow-800
+                                            {% else %}bg-red-100 text-red-800{% endif %}">
+                                            {{ spedizione.get_grandezza_display }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            {% if spedizione.stato == 'consegnato' %}bg-green-100 text-green-800
+                                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                            {{ spedizione.get_stato_display }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ spedizione.data_aggiornamento|date:"d/m/Y H:i" }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-12 text-gray-500">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                        <p class="mt-2 text-sm font-medium">Nessuna consegna completata</p>
+                        <p class="mt-1 text-sm">Lo storico delle consegne completate apparirà qui</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 {{ company_name }}. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+    // Calcola probabilità ritardo in base ai checkbox
+    function calcolaProbabilita() {
+        const traffico = document.getElementById('checkTraffic').checked;
+        const veicoloNonDisponibile = !document.getElementById('checkVehicle').checked;
+        
+        let probabilita = 0;
+        
+        // Se c'è traffico: +50%
+        if (traffico) {
+            probabilita += 50;
+        }
+        
+        // Se veicolo non disponibile: +40%
+        if (veicoloNonDisponibile) {
+            probabilita += 40;
+        }
+        
+        // Limita a 100%
+        if (probabilita > 100) {
+            probabilita = 100;
+        }
+        
+        // Aggiorna il display
+        document.getElementById('probabilitaRitardo').textContent = probabilita + '%';
+        
+        // Cambia colore in base alla probabilità
+        const elem = document.getElementById('probabilitaRitardo');
+        elem.className = 'text-6xl font-bold';
+        if (probabilita === 0) {
+            elem.classList.add('text-green-600');
+        } else if (probabilita <= 50) {
+            elem.classList.add('text-yellow-600');
+        } else {
+            elem.classList.add('text-red-600');
+        }
+    }
+    
+    // Aggiungi event listeners ai checkbox
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('checkTraffic').addEventListener('change', calcolaProbabilita);
+        document.getElementById('checkVehicle').addEventListener('change', calcolaProbabilita);
+    });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea Spedizione - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
+                        <svg class="w-8 h-8 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        {{ company_name }}
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'dashboard_cliente' %}" class="text-gray-600 hover:text-blue-700 font-medium">Dashboard</a>
+                    <span class="text-gray-600 font-medium">Ciao, {{ user.first_name|default:user.username }}</span>
+                    <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-8 mb-8 text-white">
+                <h1 class="text-4xl font-bold mb-2">Crea Nuova Spedizione</h1>
+                <p class="text-blue-100 text-lg">Compila i dettagli per la tua spedizione</p>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                <div class="mb-6">
+                    {% for message in messages %}
+                        <div class="{% if message.tags == 'error' %}bg-red-100 border-red-400 text-red-700{% elif message.tags == 'success' %}bg-green-100 border-green-400 text-green-700{% else %}bg-blue-100 border-blue-400 text-blue-700{% endif %} border px-4 py-3 rounded mb-3">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Form -->
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Sezione Indirizzo -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            Indirizzo di Consegna
+                        </h2>
+
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label for="indirizzo_consegna" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Indirizzo Completo <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="indirizzo_consegna" 
+                                    name="indirizzo_consegna" 
+                                    value="{{ indirizzo_consegna|default:'' }}"
+                                    placeholder="Via/Piazza, Numero civico"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required
+                                >
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="citta" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Città <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="citta" 
+                                        name="citta" 
+                                        value="{{ citta|default:'' }}"
+                                        placeholder="Milano"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        required
+                                    >
+                                </div>
+
+                                <div>
+                                    <label for="cap" class="block text-sm font-medium text-gray-700 mb-2">
+                                        CAP <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="cap" 
+                                        name="cap" 
+                                        value="{{ cap|default:'' }}"
+                                        placeholder="20100"
+                                        pattern="[0-9]{5}"
+                                        maxlength="5"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        required
+                                    >
+                                </div>
+
+                                <div>
+                                    <label for="provincia" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Provincia <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="provincia" 
+                                        name="provincia" 
+                                        value="{{ provincia|default:'' }}"
+                                        placeholder="MI"
+                                        maxlength="2"
+                                        style="text-transform: uppercase;"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sezione Dettagli Pacco -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                            Dettagli Pacco
+                        </h2>
+
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">
+                                    Grandezza Pacco <span class="text-red-500">*</span>
+                                </label>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition {% if grandezza == 'piccolo' %}border-blue-600 bg-blue-50{% endif %}">
+                                        <input type="radio" name="grandezza" value="piccolo" class="sr-only" {% if grandezza == 'piccolo' %}checked{% endif %} required>
+                                        <svg class="w-12 h-12 mb-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                        </svg>
+                                        <span class="text-lg font-semibold text-gray-900">Piccolo</span>
+                                        <span class="text-sm text-gray-500 text-center mt-1">Fino a 5kg<br>30x30x30 cm</span>
+                                    </label>
+
+                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition {% if grandezza == 'medio' %}border-blue-600 bg-blue-50{% endif %}">
+                                        <input type="radio" name="grandezza" value="medio" class="sr-only" {% if grandezza == 'medio' %}checked{% endif %} required>
+                                        <svg class="w-16 h-16 mb-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                        </svg>
+                                        <span class="text-lg font-semibold text-gray-900">Medio</span>
+                                        <span class="text-sm text-gray-500 text-center mt-1">Fino a 20kg<br>50x50x50 cm</span>
+                                    </label>
+
+                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition {% if grandezza == 'grande' %}border-blue-600 bg-blue-50{% endif %}">
+                                        <input type="radio" name="grandezza" value="grande" class="sr-only" {% if grandezza == 'grande' %}checked{% endif %} required>
+                                        <svg class="w-20 h-20 mb-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                        </svg>
+                                        <span class="text-lg font-semibold text-gray-900">Grande</span>
+                                        <span class="text-sm text-gray-500 text-center mt-1">Fino a 50kg<br>100x100x100 cm</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="descrizione" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Descrizione Ordine <span class="text-red-500">*</span>
+                                </label>
+                                <textarea 
+                                    id="descrizione" 
+                                    name="descrizione" 
+                                    rows="5"
+                                    placeholder="Descrivi il contenuto del pacco (es: Elettronica, Abbigliamento, Documenti, etc.)"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required
+                                >{{ descrizione|default:'' }}</textarea>
+                                <p class="mt-2 text-sm text-gray-500">Fornisci una descrizione dettagliata per facilitare la gestione della spedizione</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pulsanti -->
+                    <div class="flex gap-4">
+                        <button 
+                            type="submit"
+                            class="flex-1 bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition font-semibold text-lg shadow-lg hover:shadow-xl"
+                        >
+                            <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Crea Spedizione
+                        </button>
+                        <a 
+                            href="{% url 'dashboard_cliente' %}"
+                            class="flex-1 bg-gray-200 text-gray-700 px-8 py-4 rounded-lg hover:bg-gray-300 transition font-semibold text-lg text-center"
+                        >
+                            Annulla
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Info Box -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
+                <h3 class="text-lg font-bold text-blue-900 mb-3 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Informazioni Utili
+                </h3>
+                <ul class="space-y-2 text-sm text-blue-800">
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        Riceverai un codice di tracciamento univoco per seguire la tua spedizione
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        Un corriere verrà assegnato automaticamente alla tua spedizione
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        Potrai monitorare lo stato della consegna dalla tua dashboard
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        Tempi di consegna stimati: 24-48h per spedizioni nazionali
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 {{ company_name }}. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Gestione selezione grandezza pacco
+        document.querySelectorAll('input[name="grandezza"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Rimuovi la classe selezionata da tutti i label
+                document.querySelectorAll('input[name="grandezza"]').forEach(r => {
+                    r.parentElement.classList.remove('border-blue-600', 'bg-blue-50');
+                    r.parentElement.classList.add('border-gray-300');
+                });
+                // Aggiungi la classe selezionata al label corrente
+                if (this.checked) {
+                    this.parentElement.classList.add('border-blue-600', 'bg-blue-50');
+                    this.parentElement.classList.remove('border-gray-300');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -244,10 +244,20 @@ def _handle_correct_otp(request, user, login_attempt):
     django_login(request, user)
     request.session['otp_verified'] = True
     _clear_otp_session(request)
-    return redirect('home')
+    
+    # Reindirizza in base al ruolo dell'utente
+    if user.ruolo == 'cliente':
+        return redirect('dashboard_cliente')
+    elif user.ruolo == 'corriere':
+        return redirect('dashboard_corriere')
+    elif user.ruolo == 'gestore':
+        return redirect('dashboard_gestore')
+    else:
+        # Default fallback
+        return redirect('home')
 
 
-def _handle_incorrect_otp(request, login_attempt):
+def _handle_incorrect_otp(request, login_attempt, user):
     """Gestisce il caso di codice OTP errato"""
     login_attempt.increment_otp_failed_attempts()
     remaining_attempts = 5 - login_attempt.otp_failed_attempts
@@ -260,10 +270,26 @@ def _handle_incorrect_otp(request, login_attempt):
         _clear_otp_session(request)
         return redirect('login')
     
-    messages.error(
-        request,
-        f'❌ Codice OTP non valido. Ti rimangono {remaining_attempts} tentativi.'
-    )
+    # Genera e invia nuovo codice OTP
+    try:
+        codice_otp = CodiceOTP.genera_codice(user)
+        send_mail(
+            subject='Nuovo Codice OTP - Ledger Logistic',
+            message=f'Hai inserito un codice errato. Il tuo nuovo codice OTP è: {codice_otp.codice}\n\nValido per 5 minuti.\n\nTi rimangono {remaining_attempts} tentativi.\n\nSe non hai richiesto questo accesso, ignora questa email.',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+        messages.error(
+            request,
+            f'❌ Codice OTP non valido. Ti abbiamo inviato un nuovo codice. Tentativi rimasti: {remaining_attempts}'
+        )
+    except Exception:
+        messages.error(
+            request,
+            f'❌ Codice OTP non valido. Ti rimangono {remaining_attempts} tentativi.'
+        )
+    
     return None
 
 
@@ -281,7 +307,7 @@ def _process_otp_verification(request, email, codice_inserito):
     if ultimo_codice and ultimo_codice.verifica(codice_inserito):
         return _handle_correct_otp(request, user, login_attempt)
     
-    return _handle_incorrect_otp(request, login_attempt)
+    return _handle_incorrect_otp(request, login_attempt, user)
 
 
 # ============= MAIN OTP VERIFICATION VIEW =============
@@ -315,6 +341,43 @@ def verify_otp(request):
         'otp_remaining_attempts': otp_remaining_attempts,
         'otp_failed_attempts': login_attempt.otp_failed_attempts
     })
+
+
+def resend_otp(request):
+    """Vista per reinviare il codice OTP"""
+    # Verifica sessione
+    email = _check_otp_session(request)
+    if email is None:
+        messages.error(request, 'Sessione scaduta. Effettua nuovamente il login.')
+        return redirect('login')
+    
+    try:
+        user = Utente.objects.get(email=email)
+        login_attempt, _ = TentativiDiLogin.objects.get_or_create(email=email)
+        
+        # Verifica se è bloccato
+        if _check_otp_blocked(login_attempt, request):
+            return redirect('login')
+        
+        # Genera e invia nuovo codice
+        codice_otp = CodiceOTP.genera_codice(user)
+        send_mail(
+            subject='Nuovo Codice OTP - Ledger Logistic',
+            message=f'Hai richiesto un nuovo codice OTP: {codice_otp.codice}\n\nValido per 5 minuti.\n\nSe non hai richiesto questo accesso, ignora questa email.',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+        
+        messages.success(request, f'✅ Nuovo codice OTP inviato a {email}')
+        
+    except Utente.DoesNotExist:
+        messages.error(request, 'Utente non trovato.')
+        return redirect('login')
+    except Exception as e:
+        messages.error(request, f'Errore nell\'invio del codice: {str(e)}')
+    
+    return redirect('verify_otp')
 
 
 def custom_logout(request):
@@ -994,3 +1057,228 @@ def deploy_solidity_contract(contract_name, contract_code, deploy_params):
     # TODO: Implementare la logica di deploy usando contract_name, contract_code e deploy_params
     # Esempio: compilare con solc, deployare con web3.py
     return (False, None, None, f"Deploy non implementato per {contract_name} - configurare la logica blockchain")
+# ============= DASHBOARD VIEWS =============
+
+@login_required
+def dashboard_cliente(request):
+    """Dashboard per utenti con ruolo 'cliente'"""
+    # Verifica che l'utente abbia il ruolo cliente
+    if request.user.ruolo != 'cliente':
+        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        # Reindirizza alla dashboard corretta in base al ruolo
+        if request.user.ruolo == 'corriere':
+            return redirect('dashboard_corriere')
+        elif request.user.ruolo == 'gestore':
+            return redirect('dashboard_gestore')
+        else:
+            return redirect('home')
+    
+    # Importa il modello Spedizione
+    from .models import Spedizione
+    
+    # Recupera tutte le spedizioni del cliente
+    spedizioni = Spedizione.objects.filter(cliente=request.user).order_by('-data_creazione')
+    
+    # Calcola le statistiche
+    spedizioni_attive = spedizioni.filter(stato__in=['in_attesa', 'in_elaborazione']).count()
+    spedizioni_consegnate = spedizioni.filter(stato='consegnato').count()
+    spedizioni_in_transito = spedizioni.filter(stato__in=['in_transito', 'in_consegna']).count()
+    spedizioni_totali = spedizioni.count()
+    
+    # Filtro per spedizioni in corso
+    filtro_grandezza = request.GET.get('filtro_grandezza', '')
+    spedizioni_in_corso = spedizioni.filter(stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']).order_by('-data_creazione')
+    
+    if filtro_grandezza:
+        spedizioni_in_corso = spedizioni_in_corso.filter(grandezza=filtro_grandezza)
+    
+    # Spedizioni passate (senza paginazione server-side)
+    spedizioni_passate = spedizioni.filter(stato__in=['consegnato', 'annullato']).order_by('-data_aggiornamento')
+    
+    context = {
+        'company_name': 'Ledger Logistics',
+        'user': request.user,
+        'spedizioni_attive': spedizioni_attive,
+        'spedizioni_consegnate': spedizioni_consegnate,
+        'spedizioni_in_transito': spedizioni_in_transito,
+        'spedizioni_totali': spedizioni_totali,
+        'spedizioni_in_corso': spedizioni_in_corso,
+        'spedizioni_passate': spedizioni_passate,
+        'filtro_grandezza': filtro_grandezza
+    }
+    return render(request, 'Ledger_Logistic/dashboard_cliente.html', context)
+
+
+@login_required
+def dashboard_corriere(request):
+    """Dashboard per utenti con ruolo 'corriere'"""
+    # Verifica che l'utente abbia il ruolo corriere
+    if request.user.ruolo != 'corriere':
+        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        # Reindirizza alla dashboard corretta in base al ruolo
+        if request.user.ruolo == 'cliente':
+            return redirect('dashboard_cliente')
+        elif request.user.ruolo == 'gestore':
+            return redirect('dashboard_gestore')
+        else:
+            return redirect('home')
+    
+    # Importa il modello Spedizione
+    from .models import Spedizione
+    
+    # Recupera le spedizioni assegnate al corriere
+    spedizioni_assegnate = Spedizione.objects.filter(corriere=request.user).order_by('-data_creazione')
+    
+    # Calcola le statistiche
+    consegne_oggi = spedizioni_assegnate.filter(
+        data_creazione__date=timezone.now().date()
+    ).count()
+    
+    consegne_completate = spedizioni_assegnate.filter(stato='consegnato').count()
+    consegne_in_corso = spedizioni_assegnate.filter(
+        stato__in=['in_transito', 'in_consegna']
+    ).count()
+    
+    # Consegne del mese corrente
+    consegne_mese = spedizioni_assegnate.filter(
+        data_creazione__month=timezone.now().month,
+        data_creazione__year=timezone.now().year
+    ).count()
+    
+    # Spedizioni in corso (per la sezione collegamento)
+    spedizioni_in_corso = spedizioni_assegnate.filter(
+        stato__in=['in_transito', 'in_consegna']
+    ).order_by('-data_creazione')
+    
+    # Spedizioni passate (completate o annullate)
+    spedizioni_passate = spedizioni_assegnate.filter(
+        stato__in=['consegnato', 'annullato']
+    ).order_by('-data_aggiornamento')
+    
+    context = {
+        'company_name': 'Ledger Logistics',
+        'user': request.user,
+        'consegne_oggi': consegne_oggi,
+        'consegne_completate': consegne_completate,
+        'consegne_in_corso': consegne_in_corso,
+        'consegne_mese': consegne_mese,
+        'spedizioni_in_corso': spedizioni_in_corso,
+        'spedizioni_passate': spedizioni_passate
+    }
+    return render(request, 'Ledger_Logistic/dashboard_corriere.html', context)
+
+
+@login_required
+def dashboard_gestore(request):
+    """Dashboard per utenti con ruolo 'gestore'"""
+    # Verifica che l'utente abbia il ruolo gestore
+    if request.user.ruolo != 'gestore':
+        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        # Reindirizza alla dashboard corretta in base al ruolo
+        if request.user.ruolo == 'cliente':
+            return redirect('dashboard_cliente')
+        elif request.user.ruolo == 'corriere':
+            return redirect('dashboard_corriere')
+        else:
+            return redirect('home')
+    
+    context = {
+        'company_name': 'Ledger Logistics',
+        'user': request.user
+    }
+    return render(request, 'Ledger_Logistic/dashboard_gestore.html', context)
+
+
+# ============= SPEDIZIONE VIEWS =============
+
+@login_required
+def crea_spedizione(request):
+    """Vista per creare una nuova spedizione"""
+    # Verifica che l'utente sia un cliente
+    if request.user.ruolo != 'cliente':
+        messages.error(request, 'Solo i clienti possono creare spedizioni.')
+        return redirect('home')
+    
+    root = "Ledger_Logistic/crea_spedizione.html"
+    
+    # GET request - mostra il form
+    if request.method != 'POST':
+        context = {
+            'company_name': 'Ledger Logistics',
+            'user': request.user
+        }
+        return render(request, root, context)
+    
+    # POST request - processa la creazione
+    indirizzo_consegna = request.POST.get('indirizzo_consegna', '').strip()
+    citta = request.POST.get('citta', '').strip()
+    cap = request.POST.get('cap', '').strip()
+    provincia = request.POST.get('provincia', '').strip().upper()
+    grandezza = request.POST.get('grandezza', '')
+    descrizione = request.POST.get('descrizione', '').strip()
+    
+    # Validazione
+    errors = []
+    
+    if not indirizzo_consegna:
+        errors.append('L\'indirizzo di consegna è obbligatorio.')
+    if not citta:
+        errors.append('La città è obbligatoria.')
+    if not cap:
+        errors.append('Il CAP è obbligatorio.')
+    elif len(cap) != 5 or not cap.isdigit():
+        errors.append('Il CAP deve essere di 5 cifre.')
+    if not provincia:
+        errors.append('La provincia è obbligatoria.')
+    elif len(provincia) != 2:
+        errors.append('La provincia deve essere di 2 caratteri (es: MI, RM).')
+    if not grandezza or grandezza not in ['piccolo', 'medio', 'grande']:
+        errors.append('Seleziona una grandezza valida per il pacco.')
+    if not descrizione:
+        errors.append('La descrizione dell\'ordine è obbligatoria.')
+    
+    if errors:
+        for error in errors:
+            messages.error(request, error)
+        context = {
+            'company_name': 'Ledger Logistics',
+            'user': request.user,
+            'indirizzo_consegna': indirizzo_consegna,
+            'citta': citta,
+            'cap': cap,
+            'provincia': provincia,
+            'grandezza': grandezza,
+            'descrizione': descrizione
+        }
+        return render(request, root, context)
+    
+    # Crea la spedizione
+    try:
+        from .models import Spedizione
+        
+        spedizione = Spedizione(
+            cliente=request.user,
+            indirizzo_consegna=indirizzo_consegna,
+            citta=citta,
+            cap=cap,
+            provincia=provincia,
+            grandezza=grandezza,
+            descrizione=descrizione
+        )
+        
+        # Genera codice tracciamento
+        spedizione.codice_tracciamento = spedizione.genera_codice_tracciamento()
+        spedizione.save()
+        
+        messages.success(
+            request,
+            f'✅ Spedizione creata con successo! Codice tracciamento: {spedizione.codice_tracciamento}'
+        )
+        return redirect('dashboard_cliente')
+        
+    except Exception as e:
+        messages.error(request, f'Errore durante la creazione della spedizione: {str(e)}')
+        return render(request, root, {
+            'company_name': 'Ledger Logistics',
+            'user': request.user
+        })

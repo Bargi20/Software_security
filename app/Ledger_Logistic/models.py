@@ -49,6 +49,7 @@ class Utente(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=15, blank=True, verbose_name='Telefono')
     address = models.TextField(blank=True, verbose_name='Indirizzo')
     data_nascita = models.DateField(blank=True, null=True, verbose_name='Data di nascita')
+    ruolo = models.CharField(max_length=10, blank=False, default="cliente", verbose_name='Ruolo')
     
     is_active = models.BooleanField(default=True, verbose_name='Attivo')
     is_staff = models.BooleanField(default=False, verbose_name='Staff')
@@ -343,3 +344,91 @@ class FileViewer(models.Model):
         verbose_name_plural = "Visualizzatore File"
         managed = False  # Non crea tabella nel database
         app_label = 'Ledger_Logistic'
+
+# ============= SPEDIZIONE MODEL =============
+
+class Spedizione(models.Model):
+    """Modello per gestire le spedizioni dei clienti"""
+    
+    GRANDEZZA_CHOICES = [
+        ('piccolo', 'Piccolo'),
+        ('medio', 'Medio'),
+        ('grande', 'Grande'),
+    ]
+    
+    STATO_CHOICES = [
+        ('in_attesa', 'In Attesa'),
+        ('in_elaborazione', 'In Elaborazione'),
+        ('in_transito', 'In Transito'),
+        ('in_consegna', 'In Consegna'),
+        ('consegnato', 'Consegnato'),
+        ('annullato', 'Annullato'),
+    ]
+    
+    # Informazioni cliente
+    cliente = models.ForeignKey(
+        'Utente',
+        on_delete=models.CASCADE,
+        related_name='spedizioni',
+        verbose_name='Cliente'
+    )
+    
+    # Informazioni spedizione
+    codice_tracciamento = models.CharField(
+        max_length=20,
+        unique=True,
+        verbose_name='Codice Tracciamento'
+    )
+    
+    # Indirizzo di consegna
+    indirizzo_consegna = models.TextField(verbose_name='Indirizzo di Consegna')
+    citta = models.CharField(max_length=100, verbose_name='Città')
+    cap = models.CharField(max_length=10, verbose_name='CAP')
+    provincia = models.CharField(max_length=2, verbose_name='Provincia')
+    
+    # Dettagli pacco
+    grandezza = models.CharField(
+        max_length=10,
+        choices=GRANDEZZA_CHOICES,
+        default='medio',
+        verbose_name='Grandezza Pacco'
+    )
+    descrizione = models.TextField(verbose_name='Descrizione Ordine')
+    
+    # Stato e timestamp
+    stato = models.CharField(
+        max_length=20,
+        choices=STATO_CHOICES,
+        default='in_attesa',
+        verbose_name='Stato'
+    )
+    data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione')
+    data_aggiornamento = models.DateTimeField(auto_now=True, verbose_name='Ultimo Aggiornamento')
+    
+    # Corriere assegnato (opzionale)
+    corriere = models.ForeignKey(
+        'Utente',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='consegne',
+        limit_choices_to={'ruolo': 'corriere'},
+        verbose_name='Corriere Assegnato'
+    )
+    
+    class Meta:
+        verbose_name = "Spedizione"
+        verbose_name_plural = "Spedizioni"
+        ordering = ['-data_creazione']
+    
+    def __str__(self):
+        return f"{self.codice_tracciamento} - {self.cliente.email} ({self.get_stato_display()})"
+    
+    def genera_codice_tracciamento(self):
+        """Genera un codice di tracciamento univoco"""
+        import random
+        import string
+        while True:
+            codice = 'LL' + ''.join(random.choices(string.digits, k=10))
+            if not Spedizione.objects.filter(codice_tracciamento=codice).exists():
+                return codice
