@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django_otp.admin import OTPAdminSite
 from django_otp.decorators import otp_required
-from .models import Utente, TentativiDiLogin, CodiceOTP, MessaggioContatto
+from .models import Utente, TentativiDiLogin, CodiceOTP, MessaggioContatto, Spedizione
 
 # Usa admin normale, non OTP
 # admin.site.__class__ = OTPAdminSite
@@ -44,3 +44,28 @@ class MessaggioContattoAdmin(admin.ModelAdmin):
         queryset.update(letto=True)
         self.message_user(request, f'{queryset.count()} messaggi segnati come letti.')
     mark_as_read.short_description = 'Segna come letto'
+
+
+@admin.register(Spedizione)
+class SpedizioneAdmin(admin.ModelAdmin):
+    list_display = ('codice_tracciamento', 'cliente', 'citta', 'grandezza', 'stato', 'corriere', 'data_creazione')
+    list_filter = ('stato', 'grandezza', 'data_creazione', 'provincia')
+    search_fields = ('codice_tracciamento', 'cliente__email', 'cliente__username', 'citta', 'indirizzo_consegna', 'descrizione')
+    readonly_fields = ('codice_tracciamento', 'data_creazione', 'data_aggiornamento')
+    autocomplete_fields = ['cliente', 'corriere']
+    
+    fieldsets = (
+        ('Informazioni Spedizione', {
+            'fields': ('codice_tracciamento', 'cliente', 'stato', 'corriere')
+        }),
+        ('Indirizzo di Consegna', {
+            'fields': ('indirizzo_consegna', 'citta', 'cap', 'provincia')
+        }),
+        ('Dettagli Pacco', {
+            'fields': ('grandezza', 'descrizione')
+        }),
+        ('Timestamp', {
+            'fields': ('data_creazione', 'data_aggiornamento'),
+            'classes': ('collapse',)
+        }),
+    )

@@ -193,18 +193,18 @@
         <h2>🔐 Verifica OTP</h2>
         <p class="subtitle">Ledger Logistics</p>
         
-        <div class="info-box">
-            📧 Abbiamo inviato un codice di 6 cifre a:<br>
-            <strong>{{ email }}</strong><br>
-            <small style="color: #666;">Il codice scade tra 5 minuti.</small>
-        </div>
-        
         {% if messages %}
             {% for message in messages %}
                 <div class="message {{ message.tags }}">
                     {{ message }}
                 </div>
             {% endfor %}
+        {% else %}
+        <div class="info-box">
+            📧 Inserisci il codice di 6 cifre inviato a:<br>
+            <strong>{{ email }}</strong><br>
+            <small style="color: #666;">Il codice scade tra 5 minuti.</small>
+        </div>
         {% endif %}
         
         <form method="post">
@@ -227,11 +227,7 @@
             
             <button type="submit" class="order">
                 <span class="default">Verifica Codice</span>
-                <span class="success">Codice verificato
-                    <svg viewbox="0 0 12 10">
-                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                    </svg>
-                </span>
+                <span class="success">Codice verificato</span>
                 <div class="box"></div>
                 <div class="truck">
                     <div class="back"></div>
@@ -254,8 +250,7 @@
         </form>
         
         <div class="resend-link">
-            <p style="color: #666; margin-bottom: 0.5rem;">Non hai ricevuto il codice?</p>
-            <a href="{% url 'login' %}">← Torna al login per reinviare</a>
+            <a href="{% url 'resend_otp' %}">Invia nuovo codice →</a>
         </div>
         
         <div class="back-link">
