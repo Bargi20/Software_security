@@ -1057,6 +1057,50 @@ def deploy_solidity_contract(contract_name, contract_code, deploy_params):
     # TODO: Implementare la logica di deploy usando contract_name, contract_code e deploy_params
     # Esempio: compilare con solc, deployare con web3.py
     return (False, None, None, f"Deploy non implementato per {contract_name} - configurare la logica blockchain")
+# ============= HELPER FUNCTIONS =============
+
+def trova_corriere_disponibile():
+    """Trova un corriere disponibile (senza pacchi in consegna)"""
+    from .models import Spedizione, Utente
+    from django.db.models import Count, Q
+    
+    # Trova tutti i corrieri
+    corrieri = Utente.objects.filter(ruolo='corriere', is_active=True)
+    
+    # Per ogni corriere, conta quanti pacchi ha in consegna
+    corrieri_disponibili = []
+    for corriere in corrieri:
+        pacchi_in_consegna = Spedizione.objects.filter(
+            corriere=corriere,
+            stato='in_consegna'
+        ).count()
+        
+        if pacchi_in_consegna == 0:
+            corrieri_disponibili.append(corriere)
+    
+    # Ritorna il primo corriere disponibile (o None)
+    return corrieri_disponibili[0] if corrieri_disponibili else None
+
+
+def assegna_pacco_a_corriere(corriere):
+    """Assegna un pacco disponibile al corriere specificato"""
+    from .models import Spedizione
+    
+    # Cerca un pacco in attesa o in elaborazione senza corriere assegnato
+    pacco_disponibile = Spedizione.objects.filter(
+        corriere__isnull=True,
+        stato__in=['in_attesa', 'in_elaborazione']
+    ).order_by('data_creazione').first()
+    
+    if pacco_disponibile:
+        pacco_disponibile.corriere = corriere
+        pacco_disponibile.stato = 'in_consegna'
+        pacco_disponibile.save()
+        return pacco_disponibile
+    
+    return None
+
+
 # ============= DASHBOARD VIEWS =============
 
 @login_required
@@ -1268,12 +1312,26 @@ def crea_spedizione(request):
         
         # Genera codice tracciamento
         spedizione.codice_tracciamento = spedizione.genera_codice_tracciamento()
-        spedizione.save()
         
-        messages.success(
-            request,
-            f'✅ Spedizione creata con successo! Codice tracciamento: {spedizione.codice_tracciamento}'
-        )
+        # Cerca un corriere disponibile e assegna automaticamente
+        corriere_disponibile = trova_corriere_disponibile()
+        if corriere_disponibile:
+            spedizione.corriere = corriere_disponibile
+            spedizione.stato = 'in_consegna'
+            messages.success(
+                request,
+                f'✅ Spedizione creata con successo! Codice tracciamento: {spedizione.codice_tracciamento}. '
+                f'Assegnata al corriere disponibile.'
+            )
+        else:
+            spedizione.stato = 'in_attesa'
+            messages.success(
+                request,
+                f'✅ Spedizione creata con successo! Codice tracciamento: {spedizione.codice_tracciamento}. '
+                f'In attesa di assegnazione corriere.'
+            )
+        
+        spedizione.save()
         return redirect('dashboard_cliente')
         
     except Exception as e:
@@ -1282,3 +1340,82 @@ def crea_spedizione(request):
             'company_name': 'Ledger Logistics',
             'user': request.user
         })
+
+
+@login_required
+def completa_consegna(request, codice_tracciamento):
+    """Vista per completare una consegna e assegnare automaticamente il prossimo pacco"""
+    # Verifica che l'utente sia un corriere
+    if request.user.ruolo != 'corriere':
+        messages.error(request, 'Solo i corrieri possono completare consegne.')
+        return redirect('home')
+    
+    # Richiede POST
+    if request.method != 'POST':
+        messages.error(request, 'Metodo non consentito.')
+        return redirect('dashboard_corriere')
+    
+    from .models import Spedizione
+    
+    try:
+        # Recupera il pacco da consegnare
+        spedizione = Spedizione.objects.get(
+            codice_tracciamento=codice_tracciamento,
+            corriere=request.user
+        )
+        
+        # Logica a tre stati per traffico e veicolo_disponibile:
+        # - Se radio button selezionato 'true' -> True
+        # - Se radio button selezionato 'false' -> False  
+        # - Se nessun radio button selezionato -> None (NULL)
+        
+        traffico_value = request.POST.get('traffico', None)
+        veicolo_value = request.POST.get('veicolo_disponibile', None)
+        
+        # Converti in Boolean o None
+        if traffico_value == 'true':
+            spedizione.traffico = True
+        elif traffico_value == 'false':
+            spedizione.traffico = False
+        else:
+            spedizione.traffico = None
+        
+        if veicolo_value == 'true':
+            spedizione.veicolo_disponibile = True
+        elif veicolo_value == 'false':
+            spedizione.veicolo_disponibile = False
+        else:
+            spedizione.veicolo_disponibile = None
+        
+        # Marca come consegnato
+        spedizione.stato = 'consegnato'
+        spedizione.save()
+        
+        messages.success(
+            request,
+            f'✅ Consegna completata per il pacco {codice_tracciamento}!'
+        )
+        
+        # Cerca e assegna automaticamente un nuovo pacco
+        nuovo_pacco = assegna_pacco_a_corriere(request.user)
+        
+        if nuovo_pacco:
+            messages.success(
+                request,
+                f'📦 Nuovo pacco assegnato: {nuovo_pacco.codice_tracciamento} - Destinazione: {nuovo_pacco.citta}'
+            )
+        else:
+            messages.info(
+                request,
+                'ℹ️ Nessun nuovo pacco disponibile al momento.'
+            )
+        
+        return redirect('dashboard_corriere')
+        
+    except Spedizione.DoesNotExist:
+        messages.error(request, 'Pacco non trovato o non autorizzato.')
+        return redirect('dashboard_corriere')
+    except Exception as e:
+        messages.error(request, f'Errore durante il completamento della consegna: {str(e)}')
+        return redirect('dashboard_corriere')
+

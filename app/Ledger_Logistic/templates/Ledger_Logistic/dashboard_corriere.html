@@ -146,6 +146,18 @@
                                 <p class="font-semibold text-gray-900">{{ spedizione.descrizione|truncatewords:5 }}</p>
                             </div>
                         </div>
+                        
+                        <!-- Bottone Consegna Completata -->
+                        <div class="mt-4 flex justify-end">
+                            <button type="button" 
+                                    onclick="openModal('{{ spedizione.codice_tracciamento }}')"
+                                    class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-semibold inline-flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Consegna Completata
+                            </button>
+                        </div>
                     </div>
                     {% endfor %}
                 {% else %}
@@ -157,65 +169,6 @@
                         <p class="mt-1 text-sm">I pacchi da consegnare appariranno qui</p>
                     </div>
                 {% endif %}
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="flex items-center mb-4">
-                        <svg class="h-8 w-8 text-orange-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
-                        <h3 class="text-xl font-bold text-gray-900">Traffico</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Indica la presenza di traffico sulla tua rotta.</p>
-                    <div class="flex items-center space-x-3">
-                        <input 
-                            type="checkbox" 
-                            id="checkTraffic" 
-                            class="w-6 h-6 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                        >
-                        <label for="checkTraffic" class="text-lg font-medium text-gray-900">
-                            Presenza traffico
-                        </label>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="flex items-center mb-4">
-                        <svg class="h-8 w-8 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                        <h3 class="text-xl font-bold text-gray-900">Disponibilità Veicolo</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Indica se il tuo veicolo è disponibile per le consegne.</p>
-                    <div class="flex items-center space-x-3">
-                        <input 
-                            type="checkbox" 
-                            id="checkVehicle" 
-                            class="w-6 h-6 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                        >
-                        <label for="checkVehicle" class="text-lg font-medium text-gray-900">
-                            Veicolo disponibile
-                        </label>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="flex items-center mb-4">
-                        <svg class="h-8 w-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <h3 class="text-xl font-bold text-gray-900">Probabilità Ritardo Consegna</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Probabilità calcolata in base al traffico e disponibilità veicolo.</p>
-                    <div class="text-center">
-                        <div class="text-6xl font-bold text-blue-600" id="probabilitaRitardo">
-                            0%
-                        </div>
-                        <p class="text-sm text-gray-500 mt-2">Aggiorna i parametri sopra per ricalcolare</p>
-                    </div>
-                </div>
             </div>
 
             <!-- Consegne Passate -->
@@ -306,49 +259,139 @@
         </div>
     </footer>
 
+    <!-- Modal per Conferma Consegna - VERSIONE MIGLIORATA -->
+    <div id="consegnaModal" class="hidden fixed inset-0 bg-black bg-opacity-60 overflow-y-auto h-full w-full z-50 flex items-center justify-center backdrop-blur-sm">
+        <div class="relative mx-auto p-0 border-0 w-full max-w-md shadow-2xl rounded-2xl bg-white transform transition-all">
+            <!-- Header con gradiente -->
+            <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 rounded-t-2xl">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <svg class="w-8 h-8 text-white mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h3 class="text-xl font-bold text-white">Completa Consegna</h3>
+                    </div>
+                    <button type="button" onclick="closeModal()" class="text-white hover:text-gray-200 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body del form -->
+            <form id="consegnaForm" method="POST" action="">
+                {% csrf_token %}
+                
+                <div class="px-6 py-6 space-y-6">
+                    <!-- Sezione Traffico -->
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-200 hover:border-orange-300 transition">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-orange-100 rounded-lg p-2 mr-3">
+                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                            <label class="text-lg font-semibold text-gray-800">Condizioni Traffico</label>
+                        </div>
+                        <div class="flex space-x-4">
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="traffico" value="true" class="peer hidden">
+                                <div class="border-2 border-gray-300 peer-checked:border-orange-500 peer-checked:bg-orange-50 rounded-lg p-4 text-center transition hover:border-orange-400">
+                                    <div class="text-2xl mb-1">🚗</div>
+                                    <div class="font-semibold text-gray-700 peer-checked:text-orange-700">C'era traffico</div>
+                                </div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="traffico" value="false" class="peer hidden">
+                                <div class="border-2 border-gray-300 peer-checked:border-green-500 peer-checked:bg-green-50 rounded-lg p-4 text-center transition hover:border-green-400">
+                                    <div class="text-2xl mb-1">✅</div>
+                                    <div class="font-semibold text-gray-700 peer-checked:text-green-700">Strada libera</div>
+                                </div>
+                            </label>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 italic">Lascia vuoto se non specificato</p>
+                    </div>
+                    
+                    <!-- Sezione Veicolo -->
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-200 hover:border-blue-300 transition">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 rounded-lg p-2 mr-3">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
+                                </svg>
+                            </div>
+                            <label class="text-lg font-semibold text-gray-800">Stato Veicolo</label>
+                        </div>
+                        <div class="flex space-x-4">
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="veicolo_disponibile" value="true" class="peer hidden">
+                                <div class="border-2 border-gray-300 peer-checked:border-green-500 peer-checked:bg-green-50 rounded-lg p-4 text-center transition hover:border-green-400">
+                                    <div class="text-2xl mb-1">🚚</div>
+                                    <div class="font-semibold text-gray-700 peer-checked:text-green-700">Disponibile</div>
+                                </div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="veicolo_disponibile" value="false" class="peer hidden">
+                                <div class="border-2 border-gray-300 peer-checked:border-red-500 peer-checked:bg-red-50 rounded-lg p-4 text-center transition hover:border-red-400">
+                                    <div class="text-2xl mb-1">⚠️</div>
+                                    <div class="font-semibold text-gray-700 peer-checked:text-red-700">Non disponibile</div>
+                                </div>
+                            </label>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 italic">Lascia vuoto se non specificato</p>
+                    </div>
+                </div>
+                
+                <!-- Footer con bottoni -->
+                <div class="bg-gray-50 px-6 py-4 rounded-b-2xl flex justify-end space-x-3 border-t border-gray-200">
+                    <button type="button" onclick="closeModal()" 
+                            class="px-6 py-2.5 bg-white border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition font-semibold">
+                        Annulla
+                    </button>
+                    <button type="submit" 
+                            class="px-6 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition font-semibold shadow-md hover:shadow-lg inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Conferma Consegna
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-    // Calcola probabilità ritardo in base ai checkbox
-    function calcolaProbabilita() {
-        const traffico = document.getElementById('checkTraffic').checked;
-        const veicoloNonDisponibile = !document.getElementById('checkVehicle').checked;
-        
-        let probabilita = 0;
-        
-        // Se c'è traffico: +50%
-        if (traffico) {
-            probabilita += 50;
-        }
-        
-        // Se veicolo non disponibile: +40%
-        if (veicoloNonDisponibile) {
-            probabilita += 40;
-        }
-        
-        // Limita a 100%
-        if (probabilita > 100) {
-            probabilita = 100;
-        }
-        
-        // Aggiorna il display
-        document.getElementById('probabilitaRitardo').textContent = probabilita + '%';
-        
-        // Cambia colore in base alla probabilità
-        const elem = document.getElementById('probabilitaRitardo');
-        elem.className = 'text-6xl font-bold';
-        if (probabilita === 0) {
-            elem.classList.add('text-green-600');
-        } else if (probabilita <= 50) {
-            elem.classList.add('text-yellow-600');
-        } else {
-            elem.classList.add('text-red-600');
-        }
+    // Gestione Modal
+    function openModal(codicePacco) {
+        document.getElementById('consegnaModal').classList.remove('hidden');
+        document.getElementById('consegnaForm').action = '/spedizione/completa/' + codicePacco + '/';
+        // Blocca lo scroll della pagina
+        document.body.style.overflow = 'hidden';
     }
     
-    // Aggiungi event listeners ai checkbox
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('checkTraffic').addEventListener('change', calcolaProbabilita);
-        document.getElementById('checkVehicle').addEventListener('change', calcolaProbabilita);
+    function closeModal() {
+        document.getElementById('consegnaModal').classList.add('hidden');
+        // Reset del form
+        document.getElementById('consegnaForm').reset();
+        // Ripristina lo scroll della pagina
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Chiudi modal cliccando fuori (disabilitato per evitare chiusura accidentale)
+    // Se vuoi riabilitarlo, decomment il codice sotto
+    /*
+    document.getElementById('consegnaModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
     });
+    */
+    </script>
+
+    <script>
+    // Script aggiuntivi se necessari
     </script>
 
 </body>

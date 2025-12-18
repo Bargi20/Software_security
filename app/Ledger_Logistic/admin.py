@@ -75,31 +75,6 @@ class SpedizioneAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Spedizione)
-class SpedizioneAdmin(admin.ModelAdmin):
-    list_display = ('codice_tracciamento', 'cliente', 'citta', 'grandezza', 'stato', 'corriere', 'data_creazione')
-    list_filter = ('stato', 'grandezza', 'data_creazione', 'provincia')
-    search_fields = ('codice_tracciamento', 'cliente__email', 'cliente__username', 'citta', 'indirizzo_consegna', 'descrizione')
-    readonly_fields = ('codice_tracciamento', 'data_creazione', 'data_aggiornamento')
-    autocomplete_fields = ['cliente', 'corriere']
-    
-    fieldsets = (
-        ('Informazioni Spedizione', {
-            'fields': ('codice_tracciamento', 'cliente', 'stato', 'corriere')
-        }),
-        ('Indirizzo di Consegna', {
-            'fields': ('indirizzo_consegna', 'citta', 'cap', 'provincia')
-        }),
-        ('Dettagli Pacco', {
-            'fields': ('grandezza', 'descrizione')
-        }),
-        ('Timestamp', {
-            'fields': ('data_creazione', 'data_aggiornamento'),
-            'classes': ('collapse',)
-        }),
-    )
-
-
 class FileViewerAdmin(admin.ModelAdmin):
     """Admin custom per visualizzare e gestire contratti Solidity"""
     change_list_template = 'admin/file_viewer_changelist.html'

@@ -37,6 +37,7 @@ urlpatterns = [
     path('dashboard/corriere/', views.dashboard_corriere, name='dashboard_corriere'),
     path('dashboard/gestore/', views.dashboard_gestore, name='dashboard_gestore'),
     path('spedizione/crea/', views.crea_spedizione, name='crea_spedizione'),
+    path('spedizione/completa/<str:codice_tracciamento>/', views.completa_consegna, name='completa_consegna'),
     path('blockchain/invia-prova/<int:prova_id>/', views.invia_probabilita_blockchain, name='invia_prova_blockchain'),
     path('blockchain/invia-tutte/', views.invia_tutte_probabilita_blockchain, name='invia_prob_blockchain'),
     path('api/deploy-contract/', views.deploy_contract, name='deploy_contract'),

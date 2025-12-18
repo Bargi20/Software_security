@@ -416,6 +416,20 @@ class Spedizione(models.Model):
         verbose_name='Corriere Assegnato'
     )
     
+    # Informazioni aggiuntive dalla dashboard corriere
+    traffico = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Presenza Traffico'
+    )
+    veicolo_disponibile = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Veicolo Disponibile'
+    )
+    
     class Meta:
         verbose_name = "Spedizione"
         verbose_name_plural = "Spedizioni"
