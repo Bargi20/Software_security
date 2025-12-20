@@ -363,6 +363,39 @@
     </div>
 
     <script>
+    // Variabili per tracciare i radio button selezionati
+    let selectedTraffico = null;
+    let selectedVeicolo = null;
+
+    // Gestione deselezionamento radio button
+    document.addEventListener('DOMContentLoaded', function() {
+        // Radio button Traffico
+        const radiosTraffico = document.querySelectorAll('input[name="traffico"]');
+        radiosTraffico.forEach(radio => {
+            radio.addEventListener('click', function() {
+                if (selectedTraffico === this) {
+                    this.checked = false;
+                    selectedTraffico = null;
+                } else {
+                    selectedTraffico = this;
+                }
+            });
+        });
+
+        // Radio button Veicolo
+        const radiosVeicolo = document.querySelectorAll('input[name="veicolo_disponibile"]');
+        radiosVeicolo.forEach(radio => {
+            radio.addEventListener('click', function() {
+                if (selectedVeicolo === this) {
+                    this.checked = false;
+                    selectedVeicolo = null;
+                } else {
+                    selectedVeicolo = this;
+                }
+            });
+        });
+    });
+
     // Gestione Modal
     function openModal(codicePacco) {
         document.getElementById('consegnaModal').classList.remove('hidden');
@@ -375,6 +408,9 @@
         document.getElementById('consegnaModal').classList.add('hidden');
         // Reset del form
         document.getElementById('consegnaForm').reset();
+        // Reset delle variabili di tracciamento
+        selectedTraffico = null;
+        selectedVeicolo = null;
         // Ripristina lo scroll della pagina
         document.body.style.overflow = 'auto';
     }

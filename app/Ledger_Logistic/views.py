@@ -1226,9 +1226,43 @@ def dashboard_gestore(request):
         else:
             return redirect('home')
     
+    from .models import Spedizione, Utente
+    from django.db.models import Count, Q
+    
+    # Spedizioni in attesa di approvazione (stato in_attesa o in_elaborazione)
+    spedizioni_in_attesa = Spedizione.objects.filter(
+        stato__in=['in_attesa', 'in_elaborazione']
+    ).select_related('cliente', 'corriere').order_by('data_creazione')
+    
+    # Storico di tutte le spedizioni (completate, annullate, in transito, in consegna)
+    spedizioni_storico = Spedizione.objects.filter(
+        stato__in=['in_transito', 'in_consegna', 'consegnato', 'annullato']
+    ).select_related('cliente', 'corriere').order_by('-data_aggiornamento')
+    
+    # Statistiche
+    totale_spedizioni = Spedizione.objects.count()
+    spedizioni_attive = Spedizione.objects.filter(
+        stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']
+    ).count()
+    spedizioni_completate = Spedizione.objects.filter(stato='consegnato').count()
+    totale_utenti = Utente.objects.filter(is_active=True).count()
+    
+    # Calcola tasso di successo
+    if totale_spedizioni > 0:
+        tasso_successo = round((spedizioni_completate / totale_spedizioni) * 100, 1)
+    else:
+        tasso_successo = 0
+    
     context = {
         'company_name': 'Ledger Logistics',
-        'user': request.user
+        'user': request.user,
+        'spedizioni_in_attesa': spedizioni_in_attesa,
+        'spedizioni_storico': spedizioni_storico,
+        'totale_spedizioni': totale_spedizioni,
+        'spedizioni_attive': spedizioni_attive,
+        'spedizioni_completate': spedizioni_completate,
+        'totale_utenti': totale_utenti,
+        'tasso_successo': tasso_successo,
     }
     return render(request, 'Ledger_Logistic/dashboard_gestore.html', context)
 
@@ -1418,4 +1452,60 @@ def completa_consegna(request, codice_tracciamento):
     except Exception as e:
         messages.error(request, f'Errore durante il completamento della consegna: {str(e)}')
         return redirect('dashboard_corriere')
+
+
+@login_required
+def accetta_spedizione(request, codice_tracciamento):
+    """Vista per accettare una spedizione (gestore)"""
+    if request.user.ruolo != 'gestore':
+        messages.error(request, 'Solo i gestori possono accettare spedizioni.')
+        return redirect('home')
+    
+    from .models import Spedizione
+    
+    try:
+        spedizione = Spedizione.objects.get(codice_tracciamento=codice_tracciamento)
+        
+        # Cambia stato da in_attesa a in_elaborazione
+        if spedizione.stato == 'in_attesa':
+            spedizione.stato = 'in_elaborazione'
+            spedizione.save()
+            messages.success(request, f'✅ Spedizione {codice_tracciamento} accettata!')
+        else:
+            messages.warning(request, f'La spedizione {codice_tracciamento} non è in stato "In Attesa".')
+        
+    except Spedizione.DoesNotExist:
+        messages.error(request, 'Spedizione non trovata.')
+    except Exception as e:
+        messages.error(request, f'Errore: {str(e)}')
+    
+    return redirect('dashboard_gestore')
+
+
+@login_required
+def rifiuta_spedizione(request, codice_tracciamento):
+    """Vista per rifiutare una spedizione (gestore)"""
+    if request.user.ruolo != 'gestore':
+        messages.error(request, 'Solo i gestori possono rifiutare spedizioni.')
+        return redirect('home')
+    
+    from .models import Spedizione
+    
+    try:
+        spedizione = Spedizione.objects.get(codice_tracciamento=codice_tracciamento)
+        
+        # Cambia stato a annullato
+        if spedizione.stato in ['in_attesa', 'in_elaborazione']:
+            spedizione.stato = 'annullato'
+            spedizione.save()
+            messages.success(request, f'❌ Spedizione {codice_tracciamento} rifiutata.')
+        else:
+            messages.warning(request, f'La spedizione {codice_tracciamento} non può essere rifiutata.')
+        
+    except Spedizione.DoesNotExist:
+        messages.error(request, 'Spedizione non trovata.')
+    except Exception as e:
+        messages.error(request, f'Errore: {str(e)}')
+    
+    return redirect('dashboard_gestore')
 
