@@ -31,8 +31,7 @@ async function main() {
 
 const contract = new ethers.Contract(deployedAddresses["OrdineModule#Ordine"], artifact.abi, wallet);
 
-await contract.creaOrdine(
-    "1", "indirizzo", "Mario", "Rossi", "citofono");
+await contract.creaOrdine("1", "indirizzo", "Mario", "Rossi", "citofono");
 
 console.log(await contract.getOrdine("1")); 
 }
