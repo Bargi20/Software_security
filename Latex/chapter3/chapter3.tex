@@ -146,7 +146,7 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modellazione tramite Catena di Markov}
 
-Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi che evolvono nel tempo in modo stocastico, cioè in modo probabilistico, basandosi sul principio di Markov, secondo cui il futuro stato del sistema dipende solo dallo stato attuale e non dalla storia passata, ma solo dall'ultima osservazione. Nel nostro caso, le catene di Markov sono state utilizzate per modellare il comportamento di una parte del sistema, rappresentando i vari stati in cui esso può trovarsi e le transizioni tra questi stati, descritte da funzioni di probabilità di transizione.
+Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi che evolvono nel tempo in modo stocastico, cioè in modo probabilistico, basandosi sul principio di Markov, secondo cui il futuro stato del sistema dipende solo dallo stato attuale e non dalla storia passata, ma solo dall'ultima osservazione. Nel nostro caso, le catene di Markov sono state utilizzate per modellare il comportamento della funzione di login e di un attaccante, rappresentando i vari stati in cui esso può trovarsi e le transizioni tra questi stati, descritte da funzioni di probabilità di transizione.
 
 \subsection{Catena di Markov per la funzione di login}
 
@@ -172,9 +172,12 @@ Tornando indietro allo stato \textbf{8}, se il codice di recupero password è er
 	\includegraphics[width=1\columnwidth]{chapter3/immagini/catenaDiMarkov.png}
 \end{figure}
 
-\subsection{Modellazione della funzione di login tramite PRISM}
+\subsection{Catena di Markov per l'attaccante}
+Inserire nuovo capitolo.
 
-Per analizzare la catena di Markov della funzione di login, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. Di seguito è riportato il codice PRISM utilizzato per il modello:
+\subsection{Modellazione tramite PRISM}
+\textbf{// DA RIFARE!}
+Per analizzare la catena di Markov della funzione di login e dell'attaccante, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. Di seguito è riportato il codice PRISM utilizzato per il modello:
 \vspace{3cm}
 
 %%%%%%%%%%INSERISCI MODEL PRISM QUI%%%%%%%%%%%%
