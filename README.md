@@ -19,8 +19,6 @@ Per far partire Django:
 
 4) Digitare questo per avviare il server:
         python manage.py runserver
-        python manage.py runserver 0.0.0.0:8000
-
 
 5) Creare fie .env (in \app) con dentro:
 SUPABASE_DB_URL=postgresql://postgres.hoecofcgyqyknqmcwwtt:sekqyw-texkIm-5gakhe@aws-1-eu-west-1.pooler.supabase.com:6543/postgres
