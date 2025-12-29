@@ -18,6 +18,11 @@ import dj_database_url
 # Carica le variabili d'ambiente da .env
 load_dotenv()
 
+# Carica variabili specifiche per Besu
+BESU_RPC_URL = os.getenv('BESU_RPC_URL')
+BESU_PRIVATE_KEYS = os.getenv('BESU_PRIVATE_KEYS')
+BESU_PRIVATE_KEYS = BESU_PRIVATE_KEYS.strip('[]').replace('"', '').split(',')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
