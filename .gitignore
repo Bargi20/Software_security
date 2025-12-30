@@ -110,6 +110,8 @@ Latex/frontmatter/frontispiece.aux
 package-lock.json
 ignition/*
 ignition/**/*
+ignition/deployments/chain-1338/Spedizione_abi.json
+ignition/deployments/chain-1338/Spedizione_address.json
 package-lock.json
 Latex/.DS_Store
 
@@ -121,3 +123,4 @@ __pycache__/
 *.pyc
 .env
 app/Ledger_Logistic/Blockchain/Spedizione/dati_spedizioni.json
+
