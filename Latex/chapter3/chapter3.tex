@@ -146,7 +146,7 @@ In questa sezione sono riportate le scelte tecnologiche adottate per la realizza
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modellazione tramite Catena di Markov}
 
-Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi che evolvono nel tempo in modo stocastico, cioè in modo probabilistico, basandosi sul principio di Markov, secondo cui il futuro stato del sistema dipende solo dallo stato attuale e non dalla storia passata, ma solo dall'ultima osservazione. Nel nostro caso, le catene di Markov sono state utilizzate per modellare il comportamento della funzione di login e di un attaccante, rappresentando i vari stati in cui esso può trovarsi e le transizioni tra questi stati, descritte da funzioni di probabilità di transizione.
+Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi che evolvono nel tempo in modo stocastico, cioè in modo probabilistico, basandosi sul principio di Markov, secondo cui il futuro stato del sistema dipende solo dallo stato attuale e non dalla storia passata, ma solo dall'ultima osservazione. Nel nostro caso, le catene di Markov sono state utilizzate per modellare il comportamento della funzione di login e di un attaccante, rappresentando i vari stati in cui essi possono trovarsi e le transizioni tra gli stati, descritte da funzioni di probabilità di transizione.
 
 \subsection{Catena di Markov per la funzione di login}
 
@@ -156,7 +156,10 @@ Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi ch
     \item \textbf{$C_{LOG}$}: contatore dei tentativi di login (inserimento username e password);
     \item \textbf{$C_{RPASS}$}: contatore d'inserimento del codice per il recupero della password;
     \item \textbf{$C_{MFA}$}: contatore dei tentativi d'inserimento del codice MFA;
-    \item \textbf{$C_{EMAIL}$}: contatore dell'inserimento delle email nel campo recupero password.
+    \item \textbf{$C_{EMAIL}$}: contatore dell'inserimento delle email nel campo recupero password;
+    \item \textbf{$C_{RinvioMFA}$}: contatore per tenere traccia di quante volte è stato effettuato il rinvio del codice MFA;
+    \item \textbf{$C_{RinvioRPASS}$}: contatore per tenere traccia di quante volte è stato effettuato il rinvio del codice di recupero password;
+    \item \textbf{$C_{NuovaPass}$}: contatore dei tentativi d'inserimento della nuova password.
 \end{itemize}
 
 Lo stato iniziale della catena di Markov è lo stato \textbf{0}, che rappresenta l'utente che apre la schermata di login, nella quale egli può inserire le proprie credenziali (username e password). Qui abbiamo la prima biforcazione, se l'utente sceglie di recuperare la propria password, si passa allo stato \textbf{5} tramite la transizione etichettata con \textit{/PasswordDimenticata}, altrimenti si passa allo stato \textbf{1} con etichetta \textit{/InserimentoDati}. 
@@ -175,7 +178,23 @@ Tornando indietro allo stato \textbf{8}, se il codice di recupero password è er
 \FloatBarrier
 
 \subsection{Catena di Markov per l'attaccante}
-Inserire nuovo capitolo.
+Come per la catena di Markov precedente, sono stati usati dei contatori per tenere traccia dei tentativi effettuati dall'attaccante. Essi rappresentano la grandezza del dizionario usato per l'attacco di forza bruta. I contatori sono i seguenti:
+
+\begin{itemize}
+    \item \textbf{$n_{email}$}: contatore che rappresenta la grandezza del dizionario delle email usate per l'attacco di forza bruta;
+    \item \textbf{$n_{pass}$}: contatore che rappresenta la grandezza del dizionario delle password usate per l'attacco di forza bruta;
+    \item \textbf{$tentativo_{email}$}: contatore che tiene traccia dei tentativi d'inserimento dell'email effettuati dall'attaccante;
+    \item \textbf{$tentativo_{pass}$}: contatore che tiene traccia dei tentativi d'inserimento della password effettuati dall'attaccante;
+    \item \textbf{$tentativo_{codice\_email}$}: contatore che tiene traccia dei tentativi d'inserimento del codice di recupero password effettuati dall'attaccante;
+    \item \textbf{$tentativo_{mfa}$}: contatore che tiene traccia dei tentativi d'inserimento del codice MFA effettuati dall'attaccante.
+\end{itemize}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/catenaDiMarkovAttaccante.png}
+\end{figure}
+
+\FloatBarrier
 
 \subsection{Modellazione tramite PRISM}
 \textbf{// DA RIFARE!}
