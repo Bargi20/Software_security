@@ -1,18 +1,24 @@
+import subprocess
+import time
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from dotenv import load_dotenv
+import requests
+from Ledger_Logistic.blockchain.MandaSpedizione import invia_spedizione_su_besu
 from .models import TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
 from django.conf import settings
-from .blockchain import get_contract, is_connected, send_transaction
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, FileResponse
 import os
 import json
+
+load_dotenv()
 
 # Ottieni il modello User personalizzato
 Utente = get_user_model()
@@ -329,9 +335,9 @@ def verify_otp(request):
     # Processa POST request
     if request.method == 'POST':
         codice_inserito = request.POST.get('otp_code', '').strip()
-        result = _process_otp_verification(request, email, codice_inserito)
-        if result:
-            return result
+        receipt = _process_otp_verification(request, email, codice_inserito)
+        if receipt:
+            return receipt
     
     # Calcola tentativi rimanenti e mostra form
     otp_remaining_attempts = 5 - login_attempt.otp_failed_attempts
@@ -900,9 +906,9 @@ def reset_password_verify_otp(request):
         return _handle_correct_reset_otp(request, recovery_attempt)
     
     # OTP errato
-    result, remaining_attempts = _handle_incorrect_reset_otp(request, recovery_attempt)
-    if result:
-        return result
+    receipt, remaining_attempts = _handle_incorrect_reset_otp(request, recovery_attempt)
+    if receipt:
+        return receipt
     
     return render(request, root, {
         'email': email,
@@ -1330,10 +1336,11 @@ def crea_spedizione(request):
         }
         return render(request, root, context)
     
-    # Crea la spedizione
+    # Crea la spedizione nel database
     try:
         from .models import Spedizione
         
+        # Crea il nuovo oggetto spedizione
         spedizione = Spedizione(
             cliente=request.user,
             indirizzo_consegna=indirizzo_consegna,
@@ -1344,7 +1351,7 @@ def crea_spedizione(request):
             descrizione=descrizione
         )
         
-        # Genera codice tracciamento
+        # Genera il codice tracciamento
         spedizione.codice_tracciamento = spedizione.genera_codice_tracciamento()
         
         # Cerca un corriere disponibile e assegna automaticamente
@@ -1365,7 +1372,45 @@ def crea_spedizione(request):
                 f'In attesa di assegnazione corriere.'
             )
         
+        # Salva la spedizione nel database
         spedizione.save()
+
+#################### SPEDIZIONE BLOCKCHAIN LOGIC ####################
+
+        # Qui viene aggiunta la logica di salva la spedizione nel file JSON
+        payload = {
+            "descrizione": descrizione,
+            "indirizzo_consegna": indirizzo_consegna,
+            "citta": citta,
+            "cap": cap,
+            "provincia": provincia,
+            "grandezza": grandezza,
+        }
+
+        # Leggi il file JSON esistente per recuperare le spedizioni precedenti
+        try:
+            with open("datispedizioni.json", "r") as f:
+                spedizioni = json.load(f)
+                if not isinstance(spedizioni, list):
+                    spedizioni = []  # Se è un dizionario, lo inizializziamo come lista vuota
+        except FileNotFoundError:
+            spedizioni = []
+        except json.JSONDecodeError:
+            spedizioni = []
+
+        # Aggiungi la nuova spedizione alla lista
+        spedizioni.append(payload)
+
+        # Salva la lista aggiornata nel file JSON
+        with open("datispedizioni.json", "w") as f:
+            json.dump(spedizioni, f, indent=4)
+
+        # Chiama la funzione per inviare i dati alla blockchain
+        tx_hash = invia_spedizione_su_besu("datispedizioni.json")
+        
+        ## Verifica transazione ##
+        #print(f"Transazione inviata con successo! tx_hash: {tx_hash.hex()}") # .hex per parsarlo in stringa leggibile
+        #verifica_transazione(tx_hash.hex())
         return redirect('dashboard_cliente')
         
     except Exception as e:
@@ -1375,6 +1420,45 @@ def crea_spedizione(request):
             'user': request.user
         })
 
+
+def verifica_transazione(tx_hash):
+    # Prepara la richiesta JSON-RPC
+    data = {
+        "jsonrpc": "2.0",
+        "method": "eth_getTransactionReceipt",
+        "params": [tx_hash],
+        "id": 1
+    }
+
+    while True:
+        try:
+            # Esegui la richiesta POST al nodo Besu
+            response = requests.post(os.getenv('BESU_RPC_URL'), json=data, headers={"Content-Type": "application/json"})
+
+            # Verifica che la risposta sia valida
+            if response.status_code == 200:
+                receipt = response.json()
+
+                # Verifica che la risposta contenga il campo "result" con dati validi
+                result = receipt.get('result')
+                if result and result.get('blockHash') and result.get('blockNumber'):
+                    print(f"Block Hash: {result.get('blockHash')}")
+                    print(f"Block Number: {int(result.get('blockNumber', '0x0'), 16)}")
+                    print(f"Status: {result.get('status')}")
+                    print(f"From: {result.get('from')}")
+                    print(f"To: {result.get('to')}")
+                    print(f"Gas Used: {int(result.get('gasUsed', '0x0'), 16)}")
+                    print(f"Effective Gas Price: {int(result.get('effectiveGasPrice', '0x0'), 16)}")
+                    break  # Esci dal ciclo se la transazione è valida
+            else:
+                print(f"\nErrore nella richiesta: {response.status_code} - {response.text}")
+
+            # Aspetta 5 secondi prima di fare un nuovo tentativo
+            time.sleep(5)
+
+        except requests.exceptions.RequestException as e:
+            print(f"\nErrore durante la richiesta: {e}")
+            break  # Se c'è un errore, fermati
 
 @login_required
 def completa_consegna(request, codice_tracciamento):
@@ -1508,4 +1592,3 @@ def rifiuta_spedizione(request, codice_tracciamento):
         messages.error(request, f'Errore: {str(e)}')
     
     return redirect('dashboard_gestore')
-
