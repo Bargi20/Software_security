@@ -1,7 +1,7 @@
 import type { HardhatUserConfig } from "hardhat/config";
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: 'app/.env' });
 
 const BESU_RPC_URL = process.env.BESU_RPC_URL;
 const BESU_PRIVATE_KEYS = process.env.BESU_PRIVATE_KEYS ? JSON.parse(process.env.BESU_PRIVATE_KEYS) : [];

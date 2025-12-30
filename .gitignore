@@ -125,3 +125,5 @@ __pycache__/
 app/Ledger_Logistic/Blockchain/Spedizione/dati_spedizioni.json
 
 ./ignition/deployments/
+ignition/deployments/chain-1338/Spedizione_abi.json
+ignition/deployments/chain-1338/Spedizione_address.json
