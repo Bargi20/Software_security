@@ -30,6 +30,9 @@ EMAIL_HOST_PASSWORD='opdb mtam eddn igvm'
 DEFAULT_FROM_EMAIL = 'ledgerlogistics1@gmail.com'
 BESU_RPC_URL="http://localhost:8545"
 BESU_PRIVATE_KEYS=["0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63","0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3","0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f"]
+#STRIPE 
+STRIPE_SECRET_KEY=sk_test_51SjdLz2F9wViTbVEAQrOCmCJHjTrIr1wEyAXaFPujAI1g1tgCha2VdqWws67WGjE3o3jQ41MdVNWPqUNg5eRoQq000mn5vhq4J
+STRIPE_PUBLISHABLE_KEY=pk_test_51SjdLz2F9wViTbVEvlyEdJrgaK6ejiiOFOhv62gK0JzkLScurQwsifWOn9CcP0J1MBSrMkYefJQlXNexCNqjVDIB00NaF5WUz7
 
 6) Per gestire docker si hanno due opzioni: 
         - Windows : .\start.cmd (per avviare i container contenenti la blockchain)
