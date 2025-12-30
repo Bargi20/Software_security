@@ -123,3 +123,4 @@ __pycache__/
 *.pyc
 .env
 app/Ledger_Logistic/Blockchain/Spedizione/dati_spedizioni.json
+

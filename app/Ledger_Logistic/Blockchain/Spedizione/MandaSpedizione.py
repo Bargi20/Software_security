@@ -49,9 +49,10 @@ def invia_spedizione_su_besu(file_path):
     cap = ultima_spedizione.get("cap")
     provincia = ultima_spedizione.get("provincia")
     grandezza = ultima_spedizione.get("grandezza")
+    metodo_pagamento = ultima_spedizione.get("metodo_pagamento")
 
     # Calcola un ID unico per la spedizione
-    hash_input = (descrizione + indirizzo_consegna + citta + cap + provincia + grandezza).encode('utf-8')
+    hash_input = (descrizione + indirizzo_consegna + citta + cap + provincia + grandezza + metodo_pagamento).encode('utf-8')
     id_spedizione = hashlib.sha256(hash_input).hexdigest()  # Usa SHA-256 per generare un ID unico
     
     #print(f"id_spedizione: {id_spedizione}")  
