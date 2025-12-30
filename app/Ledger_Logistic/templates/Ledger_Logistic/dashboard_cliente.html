@@ -485,6 +485,7 @@
                 } else {
                     finalUrl.searchParams.delete('filtro_grandezza');
                 }
+                finalUrl.searchParams.delete('pagina_in_corso');
                 window.history.pushState({}, '', finalUrl);
             })
             .catch(error => console.error('Errore nel filtraggio:', error));
@@ -495,21 +496,6 @@
         paginaSpedizioniInCorso();
         paginaSpedizioniPassate();
     });
-    </script>
-                }
-                
-                // Aggiorna URL senza ricaricare
-                const finalUrl = new URL(window.location.href);
-                if (filtroGrandezza) {
-                    finalUrl.searchParams.set('filtro_grandezza', filtroGrandezza);
-                } else {
-                    finalUrl.searchParams.delete('filtro_grandezza');
-                }
-                finalUrl.searchParams.delete('pagina_in_corso');
-                window.history.pushState({}, '', finalUrl);
-            })
-            .catch(error => console.error('Errore nel filtraggio:', error));
-    }
     </script>
     
     <!-- Footer -->
