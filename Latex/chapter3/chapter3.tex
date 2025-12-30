@@ -209,12 +209,248 @@ In caso di successo nell'inserimento di una email valida, è richiesto un codice
 \FloatBarrier
 
 \subsection{Modellazione tramite PRISM}
-\textbf{// DA RIFARE!}
-Per analizzare la catena di Markov della funzione di login e dell'attaccante, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. Di seguito è riportato il codice PRISM utilizzato per il modello:
+
+Per analizzare la catena di Markov della funzione di login e dell'attaccante, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. 
+
+\subsubsection{Modellazione della funzione di login tramite PRISM}
+Di seguito è riportato il codice PRISM utilizzato per il modello della funzione di login:
 \vspace{1cm}
 
-%%%%%%%%%%INSERISCI MODEL PRISM QUI%%%%%%%%%%%%
-%%INIZIO MODEL PRISM%%%%%%%
+%%%%%%%%%%%%%%%% MODELLO PRISM LOGIN %%%%%%%%%%%%%%%%%
+\begin{highlightPrism}
+\hfuzz=15pt
+\keyword{\hspace{0.6em}dtmc}
+\\\\
+\keyword{const} \keyword{int} \variable{numTentativi} = \numberb{5};
+\\
+\keyword{const} \keyword{double} \variable{P2\_4} = \numberb{0.85};
+\\
+\keyword{const} \keyword{double} \variable{P4\_6} = \numberb{0.95};
+\\
+\keyword{const} \keyword{double} \variable{P6\_8} = \numberb{0.9};
+\\
+\keyword{const} \keyword{double} \variable{P10\_12} = \numberb{0.8};
+\\
+\keyword{const} \keyword{double} \variable{P12\_14} = \numberb{0.95};
+\\
+\keyword{const} \keyword{double} \variable{P14\_16} = \numberb{0.9};
+\\
+\keyword{const} \keyword{double} \variable{P17\_0} = \numberb{0.95};
+\\\\
+\keyword{label} \texttt{"LoginEffettuato"} = \variable{statoLogin} = \numberb{8};
+\\
+\keyword{label} \texttt{"Timeout"} = \variable{statoLogin} = \numberb{12};
+\\\\
+\keyword{module} \variable{login\_function}
+\\\\
+\variable{statoLogin} : \bracketcontent{0..21} \keyword{init} \numberb{0};
+\\
+\variable{c\_log} : \bracketcontent{0..numTentativi} \keyword{init} \variable{numTentativi};
+\\
+\variable{c\_mfa} : \bracketcontent{0..numTentativi} \keyword{init} \variable{numTentativi};
+\\
+\variable{c\_rpass} : \bracketcontent{0..numTentativi} \keyword{init} \variable{numTentativi};
+\\
+\variable{c\_email} : \bracketcontent{0..numTentativi} \keyword{init} \variable{numTentativi};
+\\
+\variable{c\_rinvioMFA} : \bracketcontent{0..numTentativi} \keyword{init} \variable{numTentativi};
+\\
+\variable{c\_rinvioRPASS} : \bracketcontent{0..numTentativi} \keyword{init} \variable{numTentativi};
+\\
+\variable{c\_nuovaPass} : \bracketcontent{0..numTentativi} \keyword{init} \variable{numTentativi};
+\\\\
+\cmt{//uscenti da stato 0}
+\\
+\dotblack{[}\variable{Login}\dotblack{]}
+(\variable{statoLogin}=\numberb{0}) -> (\variable{statoLogin}'=\numberb{1});
+\\
+\dotblack{[}\variable{PasswordDimenticata}\dotblack{]}
+(\variable{statoLogin}=\numberb{0}) -> (\variable{statoLogin}'=\numberb{9});
+\\\\
+\cmt{////////////////////}\\
+\cmt{////// LOGIN ///////}\\
+\cmt{////////////////////}
+\\\\
+\cmt{//uscenti da stato 1}
+\\
+\dotblack{[}\variable{InserimentoDati}\dotblack{]}
+(\variable{statoLogin}=\numberb{1})
+-> (\variable{statoLogin}'=\numberb{2}) \&
+(\variable{c\_log}'=\variable{c\_log}-\numberb{1});
+\\\\
+\cmt{// Uscenti da stato 2}
+\\
+\dotblack{[}\variable{CheckDati}\dotblack{]}
+(\variable{statoLogin}=\numberb{2})
+-> \variable{P2\_4}:(\variable{statoLogin}'=\numberb{4})
++ (\numberb{1}-\variable{P2\_4}):(\variable{statoLogin}'=\numberb{3});
+\\\\
+\cmt{// Transizione da 3 a 1 e 3 a 19}
+\\
+\dotblack{[}\variable{RitentaDati}\dotblack{]}
+(\variable{statoLogin}=\numberb{3}) \&
+(\variable{c\_log} \gt \numberb{0})
+-> (\variable{statoLogin}'=\numberb{1});
+\\
+\dotblack{[}\variable{LoginFallito}\dotblack{]}
+(\variable{statoLogin}=\numberb{3}) \&
+(\variable{c\_log}=\numberb{0})
+-> (\variable{statoLogin}'=\numberb{19});
+\\\\
+\cmt{// Uscenti da 4}
+\\
+\dotblack{[}\variable{SceltaUtenteMFA}\dotblack{]}
+(\variable{statoLogin}=\numberb{4})
+-> \variable{P4\_6}:(\variable{statoLogin}'=\numberb{6}) \&
+(\variable{c\_mfa}'=\variable{c\_mfa}-\numberb{1})
+\\
++ (\numberb{1}-\variable{P4\_6}):(\variable{statoLogin}'=\numberb{5}) \&
+(\variable{c\_rinvioMFA}'=\variable{c\_rinvioMFA}-\numberb{1});
+\\\\
+\cmt{// Transizione da 5 a 4 e 5 a 19}
+\\
+\dotblack{[}\variable{RinviaMFA}\dotblack{]}
+(\variable{statoLogin}=\numberb{5}) \&
+(\variable{c\_rinvioMFA} \gt \numberb{0})
+-> (\variable{statoLogin}'=\numberb{4});
+\\
+\dotblack{[}\variable{Timeout}\dotblack{]}
+(\variable{statoLogin}=\numberb{5}) \&
+(\variable{c\_rinvioMFA}=\numberb{0})
+-> (\variable{statoLogin}'=\numberb{19});
+\\\\
+\cmt{// Uscenti da 6}
+\\
+\dotblack{[}\variable{CheckCodiceMFA}\dotblack{]}
+(\variable{statoLogin}=\numberb{6})
+-> \variable{P6\_8}:(\variable{statoLogin}'=\numberb{7}) +
+\\ (\numberb{1}-\variable{P6\_8}):(\variable{statoLogin}'=\numberb{7});
+\\\\
+\cmt{// Uscenti da 7}
+\\
+\dotblack{[}\variable{RitentaCodiceMFA}\dotblack{]}
+(\variable{statoLogin}=\numberb{7}) \&
+(\variable{c\_mfa} \gt \numberb{0})
+-> (\variable{statoLogin}'=\numberb{4});
+\\
+\dotblack{[}\variable{Timeout}\dotblack{]}
+(\variable{statoLogin}=\numberb{7}) \&
+(\variable{c\_mfa}=\numberb{0})
+-> (\variable{statoLogin}'=\numberb{19});
+\\\\
+\cmt{// 8 stato di login effettuato}
+\\\\
+\cmt{////////////////////////////////}\\
+\cmt{////// RECUPERO PASSWORD ///////}\\
+\cmt{////////////////////////////////}
+\\\\
+\cmt{// Uscenti da 9}
+\\
+\dotblack{[}\variable{InserimentoEmail}\dotblack{]}
+(\variable{statoLogin}=\numberb{9})
+-> (\variable{statoLogin}'=\numberb{10}) \&
+(\variable{c\_email}'=\variable{c\_email}-\numberb{1});
+\\\\
+\cmt{// Uscenti da 10}
+\\
+\dotblack{[}\variable{CheckEmail}\dotblack{]}
+(\variable{statoLogin}=\numberb{10})
+-> \variable{P10\_12}:(\variable{statoLogin}'=\numberb{12}) +
+\\
+(\numberb{1}-\variable{P10\_12}):(\variable{statoLogin}'=\numberb{11});
+\\\\
+\cmt{// Transizione da 11 a 9 e 11 a 19}
+\\
+\dotblack{[}\variable{RitentaEmail}\dotblack{]}
+(\variable{statoLogin}=\numberb{11}) \&
+(\variable{c\_email} \gt \numberb{0})
+-> (\variable{statoLogin}'=\numberb{9});
+\\
+\dotblack{[}\variable{Timeout}\dotblack{]}
+(\variable{statoLogin}=\numberb{11}) \&
+(\variable{c\_email}=\numberb{0})
+-> (\variable{statoLogin}'=\numberb{19});
+\\\\
+\cmt{// Uscenti da 12}
+\\
+\dotblack{[}\variable{SceltaUtenteCodiceRecuperoPass}\dotblack{]}
+(\variable{statoLogin}=\numberb{12})
+-> \variable{P12\_14}:(\variable{statoLogin}'=\numberb{14})
+\\ \& (\variable{c\_rpass}'=\variable{c\_rpass}-\numberb{1})
++ (\numberb{1}-\variable{P12\_14}):(\variable{statoLogin}'=\numberb{13})
+\\ \& (\variable{c\_rinvioRPASS}'=\variable{c\_rinvioRPASS}-\numberb{1});
+\\\\
+\cmt{// Transizione da 13 a 12 e 13 a 19}
+\\
+\dotblack{[}\variable{RinviaCodicePassword}\dotblack{]}
+(\variable{statoLogin}=\numberb{13}) \&
+(\variable{c\_rinvioRPASS} \gt \numberb{0})
+-> (\variable{statoLogin}'=\numberb{12});
+\\
+\dotblack{[}\variable{Timeout}\dotblack{]}
+(\variable{statoLogin}=\numberb{13}) \&
+(\variable{c\_rinvioRPASS}=\numberb{0})
+-> (\variable{statoLogin}'=\numberb{19});
+\\\\
+\cmt{// Uscenti da 14}
+\\
+\dotblack{[}\variable{CheckCodicePassword}\dotblack{]}
+(\variable{statoLogin}=\numberb{14})
+-> \variable{P14\_16}:(\variable{statoLogin}'=\numberb{16}) + 
+\\ (\numberb{1}-\variable{P14\_16}):(\variable{statoLogin}'=\numberb{15});
+\\\\
+\cmt{// Transizione da 15 a 12 e 15 a 19}
+\\
+\dotblack{[}\variable{RitentaCodicePassword}\dotblack{]}
+(\variable{statoLogin}=\numberb{15}) \&
+(\variable{c\_rpass} \gt \numberb{0})
+-> (\variable{statoLogin}'=\numberb{12});
+\\
+\dotblack{[}\variable{Timeout}\dotblack{]}
+(\variable{statoLogin}=\numberb{15}) \&
+(\variable{c\_rpass}=\numberb{0})
+-> (\variable{statoLogin}'=\numberb{19});
+\\\\
+\cmt{// Uscenti da 16}
+\\
+\dotblack{[}\variable{InserimentoNuovaPassword}\dotblack{]}
+(\variable{statoLogin}=\numberb{16})
+-> (\variable{statoLogin}'=\numberb{17}) 
+\\ \& (\variable{c\_nuovaPass}'=\variable{c\_nuovaPass}-\numberb{1});
+\\\\
+\cmt{// Transizioni da 17}
+\\
+\dotblack{[}\variable{CheckNuovaPassword}\dotblack{]}
+(\variable{statoLogin}=\numberb{17})
+-> \variable{P17\_0}:(\variable{statoLogin}'=\numberb{0})
+\\ \& (\variable{c\_log}'=\variable{numTentativi}) \&
+(\variable{c\_mfa}'=\variable{numTentativi}) \&
+(\variable{c\_rpass}'=\variable{numTentativi})
+\\ \& (\variable{c\_email}'=\variable{numTentativi}) (\variable{c\_rinvioMFA}'=\variable{numTentativi})
+\\ \& (\variable{c\_rinvioRPASS}'=\variable{numTentativi}) \&
+(\variable{c\_nuovaPass}'=\variable{numTentativi}) +
+\\ (\numberb{1}-\variable{P17\_0}):(\variable{statoLogin}'=\numberb{18});
+\\\\
+\cmt{// Uscenti da 18}
+\\
+\dotblack{[}\variable{RitentaNuovaPassword}\dotblack{]}
+(\variable{statoLogin}=\numberb{18}) \&
+(\variable{c\_nuovaPass} \gt \numberb{0})
+-> (\variable{statoLogin}'=\numberb{16});
+\\
+\dotblack{[}\variable{Timeout}\dotblack{]}
+(\variable{statoLogin}=\numberb{18}) \&
+(\variable{c\_nuovaPass}=\numberb{0})
+-> (\variable{statoLogin}'=\numberb{19});
+\\\\
+\keyword{endmodule}
+\end{highlightPrism}
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%% MODELLO PRISM ATTACCANTE %%%%%%%%%%%%%%%%%%%%%%%% 
+\subsubsection{Modellazione dell'attaccante tramite PRISM}
+Di seguito è riportato il codice PRISM utilizzato per il modello dell'attaccante:
+\vspace{1cm}
 \begin{highlightPrism}
 \hfuzz=15pt
 \keyword{\hspace{0.6em}dtmc}
@@ -404,6 +640,7 @@ Per analizzare la catena di Markov della funzione di login e dell'attaccante, è
 \end{highlightPrism}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \subsection{Simulazione tramite PRISM}
 
