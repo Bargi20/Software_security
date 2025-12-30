@@ -3,16 +3,17 @@ import json
 import os
 from web3.middleware import ExtraDataToPOAMiddleware
 from django.conf import settings
-from .BesuConnection import connect_to_besu
+from ..BesuConnection import connect_to_besu, get_account
 
 
 def carica_contratto_dal_json():
     # Definisci il percorso del file JSON ABI e Address
-    project_root = os.path.dirname(os.path.abspath(__file__))  # Percorso del file corrente (in questo caso, dentro 'blockchain')
+    base_path = "../ignition/deployments/chain-1338"
+    
+    # Costruisci i percorsi completi per i file ABI e Address
+    abi_path = os.path.join(base_path, "Spedizione_abi.json")
+    address_path = os.path.join(base_path, "Spedizione_address.json")
 
-    # Definisci il percorso del file JSON ABI e Address
-    abi_path = os.path.join(project_root, "../../../ignition/deployments/chain-1338/Spedizione_abi.json")
-    address_path = os.path.join(project_root, "../../../ignition/deployments/chain-1338/Spedizione_address.json")
 
     # Carica l'ABI
     with open(abi_path, 'r') as abi_file:
@@ -21,6 +22,7 @@ def carica_contratto_dal_json():
     # Carica l'indirizzo
     with open(address_path, 'r') as address_file:
         contract_address = json.load(address_file)["Spedizione"]
+
 
     return contract_abi, contract_address
 
@@ -48,34 +50,33 @@ def invia_spedizione_su_besu(file_path):
     provincia = ultima_spedizione.get("provincia")
     grandezza = ultima_spedizione.get("grandezza")
 
-    # Calcola un ID unico (UUID)
+    # Calcola un ID unico per la spedizione
     hash_input = (descrizione + indirizzo_consegna + citta + cap + provincia + grandezza).encode('utf-8')
-    id_spedizione = hashlib.sha256(hash_input).hexdigest()  # Usa SHA-256 per generare un ID unico  
+    id_spedizione = hashlib.sha256(hash_input).hexdigest()  # Usa SHA-256 per generare un ID unico
+    
+    #print(f"id_spedizione: {id_spedizione}")  
 
     # Carica l'ABI e l'indirizzo del contratto
     contract_abi, contract_address = carica_contratto_dal_json()
 
-    # Connetti a Besu
+    #print(f"contract_address: {contract_address}")
     web3 = connect_to_besu()
 
-    # Aggiungi il middleware PoA
+    # Aggiungi il middleware PoA (fonte: stackoverflow)
     web3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
 
     # Ottieni l'account usando la chiave privata
     private_key = settings.BESU_PRIVATE_KEYS[0]  # Usa la prima chiave privata nella lista
-    account = web3.eth.account.from_key(private_key)
+    account = get_account(private_key) #funzione in BesuConnection.py che prende la prima chiave privata e ritorna l'account
 
     # Ottieni il contratto
     contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
     # Converte l'ID della spedizione in bytes
     id_spedizione_bytes = bytes.fromhex(id_spedizione.replace("0x", "")) 
+    
+    #print(f"id_spedizione_bytes: {id_spedizione_bytes}")
 
-    # Ottieni il nonce per l'account
-    try:
-        nonce = web3.eth.get_transaction_count(account.address, block_identifier='latest')
-    except Exception as e:
-        raise Exception(f"Errore nel recupero del nonce: {str(e)}")
 
     # Crea il 'data' della transazione manualmente (usando la funzione del contratto)
     function = contract.functions.creaSpedizione(
@@ -88,7 +89,8 @@ def invia_spedizione_su_besu(file_path):
         grandezza
     )
 
-    data = function._encode_transaction_data()  # Ottieni i dati della transazione codificati
+    # Ottieni i dati della transazione codificati
+    data = function._encode_transaction_data()  
 
     # Definisci i parametri per la transazione
     transaction = {
@@ -97,10 +99,10 @@ def invia_spedizione_su_besu(file_path):
         'data': data,
         'gas': 2000000,
         'gasPrice': 20 * 10**9,  # 20 Gwei in Wei
-        'nonce': nonce,
+        'nonce': web3.eth.get_transaction_count(account.address, block_identifier='latest'),
     }
 
-    # Firma la transazione usando web3.eth.account
+    # Firma la transazione usando la chiave privata
     signed_txn = web3.eth.account.sign_transaction(transaction, private_key)
 
     # Invia la transazione

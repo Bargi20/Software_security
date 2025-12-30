@@ -1,6 +1,5 @@
 from web3 import Web3
 from django.conf import settings
-import requests
 
 # Funzione per connettersi al nodo Besu
 def connect_to_besu():
@@ -11,6 +10,6 @@ def connect_to_besu():
 
 # Funzione per ottenere il primo account disponibile dalla lista di chiavi private
 def get_account(private_key):
-    web3 = connect_to_besu()  # Connessione a Besu
+    web3 = connect_to_besu() 
     account = web3.eth.account.from_key(private_key)  # Usa la chiave privata passata
     return account

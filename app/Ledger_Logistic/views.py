@@ -1,4 +1,3 @@
-import subprocess
 import time
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
@@ -6,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from dotenv import load_dotenv
 import requests
-from Ledger_Logistic.blockchain.MandaSpedizione import invia_spedizione_su_besu
+from Ledger_Logistic.Blockchain.Spedizione.MandaSpedizione import invia_spedizione_su_besu
 from .models import TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
 from django.utils import timezone
 from django.db import IntegrityError
@@ -15,10 +14,11 @@ from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, FileResponse
-import os
 import json
 
 load_dotenv()
+
+# Aggiungi la cartella principale del progetto al sys.path
 
 # Ottieni il modello User personalizzato
 Utente = get_user_model()
@@ -1375,7 +1375,7 @@ def crea_spedizione(request):
         # Salva la spedizione nel database
         spedizione.save()
 
-#################### SPEDIZIONE BLOCKCHAIN LOGIC ####################
+################# SPEDIZIONE TO BLOCKCHAIN ####################
 
         # Qui viene aggiunta la logica di salva la spedizione nel file JSON
         payload = {
@@ -1387,26 +1387,26 @@ def crea_spedizione(request):
             "grandezza": grandezza,
         }
 
+        file_path = "Ledger_Logistic/Blockchain/Spedizione/dati_spedizioni.json"
+
         # Leggi il file JSON esistente per recuperare le spedizioni precedenti
         try:
-            with open("datispedizioni.json", "r") as f:
+            with open(file_path, "r") as f:
                 spedizioni = json.load(f)
-                if not isinstance(spedizioni, list):
-                    spedizioni = []  # Se è un dizionario, lo inizializziamo come lista vuota
         except FileNotFoundError:
             spedizioni = []
         except json.JSONDecodeError:
             spedizioni = []
 
-        # Aggiungi la nuova spedizione alla lista
+        # Aggiungi la nuova spedizione alla lista come ultimo elemento
         spedizioni.append(payload)
 
         # Salva la lista aggiornata nel file JSON
-        with open("datispedizioni.json", "w") as f:
+        with open(file_path, "w") as f:
             json.dump(spedizioni, f, indent=4)
 
         # Chiama la funzione per inviare i dati alla blockchain
-        tx_hash = invia_spedizione_su_besu("datispedizioni.json")
+        tx_hash = invia_spedizione_su_besu(file_path)
         
         ## Verifica transazione ##
         #print(f"Transazione inviata con successo! tx_hash: {tx_hash.hex()}") # .hex per parsarlo in stringa leggibile
