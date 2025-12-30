@@ -109,6 +109,7 @@ Latex/chapter5/chapter5.aux
 Latex/frontmatter/frontispiece.aux
 package-lock.json
 ignition/*
+!ignition/**/
 package-lock.json
 Latex/.DS_Store
 
