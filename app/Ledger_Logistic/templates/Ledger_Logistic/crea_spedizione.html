@@ -5,6 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crea Spedizione - {{ company_name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        .grandezza-selected {
+            background-color: #d1fae5;
+            border-color: #10b981 !important;
+        }
+        .pagamento-selected {
+            background-color: #dbeafe;
+            border-color: #3b82f6 !important;
+        }
+        .price-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+    </style>
 </head>
 <body class="font-sans text-gray-800 bg-gray-50">
 
@@ -49,6 +72,23 @@
 
             <!-- Form -->
             <div class="bg-white rounded-lg shadow-lg p-8">
+                {% if show_payment_form %}
+                    <!-- Stripe Payment Form -->
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4">💳 Completa il Pagamento</h2>
+                        <p class="text-gray-600 mb-6">Inserisci i dati della tua carta per completare la spedizione</p>
+                        
+                        <div id="card-element" class="p-4 border-2 border-gray-300 rounded-lg mb-4"></div>
+                        <div id="card-errors" class="text-red-600 text-sm mb-4"></div>
+                        
+                        <button id="submit-payment" class="w-full bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition font-semibold text-lg shadow-lg">
+                            <span id="button-text">Paga Ora</span>
+                            <span id="spinner" class="hidden">Elaborazione...</span>
+                        </button>
+                        
+                        <p class="text-xs text-gray-500 mt-4 text-center">Pagamento sicuro gestito da Stripe</p>
+                    </div>
+                {% else %}
                 <form method="post" id="creaSpedizioneForm" >
                     {% csrf_token %}
 
@@ -146,8 +186,9 @@
                                     Grandezza Pacco <span class="text-red-500">*</span>
                                 </label>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition hover:shadow-md">
                                         <input type="radio" name="grandezza" value="piccolo" class="sr-only grandezza-radio" id="piccolo" {% if grandezza == 'piccolo' %}checked{% endif %} required>
+                                        <span class="price-badge">€5,00</span>
                                         <svg class="w-12 h-12 mb-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                         </svg>
@@ -155,8 +196,9 @@
                                         <span class="text-sm text-gray-500 text-center mt-1">Fino a 5kg<br>30x30x30 cm</span>
                                     </label>
 
-                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition hover:shadow-md">
                                         <input type="radio" name="grandezza" value="medio" class="sr-only grandezza-radio" id="medio" {% if grandezza == 'medio' %}checked{% endif %} required>
+                                        <span class="price-badge">€10,00</span>
                                         <svg class="w-16 h-16 mb-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                         </svg>
@@ -164,8 +206,9 @@
                                         <span class="text-sm text-gray-500 text-center mt-1">Fino a 20kg<br>50x50x50 cm</span>
                                     </label>
 
-                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                    <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition hover:shadow-md">
                                         <input type="radio" name="grandezza" value="grande" class="sr-only grandezza-radio" id="grande" {% if grandezza == 'grande' %}checked{% endif %} required>
+                                        <span class="price-badge">€20,00</span>
                                         <svg class="w-20 h-20 mb-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                         </svg>
@@ -193,6 +236,46 @@
                         </div>
                     </div>
 
+                    <!-- Sezione Pagamento -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                            Metodo di Pagamento
+                        </h2>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition hover:shadow-md pagamento-option">
+                                <input type="radio" name="metodo_pagamento" value="carta" class="sr-only pagamento-radio" {% if metodo_pagamento|default:'carta' == 'carta' %}checked{% endif %} required>
+                                <div class="flex-shrink-0 mr-4">
+                                    <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-lg font-bold text-gray-900 mb-1">💳 Carta (Stripe)</div>
+                                    <div class="text-sm text-gray-600">Pagamento immediato e sicuro</div>
+                                    <div class="text-xs text-blue-600 font-semibold mt-1">✓ Raccomandato</div>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition hover:shadow-md pagamento-option">
+                                <input type="radio" name="metodo_pagamento" value="cash" class="sr-only pagamento-radio" {% if metodo_pagamento == 'cash' %}checked{% endif %} required>
+                                <div class="flex-shrink-0 mr-4">
+                                    <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-lg font-bold text-gray-900 mb-1">💵 Contanti</div>
+                                    <div class="text-sm text-gray-600">Paga al corriere alla consegna</div>
+                                    <div class="text-xs text-gray-500 mt-1">Nessun anticipo richiesto</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- Pulsanti -->
                     <div class="flex gap-4">
                         <button 
@@ -212,6 +295,7 @@
                         </a>
                     </div>
                 </form>
+                {% endif %}
             </div>
 
             <!-- Info Box -->
@@ -250,5 +334,151 @@
             <p>&copy; 2025 {{ company_name }}. Tutti i diritti riservati.</p>
         </div>
     </footer>
+
+    <script>
+        // Gestione selezione grandezza pacco con evidenziazione
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione grandezza pacco
+            const radioButtonsGrandezza = document.querySelectorAll('.grandezza-radio');
+            radioButtonsGrandezza.forEach(radio => {
+                const label = radio.closest('label');
+                
+                // Imposta lo stato iniziale se già selezionato
+                if (radio.checked) {
+                    label.classList.add('grandezza-selected');
+                }
+                
+                // Aggiungi event listener per i cambiamenti
+                radio.addEventListener('change', function() {
+                    // Rimuovi la classe da tutti i label
+                    document.querySelectorAll('.grandezza-radio').forEach(r => {
+                        r.closest('label').classList.remove('grandezza-selected');
+                    });
+                    
+                    // Aggiungi la classe al label selezionato
+                    if (this.checked) {
+                        label.classList.add('grandezza-selected');
+                    }
+                });
+            });
+
+            // Gestione metodo pagamento
+            const radioButtonsPagamento = document.querySelectorAll('.pagamento-radio');
+            radioButtonsPagamento.forEach(radio => {
+                const label = radio.closest('label');
+                
+                // Imposta lo stato iniziale se già selezionato
+                if (radio.checked) {
+                    label.classList.add('pagamento-selected');
+                }
+                
+                // Aggiungi event listener per i cambiamenti
+                radio.addEventListener('change', function() {
+                    // Rimuovi la classe da tutti i label
+                    document.querySelectorAll('.pagamento-radio').forEach(r => {
+                        r.closest('label').classList.remove('pagamento-selected');
+                    });
+                    
+                    // Aggiungi la classe al label selezionato
+                    if (this.checked) {
+                        label.classList.add('pagamento-selected');
+                    }
+                });
+            });
+
+            // Stripe payment handling
+            {% if show_payment_form and client_secret %}
+            // Funzione per ottenere il token CSRF dal cookie
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+            const stripe = Stripe('{{ stripe_publishable_key }}');
+            const elements = stripe.elements();
+            const cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#32325d',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                        '::placeholder': {
+                            color: '#aab7c4'
+                        }
+                    },
+                    invalid: {
+                        color: '#fa755a',
+                        iconColor: '#fa755a'
+                    }
+                }
+            });
+            cardElement.mount('#card-element');
+
+            cardElement.on('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+
+            const form = document.getElementById('submit-payment');
+            form.addEventListener('click', async function(event) {
+                event.preventDefault();
+                
+                const buttonText = document.getElementById('button-text');
+                const spinner = document.getElementById('spinner');
+                buttonText.classList.add('hidden');
+                spinner.classList.remove('hidden');
+                form.disabled = true;
+
+                const {error, paymentIntent} = await stripe.confirmCardPayment('{{ client_secret }}', {
+                    payment_method: {
+                        card: cardElement,
+                    }
+                });
+
+                if (error) {
+                    document.getElementById('card-errors').textContent = error.message;
+                    buttonText.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                    form.disabled = false;
+                } else if (paymentIntent.status === 'succeeded') {
+                    // Conferma la spedizione al server
+                    const csrftoken = getCookie('csrftoken');
+                    fetch('{% url "conferma_pagamento" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrftoken,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = data.redirect;
+                        } else {
+                            alert('Errore: ' + data.error);
+                            buttonText.classList.remove('hidden');
+                            spinner.classList.add('hidden');
+                            form.disabled = false;
+                        }
+                    });
+                }
+            });
+            {% endif %}
+        });
+    </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ from django.contrib import messages
 from dotenv import load_dotenv
 import requests
 from Ledger_Logistic.blockchain.MandaSpedizione import invia_spedizione_su_besu
+import stripe
 from .models import TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
 from django.utils import timezone
 from django.db import IntegrityError
@@ -25,6 +26,22 @@ Utente = get_user_model()
 
 # Costanti
 COMPANY_NAME = 'Ledger Logistics'
+STRIPE_CURRENCY = 'eur'
+PACCO_IMPORTI_CENT = {
+    'piccolo': 500,  # €5.00
+    'medio': 1000,   # €10.00
+    'grande': 2000   # €20.00
+}
+
+
+def _get_stripe_api_key():
+    """Recupera la chiave Stripe dalle variabili d'ambiente."""
+    return os.getenv('STRIPE_SECRET_KEY', '').strip()
+
+
+def _calcola_importo_pagamento(grandezza):
+    """Restituisce l'importo in centesimi in base alla grandezza."""
+    return PACCO_IMPORTI_CENT.get(grandezza)
 
 
 def home(request):
@@ -159,7 +176,7 @@ def custom_login(request):
         # Invia email con codice
         try:
             send_mail(
-                subject='Codice OTP - Ledger Logistic',
+                subject=f'Codice OTP - {COMPANY_NAME}',
                 message=f'Il tuo codice OTP è: {codice_otp.codice}\n\nValido per 5 minuti.\n\nSe non hai richiesto questo accesso, ignora questa email.',
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
@@ -562,133 +579,7 @@ def register(request):
     )
     return redirect('login')
 
-@login_required
-def invia_probabilita_blockchain(request, prova_id):
-    """
-    Recupera le probabilità da una Prova e le invia allo smart contract
-    
-    Args:
-        prova_id: ID della prova da inviare
-    """
-    # Verifica connessione blockchain
-    if not is_connected():
-        messages.error(request, '❌ Blockchain non disponibile')
-        return redirect('home')
-    
-    try:
-        # Recupera la prova dal database
-        prova = Prova.objects.select_related(
-            'idEvento1', 'idEvento2', 'idEvento3'
-        ).get(id=prova_id)
-        
-        # Prepara i dati delle probabilità
-        probabilita_priori = []
-        nomi_eventi = []
-        
-        # Aggiungi eventi se esistono
-        if prova.idEvento1:
-            probabilita_priori.append(int(prova.idEvento1.probabilita_priori * 100))
-            nomi_eventi.append(prova.idEvento1.nomeEvento)
-        
-        if prova.idEvento2:
-            probabilita_priori.append(int(prova.idEvento2.probabilita_priori * 100))
-            nomi_eventi.append(prova.idEvento2.nomeEvento)
-        
-        if prova.idEvento3:
-            probabilita_priori.append(int(prova.idEvento3.probabilita_priori * 100))
-            nomi_eventi.append(prova.idEvento3.nomeEvento)
-        
-        # Probabilità condizionata (moltiplicata per 100 per evitare decimali)
-        prob_condizionata = int(prova.probabilita_condizionata * 100)
-        
-        # Ottieni il contratto
-        contract = get_contract()
-        
-        # Chiama la funzione del contratto (adatta il nome alla tua funzione)
-        # Esempio: contract.functions.salvaProbabilita(nomeProva, probabilitaPriori[], probCondizionata)
-        success, tx_hash, error = send_transaction(
-            contract.functions.salvaProbabilita,
-            prova.nomeProva,
-            probabilita_priori,
-            prob_condizionata
-        )
-        
-        if success:
-            messages.success(
-                request, 
-                f'✅ Probabilità inviate alla blockchain!\n'
-                f'TX Hash: {tx_hash}\n'
-                f'Prova: {prova.nomeProva}\n'
-                f'Eventi: {", ".join(nomi_eventi)}'
-            )
-        else:
-            messages.error(request, f'❌ Errore nell\'invio: {error}')
-            
-    except Prova.DoesNotExist:
-        messages.error(request, '❌ Prova non trovata')
-    except Exception as e:
-        messages.error(request, f'❌ Errore: {str(e)}')
-    
-    return redirect('home')
 
-
-@login_required
-def invia_tutte_probabilita_blockchain(request):
-    """
-    Invia tutte le prove non ancora inviate alla blockchain
-    """
-    if not is_connected():
-        messages.error(request, '❌ Blockchain non disponibile')
-        return redirect('home')
-    
-    try:
-        # Recupera tutte le prove
-        prove = Prova.objects.select_related(
-            'idEvento1', 'idEvento2', 'idEvento3'
-        ).all()
-        
-        successi = 0
-        errori = 0
-        
-        for prova in prove:
-            # Prepara i dati
-            probabilita_priori = []
-            
-            if prova.idEvento1:
-                probabilita_priori.append(int(prova.idEvento1.probabilita_priori * 100))
-            if prova.idEvento2:
-                probabilita_priori.append(int(prova.idEvento2.probabilita_priori * 100))
-            if prova.idEvento3:
-                probabilita_priori.append(int(prova.idEvento3.probabilita_priori * 100))
-            
-            prob_condizionata = int(prova.probabilita_condizionata * 100)
-            
-            # Invia al contratto
-            contract = get_contract()
-            success, _ , error = send_transaction(
-                contract.functions.salvaProbabilita,
-                prova.nomeProva,
-                probabilita_priori,
-                prob_condizionata
-            )
-            
-            if success:
-                successi += 1
-            else:
-                errori += 1
-                print(f"Errore per prova {prova.nomeProva}: {error}")
-        
-        messages.success(
-            request,
-            f'✅ Invio completato!\n'
-            f'Successi: {successi}\n'
-            f'Errori: {errori}'
-        )
-        
-    except Exception as e:
-        messages.error(request, f'❌ Errore: {str(e)}')
-    
-    return redirect('home')
 
 
 def reset_password_request(request):
@@ -1146,7 +1037,7 @@ def dashboard_cliente(request):
     spedizioni_passate = spedizioni.filter(stato__in=['consegnato', 'annullato']).order_by('-data_aggiornamento')
     
     context = {
-        'company_name': 'Ledger Logistics',
+        'company_name': COMPANY_NAME,
         'user': request.user,
         'spedizioni_attive': spedizioni_attive,
         'spedizioni_consegnate': spedizioni_consegnate,
@@ -1206,7 +1097,7 @@ def dashboard_corriere(request):
     ).order_by('-data_aggiornamento')
     
     context = {
-        'company_name': 'Ledger Logistics',
+        'company_name': COMPANY_NAME,
         'user': request.user,
         'consegne_oggi': consegne_oggi,
         'consegne_completate': consegne_completate,
@@ -1260,7 +1151,7 @@ def dashboard_gestore(request):
         tasso_successo = 0
     
     context = {
-        'company_name': 'Ledger Logistics',
+        'company_name': COMPANY_NAME,
         'user': request.user,
         'spedizioni_in_attesa': spedizioni_in_attesa,
         'spedizioni_storico': spedizioni_storico,
@@ -1288,7 +1179,7 @@ def crea_spedizione(request):
     # GET request - mostra il form
     if request.method != 'POST':
         context = {
-            'company_name': 'Ledger Logistics',
+            'company_name': COMPANY_NAME,
             'user': request.user
         }
         return render(request, root, context)
@@ -1300,6 +1191,19 @@ def crea_spedizione(request):
     provincia = request.POST.get('provincia', '').strip().upper()
     grandezza = request.POST.get('grandezza', '')
     descrizione = request.POST.get('descrizione', '').strip()
+    metodo_pagamento = request.POST.get('metodo_pagamento', 'carta').strip()
+
+    form_context = {
+        'company_name': COMPANY_NAME,
+        'user': request.user,
+        'indirizzo_consegna': indirizzo_consegna,
+        'citta': citta,
+        'cap': cap,
+        'provincia': provincia,
+        'grandezza': grandezza,
+        'descrizione': descrizione,
+        'metodo_pagamento': metodo_pagamento
+    }
     
     # Validazione
     errors = []
@@ -1320,105 +1224,221 @@ def crea_spedizione(request):
         errors.append('Seleziona una grandezza valida per il pacco.')
     if not descrizione:
         errors.append('La descrizione dell\'ordine è obbligatoria.')
+    if metodo_pagamento not in ['carta', 'cash']:
+        errors.append('Seleziona un metodo di pagamento valido.')
     
     if errors:
         for error in errors:
             messages.error(request, error)
-        context = {
-            'company_name': 'Ledger Logistics',
-            'user': request.user,
-            'indirizzo_consegna': indirizzo_consegna,
-            'citta': citta,
-            'cap': cap,
-            'provincia': provincia,
-            'grandezza': grandezza,
-            'descrizione': descrizione
-        }
-        return render(request, root, context)
+        return render(request, root, form_context)
+
+    payment_intent = None
+    if metodo_pagamento == 'carta':
+        stripe_api_key = _get_stripe_api_key()
+        if not stripe_api_key:
+            messages.error(request, 'Pagamento non disponibile: configurare STRIPE_SECRET_KEY nel file .env.')
+            return render(request, root, form_context)
+
+        stripe.api_key = stripe_api_key
+        amount_cents = _calcola_importo_pagamento(grandezza)
+        if not amount_cents:
+            messages.error(request, 'Pagamento non disponibile per la grandezza selezionata.')
+            return render(request, root, form_context)
+
+        try:
+            payment_intent = stripe.PaymentIntent.create(
+                amount=amount_cents,
+                currency=STRIPE_CURRENCY,
+                description=f"Spedizione {grandezza} - {request.user.email}",
+                payment_method_types=['card'],
+                metadata={
+                    'cliente': request.user.email,
+                    'grandezza': grandezza,
+                    'citta': citta,
+                },
+            )
+            # Salva i dati nella sessione per dopo la conferma pagamento
+            request.session['pending_shipment'] = {
+                'payment_intent_id': payment_intent.id,
+                'indirizzo_consegna': indirizzo_consegna,
+                'citta': citta,
+                'cap': cap,
+                'provincia': provincia,
+                'grandezza': grandezza,
+                'descrizione': descrizione,
+                'metodo_pagamento': metodo_pagamento
+            }
+            # Passa il client_secret al template per confermare il pagamento
+            form_context['client_secret'] = payment_intent.client_secret
+            form_context['stripe_publishable_key'] = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
+            form_context['show_payment_form'] = True
+            return render(request, root, form_context)
+        except stripe.error.StripeError as e:
+            messages.error(request, f'Pagamento Stripe non riuscito: {str(e)}')
+            return render(request, root, form_context)
+        except Exception as e:
+            messages.error(request, f'Errore imprevisto nel pagamento: {str(e)}')
+            return render(request, root, form_context)
     
-    # Crea la spedizione nel database
+    # Se pagamento cash, crea subito la spedizione
+    if metodo_pagamento == 'cash':
+        try:
+            spedizione = _crea_spedizione_db(
+                request, request.user, indirizzo_consegna, citta, cap, provincia,
+                grandezza, descrizione, metodo_pagamento
+            )
+            return redirect('dashboard_cliente')
+        except Exception as e:
+            messages.error(request, f'Errore durante la creazione della spedizione: {str(e)}')
+            return render(request, root, form_context)
+    
+    # Se carta, il resto è già gestito sopra (mostra form pagamento)
+    return render(request, root, form_context)
+
+
+def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provincia, grandezza, descrizione, metodo_pagamento):
+    """Helper per creare spedizione nel database"""
+    from .models import Spedizione
+    
+    # Crea il nuovo oggetto spedizione
+    spedizione = Spedizione(
+        cliente=cliente,
+        indirizzo_consegna=indirizzo_consegna,
+        citta=citta,
+        cap=cap,
+        provincia=provincia,
+        grandezza=grandezza,
+        descrizione=descrizione
+    )
+    
+    # Genera il codice tracciamento
+    spedizione.codice_tracciamento = spedizione.genera_codice_tracciamento()
+    
+    # Cerca un corriere disponibile e assegna automaticamente
+    corriere_disponibile = trova_corriere_disponibile()
+    if corriere_disponibile:
+        spedizione.corriere = corriere_disponibile
+        spedizione.stato = 'in_consegna'
+    else:
+        spedizione.stato = 'in_attesa'
+    
+    # Salva la spedizione nel database
+    spedizione.save()
+
+    # Salva su blockchain
+    payload = {
+        "descrizione": descrizione,
+        "indirizzo_consegna": indirizzo_consegna,
+        "citta": citta,
+        "cap": cap,
+        "provincia": provincia,
+        "grandezza": grandezza,
+        "metodo_pagamento": metodo_pagamento,
+    }
+
     try:
-        from .models import Spedizione
-        
-        # Crea il nuovo oggetto spedizione
-        spedizione = Spedizione(
-            cliente=request.user,
-            indirizzo_consegna=indirizzo_consegna,
-            citta=citta,
-            cap=cap,
-            provincia=provincia,
-            grandezza=grandezza,
-            descrizione=descrizione
+        with open("datispedizioni.json", "r") as f:
+            spedizioni = json.load(f)
+            if not isinstance(spedizioni, list):
+                spedizioni = []
+    except (FileNotFoundError, json.JSONDecodeError):
+        spedizioni = []
+
+    spedizioni.append(payload)
+
+    with open("datispedizioni.json", "w") as f:
+        json.dump(spedizioni, f, indent=4)
+
+    tx_hash = invia_spedizione_su_besu("datispedizioni.json")
+    
+    messages.success(
+        request,
+        f'✅ Spedizione creata! Codice: {spedizione.codice_tracciamento}. '
+        f'{"Pagamento alla consegna." if metodo_pagamento == "cash" else "Pagamento completato."}'
+    )
+    
+    return spedizione
+
+
+@login_required
+def conferma_pagamento(request):
+    """Endpoint per confermare il pagamento dopo Stripe"""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Metodo non consentito'}, status=405)
+    
+    if 'pending_shipment' not in request.session:
+        return JsonResponse({'error': 'Nessuna spedizione in attesa'}, status=400)
+    
+    pending = request.session['pending_shipment']
+    
+    try:
+        spedizione = _crea_spedizione_db(
+            request,
+            request.user,
+            pending['indirizzo_consegna'],
+            pending['citta'],
+            pending['cap'],
+            pending['provincia'],
+            pending['grandezza'],
+            pending['descrizione'],
+            pending['metodo_pagamento']
         )
         
-        # Genera il codice tracciamento
-        spedizione.codice_tracciamento = spedizione.genera_codice_tracciamento()
-        
-        # Cerca un corriere disponibile e assegna automaticamente
-        corriere_disponibile = trova_corriere_disponibile()
-        if corriere_disponibile:
-            spedizione.corriere = corriere_disponibile
-            spedizione.stato = 'in_consegna'
-            messages.success(
-                request,
-                f'✅ Spedizione creata con successo! Codice tracciamento: {spedizione.codice_tracciamento}. '
-                f'Assegnata al corriere disponibile.'
-            )
-        else:
-            spedizione.stato = 'in_attesa'
-            messages.success(
-                request,
-                f'✅ Spedizione creata con successo! Codice tracciamento: {spedizione.codice_tracciamento}. '
-                f'In attesa di assegnazione corriere.'
-            )
-        
-        # Salva la spedizione nel database
-        spedizione.save()
-
-#################### SPEDIZIONE BLOCKCHAIN LOGIC ####################
-
-        # Qui viene aggiunta la logica di salva la spedizione nel file JSON
-        payload = {
-            "descrizione": descrizione,
-            "indirizzo_consegna": indirizzo_consegna,
-            "citta": citta,
-            "cap": cap,
-            "provincia": provincia,
-            "grandezza": grandezza,
+        # Salva i dati per la pagina di conferma
+        request.session['payment_success'] = {
+            'codice_tracciamento': spedizione.codice_tracciamento,
+            'citta': spedizione.citta,
+            'provincia': spedizione.provincia,
+            'indirizzo_consegna': spedizione.indirizzo_consegna,
+            'grandezza': spedizione.grandezza,
+            'importo': f"{PACCO_IMPORTI_CENT[spedizione.grandezza] / 100:.2f}"
         }
-
-        # Leggi il file JSON esistente per recuperare le spedizioni precedenti
-        try:
-            with open("datispedizioni.json", "r") as f:
-                spedizioni = json.load(f)
-                if not isinstance(spedizioni, list):
-                    spedizioni = []  # Se è un dizionario, lo inizializziamo come lista vuota
-        except FileNotFoundError:
-            spedizioni = []
-        except json.JSONDecodeError:
-            spedizioni = []
-
-        # Aggiungi la nuova spedizione alla lista
-        spedizioni.append(payload)
-
-        # Salva la lista aggiornata nel file JSON
-        with open("datispedizioni.json", "w") as f:
-            json.dump(spedizioni, f, indent=4)
-
-        # Chiama la funzione per inviare i dati alla blockchain
-        tx_hash = invia_spedizione_su_besu("datispedizioni.json")
         
-        ## Verifica transazione ##
-        #print(f"Transazione inviata con successo! tx_hash: {tx_hash.hex()}") # .hex per parsarlo in stringa leggibile
-        #verifica_transazione(tx_hash.hex())
-        return redirect('dashboard_cliente')
+        del request.session['pending_shipment']
+        return JsonResponse({'success': True, 'redirect': '/spedizione/pagamento-confermato/'})
         
     except Exception as e:
-        messages.error(request, f'Errore durante la creazione della spedizione: {str(e)}')
-        return render(request, root, {
-            'company_name': 'Ledger Logistics',
-            'user': request.user
-        })
+        request.session['payment_error'] = str(e)
+        return JsonResponse({'success': False, 'redirect': '/spedizione/pagamento-fallito/'})
+
+
+@login_required
+def pagamento_confermato(request):
+    """Mostra la pagina di pagamento completato con successo"""
+    if 'payment_success' not in request.session:
+        messages.warning(request, 'Nessun pagamento da confermare.')
+        return redirect('dashboard_cliente')
+    
+    payment_data = request.session['payment_success']
+    del request.session['payment_success']
+    
+    context = {
+        'company_name': COMPANY_NAME,
+        'success': True,
+        'codice_tracciamento': payment_data['codice_tracciamento'],
+        'citta': payment_data['citta'],
+        'provincia': payment_data['provincia'],
+        'indirizzo_consegna': payment_data['indirizzo_consegna'],
+        'grandezza': payment_data['grandezza'],
+        'importo': payment_data['importo']
+    }
+    return render(request, 'Ledger_Logistic/pagamento_conferma.html', context)
+
+
+@login_required
+def pagamento_fallito(request):
+    """Mostra la pagina di pagamento fallito"""
+    error_message = None
+    if 'payment_error' in request.session:
+        error_message = request.session['payment_error']
+        del request.session['payment_error']
+    
+    context = {
+        'company_name': COMPANY_NAME,
+        'success': False,
+        'error_message': error_message
+    }
+    return render(request, 'Ledger_Logistic/pagamento_conferma.html', context)
 
 
 def verifica_transazione(tx_hash):
@@ -1592,3 +1612,5 @@ def rifiuta_spedizione(request, codice_tracciamento):
         messages.error(request, f'Errore: {str(e)}')
     
     return redirect('dashboard_gestore')
+
+

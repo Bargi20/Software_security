@@ -28,3 +28,9 @@ EMAIL_PORT=587
 EMAIL_HOST_USER='ledgerlogistics1@gmail.com'
 EMAIL_HOST_PASSWORD='opdb mtam eddn igvm'
 DEFAULT_FROM_EMAIL = 'ledgerlogistics1@gmail.com'
+
+6) Per gestire docker si hanno due opzioni: 
+        - Windows : .\start.cmd (per avviare i container contenenti la blockchain)
+                    .\stop.cmd (per spegnere e rimuovere i container contenenti la blockchain)
+        - MacOS : ./start.sh (per avviare i container contenenti la blockchain)
+                  ./stop.sh (per spegnere e rimuovere i container contenenti la blockchain)
