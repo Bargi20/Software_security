@@ -162,9 +162,9 @@ Le catene di Markov sono modelli matematici utilizzati per descrivere sistemi ch
     \item \textbf{$C_{NuovaPass}$}: contatore dei tentativi d'inserimento della nuova password.
 \end{itemize}
 
-Lo stato iniziale della catena di Markov è lo stato \textbf{0}, che rappresenta l'utente che apre la schermata di login, nella quale egli può inserire le proprie credenziali (email e password). Qui abbiamo la prima biforcazione, se l'utente sceglie di recuperare la propria password, si passa allo stato \textbf{9} tramite la transizione etichettata con \textit{/PasswordDimenticata}, altrimenti si passa allo stato \textbf{1} con etichetta \textit{/Login}. 
+Lo stato iniziale della catena di Markov è lo stato \textbf{0}, che rappresenta l'utente che apre la schermata di login. Qui abbiamo la prima biforcazione, se l'utente sceglie di recuperare la propria password, si passa allo stato \textbf{9} tramite la transizione etichettata con \textit{/PasswordDimenticata}, altrimenti si passa allo stato \textbf{1} con etichetta \textit{/Login} se l'utente decide di fare il login. 
 
-Vediamo la transizione che riguarda l'inserimento dei dati di login: dallo stato \textbf{1}, dopo l'inserimento delle credenziali da parte dell'utente, si passa allo stato \textbf{3} e viene decrementato il counter dei tentativi $C_{LOG}$ di 1, ciò rappresenta l'effettuazione di un tentativo di login. Se le credenziali sono corrette, si passa allo stato \textbf{4} tramite la transizione etichettata con \textit{?DatiOK}, altrimenti, se le credenziali sono sbagliate si passa allo stato \textbf{3}, il quale rappresenta uno stato intermedio. Se il contatore $C_{LOG}$ è maggiore di 0, si torna allo stato \textbf{a}; se il contatore è uguale a 0, vuol dire che sono esauriti i tentativi di login e si va nello stato \textbf{19} con la stessa transizione \textit{?DatiKO}, il quale rappresenta uno stato di timeout dopo un certo numero di azioni e si rimane in questo stato indefinitamente tramite la transizione \textit{?Timeout}. 
+Vediamo la transizione che riguarda l'inserimento dei dati di login: dallo stato \textbf{1}, dopo l'inserimento delle credenziali da parte dell'utente, si passa allo stato \textbf{2} e viene decrementato il counter dei tentativi $C_{LOG}$ di 1, ciò rappresenta l'effettuazione di un tentativo di login. Se le credenziali sono corrette, si passa allo stato \textbf{4} tramite la transizione etichettata con \textit{?DatiOK}, altrimenti, se le credenziali sono sbagliate si passa allo stato \textbf{3}, il quale rappresenta uno stato intermedio. Se il contatore $C_{LOG}$ è maggiore di 0, si torna allo stato \textbf{a}; se il contatore è uguale a 0, vuol dire che sono esauriti i tentativi di login e si va nello stato \textbf{19} con la stessa transizione \textit{?DatiKO}, il quale rappresenta uno stato di timeout dopo un certo numero di azioni e si rimane in questo stato indefinitamente tramite la transizione \textit{?Timeout}. 
 Per quanto riguarda lo stato \textbf{4}, esso rappresenta la decisione d'inserire il codice MFA oppure di farselo rinviare. Se si decide d'inserire il codice MFA, il contatore $C_{MFA}$ viene decrementato di 1 e si fa una transizione nello stato \textbf{6}. Se il codice è corretto, si passa allo stato \textbf{8} tramite la transizione etichettata con \textit{?CodiceOK}, questo rappresenta lo stato con cui il login è avvenuto con successo e vi si rimane indefinitamente (l'etichetta è \textit{?LoginEffettuato}). Se il codice MFA è errato, sia passa allo stato \textbf{7}; se il contatore $C_{MFA}$ è maggiore di 0, cioè ci sono ancora tentativi a disposizione per inserire il codice MFA, si torna allo stato \textbf{4} e viene chiesto nuovamente all'utente d'inserire il codice MFA o di fare il rinvio di quest'ultimo; se il contatore è uguale a 0, si va nello stato \textbf{19} e, come detto precedentemente, esso rappresenta lo stato di timeout. Infine, vi è un'ultima transizione etichettata \textit{/RinvioCodiceMFA}, che permette all'utente di farsi rinviare il codice MFA, andando a finire nello stato \textbf{5}; se il contatore $C_{RinvioMFA}$ è maggiore di 0, si ritorna nello stato \textit{4}, altrimenti se il contatore è uguale a 0 si va nello stato di timeout \textbf{19}; queste transizioni rappresentano una limitazione nell'invio da parte del sistema dei codici MFA.
 
 Se l'utente sceglie di recuperare la propria password, si passa allo stato \textbf{9}. Qui, dopo che l'utente ha inserito l'email su cui effettuare il recupero della password, viene decrementato il contatore $C_{EMAIL}$ di 1 e si passa allo stato \textbf{10}. Qui il sistema controlla se l'email è presente nel database. Se l'email non esiste, si va a finire con la transizione \textit{?EmailKO} nello stato \textbf{11}, in cui se il contatore $C_{EMAIL}$ è maggiore di 0, si torna allo stato \textbf{9} e viene chiesto nuovamente all'utente d'inserire un'email valida, altrimenti se il contatore è uguale a 0, si va nello stato di timeout. Invece, se l'email è corretta, si passa allo stato \textbf{12} tramite la transizione etichettata con \textit{?EmailOK}. In questo stato, il sistema invia una email all'utente con un codice per reimpostare la password; a questo punto l'utente deve decidere se inserire il codice ricevuto, decrementando il contatore $C_{RPASS}$ di 1 e transitando allo stato \textbf{14} con l'etichetta \textit{/InserimentoCodice} oppure se farsi rinviare il codice di recupero password. Se l'utente decide di farsi rinviare il codice ed il contatore $C_{RinvioRPASS}$ è maggiore di 0, si torna nello stato \textbf{12}, altrimenti se il contatore è uguale a 0, si va nello stato di timeout.
@@ -177,7 +177,7 @@ Se il codice di recupero password inserito è corretto, si passa dallo stato \te
 \end{figure}
 
 \FloatBarrier
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Catena di Markov per l'attaccante}
 Come per la catena di Markov precedente, sono stati usati dei contatori per tenere traccia dei tentativi effettuati dall'attaccante. Essi rappresentano la grandezza del dizionario usato per l'attacco di forza bruta. I contatori sono i seguenti:
 
@@ -190,6 +190,17 @@ Come per la catena di Markov precedente, sono stati usati dei contatori per tene
     \item \textbf{$tentativo_{mfa}$}: contatore che tiene traccia dei tentativi d'inserimento del codice MFA effettuati dall'attaccante.
 \end{itemize}
 
+Lo stato iniziale è lo stato \textbf{0} e vi sono due possibilità. Se l'attaccante decide di effettuare un attacco di forza bruta con dizionario, si passa allo stato \textbf{1} tramite la transizione etichettata con \textit{/!InizioAttaccoLogin}, altrimenti si passa allo stato \textbf{10} con etichetta \textit{/!InizioAttaccoPasswordDimenticata} se l'attaccante decide di attaccare la funzione di recupero password. Le probabilità di transitare da uno stato all'altro sono state scelte arbitrariamente in modo da poter simulare entrambi gli scenari equamente.
+
+Andando ad analizzare l'attacco di forza bruta sulla funzione di login, si passa dallo stato \textbf{1} allo stato \textbf{2} con la transizione etichettata \textit{/!InserisciEmail} e successivamente si transita allo stato \textbf{3} con l'etichetta \textit{/!InserisciPassword}. In entrambe le transizioni si decrementano rispettivamente i due contatori $tentativo_{email}$ e $tentativo_{pass}$. Questo rappresenta l'attaccante che inserisce delle credenziali per attaccare il sistema. In seguito si passa allo stato \textbf{4} con l'etichetta \textit{/!InvioDati}, che rappresenta l'invio delle credenziali al sistema. Se le credenziali sono corrette, si passa allo stato \textbf{6} tramite la transizione etichettata con \textit{?DatiOk}, altrimenti, se le credenziali sono errate, si passa allo stato \textbf{5} tramite la transizione etichettata con \textit{?DatiKO}.
+Qui bisogna distinguere 3 casi: nel primo caso, se i contatori $tentativo_{email}$ e $tentativo_{pass}$ sono uguali a 0, si va allo stato \textbf{16}, cioè uno stato che rappresenta il fallimento dell'attacco; nel secondo caso, se il contatore $tentativo_{pass}$ è maggiore di 0, allora si torna allo stato \textbf{2}, cioè l'attaccante deve riprovare altre password con la stessa email che ha provato in precedenza; nel terzo caso, se il contatore $tentativo_{email}$ è maggiore di 0 e $tentativo_{pass}$ è uguale a 0, allora si resetta il numero di tentativi delle password, cioè $tentativo_{pass}$ e si torna allo stato \textbf{1}, cioè l'attaccante deve riprovare tutte le password con un'altra email. La probabilità di fallimento, cioè della transizione \textit{?DatiKO}, è complementare a quella di successo, cioè della transizione \textit{?DatiOK}. Esse sono rappresentate dai riquadri rossi nella figura della catena di Markov.
+
+Se l'attaccante è riuscito ad indovinare le credenziali, dallo stato \textbf{6} si passa allo stato \textbf{7} e di decrementa il contatore $tentativo_{mfa}$; questa transizione rappresenta l'inserimento del codice MFA. Nello stato di arrivo, se il codice MFA è corretto, si passa allo stato \textbf{9} con l'etichetta \textit{?AttaccoRiuscito} e ciò rappresenta il successo dell'attacco; altrimenti, se il codice MFA è errato, si passa allo stato \textbf{8} tramite la transizione etichettata con \textit{?mfaKO}. Qui, se il contatore $tentativo_{mfa}$ è maggiore di 0, si torna allo stato \textbf{6}, altrimenti se il contatore è uguale a 0, si va nello stato \textbf{16}, cioè lo stato di fallimento dell'attacco.
+
+Se l'attaccante ha deciso di effettuare un attacco alla funzione di recupero password, si passa dallo stato \textbf{10} allo stato \textbf{11} con l'etichetta \textit{/!inserimentoEmail} e decrementando il contatore $tentativo_{email}$. Successivamente dallo stato \textbf{11}, se l'email inserita è corretta, si passa allo stato \textbf{13} con l'etichetta \textit{?EmailOK}, altrimenti si passa allo stato \textbf{12} tramite la transizione etichettata con \textit{?EmailKO}. Qui bisogna distinguere 2 casi: se il contatore $tentativo_{email}$ è uguale a 0, si va allo stato \textbf{16}, cioè lo stato di fallimento dell'attacco; altrimenti, se il contatore è maggiore di 0, si torna allo stato \textbf{10}, cioè l'attaccante deve riprovare con un'altra email. 
+
+In caso di successo nell'inserimento di una email valida, è richiesto un codice di recupero password. Quindi si va dallo stato \textbf{13} allo stato \textbf{14} con l'etichetta \textit{/!InserimentoCodiceEmail}, decrementando il contatore $tentativo_{codice\_email}$. Qui, se il codice di recupero password inserito è corretto, si passa allo stato \textbf{6} tramite la transizione etichettata con \textit{?ResetPasswordRiuscito}; questo sta a significare che l'attaccante è riuscito a resettare la password di quella email e quindi ora deve indovinare il codice MFA per completare l'attacco. Invece, se il codice di recupero password è errato, si passa allo stato \textbf{15} tramite la transizione etichettata con \textit{?CodiceEmailKO}. Qui, se il contatore $tentativo_{codice\_email}$ è maggiore di 0, si torna allo stato \textbf{13}, altrimenti se il contatore è uguale a 0, si va nello stato \textbf{16}, cioè lo stato di fallimento dell'attacco.
+
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=1\columnwidth]{chapter3/immagini/catenaDiMarkovAttaccante.png}
@@ -200,135 +211,198 @@ Come per la catena di Markov precedente, sono stati usati dei contatori per tene
 \subsection{Modellazione tramite PRISM}
 \textbf{// DA RIFARE!}
 Per analizzare la catena di Markov della funzione di login e dell'attaccante, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. Di seguito è riportato il codice PRISM utilizzato per il modello:
-\vspace{3cm}
+\vspace{1cm}
 
 %%%%%%%%%%INSERISCI MODEL PRISM QUI%%%%%%%%%%%%
 %%INIZIO MODEL PRISM%%%%%%%
 \begin{highlightPrism}
 \hfuzz=15pt
 \keyword{\hspace{0.6em}dtmc}
+\\\\
+\keyword{const} \keyword{int} \variable{n\_pass} = \numberb{5};
 \\
+\keyword{const} \keyword{int} \variable{n\_email} = \numberb{5};
 \\
-\keyword{module} \variable{login\_function}
+\keyword{const} \keyword{int} \variable{n\_codici} = \numberb{10};
 \\
+\keyword{const} \keyword{int} \variable{n\_codici\_email} = \numberb{10};
+\\\\
+\cmt{// Etichette sugli stati}
 \\
-\variable{p1} : [\numberb{0}..\numberb{27}] \keyword{init} \numberb{0}; \\
-\variable{c\_log} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0}; \\
-\variable{c\_mfa} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0}; \\
-\variable{c\_rpass} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0}; \\
-\variable{c\_email} : [\numberb{0}..\numberb{5}] \keyword{init} \numberb{0};
+\keyword{label} \texttt{"AttaccoRiuscito"} = \variable{stato} = \numberb{9};
 \\
+\keyword{label} \texttt{"AttaccoFallito"} = \variable{stato} = \numberb{16};
+\\\\
+\keyword{const} \keyword{double} \variable{p\_login\_success} = \numberb{0.01};
 \\
-\cmt{// uscenti da stato 0} \\
-\bracketcontent{} (\variable{p1}=\numberb{0}) -\gt \numberb{0.8}:(\variable{p1'}=\numberb{12}) \&
-(\variable{c\_log'} = \keyword{min}(\variable{c\_log} + \numberb{1}, \numberb{5}))
-+ \numberb{0.2}:(\variable{p1'}=\numberb{13}); \\
-\bracketcontent{inserimentodati} (\variable{p1}=\numberb{12}) -\gt (\variable{p1'}=\numberb{1});
+\keyword{const} \keyword{double} \variable{p\_login\_fail} = \numberb{1} - \variable{p\_login\_success};
 \\
-\bracketcontent{PasswordDimenticata} (\variable{p1}=\numberb{13}) -\gt (\variable{p1'}=\numberb{5});
+\keyword{const} \keyword{double} \variable{p\_mfa\_success} = \numberb{0.01};
 \\
+\keyword{const} \keyword{double} \variable{p\_mfa\_fail} = \numberb{1} - \variable{p\_mfa\_success};
 \\
-\cmt{// uscenti da stato 1} \\
-\bracketcontent{} (\variable{p1}=\numberb{1}) \& (\variable{c\_log}\lt\numberb{5})
--\gt \numberb{0.2}:(\variable{p1'}=\numberb{14})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{15}); \\
-\bracketcontent{} (\variable{p1}=\numberb{1}) \& (\variable{c\_log}=\numberb{5})
--\gt \numberb{0.2}:(\variable{p1'}=\numberb{11})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{15}); \\
-\bracketcontent{datiKO} (\variable{p1}=\numberb{14}) \& (\variable{c\_log}\lt\numberb{5})
--\gt (\variable{p1'}=\numberb{0}); \\
-\bracketcontent{datiOK} \variable{p1}=\numberb{15} -\gt (\variable{p1'}=\numberb{2}); \\
-\bracketcontent{datiKO} \variable{p1}=\numberb{16} \& \variable{c\_log}=\numberb{5}
--\gt (\variable{p1'}=\numberb{11});
+\keyword{const} \keyword{double} \variable{p\_email\_reset\_success} = \numberb{0.05};
 \\
+\keyword{const} \keyword{double} \variable{p\_email\_reset\_fail} = \numberb{1} - \variable{p\_email\_reset\_success};
 \\
-% stato 2
-\cmt{// uscenti da stato 2} \\
-\bracketcontent{} (\variable{p1}=\numberb{2}) -\gt
-\numberb{0.2}:(\variable{p1'}=\numberb{17})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{16}) \&
-(\variable{c\_mfa'} = \keyword{min}(\variable{c\_mfa} + \numberb{1}, \numberb{5})); \\
-\bracketcontent{inserimentoCodice} (\variable{p1}=\numberb{16}) -\gt (\variable{p1'}=\numberb{3}); \\
-\bracketcontent{rinviocodicemfa} (\variable{p1}=\numberb{17}) -\gt (\variable{p1'}=\numberb{2});
+\keyword{const} \keyword{double} \variable{p\_codice\_email\_success} = \numberb{0.01};
 \\
+\keyword{const} \keyword{double} \variable{p\_codice\_email\_fail} = \numberb{1} - \variable{p\_codice\_email\_success};
+\\\\
+\keyword{module} \variable{attacker}
+\\\\
+\variable{stato}: \bracketcontent{0..16} \keyword{init} \numberb{0};
 \\
-% stato 3
-\cmt{// uscenti da stato 3} \\
-\bracketcontent{} (\variable{p1}=\numberb{3}) \& (\variable{c\_mfa}\lt\numberb{5})
--\gt \numberb{0.2}:(\variable{p1'}=\numberb{19})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{18}); \\
-\bracketcontent{} (\variable{p1}=\numberb{3}) \& (\variable{c\_mfa}=\numberb{5})
--\gt \numberb{0.2}:(\variable{p1'}=\numberb{11})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{18}); \\
-\bracketcontent{codiceKO} (\variable{p1}=\numberb{19}) \& (\variable{c\_mfa}\lt\numberb{5})
--\gt (\variable{p1'}=\numberb{2}); \\
-\bracketcontent{codiceOK} \variable{p1}=\numberb{18} -\gt (\variable{p1'}=\numberb{4});
+\variable{tentativo\_email}: \bracketcontent{0..n\_email} \keyword{init} \variable{n\_email};
 \\
-\\ 
-% stato 4
-\cmt{// uscenti da stato 4 -> stato di login effettuato} \\
+\variable{tentativo\_pass}: \bracketcontent{0..n\_pass} \keyword{init} \variable{n\_pass};
 \\
-% stato 5
-\cmt{// uscenti da stato 5} \\
-\bracketcontent{inserimentoemail} \variable{p1}=\numberb{5} -\gt
-(\variable{p1'}=\numberb{6}) \&
-(\variable{c\_email'} = \keyword{min}(\variable{c\_email} + \numberb{1}, \numberb{5}));
+\variable{tentativo\_mfa}: \bracketcontent{0..n\_codici} \keyword{init} \variable{n\_codici};
 \\
+\variable{tentativo\_codice\_email}: \bracketcontent{0..n\_codici\_email} \keyword{init} \variable{n\_codici\_email};
+\\\\
+\cmt{/////////////////////////////////////////}\\
+\cmt{////////////// ATTACCO LOGIN ////////////}\\
+\cmt{/////////////////////////////////////////}\\
 \\
-% stato 6
-\cmt{// uscenti da stato 6} \\
-\bracketcontent{} (\variable{p1}=\numberb{6}) \& (\variable{c\_email}\lt\numberb{5})
--\gt \numberb{0.2}:(\variable{p1'}=\numberb{21})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{20}); \\
-\bracketcontent{} (\variable{p1}=\numberb{6}) \& (\variable{c\_email}=\numberb{5})
--\gt \numberb{0.2}:(\variable{p1'}=\numberb{11})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{20}); \\
-\bracketcontent{emailKO} (\variable{p1}=\numberb{21}) \& (\variable{c\_email}\lt\numberb{5})
--\gt (\variable{p1'}=\numberb{5}); \\
-\bracketcontent{emailOK} \variable{p1}=\numberb{20} -\gt (\variable{p1'}=\numberb{7});
+\cmt{//uscenti da 0 -------------------}
 \\
+\dotblack{[}\variable{inizioAttaccoLogin}\dotblack{]} \variable{stato}=\numberb{0} -> (\variable{stato}'=\numberb{1});
 \\
-% stato 7
-\cmt{// uscenti da stato 7} \\
-\bracketcontent{} (\variable{p1}=\numberb{7}) -\gt
-\numberb{0.2}:(\variable{p1'}=\numberb{23})
-+ \numberb{0.8}:(\variable{p1'}=\numberb{22}) \&
-(\variable{c\_rpass'} = \keyword{min}(\variable{c\_rpass} + \numberb{1}, \numberb{5})); \\
-\bracketcontent{rinviocodicepass} (\variable{p1}=\numberb{23}) -\gt (\variable{p1'}=\numberb{7}); \\
-\bracketcontent{inserimentocodice} \variable{p1}=\numberb{22} -\gt (\variable{p1'}=\numberb{8});
+\dotblack{[}\variable{inizioAttaccoPasswordDimenticata}\dotblack{]} \variable{stato}=\numberb{0} -> (\variable{stato}'=\numberb{10});
+\\\\
+\cmt{//uscenti da 1 -------------------}
 \\
+\dotblack{[}\variable{InserimentoEmail}\dotblack{]} \variable{stato}=\numberb{1} ->
+(\variable{stato}'=\numberb{2}) \& (\variable{tentativo\_email}'=\variable{tentativo\_email}-\numberb{1});
+\\\\
+\cmt{//uscenti da 2 -------------------}
 \\
-% stato 8
-\cmt{// uscenti da stato 8} \\
-\bracketcontent{} (\variable{p1}=\numberb{8}) \& (\variable{c\_rpass}\lt\numberb{5})
--\gt \numberb{0.1}:(\variable{p1'}=\numberb{25})
-+ \numberb{0.9}:(\variable{p1'}=\numberb{24}); \\
-\bracketcontent{} (\variable{p1}=\numberb{8}) \& (\variable{c\_rpass}=\numberb{5})
--\gt \numberb{0.1}:(\variable{p1'}=\numberb{11})
-+ \numberb{0.9}:(\variable{p1'}=\numberb{24}); \\
-\bracketcontent{codiceKO} (\variable{p1}=\numberb{25}) \& (\variable{c\_rpass}\lt\numberb{5})
--\gt (\variable{p1'}=\numberb{7}); \\
-\bracketcontent{codiceOK} (\variable{p1}=\numberb{24}) -\gt (\variable{p1'}=\numberb{9});
+\dotblack{[}\variable{InserimentoPassword}\dotblack{]} \variable{stato}=\numberb{2} ->
+(\variable{stato}'=\numberb{3}) \& (\variable{tentativo\_pass}'=\variable{tentativo\_pass}-\numberb{1});
+\\\\
+\cmt{//uscenti da 3 -------------------}
 \\
+\dotblack{[}\variable{invioDati}\dotblack{]} \variable{stato}=\numberb{3} -> (\variable{stato}'=\numberb{4});
+\\\\
+\cmt{//uscenti da 4 -------------------}
 \\
-% stato 9
-\cmt{// uscenti da stato 9} \\
-\bracketcontent{inserimentonuovapassword} (\variable{p1}=\numberb{9}) -\gt (\variable{p1'}=\numberb{10});
+\dotblack{[}\variable{ControlloDati}\dotblack{]} \variable{stato}=\numberb{4}
+-> \variable{p\_login\_success}:(\variable{stato}'=\numberb{6})
++ \variable{p\_login\_fail}:(\variable{stato}'=\numberb{5});
+\\\\
+\cmt{//uscenti da 5 -------------------}
 \\
+\dotblack{[}\variable{RitentaPassword}\dotblack{]}
+(\variable{stato}=\numberb{5}) \&
+(\variable{tentativo\_pass} \gt \numberb{0})
+-> (\variable{stato}'=\numberb{2});
 \\
-% stato 10
-\cmt{// uscenti da stato 10} \\
-\bracketcontent{} (\variable{p1}=\numberb{10})
--\gt \numberb{0.1}:(\variable{p1'}=\numberb{27})
-+ \numberb{0.9}:(\variable{p1'}=\numberb{26}); \\
-\bracketcontent{nuovapasswordKO} \variable{p1}=\numberb{27} -\gt (\variable{p1'}=\numberb{9}); \\
-\bracketcontent{nuovapasswordOK} \variable{p1}=\numberb{26} -\gt (\variable{p1'}=\numberb{0});
+\dotblack{[}\variable{RitentaEmail}\dotblack{]}
+(\variable{stato}=\numberb{5}) \&
+(\variable{tentativo\_pass}=\numberb{0}) \&
+(\variable{tentativo\_email} \gt \numberb{0})
+->\\ 
+(\variable{stato}'=\numberb{1}) \&
+(\variable{tentativo\_pass}'=\variable{n\_pass});
 \\
+\dotblack{[}\variable{AttaccoFallito}\dotblack{]}
+(\variable{stato}=\numberb{5}) \&
+(\variable{tentativo\_pass}=\numberb{0}) \&
+(\variable{tentativo\_email}=\numberb{0})
+-> \\
+(\variable{stato}'=\numberb{16});
+\\\\
+\cmt{//uscenti da 6 -------------------}
 \\
-% stato 11
-\cmt{// uscenti da stato 11 -> stato di errore} \\ \\
+\dotblack{[}\variable{InserimentoMFA}\dotblack{]}
+\variable{stato}=\numberb{6}
+-> (\variable{stato}'=\numberb{7});
+\\\\
+\cmt{//uscenti da 7 -------------------}
+\\
+\dotblack{[}\variable{ControlloMFA}\dotblack{]}
+\variable{stato}=\numberb{7}
+-> \variable{p\_mfa\_success}:(\variable{stato}'=\numberb{9})
++ \variable{p\_mfa\_fail}:(\variable{stato}'=\numberb{8})\\
+ \& (\variable{tentativo\_mfa}'=\variable{tentativo\_mfa}-\numberb{1});
+\\\\
+\cmt{//uscenti da 8 -------------------}
+\\
+\dotblack{[}\variable{RitentaMFA}\dotblack{]}
+(\variable{stato}=\numberb{8}) \&
+(\variable{tentativo\_mfa} \gt \numberb{0})
+-> (\variable{stato}'=\numberb{6});
+\\
+\dotblack{[}\variable{AttaccoFallito}\dotblack{]}
+(\variable{stato}=\numberb{8}) \&
+(\variable{tentativo\_mfa}=\numberb{0})
+-> (\variable{stato}'=\numberb{16});
+\\\\
+\cmt{//uscenti da 9 --> ATTACCO RIUSCITO}
+\\\\
+\cmt{/////////////////////////////////////////////////}\\
+\cmt{//////// ATTACCO PASSWORD DIMENTICATA ///////////}\\
+\cmt{/////////////////////////////////////////////////}
+\\\\
+\cmt{// uscenti da 10 -------------------}
+\\
+\dotblack{[}\variable{InserimentoEmail}\dotblack{]}
+\variable{stato}=\numberb{10}
+-> (\variable{stato}'=\numberb{11})\\
+ \& (\variable{tentativo\_email}'=\variable{tentativo\_email}-\numberb{1});
+\\\\
+\cmt{//uscenti da 11 -------------------}
+\\
+\dotblack{[}\variable{ControlloEmail}\dotblack{]}
+\variable{stato}=\numberb{11}
+-> \variable{p\_email\_reset\_success}:(\variable{stato}'=\numberb{13}) + \\
+\variable{p\_email\_reset\_fail}:(\variable{stato}'=\numberb{12});
+\\\\
+\cmt{// uscenti da 12 -------------------}
+\\
+\dotblack{[}\variable{RitentaEmail}\dotblack{]}
+(\variable{stato}=\numberb{12}) \&
+(\variable{tentativo\_email} \gt \numberb{0})
+-> (\variable{stato}'=\numberb{10});
+\\
+\dotblack{[}\variable{AttaccoFallito}\dotblack{]}
+(\variable{stato}=\numberb{12}) \&
+(\variable{tentativo\_email}=\numberb{0})
+-> (\variable{stato}'=\numberb{16});
+\\\\
+\cmt{// uscenti da 13 -------------------}
+\\
+\dotblack{[}\variable{inserimentoCodiceEmail}\dotblack{]}
+(\variable{stato}=\numberb{13})
+-> (\variable{stato}'=\numberb{14})\\
+\& (\variable{tentativo\_codice\_email}'=\variable{tentativo\_codice\_email}-\numberb{1});
+\\\\
+\cmt{//uscenti da 14 -------------------}
+\\
+\dotblack{[}\variable{ControlloCodiceEmail}\dotblack{]}
+(\variable{stato}=\numberb{14})
+-> \variable{p\_codice\_email\_success}:(\variable{stato}'=\numberb{6})
++\\
+\variable{p\_codice\_email\_fail}:(\variable{stato}'=\numberb{15});
+\\\\
+\cmt{// uscenti da 15 -------------------}
+\\
+\dotblack{[}\variable{RitentaCodiceEmail}\dotblack{]}
+(\variable{stato}=\numberb{15}) \&
+(\variable{tentativo\_codice\_email} \gt \numberb{0})
+-> (\variable{stato}'=\numberb{13});
+\\
+\dotblack{[}\variable{AttaccoFallito}\dotblack{]}
+(\variable{stato}=\numberb{15}) \&
+(\variable{tentativo\_codice\_email}=\numberb{0})
+-> (\variable{stato}'=\numberb{16});
+\\\\
+\cmt{//uscenti da 16 -> ATTACCO FALLITO}
+\\\\
 \keyword{endmodule}
 \end{highlightPrism}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Simulazione tramite PRISM}
