@@ -108,8 +108,8 @@ Latex/chapter4/chapter4.aux
 Latex/chapter5/chapter5.aux
 Latex/frontmatter/frontispiece.aux
 package-lock.json
+ignition/*.json
 ignition/*
-ignition/**/*
 ignition/deployments/chain-1338/Spedizione_abi.json
 ignition/deployments/chain-1338/Spedizione_address.json
 package-lock.json
