@@ -30,29 +30,30 @@ def carica_contratto_dal_json():
 
 
 def invia_spedizione_su_besu(file_path):
-    # Leggi il file JSON contenente tutte le spedizioni
+    # Leggi il file JSON contenente la spedizione
     try:
         with open(file_path, "r") as f:
-            spedizioni = json.load(f)
+            spedizione = json.load(f)
     except Exception as e:
         raise ValueError(f"Errore nel caricare il file JSON: {str(e)}")
 
-    # Se non ci sono spedizioni, solleva un errore
-    if not spedizioni:
-        raise Exception("Non ci sono spedizioni nel file JSON.")
+    # Se non c'è nessuna spedizione, errore
+    if not spedizione:
+        raise Exception("Non c'è nessuna spedizione nel file JSON.")
 
-    # Prendi l'ultima spedizione
-    ultima_spedizione = spedizioni[-1]
-
+    # Accedi alla spedizione nel file
+    
+    spedizione = spedizione[-1] 
+    
     # Estrai i dati dall'ultima spedizione
-    id_spedizione = ultima_spedizione.get("id_spedizione")
-    descrizione = ultima_spedizione.get("descrizione")
-    indirizzo_consegna = ultima_spedizione.get("indirizzo_consegna")
-    citta = ultima_spedizione.get("citta")
-    cap = ultima_spedizione.get("cap")
-    provincia = ultima_spedizione.get("provincia")
-    grandezza = ultima_spedizione.get("grandezza")
-    metodo_pagamento = ultima_spedizione.get("metodo_pagamento")
+    id_spedizione = spedizione["id_spedizione"]
+    descrizione = spedizione["descrizione"]
+    indirizzo_consegna = spedizione["indirizzo_consegna"]
+    citta = spedizione["citta"]
+    cap = spedizione["cap"]
+    provincia = spedizione["provincia"]
+    grandezza = spedizione["grandezza"]
+    metodo_pagamento = spedizione["metodo_pagamento"]
     
     #print(f"id_spedizione: {id_spedizione}")  
 
@@ -104,10 +105,10 @@ def invia_spedizione_su_besu(file_path):
     # Invia la transazione
     try:
         tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_transaction)
-        print(f"Transazione inviata con hash:\n {tx_hash.hex()}\n")
-        print(f"Dettagli della transazione:")
-        {transaction_details(tx_hash.hex())}
-        print(f"\nDati della transazione:\n {shipping_data(tx_hash.hex())}\n")
+        # print(f"Transazione inviata con hash:\n {tx_hash.hex()}\n")
+        # print(f"Dettagli della transazione:")
+        # {transaction_details(tx_hash.hex())}
+        # print(f"\nDati della transazione:\n {shipping_data(tx_hash.hex())}\n")
         return tx_hash
     except Exception as e:
         raise Exception(f"Errore durante l'invio della transazione: {str(e)}")

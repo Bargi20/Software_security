@@ -1016,34 +1016,34 @@ def dashboard_cliente(request):
     # Importa il modello Spedizione
     from .models import Spedizione
     
-    # Recupera tutte le spedizioni del cliente
-    spedizioni = Spedizione.objects.filter(cliente=request.user).order_by('-data_creazione')
+    # Recupera tutte le spedizione del cliente
+    spedizione = Spedizione.objects.filter(cliente=request.user).order_by('-data_creazione')
     
     # Calcola le statistiche
-    spedizioni_attive = spedizioni.filter(stato__in=['in_attesa', 'in_elaborazione']).count()
-    spedizioni_consegnate = spedizioni.filter(stato='consegnato').count()
-    spedizioni_in_transito = spedizioni.filter(stato__in=['in_transito', 'in_consegna']).count()
-    spedizioni_totali = spedizioni.count()
+    spedizione_attive = spedizione.filter(stato__in=['in_attesa', 'in_elaborazione']).count()
+    spedizione_consegnate = spedizione.filter(stato='consegnato').count()
+    spedizione_in_transito = spedizione.filter(stato__in=['in_transito', 'in_consegna']).count()
+    spedizione_totali = spedizione.count()
     
-    # Filtro per spedizioni in corso
+    # Filtro per spedizione in corso
     filtro_grandezza = request.GET.get('filtro_grandezza', '')
-    spedizioni_in_corso = spedizioni.filter(stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']).order_by('-data_creazione')
+    spedizione_in_corso = spedizione.filter(stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']).order_by('-data_creazione')
     
     if filtro_grandezza:
-        spedizioni_in_corso = spedizioni_in_corso.filter(grandezza=filtro_grandezza)
+        spedizione_in_corso = spedizione_in_corso.filter(grandezza=filtro_grandezza)
     
-    # Spedizioni passate (senza paginazione server-side)
-    spedizioni_passate = spedizioni.filter(stato__in=['consegnato', 'annullato']).order_by('-data_aggiornamento')
+    # spedizione passate (senza paginazione server-side)
+    spedizione_passate = spedizione.filter(stato__in=['consegnato', 'annullato']).order_by('-data_aggiornamento')
     
     context = {
         'company_name': COMPANY_NAME,
         'user': request.user,
-        'spedizioni_attive': spedizioni_attive,
-        'spedizioni_consegnate': spedizioni_consegnate,
-        'spedizioni_in_transito': spedizioni_in_transito,
-        'spedizioni_totali': spedizioni_totali,
-        'spedizioni_in_corso': spedizioni_in_corso,
-        'spedizioni_passate': spedizioni_passate,
+        'spedizione_attive': spedizione_attive,
+        'spedizione_consegnate': spedizione_consegnate,
+        'spedizione_in_transito': spedizione_in_transito,
+        'spedizione_totali': spedizione_totali,
+        'spedizione_in_corso': spedizione_in_corso,
+        'spedizione_passate': spedizione_passate,
         'filtro_grandezza': filtro_grandezza
     }
     return render(request, 'Ledger_Logistic/dashboard_cliente.html', context)
@@ -1066,32 +1066,32 @@ def dashboard_corriere(request):
     # Importa il modello Spedizione
     from .models import Spedizione
     
-    # Recupera le spedizioni assegnate al corriere
-    spedizioni_assegnate = Spedizione.objects.filter(corriere=request.user).order_by('-data_creazione')
+    # Recupera le spedizione assegnate al corriere
+    spedizione_assegnate = Spedizione.objects.filter(corriere=request.user).order_by('-data_creazione')
     
     # Calcola le statistiche
-    consegne_oggi = spedizioni_assegnate.filter(
+    consegne_oggi = spedizione_assegnate.filter(
         data_creazione__date=timezone.now().date()
     ).count()
     
-    consegne_completate = spedizioni_assegnate.filter(stato='consegnato').count()
-    consegne_in_corso = spedizioni_assegnate.filter(
+    consegne_completate = spedizione_assegnate.filter(stato='consegnato').count()
+    consegne_in_corso = spedizione_assegnate.filter(
         stato__in=['in_transito', 'in_consegna']
     ).count()
     
     # Consegne del mese corrente
-    consegne_mese = spedizioni_assegnate.filter(
+    consegne_mese = spedizione_assegnate.filter(
         data_creazione__month=timezone.now().month,
         data_creazione__year=timezone.now().year
     ).count()
     
-    # Spedizioni in corso (per la sezione collegamento)
-    spedizioni_in_corso = spedizioni_assegnate.filter(
+    # spedizione in corso (per la sezione collegamento)
+    spedizione_in_corso = spedizione_assegnate.filter(
         stato__in=['in_transito', 'in_consegna']
     ).order_by('-data_creazione')
     
-    # Spedizioni passate (completate o annullate)
-    spedizioni_passate = spedizioni_assegnate.filter(
+    # spedizione passate (completate o annullate)
+    spedizione_passate = spedizione_assegnate.filter(
         stato__in=['consegnato', 'annullato']
     ).order_by('-data_aggiornamento')
     
@@ -1102,8 +1102,8 @@ def dashboard_corriere(request):
         'consegne_completate': consegne_completate,
         'consegne_in_corso': consegne_in_corso,
         'consegne_mese': consegne_mese,
-        'spedizioni_in_corso': spedizioni_in_corso,
-        'spedizioni_passate': spedizioni_passate
+        'spedizione_in_corso': spedizione_in_corso,
+        'spedizione_passate': spedizione_passate
     }
     return render(request, 'Ledger_Logistic/dashboard_corriere.html', context)
 
@@ -1125,38 +1125,38 @@ def dashboard_gestore(request):
     from .models import Spedizione, Utente
     from django.db.models import Count, Q
     
-    # Spedizioni in attesa di approvazione (stato in_attesa o in_elaborazione)
-    spedizioni_in_attesa = Spedizione.objects.filter(
+    # spedizione in attesa di approvazione (stato in_attesa o in_elaborazione)
+    spedizione_in_attesa = Spedizione.objects.filter(
         stato__in=['in_attesa', 'in_elaborazione']
     ).select_related('cliente', 'corriere').order_by('data_creazione')
     
-    # Storico di tutte le spedizioni (completate, annullate, in transito, in consegna)
-    spedizioni_storico = Spedizione.objects.filter(
+    # Storico di tutte le spedizione (completate, annullate, in transito, in consegna)
+    spedizione_storico = Spedizione.objects.filter(
         stato__in=['in_transito', 'in_consegna', 'consegnato', 'annullato']
     ).select_related('cliente', 'corriere').order_by('-data_aggiornamento')
     
     # Statistiche
-    totale_spedizioni = Spedizione.objects.count()
-    spedizioni_attive = Spedizione.objects.filter(
+    totale_spedizione = Spedizione.objects.count()
+    spedizione_attive = Spedizione.objects.filter(
         stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']
     ).count()
-    spedizioni_completate = Spedizione.objects.filter(stato='consegnato').count()
+    spedizione_completate = Spedizione.objects.filter(stato='consegnato').count()
     totale_utenti = Utente.objects.filter(is_active=True).count()
     
     # Calcola tasso di successo
-    if totale_spedizioni > 0:
-        tasso_successo = round((spedizioni_completate / totale_spedizioni) * 100, 1)
+    if totale_spedizione > 0:
+        tasso_successo = round((spedizione_completate / totale_spedizione) * 100, 1)
     else:
         tasso_successo = 0
     
     context = {
         'company_name': COMPANY_NAME,
         'user': request.user,
-        'spedizioni_in_attesa': spedizioni_in_attesa,
-        'spedizioni_storico': spedizioni_storico,
-        'totale_spedizioni': totale_spedizioni,
-        'spedizioni_attive': spedizioni_attive,
-        'spedizioni_completate': spedizioni_completate,
+        'spedizione_in_attesa': spedizione_in_attesa,
+        'spedizione_storico': spedizione_storico,
+        'totale_spedizione': totale_spedizione,
+        'spedizione_attive': spedizione_attive,
+        'spedizione_completate': spedizione_completate,
         'totale_utenti': totale_utenti,
         'tasso_successo': tasso_successo,
     }
@@ -1170,7 +1170,7 @@ def crea_spedizione(request):
     """Vista per creare una nuova spedizione"""
     # Verifica che l'utente sia un cliente
     if request.user.ruolo != 'cliente':
-        messages.error(request, 'Solo i clienti possono creare spedizioni.')
+        messages.error(request, 'Solo i clienti possono creare spedizione.')
         return redirect('home')
     
     root = "Ledger_Logistic/crea_spedizione.html"
@@ -1312,7 +1312,7 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     
     # Genera il codice tracciamento
     spedizione.codice_tracciamento = spedizione.genera_codice_tracciamento()
-    
+    codice_tracciamento = spedizione.codice_tracciamento
     # Cerca un corriere disponibile e assegna automaticamente
     corriere_disponibile = trova_corriere_disponibile()
     if corriere_disponibile:
@@ -1325,12 +1325,12 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     spedizione.save()
 
     
-################# SPEDIZIONE TO BLOCKCHAIN ####################
 
-        # Qui viene aggiunta la logica di salva la spedizione nel file JSON
-    # Salva su blockchain
+    
+################# SPEDIZIONE TO BLOCKCHAIN ####################
+    
     payload = {
-        "id_spedizione": spedizione.codice_tracciamento,
+        "id_spedizione": codice_tracciamento,
         "descrizione": descrizione,
         "indirizzo_consegna": indirizzo_consegna,
         "citta": citta,
@@ -1340,40 +1340,32 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
         "metodo_pagamento": metodo_pagamento,
     }
 
-    file_path = "Ledger_Logistic/Blockchain/Spedizione/dati_spedizioni.json"
+    file_path = "Ledger_Logistic/Blockchain/Spedizione/dati_spedizione.json"
 
     try:
         with open(file_path, "r") as f:
-            spedizioni = json.load(f)
+            spedizione = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        spedizioni = []
-        # Leggi il file JSON esistente per recuperare le spedizioni precedenti
-        try:
-            with open(file_path, "r") as f:
-                spedizioni = json.load(f)
-        except FileNotFoundError:
-            spedizioni = []
-        except json.JSONDecodeError:
-            spedizioni = []
-
+        spedizione = []
+    except FileNotFoundError:
+        spedizione = []
+    except json.JSONDecodeError:
+        spedizione = []
 
     # Aggiungi la nuova spedizione alla lista
-    spedizioni.append(payload)
+    spedizione.append(payload)
 
     with open(file_path, "w") as f:
-        json.dump(spedizioni, f, indent=4)
-        # Salva la lista aggiornata nel file JSON
-        with open(file_path, "w") as f:
-            json.dump(spedizioni, f, indent=4)
+        json.dump(spedizione, f, indent=4)
 
     invia_spedizione_su_besu(file_path)
-    
-    # Rimuovi il file JSON temporaneo dei dati della spedizione
+
+    # Elimina il file JSON temporaneo dei dati della spedizione
     os.remove(file_path)
-        
+    
     messages.success(
         request,
-        f'✅ Spedizione creata! Codice: {spedizione.codice_tracciamento}. '
+        f'✅ Spedizione creata! Codice: {codice_tracciamento}. '
         f'{"Pagamento alla consegna." if metodo_pagamento == "cash" else "Pagamento completato."}'
     )
     
@@ -1551,7 +1543,7 @@ def completa_consegna(request, codice_tracciamento):
 def accetta_spedizione(request, codice_tracciamento):
     """Vista per accettare una spedizione (gestore)"""
     if request.user.ruolo != 'gestore':
-        messages.error(request, 'Solo i gestori possono accettare spedizioni.')
+        messages.error(request, 'Solo i gestori possono accettare spedizione.')
         return redirect('home')
     
     from .models import Spedizione
@@ -1579,7 +1571,7 @@ def accetta_spedizione(request, codice_tracciamento):
 def rifiuta_spedizione(request, codice_tracciamento):
     """Vista per rifiutare una spedizione (gestore)"""
     if request.user.ruolo != 'gestore':
-        messages.error(request, 'Solo i gestori possono rifiutare spedizioni.')
+        messages.error(request, 'Solo i gestori possono rifiutare spedizione.')
         return redirect('home')
     
     from .models import Spedizione
