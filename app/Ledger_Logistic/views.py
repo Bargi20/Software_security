@@ -1,10 +1,8 @@
-import time
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from dotenv import load_dotenv
-import requests
 from Ledger_Logistic.Blockchain.Spedizione.MandaSpedizione import invia_spedizione_su_besu
 import stripe
 import os
@@ -1332,6 +1330,7 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
         # Qui viene aggiunta la logica di salva la spedizione nel file JSON
     # Salva su blockchain
     payload = {
+        "id_spedizione": spedizione.codice_tracciamento,
         "descrizione": descrizione,
         "indirizzo_consegna": indirizzo_consegna,
         "citta": citta,
@@ -1358,7 +1357,7 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
             spedizioni = []
 
 
-    # Aggiungi la nuova spedizione alla lista come ultimo elemento
+    # Aggiungi la nuova spedizione alla lista
     spedizioni.append(payload)
 
     with open(file_path, "w") as f:
@@ -1367,9 +1366,11 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
         with open(file_path, "w") as f:
             json.dump(spedizioni, f, indent=4)
 
-    tx_hash = invia_spedizione_su_besu(file_path)
-    #verifica_transazione(tx_hash.hex())
+    invia_spedizione_su_besu(file_path)
     
+    # Rimuovi il file JSON temporaneo dei dati della spedizione
+    os.remove(file_path)
+        
     messages.success(
         request,
         f'✅ Spedizione creata! Codice: {spedizione.codice_tracciamento}. '
@@ -1467,44 +1468,6 @@ def pagamento_fallito(request):
     return render(request, 'Ledger_Logistic/pagamento_conferma.html', context)
 
 
-def verifica_transazione(tx_hash):
-    # Prepara la richiesta JSON-RPC
-    data = {
-        "jsonrpc": "2.0",
-        "method": "eth_getTransactionReceipt",
-        "params": [tx_hash],
-        "id": 1
-    }
-
-    while True:
-        try:
-            # Esegui la richiesta POST al nodo Besu
-            response = requests.post(os.getenv('BESU_RPC_URL'), json=data, headers={"Content-Type": "application/json"})
-
-            # Verifica che la risposta sia valida
-            if response.status_code == 200:
-                receipt = response.json()
-
-                # Verifica che la risposta contenga il campo "result" con dati validi
-                result = receipt.get('result')
-                if result and result.get('blockHash') and result.get('blockNumber'):
-                    print(f"Block Hash: {result.get('blockHash')}")
-                    print(f"Block Number: {int(result.get('blockNumber', '0x0'), 16)}")
-                    print(f"Status: {result.get('status')}")
-                    print(f"From: {result.get('from')}")
-                    print(f"To: {result.get('to')}")
-                    print(f"Gas Used: {int(result.get('gasUsed', '0x0'), 16)}")
-                    print(f"Effective Gas Price: {int(result.get('effectiveGasPrice', '0x0'), 16)}")
-                    break  # Esci dal ciclo se la transazione è valida
-            else:
-                print(f"\nErrore nella richiesta: {response.status_code} - {response.text}")
-
-            # Aspetta 5 secondi prima di fare un nuovo tentativo
-            time.sleep(5)
-
-        except requests.exceptions.RequestException as e:
-            print(f"\nErrore durante la richiesta: {e}")
-            break  # Se c'è un errore, fermati
 
 @login_required
 def completa_consegna(request, codice_tracciamento):

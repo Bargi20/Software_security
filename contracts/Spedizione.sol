@@ -3,28 +3,31 @@ pragma solidity ^0.8.19;
 
 contract Spedizione {
     struct spedizione {
+        string id_spedizione;
         string descrizione;
         string indirizzo;
         string citta;
         string cap;
         string provincia;
         string grandezza;
-        uint256 timestamp;
+        string metodo_pagamento;
+        uint256 timestamp;       
     }
 
-    mapping(bytes32 => spedizione) public spedizioni;
-    event SpedizioneCreata(bytes32 indexed id, string descrizione, string indirizzo);
+    mapping(string => spedizione) public spedizioni;
+    event SpedizioneCreata(string indexed id_spedizione, string descrizione, string indirizzo);
 
     function creaSpedizione(
-        bytes32 id,
+        string memory id_spedizione,
         string memory descrizione,
         string memory indirizzo,
         string memory citta,
         string memory cap,
         string memory provincia,
-        string memory grandezza
+        string memory grandezza,
+        string memory metodo_pagamento
     ) public {
-        spedizioni[id] = spedizione(descrizione, indirizzo, citta, cap, provincia, grandezza, block.timestamp);
-        emit SpedizioneCreata(id, descrizione, indirizzo);
-    }
+        spedizioni[id_spedizione] = spedizione(
+            id_spedizione, descrizione, indirizzo, citta, cap, provincia, grandezza, metodo_pagamento, block.timestamp);
+        emit SpedizioneCreata(id_spedizione, descrizione, indirizzo);}
 }
