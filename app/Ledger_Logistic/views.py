@@ -1038,12 +1038,12 @@ def dashboard_cliente(request):
     context = {
         'company_name': COMPANY_NAME,
         'user': request.user,
-        'spedizione_attive': spedizione_attive,
-        'spedizione_consegnate': spedizione_consegnate,
-        'spedizione_in_transito': spedizione_in_transito,
-        'spedizione_totali': spedizione_totali,
-        'spedizione_in_corso': spedizione_in_corso,
-        'spedizione_passate': spedizione_passate,
+        'spedizioni_attive': spedizione_attive,
+        'spedizioni_consegnate': spedizione_consegnate,
+        'spedizioni_in_transito': spedizione_in_transito,
+        'spedizioni_totali': spedizione_totali,
+        'spedizioni_in_corso': spedizione_in_corso,   # <- plural
+        'spedizioni_passate': spedizione_passate,     # <- plural
         'filtro_grandezza': filtro_grandezza
     }
     return render(request, 'Ledger_Logistic/dashboard_cliente.html', context)
@@ -1346,10 +1346,6 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
         with open(file_path, "r") as f:
             spedizione = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        spedizione = []
-    except FileNotFoundError:
-        spedizione = []
-    except json.JSONDecodeError:
         spedizione = []
 
     # Aggiungi la nuova spedizione alla lista
