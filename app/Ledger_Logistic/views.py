@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login as django_login, logout, get
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from dotenv import load_dotenv
-from Ledger_Logistic.blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
+from Ledger_Logistic.Blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
 import stripe
 import os
 from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
