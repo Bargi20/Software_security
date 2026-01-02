@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assegna Consegne - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-800 bg-gray-50">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
+                        {{ company_name }}
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'dashboard_gestore' %}" class="text-blue-700 hover:text-blue-900 font-semibold">Dashboard</a>
+                    <span class="text-gray-600 font-medium">Ciao, {{ user.first_name|default:user.username }}</span>
+                    <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-purple-600 to-purple-800 rounded-lg shadow-lg p-8 mb-8 text-white">
+                <h1 class="text-4xl font-bold mb-2">Assegna Consegne</h1>
+                <p class="text-purple-100 text-lg">Seleziona una spedizione e assegna un corriere disponibile</p>
+            </div>
+
+            <!-- Message -->
+            {% if message %}
+            <div class="bg-green-100 text-green-800 p-4 rounded mb-6">{{ message }}</div>
+            {% endif %}
+
+            <!-- Spedizioni Cards -->
+            {% if spedizioni %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for spedizione in spedizioni %}
+                <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col hover:shadow-xl transition">
+                    <div class="mb-4">
+                        <p class="font-semibold text-gray-800">ID: {{ spedizione.codice_tracciamento }}</p>
+                        <p class="text-gray-600">Cliente: {{ spedizione.cliente.get_full_name }}</p>
+                        <p class="text-gray-600">Destinatario: {{ spedizione.indirizzo_consegna }}</p>
+                        <p class="text-gray-600">Città: {{ spedizione.citta }}, CAP: {{ spedizione.cap }}</p>
+                        <p class="text-gray-500 text-sm">Creata: {{ spedizione.data_creazione|date:"d/m/Y H:i" }}</p>
+                        <span class="inline-block mt-2 px-2 py-1 text-xs font-semibold rounded-full 
+                                     {% if spedizione.stato == 'in_attesa' %}bg-yellow-100 text-yellow-800
+                                     {% elif spedizione.stato == 'in_elaborazione' %}bg-blue-100 text-blue-800
+                                     {% elif spedizione.stato == 'in_consegna' %}bg-purple-100 text-purple-800
+                                     {% elif spedizione.stato == 'consegnato' %}bg-green-100 text-green-800
+                                     {% elif spedizione.stato == 'annullato' %}bg-red-100 text-red-800
+                                     {% endif %}">
+                            {{ spedizione.get_stato_display }}
+                        </span>
+                    </div>
+            <!-- Assegna uno, fra tutti i corrieri, alle spedizioni "in_attesa" o  "in_elaborazione"  -->
+                    <form method="POST" class="flex items-center space-x-2 mt-auto">
+                        {% csrf_token %}
+                        <select name="corriere_id" class="border border-gray-300 rounded px-2 py-1 flex-1">
+                            {% for corriere in corrieri %}
+                            <option value="{{ corriere.id }}">{{ corriere.get_full_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition font-semibold">
+                            Assegna
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+                Non ci sono spedizioni in attesa al momento.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 {{ company_name }}. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

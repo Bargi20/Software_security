@@ -43,8 +43,5 @@ urlpatterns = [
     path('spedizione/completa/<str:codice_tracciamento>/', views.completa_consegna, name='completa_consegna'),
     path('spedizione/accetta/<str:codice_tracciamento>/', views.accetta_spedizione, name='accetta_spedizione'),
     path('spedizione/rifiuta/<str:codice_tracciamento>/', views.rifiuta_spedizione, name='rifiuta_spedizione'),
-    path('api/deploy-contract/', views.deploy_contract, name='deploy_contract'),
-    path('api/download-contract/', views.download_contract, name='download_contract'),
-    path('api/edit-contract/', views.edit_contract, name='edit_contract'),
-    path('api/deploy-contract/', views.deploy_contract, name='deploy_contract'),
+    path('assegna-spedizioni/', views.assegna_spedizioni, name='assegna_spedizioni'),
 ]

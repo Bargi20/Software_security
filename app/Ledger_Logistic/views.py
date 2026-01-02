@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -26,7 +26,7 @@ Utente = get_user_model()
 # Costanti
 COMPANY_NAME = 'Ledger Logistics'
 STRIPE_CURRENCY = 'eur'
-PACCO_IMPORTI_CENT = {
+spedizione_IMPORTI_CENT = {
     'piccolo': 500,  # €5.00
     'medio': 1000,   # €10.00
     'grande': 2000   # €20.00
@@ -40,11 +40,11 @@ def _get_stripe_api_key():
 
 def _calcola_importo_pagamento(grandezza):
     """Restituisce l'importo in centesimi in base alla grandezza."""
-    return PACCO_IMPORTI_CENT.get(grandezza)
+    return spedizione_IMPORTI_CENT.get(grandezza)
 
 
 def home(request):
-    # Se l'utente cerca un pacco (logica base)
+    # Se l'utente cerca un spedizione (logica base)
     tracking_code = request.GET.get('tracking_code')
     context = {
         'company_name': COMPANY_NAME,
@@ -883,119 +883,52 @@ def download_contract(request):
     return JsonResponse({'error': 'File non trovato'}, status=404)
 
 
-@staff_member_required
-@require_POST
-def edit_contract(request):
-    """Modifica un file contratto"""
-    data = json.loads(request.body)
-    filename = data.get('filename', '')
-    content = data.get('content', '')
-    
-    folder_path = os.path.join(settings.BASE_DIR, '..', 'contracts')
-    file_path = os.path.join(folder_path, filename)
-    
-    if filename.endswith('.sol') and os.path.isfile(file_path):
-        try:
-            with open(file_path, 'w', encoding='utf-8') as f:
-                f.write(content)
-            return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-    
-    return JsonResponse({'success': False, 'error': 'File non valido'})
-
-
-@staff_member_required
-@require_POST
-def deploy_contract(request):
-    """Deploy di un contratto sulla blockchain"""
-    from .blockchain import is_connected
-    
-    data = json.loads(request.body)
-    filename = data.get('filename', '')
-    params = data.get('params', {})
-    
-    folder_path = os.path.join(settings.BASE_DIR, '..', 'contracts')
-    file_path = os.path.join(folder_path, filename)
-    
-    if not filename.endswith('.sol') or not os.path.isfile(file_path):
-        return JsonResponse({'success': False, 'error': 'File non valido'})
-    
-    if not is_connected():
-        return JsonResponse({'success': False, 'error': 'Blockchain non disponibile'})
-    
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            contract_code = f.read()
-        
-        contract_name = filename.replace('.sol', '')
-        
-        success, contract_address, tx_hash, error = deploy_solidity_contract(
-            contract_name, 
-            contract_code,
-            params
-        )
-        
-        if success:
-            return JsonResponse({
-                'success': True,
-                'contract_address': contract_address,
-                'tx_hash': tx_hash
-            })
-        return JsonResponse({'success': False, 'error': error})
-            
-    except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)})
-
-
-def deploy_solidity_contract(contract_name, contract_code, deploy_params):
-    """Funzione helper per il deploy dei contratti"""
-    # TODO: Implementare la logica di deploy usando contract_name, contract_code e deploy_params
-    # Esempio: compilare con solc, deployare con web3.py
-    return (False, None, None, f"Deploy non implementato per {contract_name} - configurare la logica blockchain")
-# ============= HELPER FUNCTIONS =============
-
-def trova_corriere_disponibile():
-    """Trova un corriere disponibile (senza pacchi in consegna)"""
-    from .models import Spedizione, Utente
-    from django.db.models import Count, Q
-    
-    # Trova tutti i corrieri
-    corrieri = Utente.objects.filter(ruolo='corriere', is_active=True)
-    
-    # Per ogni corriere, conta quanti pacchi ha in consegna
-    corrieri_disponibili = []
-    for corriere in corrieri:
-        pacchi_in_consegna = Spedizione.objects.filter(
-            corriere=corriere,
-            stato='in_consegna'
-        ).count()
-        
-        if pacchi_in_consegna == 0:
-            corrieri_disponibili.append(corriere)
-    
-    # Ritorna il primo corriere disponibile (o None)
-    return corrieri_disponibili[0] if corrieri_disponibili else None
-
-
-def assegna_pacco_a_corriere(corriere):
-    """Assegna un pacco disponibile al corriere specificato"""
+def assegna_spedizione_a_corriere(corriere):
+    """Assegna un spedizione disponibile al corriere specificato"""
     from .models import Spedizione
     
-    # Cerca un pacco in attesa o in elaborazione senza corriere assegnato
-    pacco_disponibile = Spedizione.objects.filter(
+    # Cerca un spedizione in attesa o in elaborazione senza corriere assegnato
+    spedizione_disponibile = Spedizione.objects.filter(
         corriere__isnull=True,
         stato__in=['in_attesa', 'in_elaborazione']
     ).order_by('data_creazione').first()
     
-    if pacco_disponibile:
-        pacco_disponibile.corriere = corriere
-        pacco_disponibile.stato = 'in_consegna'
-        pacco_disponibile.save()
-        return pacco_disponibile
+    if spedizione_disponibile:
+        spedizione_disponibile.corriere = corriere
+        spedizione_disponibile.stato = 'in_consegna'
+        spedizione_disponibile.save()
+        return spedizione_disponibile
     
     return None
 
+
+def assegna_spedizioni(request):
+    from .models import Utente, Spedizione
+    # Lista corrieri attivi
+    corrieri = Utente.objects.filter(ruolo='corriere', is_active=True)
+    
+    # Spedizioni senza corriere
+    spedizioni = Spedizione.objects.filter(
+        stato__in=['in_attesa', 'in_elaborazione'],
+        corriere__isnull=True
+    ).order_by('data_creazione')
+    
+    if request.method == "POST":
+        corriere_id = request.POST.get("corriere_id")
+        corriere = get_object_or_404(Utente, id=corriere_id)
+        spedizione = assegna_spedizione_a_corriere(corriere)
+        if spedizione:
+            request.session['message'] = f"Spedizione {spedizione.codice_tracciamento} assegnata a {corriere.get_full_name()}"
+        else:
+            request.session['message'] = "Nessun spedizione disponibile da assegnare"
+        return redirect('assegna_spedizioni')
+
+    context = {
+        "spedizioni": spedizioni,
+        "corrieri": corrieri,
+        "message": request.session.pop('message', None),
+    }
+    return render(request, 'Ledger_Logistic/assegna_spedizioni.html', context)
 
 # ============= DASHBOARD VIEWS =============
 
@@ -1400,7 +1333,7 @@ def conferma_pagamento(request):
             'provincia': spedizione.provincia,
             'indirizzo_consegna': spedizione.indirizzo_consegna,
             'grandezza': spedizione.grandezza,
-            'importo': f"{PACCO_IMPORTI_CENT[spedizione.grandezza] / 100:.2f}"
+            'importo': f"{spedizione_IMPORTI_CENT[spedizione.grandezza] / 100:.2f}"
         }
         
         del request.session['pending_shipment']
@@ -1460,7 +1393,7 @@ def pagamento_fallito(request):
 
 @login_required
 def completa_consegna(request, codice_tracciamento):
-    """Vista per completare una consegna e assegnare automaticamente il prossimo pacco"""
+    """Vista per completare una consegna e assegnare automaticamente il prossimo spedizione"""
     # Verifica che l'utente sia un corriere
     if request.user.ruolo != 'corriere':
         messages.error(request, 'Solo i corrieri possono completare consegne.')
@@ -1474,7 +1407,7 @@ def completa_consegna(request, codice_tracciamento):
     from .models import Spedizione
     
     try:
-        # Recupera il pacco da consegnare
+        # Recupera la spedizione da consegnare
         spedizione = Spedizione.objects.get(
             codice_tracciamento=codice_tracciamento,
             corriere=request.user
@@ -1509,27 +1442,27 @@ def completa_consegna(request, codice_tracciamento):
         
         messages.success(
             request,
-            f'✅ Consegna completata per il pacco {codice_tracciamento}!'
+            f'✅ Consegna completata per la spedizione {codice_tracciamento}!'
         )
         
-        # Cerca e assegna automaticamente un nuovo pacco
-        nuovo_pacco = assegna_pacco_a_corriere(request.user)
+        # Cerca e assegna automaticamente un nuovo spedizione
+        nuova_spedizione = assegna_spedizione_a_corriere(request.user)
         
-        if nuovo_pacco:
+        if nuova_spedizione:
             messages.success(
                 request,
-                f'📦 Nuovo pacco assegnato: {nuovo_pacco.codice_tracciamento} - Destinazione: {nuovo_pacco.citta}'
+                f'📦 Nuovo spedizione assegnato: {nuova_spedizione.codice_tracciamento} - Destinazione: {nuova_spedizione.citta}'
             )
         else:
             messages.info(
                 request,
-                'ℹ️ Nessun nuovo pacco disponibile al momento.'
+                'ℹ️ Nessuna nuova spedizione disponibile al momento.'
             )
         
         return redirect('dashboard_corriere')
         
     except Spedizione.DoesNotExist:
-        messages.error(request, 'Pacco non trovato o non autorizzato.')
+        messages.error(request, 'spedizione non trovata o non autorizzata.')
         return redirect('dashboard_corriere')
     except Exception as e:
         messages.error(request, f'Errore durante il completamento della consegna: {str(e)}')
