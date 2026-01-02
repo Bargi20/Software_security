@@ -26,7 +26,7 @@ Utente = get_user_model()
 # Costanti
 COMPANY_NAME = 'Ledger Logistics'
 STRIPE_CURRENCY = 'eur'
-spedizione_IMPORTI_CENT = {
+SPEDIZIONE_IMPORTI_CENT = {
     'piccolo': 500,  # €5.00
     'medio': 1000,   # €10.00
     'grande': 2000   # €20.00
@@ -40,7 +40,7 @@ def _get_stripe_api_key():
 
 def _calcola_importo_pagamento(grandezza):
     """Restituisce l'importo in centesimi in base alla grandezza."""
-    return spedizione_IMPORTI_CENT.get(grandezza)
+    return SPEDIZIONE_IMPORTI_CENT.get(grandezza)
 
 
 def home(request):
@@ -1333,7 +1333,7 @@ def conferma_pagamento(request):
             'provincia': spedizione.provincia,
             'indirizzo_consegna': spedizione.indirizzo_consegna,
             'grandezza': spedizione.grandezza,
-            'importo': f"{spedizione_IMPORTI_CENT[spedizione.grandezza] / 100:.2f}"
+            'importo': f"{SPEDIZIONE_IMPORTI_CENT[spedizione.grandezza] / 100:.2f}"
         }
         
         del request.session['pending_shipment']
