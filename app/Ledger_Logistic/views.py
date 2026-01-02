@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from Ledger_Logistic.Blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
 import stripe
 import os
-from .models import TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
+from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
@@ -903,32 +903,39 @@ def assegna_spedizione_a_corriere(corriere):
 
 
 def assegna_spedizioni(request):
-    from .models import Utente, Spedizione
-    # Lista corrieri attivi
-    corrieri = Utente.objects.filter(ruolo='corriere', is_active=True)
-    
-    # Spedizioni senza corriere
-    spedizioni = Spedizione.objects.filter(
-        stato__in=['in_attesa', 'in_elaborazione'],
-        corriere__isnull=True
-    ).order_by('data_creazione')
-    
     if request.method == "POST":
+        spedizione_id = request.POST.get("spedizione_id")
         corriere_id = request.POST.get("corriere_id")
-        corriere = get_object_or_404(Utente, id=corriere_id)
-        spedizione = assegna_spedizione_a_corriere(corriere)
-        if spedizione:
-            request.session['message'] = f"Spedizione {spedizione.codice_tracciamento} assegnata a {corriere.get_full_name()}"
-        else:
-            request.session['message'] = "Nessun spedizione disponibile da assegnare"
-        return redirect('assegna_spedizioni')
 
-    context = {
+        # Se non è stato selezionato alcun corriere → non fare nulla
+        if not corriere_id:
+            return redirect("assegna_spedizioni")
+
+        spedizione = get_object_or_404(Spedizione, id=spedizione_id)
+        corriere = get_object_or_404(Utente, id=corriere_id, ruolo="corriere")
+
+        # Assegna
+        spedizione.corriere = corriere
+        spedizione.stato = "in_consegna"
+        spedizione.save()
+
+        return redirect("assegna_spedizioni")
+
+    # GET
+    spedizioni = Spedizione.objects.filter(
+        corriere__isnull=True,
+        stato__in=["in_attesa", "in_elaborazione"]
+    )
+
+    corrieri = Utente.objects.filter(
+        ruolo="corriere",
+        is_active=True
+    )
+
+    return render(request, "Ledger_Logistic/assegna_spedizioni.html", {
         "spedizioni": spedizioni,
         "corrieri": corrieri,
-        "message": request.session.pop('message', None),
-    }
-    return render(request, 'Ledger_Logistic/assegna_spedizioni.html', context)
+    })
 
 # ============= DASHBOARD VIEWS =============
 
