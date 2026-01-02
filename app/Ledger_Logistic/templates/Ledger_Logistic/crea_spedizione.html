@@ -469,7 +469,15 @@
                         if (data.success) {
                             window.location.href = data.redirect;
                         } else {
-                            alert('Errore: ' + data.error);
+                            // Se il server fornisce un redirect (es. pagina di errore), segui il redirect
+                            if (data.redirect) {
+                                window.location.href = data.redirect;
+                                return;
+                            }
+
+                            // Usa il messaggio di errore se presente, altrimenti un fallback
+                            const errMsg = data.error || 'Errore sconosciuto';
+                            alert('Errore: ' + errMsg);
                             buttonText.classList.remove('hidden');
                             spinner.classList.add('hidden');
                             form.disabled = false;

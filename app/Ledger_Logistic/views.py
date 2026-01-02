@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login as django_login, logout, get
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from dotenv import load_dotenv
-from Ledger_Logistic.Blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
+from Ledger_Logistic.blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
 import stripe
 import os
 from .models import TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova
@@ -13,12 +13,12 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse, FileResponse
 import json
 
 load_dotenv()
 
-# Aggiungi la cartella principale del progetto al sys.path
 
 # Ottieni il modello User personalizzato
 Utente = get_user_model()
@@ -1122,6 +1122,7 @@ def dashboard_gestore(request):
 
 # ============= SPEDIZIONE VIEWS =============
 
+@ensure_csrf_cookie
 @login_required
 def crea_spedizione(request):
     """Vista per creare una nuova spedizione"""
@@ -1301,15 +1302,15 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
 
     try:
         with open(file_path, "r") as f:
-            spedizione = json.load(f)
+            spedizione_list = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        spedizione = []
+        spedizione_list = []
 
     # Aggiungi la nuova spedizione alla lista
-    spedizione.append(payload)
+    spedizione_list.append(payload)
 
     with open(file_path, "w") as f:
-        json.dump(spedizione, f, indent=4)
+        json.dump(spedizione_list, f, indent=4)
 
     invia_spedizione_su_besu(file_path)
 
@@ -1332,7 +1333,7 @@ def conferma_pagamento(request):
         return JsonResponse({'error': 'Metodo non consentito'}, status=405)
     
     if 'pending_shipment' not in request.session:
-        return JsonResponse({'error': 'Nessuna spedizione in attesa'}, status=400)
+        return JsonResponse({'success': False, 'error': 'Nessuna spedizione in attesa', 'redirect': '/spedizione/pagamento-fallito/'}, status=400)
     
     pending = request.session['pending_shipment']
     
@@ -1370,8 +1371,9 @@ def conferma_pagamento(request):
         return redirect('dashboard_cliente')
         
     except Exception as e:
-        request.session['payment_error'] = str(e)
-        return JsonResponse({'success': False, 'redirect': '/spedizione/pagamento-fallito/'})
+        err = str(e)
+        request.session['payment_error'] = err
+        return JsonResponse({'success': False, 'redirect': '/spedizione/pagamento-fallito/', 'error': err})
 
 
 @login_required
