@@ -1,7 +1,7 @@
 
 services:
   besu-validator1:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.12.0
     container_name: besu-validator1
     build:
       context: .
@@ -39,7 +39,7 @@ services:
 
 
   besu-validator2:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.12.0
     container_name: besu-validator2
     command:
       - --genesis-file=/network/genesis.json
@@ -69,7 +69,7 @@ services:
 
 
   besu-validator3:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.12.0
     container_name: besu-validator3
     command:
       - --genesis-file=/network/genesis.json
@@ -98,7 +98,7 @@ services:
 
 
   besu-validator4:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.12.0
     container_name: besu-validator4
     command: 
       - --genesis-file=/network/genesis.json
