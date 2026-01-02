@@ -1,10 +1,8 @@
 import json
 import os
-import time
-import requests
 from web3.middleware import ExtraDataToPOAMiddleware
 from django.conf import settings
-from ..BesuConnection import connect_to_besu, get_account
+from ..besu import connect_to_besu, get_account, transaction_details
 
 
 def carica_contratto_dal_json():
@@ -104,56 +102,15 @@ def invia_spedizione_su_besu(file_path):
     # Invia la transazione
     try:
         tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_transaction)
-        # print(f"Transazione inviata con hash:\n {tx_hash.hex()}\n")
-        # print(f"Dettagli della transazione:")
-        # {transaction_details(tx_hash.hex())}
-        # print(f"\nDati della transazione:\n {shipping_data(tx_hash.hex())}\n")
+        print(f"Transazione inviata con hash:\n {tx_hash.hex()}\n")
+        print(f"Dettagli della transazione:")
+        {transaction_details(tx_hash.hex())}
+        print(f"\nDati della transazione:\n {shipping_data(tx_hash.hex())}\n")
         return tx_hash
     except Exception as e:
         raise Exception(f"Errore durante l'invio della transazione: {str(e)}")
 
-def transaction_details(tx_hash):
-    # Prepara la richiesta JSON-RPC
-    data = {
-        "jsonrpc": "2.0",
-        "method": "eth_getTransactionReceipt",
-        "params": [tx_hash],
-        "id": 1
-    }
-
-    while True:
-        try:
-            # Esegui la richiesta POST al nodo Besu
-            response = requests.post(os.getenv('BESU_RPC_URL'), json=data, headers={"Content-Type": "application/json"})
-
-            # Verifica che la risposta sia valida
-            if response.status_code == 200:
-                receipt = response.json()
-
-                # Verifica che la risposta contenga il campo "result" con dati validi
-                result = receipt.get('result')
-                if result and result.get('blockHash') and result.get('blockNumber'):
-                    print(f"Block Hash: {result.get('blockHash')}")
-                    print(f"Block Number: {int(result.get('blockNumber', '0x0'), 16)}")
-                    print(f"Status: {result.get('status')}")
-                    print(f"From: {result.get('from')}")
-                    print(f"To: {result.get('to')}")
-                    print(f"Gas Used: {int(result.get('gasUsed', '0x0'), 16)}")
-                    print(f"Effective Gas Price: {int(result.get('effectiveGasPrice', '0x0'), 16)}")
-                    break  # Esci dal ciclo se la transazione è valida
-            else:
-                print(f"\nErrore nella richiesta: {response.status_code} - {response.text}")
-
-            # Aspetta 5 secondi prima di fare un nuovo tentativo
-            time.sleep(5)
-
-        except requests.exceptions.RequestException as e:
-            print(f"\nErrore durante la richiesta: {e}")
-            break  # Se c'è un errore, fermati
-
-
-
-# Funzione per leggere i dati della transazione
+# Funzione per leggere i dati della spedizione dalla transazione
 def shipping_data(tx_hash):
     web3 = connect_to_besu()  # Connessione al nodo Besu
 
