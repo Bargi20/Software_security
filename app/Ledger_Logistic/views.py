@@ -982,6 +982,29 @@ def dashboard_cliente(request):
     return render(request, 'Ledger_Logistic/dashboard_cliente.html', context)
 
 
+def trova_corriere_disponibile():
+    """Trova un corriere disponibile (senza pacchi in consegna)"""
+    from .models import Spedizione, Utente
+    from django.db.models import Count, Q
+    
+    # Trova tutti i corrieri
+    corrieri = Utente.objects.filter(ruolo='corriere', is_active=True)
+    
+    # Per ogni corriere, conta quanti pacchi ha in consegna
+    corrieri_disponibili = []
+    for corriere in corrieri:
+        pacchi_in_consegna = Spedizione.objects.filter(
+            corriere=corriere,
+            stato='in_consegna'
+        ).count()
+        
+        if pacchi_in_consegna == 0:
+            corrieri_disponibili.append(corriere)
+    
+    # Ritorna il primo corriere disponibile (o None)
+    return corrieri_disponibili[0] if corrieri_disponibili else None
+
+
 @login_required
 def dashboard_corriere(request):
     """Dashboard per utenti con ruolo 'corriere'"""
