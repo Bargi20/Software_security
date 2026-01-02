@@ -1102,9 +1102,10 @@ def dashboard_corriere(request):
         'consegne_completate': consegne_completate,
         'consegne_in_corso': consegne_in_corso,
         'consegne_mese': consegne_mese,
-        'spedizione_in_corso': spedizione_in_corso,
-        'spedizione_passate': spedizione_passate
+        'spedizioni_in_corso': spedizione_in_corso,
+        'spedizioni_passate': spedizione_passate,
     }
+
     return render(request, 'Ledger_Logistic/dashboard_corriere.html', context)
 
 
