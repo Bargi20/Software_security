@@ -718,6 +718,55 @@ La figura 3.5 mostra la simulazione di un utente che inserisce correttamente l'e
 
 La figura 3.6 mostra la simulazione di un utente che effettua la procedura di recupero della password in modo corretto e, successivamente, effettua il login con successo usando la nuova password appena cambiata.
 
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%% SIMULAZIONE ATTACCANTE %%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Simulazione attacco forza bruta su funzione di login con dizionario effettuato senza successo}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_login_pt1.png}
+    \caption{Attaccante che prova delle combinazioni email e password per attaccare il sistema di login.}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_login_pt2.png}
+    \caption{Attaccante che prova delle combinazioni email e password per attaccare il sistema di login.}
+\end{figure}
+
+Le figure 3.7 e 3.8 mostrano la simulazione di un attaccante che tenta di compromettere un account utilizzando un attacco di forza bruta con dizionario. L'attaccante prova diverse combinazioni di email e password, ma alla fine non riesce ad effettuare il login con successo. Per semplicità, si suppone che il dizionario sia composto da 10 email e 10 password; sicuramente un dizionario più ampio o l'uso di tecniche più sofisticate aumenterebbero le probabilità di successo dell'attacco.
+
+
+\subsubsection{Simulazione attacco forza bruta su funzione di recupero password con dizionario effettuato senza successo}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_recupero_password_pt1.png}
+    \caption{Attaccante che prova delle email e codici di recupero email per attaccare il sistema di login.}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_recupero_password_pt2.png}
+    \caption{Attaccante che prova delle email e codici di recupero email per attaccare il sistema di login.}
+\end{figure}
+
+Le figure 3.9 e 3.10 mostrano la simulazione di un attaccante che tenta di compromettere un account utente effettuando un attacco di forza bruta con dizionario. L'attaccante prova diverse combinazioni di email e codici di recupero password, ma alla fine non riesce ad effettuare il login con successo. Per semplicità, si suppone che il dizionario sia composto da 10 email e il codice di recupero password sia a 6 cifre; anche in questo caso un dizionario più ampio o l'uso di tecniche più sofisticate aumenterebbero le probabilità di successo dell'attacco.
+
+\clearpage
+
+\subsubsection{Simulazione attacco forza bruta su funzione di login con dizionario effettuato con successo}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_login_con_successo.png}
+    \caption{Attaccante che prova delle combinazioni email, password e codice MFA, riuscendo ad accedere ad un account.}
+\end{figure}
+
+La figura 3.11 mostra la simulazione di un attaccante che riesce a compromettere un account utilizzando un attacco di forza bruta con dizionario. Questo scenario è molto improbabile, ma possibile, soprattutto se l'attaccante dispone di un dizionario molto ampio o utilizza tecniche più sofisticate. In questo caso, l'attaccante riesce a indovinare correttamente l'email, la password e il codice MFA, ottenendo così l'accesso ad un account.
+\clearpage
+
 \subsection{Verifica di una proprietà di Safety}
 
 La proprietà di \textit{Safety} rappresenta il concetto che "qualcosa di brutto non accada mai" durante l'esecuzione di un sistema. In altre parole, una proprietà di Safety garantisce che il sistema non raggiunga mai uno stato indesiderato o pericoloso. Nel contesto della funzione di login modellata tramite la catena di Markov, una proprietà di Safety potrebbe essere formulata come segue: "Un utente non deve mai superare il numero massimo di tentativi di login errati senza essere bloccato". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
