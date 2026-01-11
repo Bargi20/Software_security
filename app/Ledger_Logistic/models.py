@@ -430,6 +430,13 @@ class Spedizione(models.Model):
         verbose_name='Veicolo Disponibile'
     )
     
+    meteo_sfavorevole = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Meteo Sfavorevole'
+    )
+    
     class Meta:
         verbose_name = "Spedizione"
         verbose_name_plural = "Spedizioni"
