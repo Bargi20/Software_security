@@ -1089,6 +1089,9 @@ def dashboard_gestore(request):
     from .models import Spedizione, Utente
     from django.db.models import Count, Q
     
+    corrieri_attivi= Utente.objects.filter(ruolo='corriere', is_active=True).count()
+    corrieri_totali= Utente.objects.filter(ruolo='corriere').count()
+    
     # spedizione in attesa di approvazione (stato in_attesa o in_elaborazione)
     spedizione_in_attesa = Spedizione.objects.filter(
         stato__in=['in_attesa', 'in_elaborazione']
@@ -1098,6 +1101,9 @@ def dashboard_gestore(request):
     spedizione_storico = Spedizione.objects.filter(
         stato__in=['in_transito', 'in_consegna', 'consegnato', 'annullato']
     ).select_related('cliente', 'corriere').order_by('-data_aggiornamento')
+    
+    spedizioni_oggi = Spedizione.objects.filter(stato='in_consegna').count()
+    tempo_medio_consegna = calcola_tempo_medio_consegna()
     
     # Statistiche
     totale_spedizione = Spedizione.objects.count()
@@ -1123,9 +1129,30 @@ def dashboard_gestore(request):
         'spedizione_completate': spedizione_completate,
         'totale_utenti': totale_utenti,
         'tasso_successo': tasso_successo,
+        'corrieri_attivi': corrieri_attivi,
+        'corrieri_totali': corrieri_totali,
+        'spedizioni_oggi': spedizioni_oggi,
+        'tempo_medio_consegna': tempo_medio_consegna,
     }
     return render(request, 'Ledger_Logistic/dashboard_gestore.html', context)
 
+from django.db.models import Avg, F, ExpressionWrapper, DurationField
+
+
+def calcola_tempo_medio_consegna():
+    media = (
+        Spedizione.objects
+        .filter(stato='consegnato') #prendo tutte le spedizioni "consegnato"
+        .annotate(
+            durata=ExpressionWrapper(
+                F('data_aggiornamento') - F('data_creazione'), # differenza fra data di aggiornamento (consegnato) e data di creazione (default "in_attesa")
+                output_field=DurationField()
+            )
+        )
+        .aggregate(media=Avg('durata')) #fa la media fra tutte le durate di tutte le spedizioni
+    )
+
+    return media['media'].days if media['media'] else 0
 
 # ============= SPEDIZIONE VIEWS =============
 
@@ -1294,35 +1321,35 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     
 ################# SPEDIZIONE TO BLOCKCHAIN ####################
     
-    payload = {
-        "id_spedizione": codice_tracciamento,
-        "descrizione": descrizione,
-        "indirizzo_consegna": indirizzo_consegna,
-        "citta": citta,
-        "cap": cap,
-        "provincia": provincia,
-        "grandezza": grandezza,
-        "metodo_pagamento": metodo_pagamento,
-    }
+    # payload = {
+    #     "id_spedizione": codice_tracciamento,
+    #     "descrizione": descrizione,
+    #     "indirizzo_consegna": indirizzo_consegna,
+    #     "citta": citta,
+    #     "cap": cap,
+    #     "provincia": provincia,
+    #     "grandezza": grandezza,
+    #     "metodo_pagamento": metodo_pagamento,
+    # }
 
-    file_path = "Ledger_Logistic/Blockchain/Spedizione/dati_spedizione.json"
+    # file_path = "Ledger_Logistic/Blockchain/Spedizione/dati_spedizione.json"
 
-    try:
-        with open(file_path, "r") as f:
-            spedizione_list = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        spedizione_list = []
+    # try:
+    #     with open(file_path, "r") as f:
+    #         spedizione_list = json.load(f)
+    # except (FileNotFoundError, json.JSONDecodeError):
+    #     spedizione_list = []
 
-    # Aggiungi la nuova spedizione alla lista
-    spedizione_list.append(payload)
+    # # Aggiungi la nuova spedizione alla lista
+    # spedizione_list.append(payload)
 
-    with open(file_path, "w") as f:
-        json.dump(spedizione_list, f, indent=4)
+    # with open(file_path, "w") as f:
+    #     json.dump(spedizione_list, f, indent=4)
 
-    invia_spedizione_su_besu(file_path)
+    # invia_spedizione_su_besu(file_path)
 
-    # Elimina il file JSON temporaneo dei dati della spedizione
-    os.remove(file_path)
+    # # Elimina il file JSON temporaneo dei dati della spedizione
+    # os.remove(file_path)
     
     messages.success(
         request,
@@ -1452,6 +1479,7 @@ def completa_consegna(request, codice_tracciamento):
         
         traffico_value = request.POST.get('traffico', None)
         veicolo_value = request.POST.get('veicolo_disponibile', None)
+        meteo_value = request.POST.get('meteo_sfavorevole', None) 
         
         # Converti in Boolean o None
         if traffico_value == 'true':
@@ -1468,6 +1496,13 @@ def completa_consegna(request, codice_tracciamento):
         else:
             spedizione.veicolo_disponibile = None
         
+        if meteo_value == 'true':
+            spedizione.meteo_sfavorevole = True
+        elif meteo_value == 'false':
+            spedizione.meteo_sfavorevole = False
+        else:
+            spedizione.meteo_sfavorevole = None
+
         # Marca come consegnato
         spedizione.stato = 'consegnato'
         spedizione.save()

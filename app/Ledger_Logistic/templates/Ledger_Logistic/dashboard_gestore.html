@@ -202,18 +202,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="border border-gray-200 rounded-lg p-4">
                             <div class="text-sm text-gray-500 mb-1">Corrieri Attivi</div>
-                            <div class="text-2xl font-bold text-gray-900">0</div>
-                            <div class="text-xs text-gray-400 mt-1">su 0 totali</div>
+                            <div class="text-2xl font-bold text-gray-900">{{ corrieri_attivi }}</div>
+                            <div class="text-xs text-gray-400 mt-1">su {{ corrieri_totali }} totali</div>
                         </div>
                         <div class="border border-gray-200 rounded-lg p-4">
                             <div class="text-sm text-gray-500 mb-1">Spedizioni Oggi</div>
-                            <div class="text-2xl font-bold text-gray-900">0</div>
+                            <div class="text-2xl font-bold text-gray-900">{{ spedizioni_oggi }}</div>
                             <div class="text-xs text-gray-400 mt-1">in corso di consegna</div>
                         </div>
                         <div class="border border-gray-200 rounded-lg p-4">
                             <div class="text-sm text-gray-500 mb-1">Tempo Medio Consegna</div>
-                            <div class="text-2xl font-bold text-gray-900">-</div>
-                            <div class="text-xs text-gray-400 mt-1">ore</div>
+                            <div class="text-2xl font-bold text-gray-900"> {{ tempo_medio_consegna }}</div>
+                            <div class="text-xs text-gray-400 mt-1">giorni</div>
                         </div>
                     </div>
                 </div>
