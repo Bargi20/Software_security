@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='spedizione',
             name='disponibilita_corriere',
-            field=models.BooleanField(blank=True, default=None, null=True, verbose_name='Disponibilità del Corriere'),
+            field=models.BooleanField(default=None, null=True, verbose_name='Disponibilità del Corriere'),
         ),
         
         migrations.AddField(

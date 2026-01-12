@@ -901,6 +901,7 @@ def assegna_spedizione_a_corriere(corriere):
     if spedizione_disponibile:
         spedizione_disponibile.corriere = corriere
         spedizione_disponibile.stato = 'in_consegna'
+        spedizione_disponibile.disponibilita_corriere = True
         spedizione_disponibile.save()
         return spedizione_disponibile
     
@@ -922,6 +923,7 @@ def assegna_spedizioni(request):
         # Assegna
         spedizione.corriere = corriere
         spedizione.stato = "in_consegna"
+        spedizione.disponibilita_corriere = True
         spedizione.save()
 
         return redirect("assegna_spedizioni")
@@ -932,10 +934,15 @@ def assegna_spedizioni(request):
         stato__in=["in_attesa", "in_elaborazione"]
     )
 
+    # Recupera solo corrieri disponibili (senza spedizioni in consegna)
+    corrieri_con_spedizioni = Spedizione.objects.filter(
+        stato='in_consegna'
+    ).values_list('corriere_id', flat=True)
+    
     corrieri = Utente.objects.filter(
         ruolo="corriere",
         is_active=True
-    )
+    ).exclude(id__in=corrieri_con_spedizioni)
 
     return render(request, "Ledger_Logistic/assegna_spedizioni.html", {
         "spedizioni": spedizioni,

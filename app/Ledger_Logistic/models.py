@@ -424,7 +424,6 @@ class Spedizione(models.Model):
     metodo_pagamento = models.CharField(
         max_length=10,
         choices=METODO_PAGAMENTO_CHOICES,
-        null=True,
         blank=True,
     )
     
@@ -479,12 +478,9 @@ class Spedizione(models.Model):
     )
 
     disponibilita_corriere = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='Disponibilità del Corriere'
     )
-
     
     class Meta:
         verbose_name = "Spedizione"
