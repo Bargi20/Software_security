@@ -423,7 +423,9 @@ class Spedizione(models.Model):
     
     metodo_pagamento = models.CharField(
         max_length=10,
-        choices=METODO_PAGAMENTO_CHOICES
+        choices=METODO_PAGAMENTO_CHOICES,
+        null=True,
+        blank=True,
     )
     
     # Informazioni aggiuntive dalla dashboard corriere
@@ -459,6 +461,27 @@ class Spedizione(models.Model):
         blank=True,
         default=None,
         verbose_name='Fattura Emessa'
+    )
+
+    gps = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='GPS'
+    )
+    
+    conferma_cliente = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Conferma del Cliente'
+    )
+
+    disponibilita_corriere = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Disponibilità del Corriere'
     )
 
     

@@ -1,3 +1,5 @@
+import json
+import random
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -1308,6 +1310,7 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     # Genera il codice tracciamento
     spedizione.codice_tracciamento = spedizione.genera_codice_tracciamento()
     codice_tracciamento = spedizione.codice_tracciamento
+    spedizione.gps = random.random() < 0.9
     # Cerca un corriere disponibile e assegna automaticamente
     corriere_disponibile = trova_corriere_disponibile()
     if corriere_disponibile:
@@ -1318,6 +1321,9 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     
     # Salva la spedizione nel database
     spedizione.save()
+    
+    # Verifica GPS e associa il valore alla spedizione
+   
 
     
 
@@ -1657,3 +1663,7 @@ def rifiuta_spedizione(request, codice_tracciamento):
         messages.error(request, f'Errore: {str(e)}')
     
     return redirect('dashboard_gestore')
+
+
+
+  
