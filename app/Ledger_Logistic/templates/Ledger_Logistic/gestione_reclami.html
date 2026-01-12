@@ -11,24 +11,23 @@
 <body class="font-sans text-gray-800 bg-gray-50">
 
 <!-- Navbar -->
-<nav class="bg-white shadow-md fixed w-full z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex items-center">
-                <a href="{% url 'dashboard_gestore' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
-                    {{ company_name }}
-                </a>
-            </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="{% url 'dashboard_gestore' %}" class="text-blue-700 font-semibold">Dashboard</a>
-                <span class="text-gray-600">Ciao, {{ user.first_name|default:user.username }}</span>
-                <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">
-                    Logout
-                </a>
+    <nav class="bg-white shadow-md fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
+                        <svg class="w-8 h-8 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        {{ company_name }}
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'dashboard_gestore' %}" class="text-blue-700 hover:text-blue-900 font-semibold">Dashboard</a>
+                    <span class="text-gray-600 font-medium">Ciao, {{ user.first_name|default:user.username }}</span>
+                    <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 <!-- Main -->
 <div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
@@ -53,11 +52,6 @@
             <div class="bg-white rounded-lg shadow p-6">
                 <p class="text-sm text-gray-500">Reclami Aperti</p>
                 <p class="text-3xl font-bold text-red-600">{{ reclami_aperti|default:0 }}</p>
-            </div>
-
-            <div class="bg-white rounded-lg shadow p-6">
-                <p class="text-sm text-gray-500">In Lavorazione</p>
-                <p class="text-3xl font-bold text-yellow-500">{{ reclami_lavorazione|default:0 }}</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-6">
