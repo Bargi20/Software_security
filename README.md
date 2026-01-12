@@ -12,12 +12,12 @@ Questo progetto ha l'obiettivo di sviluppare un software di gestione per un ipot
 Per far partire **Django**:
 
 1) Da terminale spostarsi nella cartella app e digitare:\
-        1.1) per Mac/Linux: ```python3 -m venv venv```\
-        1.2) per Windows: ```python -m venv venv```
+        1.1)  <img src="https://img.icons8.com/?size=100&id=122959&format=png&color=000000" width="15px">/<img src="https://img.icons8.com/?size=100&id=17842&format=png&color=000000" width="15px"> Mac/Linux: ```python3 -m venv venv```\
+        1.2)  <img src="https://img.icons8.com/?size=100&id=108792&format=png&color=000000" width="15px"> Windows: ```python -m venv venv```
 
 2) Attivate lo script activate.ps1 per avviare venv:\
-        2.1) per Mac/Linux: ```source venv/bin/activate```\
-        2.2) per Windows: ```./venv/Scripts/activate.ps1```
+        2.1)  <img src="https://img.icons8.com/?size=100&id=122959&format=png&color=000000" width="15px">/<img src="https://img.icons8.com/?size=100&id=17842&format=png&color=000000" width="15px"> Mac/Linux: ```source venv/bin/activate```\
+        2.2)  <img src="https://img.icons8.com/?size=100&id=108792&format=png&color=000000" width="15px"> Windows: ```./venv/Scripts/activate.ps1```
 
 3) Esegui:\
         ```./pip install -r requirements.txt```
@@ -25,25 +25,25 @@ Per far partire **Django**:
 4) Digitare questo per avviare il server:\
         ```./python manage.py runserver```
 
-5) Creare fie .env (in \app) con dentro:\
+5) Creare fie .env (in \app) con dentro:
 ```
-SUPABASE_DB_URL=postgresql://postgres.hoecofcgyqyknqmcwwtt:sekqyw-texkIm-5gakhe@aws-1-eu-west-1.pooler.supabase.com:6543/postgres\
-SECRET_KEY= 'django-insecure-=@n2r*1%_7s^8i*2t3i^#^_bou*2v^^a0cy0mmtbcptj@vw^'\
-EMAIL_HOST='smtp.gmail.com'\
-EMAIL_PORT=587\
-EMAIL_HOST_USER='ledgerlogistics1@gmail.com'\
-EMAIL_HOST_PASSWORD='opdb mtam eddn igvm'\
-DEFAULT_FROM_EMAIL = 'ledgerlogistics1@gmail.com'\
-BESU_RPC_URL="http://localhost:8545"\
-BESU_PRIVATE_KEYS=["0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63","0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3","0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f"]\
-STRIPE_SECRET_KEY=sk_test_51SjdLz2F9wViTbVEAQrOCmCJHjTrIr1wEyAXaFPujAI1g1tgCha2VdqWws67WGjE3o3jQ41MdVNWPqUNg5eRoQq000mn5vhq4J\
+SUPABASE_DB_URL=postgresql://postgres.hoecofcgyqyknqmcwwtt:sekqyw-texkIm-5gakhe@aws-1-eu-west-1.pooler.supabase.com:6543/postgres
+SECRET_KEY= 'django-insecure-=@n2r*1%_7s^8i*2t3i^#^_bou*2v^^a0cy0mmtbcptj@vw^'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER='ledgerlogistics1@gmail.com'
+EMAIL_HOST_PASSWORD='opdb mtam eddn igvm'
+DEFAULT_FROM_EMAIL = 'ledgerlogistics1@gmail.com'
+BESU_RPC_URL="http://localhost:8545"
+BESU_PRIVATE_KEYS=["0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63","0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3","0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f"]
+STRIPE_SECRET_KEY=sk_test_51SjdLz2F9wViTbVEAQrOCmCJHjTrIr1wEyAXaFPujAI1g1tgCha2VdqWws67WGjE3o3jQ41MdVNWPqUNg5eRoQq000mn5vhq4J
 STRIPE_PUBLISHABLE_KEY=pk_test_51SjdLz2F9wViTbVEvlyEdJrgaK6ejiiOFOhv62gK0JzkLScurQwsifWOn9CcP0J1MBSrMkYefJQlXNexCNqjVDIB00NaF5WUz7
 ```
 6) Per gestire docker si hanno due opzioni (avviare Docker Desktop prima): \
-        - Windows : ```.\start.cmd (per avviare i container contenenti la blockchain)\
-                    .\stop.cmd (per spegnere e rimuovere i container contenenti la blockchain)\```
-        - MacOS : ```./start.sh (per avviare i container contenenti la blockchain)\
-                  ./stop.sh (per spegnere e rimuovere i container contenenti la blockchain)\```
+        - <img src="https://img.icons8.com/?size=100&id=108792&format=png&color=000000" width="15px"> Windows : ```.\start.cmd``` (per avviare i container contenenti i nodi  della blockchain)\
+                    ```.\stop.cmd``` (per spegnere e rimuovere i container contenenti i nodi della blockchain)\
+        - <img src="https://img.icons8.com/?size=100&id=122959&format=png&color=000000" width="15px">/<img src="https://img.icons8.com/?size=100&id=17842&format=png&color=000000" width="15px">Mac/Linux : ```./start.sh``` (per avviare i container contenenti i nodi della blockchain)\
+                  ```./stop.sh``` (per spegnere e rimuovere i container contenenti i nodi della blockchain)
 
 ## Autori del progetto
 
