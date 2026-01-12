@@ -54,10 +54,6 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_email',
     'rest_framework',
     'Ledger_Logistic',  
-
-
-
-
 ]
 
 MIDDLEWARE = [
@@ -69,9 +65,8 @@ MIDDLEWARE = [
     'django_otp.middleware.OTPMiddleware',  # Aggiungi questa riga
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-
 ]
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
