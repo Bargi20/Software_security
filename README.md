@@ -20,12 +20,13 @@ Per far partire **Django**:
         2.2) per Windows: ```./venv/Scripts/activate.ps1```
 
 3) Esegui:\
-        pip install -r requirements.txt
+        ```./pip install -r requirements.txt```
 
 4) Digitare questo per avviare il server:\
-        python manage.py runserver
+        ```./python manage.py runserver```
 
 5) Creare fie .env (in \app) con dentro:\
+```
 SUPABASE_DB_URL=postgresql://postgres.hoecofcgyqyknqmcwwtt:sekqyw-texkIm-5gakhe@aws-1-eu-west-1.pooler.supabase.com:6543/postgres\
 SECRET_KEY= 'django-insecure-=@n2r*1%_7s^8i*2t3i^#^_bou*2v^^a0cy0mmtbcptj@vw^'\
 EMAIL_HOST='smtp.gmail.com'\
@@ -37,12 +38,12 @@ BESU_RPC_URL="http://localhost:8545"\
 BESU_PRIVATE_KEYS=["0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63","0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3","0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f"]\
 STRIPE_SECRET_KEY=sk_test_51SjdLz2F9wViTbVEAQrOCmCJHjTrIr1wEyAXaFPujAI1g1tgCha2VdqWws67WGjE3o3jQ41MdVNWPqUNg5eRoQq000mn5vhq4J\
 STRIPE_PUBLISHABLE_KEY=pk_test_51SjdLz2F9wViTbVEvlyEdJrgaK6ejiiOFOhv62gK0JzkLScurQwsifWOn9CcP0J1MBSrMkYefJQlXNexCNqjVDIB00NaF5WUz7
-
+```
 6) Per gestire docker si hanno due opzioni (avviare Docker Desktop prima): \
-        - Windows : .\start.cmd (per avviare i container contenenti la blockchain)\
-                    .\stop.cmd (per spegnere e rimuovere i container contenenti la blockchain)\
-        - MacOS : ./start.sh (per avviare i container contenenti la blockchain)\
-                  ./stop.sh (per spegnere e rimuovere i container contenenti la blockchain)\
+        - Windows : ```.\start.cmd (per avviare i container contenenti la blockchain)\
+                    .\stop.cmd (per spegnere e rimuovere i container contenenti la blockchain)\```
+        - MacOS : ```./start.sh (per avviare i container contenenti la blockchain)\
+                  ./stop.sh (per spegnere e rimuovere i container contenenti la blockchain)\```
 
 ## Autori del progetto
 
