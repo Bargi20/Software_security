@@ -481,7 +481,6 @@ class Spedizione(models.Model):
         default=False,
         verbose_name='Disponibilità del Corriere'
     )
-
     
     class Meta:
         verbose_name = "Spedizione"
