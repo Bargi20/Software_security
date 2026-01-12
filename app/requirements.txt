@@ -48,3 +48,4 @@ web3==7.14.0
 websockets==15.0.1
 yarl==1.22.0
 stripe==7.9.0
+reportlab>=3.6.12

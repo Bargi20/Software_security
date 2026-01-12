@@ -157,6 +157,7 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grandezza</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stato</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Creazione</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fattura</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBodyInCorso" class="bg-white divide-y divide-gray-200">
@@ -186,6 +187,11 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ spedizione.data_creazione|date:"d/m/Y H:i" }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <a href="{% url 'scarica_fattura' spedizione.id %}" class="text-blue-600 font-semibold hover:text-blue-800 underline">
+                                                Scarica PDF
+                                            </a>
                                         </td>
                                     </tr>
                                 {% endfor %}

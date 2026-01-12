@@ -14,8 +14,10 @@ from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.http import JsonResponse, FileResponse
-import json
+from django.http import HttpResponse, JsonResponse, FileResponse
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 
 load_dotenv()
 
@@ -1360,6 +1362,57 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     
     return spedizione
 
+def scarica_fattura(request, spedizione_id):
+    # Recupera la spedizione dal DB
+    spedizione = Spedizione.objects.get(id=spedizione_id)
+    
+    spedizione.fattura_emessa = True
+    spedizione.save()
+
+    # Calcola importo in euro
+    importo = SPEDIZIONE_IMPORTI_CENT.get(spedizione.grandezza, 0) / 100
+
+    # Crea buffer in memoria
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+
+    # Titolo
+    pdf.setFont("Helvetica-Bold", 20)
+    pdf.drawString(50, height - 50, "Fattura Spedizione")
+
+    # Dati spedizione
+    pdf.setFont("Helvetica", 12)
+    y = height - 100
+    line_height = 20
+
+    pdf.drawString(50, y, f"Codice Tracciamento: {spedizione.codice_tracciamento}")
+    y -= line_height
+    pdf.drawString(50, y, f"Città: {spedizione.citta}")
+    y -= line_height
+    pdf.drawString(50, y, f"Provincia: {spedizione.provincia}")
+    y -= line_height
+    pdf.drawString(50, y, f"Indirizzo Consegna: {spedizione.indirizzo_consegna}")
+    y -= line_height
+    pdf.drawString(50, y, f"Grandezza: {spedizione.get_grandezza_display()}")
+    y -= line_height
+    pdf.drawString(50, y, f"Importo: €{importo:.2f}")
+    y -= line_height
+    pdf.drawString(50, y, f"Metodo di pagamento: {spedizione.metodo_pagamento}")
+    y -= line_height
+    
+    # Footer
+    pdf.drawString(50, 50, "Grazie per aver scelto la nostra compagnia di spedizioni!")
+
+    pdf.showPage()
+    pdf.save()
+
+    # Riavvolge buffer e restituisce PDF
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="fattura_{spedizione.codice_tracciamento}.pdf"'
+    return response
+
 
 @login_required
 def conferma_pagamento(request):
@@ -1402,7 +1455,10 @@ def conferma_pagamento(request):
         # Aggiorna la variabile solo se pagamento con carta (se lo metto qui vuol dire che il pagamento è andato a buon fine)
         if spedizione.metodo_pagamento == 'carta':
             spedizione.conferma_del_gestore_di_pagamento = True
-            spedizione.save(update_fields=['conferma_del_gestore_di_pagamento'])
+            spedizione.save()
+        
+        # Genera e scarica la fattura solo dopo che il pagamento è andato a buon fine
+        scarica_fattura(request, spedizione.id)  
         
         del request.session['pending_shipment']
         return JsonResponse({'success': True, 'redirect': '/spedizione/pagamento-confermato/'})

@@ -453,6 +453,13 @@ class Spedizione(models.Model):
         default=None,
         verbose_name='conferma del gestore di pagamento'
     )
+    
+    fattura_emessa = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Fattura Emessa'
+    )
 
     
     class Meta:
