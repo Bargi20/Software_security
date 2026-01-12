@@ -460,6 +460,13 @@ class Spedizione(models.Model):
         default=None,
         verbose_name='Fattura Emessa'
     )
+    
+    conferma_cliente = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='Conferma Cliente'
+    )
 
     
     class Meta:

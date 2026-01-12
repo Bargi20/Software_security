@@ -244,6 +244,7 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grandezza</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stato</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Completamento</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Azioni</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBodyPassate" class="bg-white divide-y divide-gray-200">
@@ -274,6 +275,18 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ spedizione.data_aggiornamento|date:"d/m/Y H:i" }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {% if not spedizione.conferma_cliente %}
+                                            <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition text-xs font-semibold"
+                                                    data-id="{{ spedizione.id }}"
+                                                    data-codice="{{ spedizione.codice_tracciamento }}"
+                                                    onclick="openConfirmModal(this)">
+                                                Conferma Consegna
+                                            </button>
+                                            {% else %}
+                                            <span class="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg text-xs font-semibold">Consegnato</span>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -503,7 +516,40 @@
         paginaSpedizioniPassate();
     });
     </script>
-    
+
+    <!-- Gestione apertura/chiusura Modal conferma consegna cliente -->
+    <script>
+        let bottoneOriginale = null;
+
+        // Funzione per aprire il modal di conferma (chiamata dal button) --> quando clicchi su "Conferma Consegna"
+        function openConfirmModal(button) {
+            bottoneOriginale = button;
+            const codice = button.dataset.codice; // Ottieni il codice tracciamento (variabile data-codice dal button HTML)
+            const idSpedizione = button.dataset.id; // Ottieni l'ID della spedizione (variabile data-id dal button HTML)
+
+            document.getElementById('modalText').textContent = `Sei sicuro di aver ricevuto la spedizione ${codice}?`; //cambia il testo del modal in base al codice di tracciamento della spedizione
+            document.getElementById('spedizioneIdInput').value = idSpedizione; //setta il valore dell'input hidden nel form con l'id della spedizione
+
+
+            // Aggiorna URL dove dove reindirizzare il form di conferma --> cosa fa dopo aver cliccato "Conferma"
+            document.getElementById('confirmForm').action = `/spedizioni/conferma-cliente/${idSpedizione}/`;
+
+            document.getElementById('confirmModal').classList.remove('hidden'); //mostra il modal con i dati della spedizione da confermare
+        }
+
+        // funzione per chiudere il modal di conferma --> quando clicchi su "Annulla"
+        function closeModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            bottoneOriginale = null;
+        }
+
+        // funzione per fare il submit del form di conferma consegna cliente --> quando clicchi su "Conferma"
+        function submitConfirmForm() {
+            const form = document.getElementById('confirmForm');
+            form.submit();
+        }
+    </script>
+
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -511,5 +557,23 @@
         </div>
     </footer>
 
+    <!-- Modal Conferma consegna cliente-->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
+            <h3 class="text-lg font-bold mb-4">Conferma Consegna</h3>
+            <p id="modalText" class="mb-6">Sei sicuro di aver ricevuto questa spedizione?</p>
+            
+            <!-- FORM nascosto -->
+            <form id="confirmForm" method="POST" action="">
+                {% csrf_token %}
+                <input type="hidden" name="spedizione_id" id="spedizioneIdInput">
+            </form>
+            
+            <div class="flex justify-end gap-3">
+                <button onclick="closeModal()" type="button" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annulla</button>
+                <button onclick="submitConfirmForm()" type="button" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Conferma</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

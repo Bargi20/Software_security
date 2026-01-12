@@ -1440,6 +1440,12 @@ def scarica_fattura(request, spedizione_id):
     response['Content-Disposition'] = f'attachment; filename="fattura_{spedizione.codice_tracciamento}.pdf"'
     return response
 
+@require_POST
+def conferma_consegna_cliente(request, spedizione_id):
+    spedizione = get_object_or_404(Spedizione, id=spedizione_id)
+    spedizione.conferma_cliente = True
+    spedizione.save()
+    return redirect('dashboard_cliente')  # oppure dove vuoi tornare
 
 @login_required
 def conferma_pagamento(request):
