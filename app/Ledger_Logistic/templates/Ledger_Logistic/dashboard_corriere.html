@@ -455,9 +455,28 @@
     */
     </script>
 
+    <!-- Scelta obbligatoria nel form di "Consegna Completata" -->
     <script>
-    // Script aggiuntivi se necessari
+        document.getElementById('consegnaForm').addEventListener('submit', function (e) {
+
+            const traffico = document.querySelector('input[name="traffico"]:checked');
+            const veicolo = document.querySelector('input[name="veicolo_disponibile"]:checked');
+            const meteo = document.querySelector('input[name="meteo_sfavorevole"]:checked');
+
+            if (!traffico || !veicolo || !meteo) {
+                e.preventDefault();
+
+                alert(
+                    'Per completare la consegna devi selezionare:\n' +
+                    '- Condizioni traffico\n' +
+                    '- Stato del veicolo\n' +
+                    '- Stato meteo'
+                );
+                return false;
+            }
+        });
     </script>
+
 
 </body>
 </html>

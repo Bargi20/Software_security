@@ -428,13 +428,14 @@ class Spedizione(models.Model):
         blank=True,
     )
     
-    # Informazioni aggiuntive dalla dashboard corriere
+    # PROVE PER ORACOLO BAYESIANO
     traffico = models.BooleanField(
         null=True,
         blank=True,
         default=None,
         verbose_name='Presenza Traffico'
     )
+    
     veicolo_disponibile = models.BooleanField(
         null=True,
         blank=True,
@@ -461,13 +462,6 @@ class Spedizione(models.Model):
         blank=True,
         default=None,
         verbose_name='Fattura Emessa'
-    )
-    
-    conferma_cliente = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
-        verbose_name='Conferma Cliente'
     )
 
     gps = models.BooleanField(
