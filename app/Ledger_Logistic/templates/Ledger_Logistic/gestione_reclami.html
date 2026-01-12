@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Reclami - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-gray-50">
+
+<!-- Navbar -->
+<nav class="bg-white shadow-md fixed w-full z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="{% url 'dashboard_gestore' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
+                    {{ company_name }}
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="{% url 'dashboard_gestore' %}" class="text-blue-700 font-semibold">Dashboard</a>
+                <span class="text-gray-600">Ciao, {{ user.first_name|default:user.username }}</span>
+                <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main -->
+<div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-red-600 to-red-800 rounded-lg shadow-lg p-8 mb-8 text-white">
+            <div class="flex items-center">
+                <img src="{% static 'Ledger_Logistic/icons/warning-32.png' %}" class="h-10 w-10 mr-4">
+                <div>
+                    <h1 class="text-4xl font-bold">Gestione Reclami</h1>
+                    <p class="text-red-100 text-lg">
+                        Reclami sugli ordini e sulle spedizioni
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-500">Reclami Aperti</p>
+                <p class="text-3xl font-bold text-red-600">{{ reclami_aperti|default:0 }}</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-500">In Lavorazione</p>
+                <p class="text-3xl font-bold text-yellow-500">{{ reclami_lavorazione|default:0 }}</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-500">Risolti</p>
+                <p class="text-3xl font-bold text-green-600">{{ reclami_risolti|default:0 }}</p>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900">Elenco Reclami</h2>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Ordine</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Cliente</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Motivo</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Stato</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Azioni</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for reclamo in reclami %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-gray-900">
+                                #{{ reclamo.ordine.id }}
+                            </td>
+                            <td class="px-6 py-4 text-gray-700">
+                                {{ reclamo.cliente }}
+                            </td>
+                            <td class="px-6 py-4 text-gray-600">
+                                {{ reclamo.motivo }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if reclamo.stato == 'aperto' %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-red-100 text-red-700">Aperto</span>
+                                {% elif reclamo.stato == 'lavorazione' %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700">In lavorazione</span>
+                                {% else %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">Risolto</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-right space-x-2">
+                                <a href="{% url 'dettaglio_reclamo' reclamo.id %}"
+                                   class="text-blue-600 hover:text-blue-800 font-semibold">
+                                    Visualizza
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                Nessun reclamo presente
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+    <div class="max-w-7xl mx-auto text-center">
+        <p>&copy; 2025 {{ company_name }}. Tutti i diritti riservati.</p>
+    </div>
+</footer>
+
+</body>
+</html>

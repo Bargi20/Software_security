@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from Ledger_Logistic import views
 
@@ -45,5 +45,6 @@ urlpatterns = [
     path('spedizione/rifiuta/<str:codice_tracciamento>/', views.rifiuta_spedizione, name='rifiuta_spedizione'),
     path('assegna-spedizioni/', views.assegna_spedizioni, name='assegna_spedizioni'),
     path('fattura/<int:spedizione_id>/', views.scarica_fattura, name='scarica_fattura'),
-    path('spedizioni/conferma-cliente/<int:spedizione_id>/', views.conferma_consegna_cliente, name='conferma_consegna_cliente')
+    path('spedizioni/conferma-cliente/<int:spedizione_id>/', views.conferma_consegna_cliente, name='conferma_consegna_cliente'),
+    path('gestione_reclami/', views.gestione_reclami, name='gestione_reclami'),
 ]

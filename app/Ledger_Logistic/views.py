@@ -1325,7 +1325,6 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     
     # Verifica GPS e associa il valore alla spedizione
    
-
     
 
     
@@ -1697,6 +1696,8 @@ def rifiuta_spedizione(request, codice_tracciamento):
     
     return redirect('dashboard_gestore')
 
-
+@login_required
+def gestione_reclami(request):
+    return render(request, 'Ledger_Logistic/gestione_reclami.html')
 
   
