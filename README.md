@@ -20,12 +20,12 @@ Per far partire **Django**:
         2.2)  <img src="https://img.icons8.com/?size=100&id=108792&format=png&color=000000" width="15px"> **Windows :** ```./venv/Scripts/activate.ps1```
 
 3) Esegui:\
-        ```./pip install -r requirements.txt```
+        ```pip install -r requirements.txt```
 
 4) Digitare questo per avviare il server:\
-        ```./python manage.py runserver```
+        ```python manage.py runserver```
 
-5) Creare fie .env (in \app) con dentro:
+5) Creare file .env (in \app) con dentro:
 ```
 SUPABASE_DB_URL=postgresql://postgres.hoecofcgyqyknqmcwwtt:sekqyw-texkIm-5gakhe@aws-1-eu-west-1.pooler.supabase.com:6543/postgres
 SECRET_KEY= 'django-insecure-=@n2r*1%_7s^8i*2t3i^#^_bou*2v^^a0cy0mmtbcptj@vw^'
