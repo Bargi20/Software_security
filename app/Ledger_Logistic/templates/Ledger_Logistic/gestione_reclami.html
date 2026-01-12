@@ -37,7 +37,8 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-red-600 to-red-800 rounded-lg shadow-lg p-8 mb-8 text-white">
             <div class="flex items-center">
-                <img src="{% static 'Ledger_Logistic/icons/warning-32.png' %}" class="h-10 w-10 mr-4">
+                {% load static %}
+                <img src="{% static 'icons/warning-32.png' %}" class="h-10 w-10 mr-4">
                 <div>
                     <h1 class="text-4xl font-bold">Gestione Reclami</h1>
                     <p class="text-red-100 text-lg">
