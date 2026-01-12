@@ -1,6 +1,10 @@
+# Azienda di spedizioni - Ledger Logistic 📦
 
+<p align="center">
+  <img src="/app/static/images/logo.png" alt="GreenProof Platform" width="300">
+</p>
 
-
+Questo progetto ha l'obiettivo di sviluppare un software di gestione per un ipotetica azienda di spedizioni. Esso si basa su alcune tecnologie come le blockchain e gli smart contract per aumentare la sicurezza e la trasparenza del software e del funzionamento dell'azienda.
 
 
 
@@ -38,3 +42,11 @@ STRIPE_PUBLISHABLE_KEY=pk_test_51SjdLz2F9wViTbVEvlyEdJrgaK6ejiiOFOhv62gK0JzkLScu
                     .\stop.cmd (per spegnere e rimuovere i container contenenti la blockchain)
         - MacOS : ./start.sh (per avviare i container contenenti la blockchain)
                   ./stop.sh (per spegnere e rimuovere i container contenenti la blockchain)
+
+
+## Autori
+
+- [@SpectreCoded](https://github.com/SpectreCoded)
+- [@Barca2002](https://github.com/Barca2002)
+- [@Bargi20](https://github.com/Bargi20)
+- [@zDarius21](https://github.com/zDarius21)
