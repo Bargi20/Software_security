@@ -20,7 +20,8 @@ from django.http import HttpResponse, JsonResponse, FileResponse
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-
+from reportlab.lib.utils import ImageReader
+import random, string
 load_dotenv()
 
 
@@ -1383,32 +1384,58 @@ def scarica_fattura(request, spedizione_id):
     pdf = canvas.Canvas(buffer, pagesize=A4)
     width, height = A4
 
+    logo_path = "Ledger_Logistic/ledger-logistic-logo.png"
+    logo_width = 120
+    logo_height = 120
+
+    pdf.drawImage(
+        logo_path,
+        width/2-logo_width/2,
+        height - 140,
+        width=logo_width,
+        height=logo_height,
+        mask='auto'
+    )
     # Titolo
     pdf.setFont("Helvetica-Bold", 20)
-    pdf.drawString(50, height - 50, "Fattura Spedizione")
+    pdf.drawString(50, height - 170, "Fattura Spedizione")
 
+    # Questa funzione rende in corsivo i campi prima dei : e normali i valori dopo
+    def draw_label_value(pdf, x, y, label, value, label_font="Helvetica-Oblique", value_font="Helvetica", size=16):
+        pdf.setFont(label_font, size)
+        label_text = f"{label}: "
+        pdf.drawString(x, y, label_text)
+        label_width = pdf.stringWidth(label_text, label_font, size)
+        pdf.setFont(value_font, size)
+        pdf.drawString(x + label_width, y, str(value))
+    
     # Dati spedizione
-    pdf.setFont("Helvetica", 12)
-    y = height - 100
-    line_height = 20
+    y = height - 200
+    line_height = 25    # Spaziatura tra le righe
 
-    pdf.drawString(50, y, f"Codice Tracciamento: {spedizione.codice_tracciamento}")
+    draw_label_value(pdf, 50, y, "Codice Tracciamento", spedizione.codice_tracciamento)
     y -= line_height
-    pdf.drawString(50, y, f"Città: {spedizione.citta}")
+
+    draw_label_value(pdf, 50, y, "Città", spedizione.citta)
     y -= line_height
-    pdf.drawString(50, y, f"Provincia: {spedizione.provincia}")
+
+    draw_label_value(pdf, 50, y, "Provincia", spedizione.provincia)
     y -= line_height
-    pdf.drawString(50, y, f"Indirizzo Consegna: {spedizione.indirizzo_consegna}")
+
+    draw_label_value(pdf, 50, y, "Indirizzo Consegna", spedizione.indirizzo_consegna)
     y -= line_height
-    pdf.drawString(50, y, f"Grandezza: {spedizione.get_grandezza_display()}")
+
+    draw_label_value(pdf, 50, y, "Grandezza", spedizione.get_grandezza_display())
     y -= line_height
-    pdf.drawString(50, y, f"Importo: €{importo:.2f}")
+
+    draw_label_value(pdf, 50, y, "Importo", f"€{importo:.2f}")
     y -= line_height
-    pdf.drawString(50, y, f"Metodo di pagamento: {spedizione.metodo_pagamento}")
+
+    draw_label_value(pdf, 50, y, "Metodo di pagamento", spedizione.metodo_pagamento)
     y -= line_height
     
     # Footer
-    pdf.drawString(50, 50, "Grazie per aver scelto la nostra compagnia di spedizioni!")
+    pdf.drawString(50, 50, "Ledger Logistic - Grazie per aver scelto i nostri servizi.")
 
     pdf.showPage()
     pdf.save()
@@ -1419,6 +1446,12 @@ def scarica_fattura(request, spedizione_id):
     response['Content-Disposition'] = f'attachment; filename="fattura_{spedizione.codice_tracciamento}.pdf"'
     return response
 
+@require_POST
+def conferma_consegna_cliente(request, spedizione_id):
+    spedizione = get_object_or_404(Spedizione, id=spedizione_id)
+    spedizione.conferma_cliente = True
+    spedizione.save()
+    return redirect('dashboard_cliente')
 
 @login_required
 def conferma_pagamento(request):
