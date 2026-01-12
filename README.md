@@ -1,7 +1,7 @@
 # Azienda di spedizioni - Ledger Logistic 📦
 
 <p align="center">
-  <img src="/app/static/images/logo.png" alt="GreenProof Platform" width="300">
+  <img src="/ledger-logistic-logo.png" width="350">
 </p>
 
 Questo progetto ha l'obiettivo di sviluppare un software di gestione per un ipotetica azienda di spedizioni. Esso si basa su alcune tecnologie come le blockchain e gli smart contract per aumentare la sicurezza e la trasparenza del software e del funzionamento dell'azienda.
