@@ -1299,7 +1299,8 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
         cap=cap,
         provincia=provincia,
         grandezza=grandezza,
-        descrizione=descrizione
+        descrizione=descrizione,
+        metodo_pagamento=metodo_pagamento
     )
     
     # Genera il codice tracciamento
@@ -1367,7 +1368,11 @@ def conferma_pagamento(request):
         return JsonResponse({'error': 'Metodo non consentito'}, status=405)
     
     if 'pending_shipment' not in request.session:
-        return JsonResponse({'success': False, 'error': 'Nessuna spedizione in attesa', 'redirect': '/spedizione/pagamento-fallito/'}, status=400)
+        return JsonResponse({
+            'success': False,
+            'error': 'Nessuna spedizione in attesa',
+            'redirect': '/spedizione/pagamento-fallito/'
+        }, status=400)
     
     pending = request.session['pending_shipment']
     
@@ -1394,20 +1399,26 @@ def conferma_pagamento(request):
             'importo': f"{SPEDIZIONE_IMPORTI_CENT[spedizione.grandezza] / 100:.2f}"
         }
         
+        # Aggiorna la variabile solo se pagamento con carta (se lo metto qui vuol dire che il pagamento è andato a buon fine)
+        if spedizione.metodo_pagamento == 'carta':
+            spedizione.conferma_del_gestore_di_pagamento = True
+            spedizione.save(update_fields=['conferma_del_gestore_di_pagamento'])
+        
         del request.session['pending_shipment']
         return JsonResponse({'success': True, 'redirect': '/spedizione/pagamento-confermato/'})
-        # Chiama la funzione per inviare i dati alla blockchain
-        tx_hash = invia_spedizione_su_besu(file_path)
-        
-        ## Verifica transazione ##
-        #print(f"Transazione inviata con successo! tx_hash: {tx_hash.hex()}") # .hex per parsarlo in stringa leggibile
-        #verifica_transazione(tx_hash.hex())
-        return redirect('dashboard_cliente')
-        
+    
     except Exception as e:
-        err = str(e)
-        request.session['payment_error'] = err
-        return JsonResponse({'success': False, 'redirect': '/spedizione/pagamento-fallito/', 'error': err})
+        # Aggiorna la variabile solo se pagamento con carta
+        if 'spedizione' in locals() and spedizione.metodo_pagamento == 'carta':
+            spedizione.conferma_del_gestore_di_pagamento = False
+            spedizione.save()
+        
+        request.session['payment_error'] = str(e)
+        return JsonResponse({
+            'success': False,
+            'redirect': '/spedizione/pagamento-fallito/',
+            'error': str(e)
+        })
 
 
 @login_required

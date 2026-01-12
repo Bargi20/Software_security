@@ -365,6 +365,11 @@ class Spedizione(models.Model):
         ('annullato', 'Annullato'),
     ]
     
+    METODO_PAGAMENTO_CHOICES = [
+        ('carta', 'Carta di credito'),
+        ('cash', 'Pagamento alla consegna'),
+    ]
+    
     # Informazioni cliente
     cliente = models.ForeignKey(
         'Utente',
@@ -416,6 +421,11 @@ class Spedizione(models.Model):
         verbose_name='Corriere Assegnato'
     )
     
+    metodo_pagamento = models.CharField(
+        max_length=10,
+        choices=METODO_PAGAMENTO_CHOICES
+    )
+    
     # Informazioni aggiuntive dalla dashboard corriere
     traffico = models.BooleanField(
         null=True,
@@ -436,6 +446,14 @@ class Spedizione(models.Model):
         default=None,
         verbose_name='Meteo Sfavorevole'
     )
+    
+    conferma_del_gestore_di_pagamento = models.BooleanField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name='conferma del gestore di pagamento'
+    )
+
     
     class Meta:
         verbose_name = "Spedizione"

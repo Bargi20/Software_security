@@ -335,60 +335,58 @@
         </div>
     </footer>
 
+    <!-- Configurazione Stripe e pagamento tramite data attributes -->
+    <div id="stripe-config"
+        data-show-payment="{{ show_payment_form|yesno:'true,false' }}"
+        data-client-secret="{{ client_secret|default:'' }}"
+        data-stripe-key="{{ stripe_publishable_key }}">
+    </div>
+
     <script>
-        // Gestione selezione grandezza pacco con evidenziazione
         document.addEventListener('DOMContentLoaded', function() {
-            // Gestione grandezza pacco
-            const radioButtonsGrandezza = document.querySelectorAll('.grandezza-radio');
-            radioButtonsGrandezza.forEach(radio => {
-                const label = radio.closest('label');
-                
-                // Imposta lo stato iniziale se già selezionato
-                if (radio.checked) {
-                    label.classList.add('grandezza-selected');
-                }
-                
-                // Aggiungi event listener per i cambiamenti
-                radio.addEventListener('change', function() {
-                    // Rimuovi la classe da tutti i label
-                    document.querySelectorAll('.grandezza-radio').forEach(r => {
-                        r.closest('label').classList.remove('grandezza-selected');
-                    });
-                    
-                    // Aggiungi la classe al label selezionato
-                    if (this.checked) {
-                        label.classList.add('grandezza-selected');
-                    }
-                });
-            });
+        // -----------------------------
+        // GRANDEZZA PACCO
+        // -----------------------------
+        const radioButtonsGrandezza = document.querySelectorAll('.grandezza-radio');
+        radioButtonsGrandezza.forEach(radio => {
+            const label = radio.closest('label');
 
-            // Gestione metodo pagamento
-            const radioButtonsPagamento = document.querySelectorAll('.pagamento-radio');
-            radioButtonsPagamento.forEach(radio => {
-                const label = radio.closest('label');
-                
-                // Imposta lo stato iniziale se già selezionato
-                if (radio.checked) {
-                    label.classList.add('pagamento-selected');
-                }
-                
-                // Aggiungi event listener per i cambiamenti
-                radio.addEventListener('change', function() {
-                    // Rimuovi la classe da tutti i label
-                    document.querySelectorAll('.pagamento-radio').forEach(r => {
-                        r.closest('label').classList.remove('pagamento-selected');
-                    });
-                    
-                    // Aggiungi la classe al label selezionato
-                    if (this.checked) {
-                        label.classList.add('pagamento-selected');
-                    }
-                });
-            });
+            if (radio.checked) label.classList.add('grandezza-selected');
 
-            // Stripe payment handling
-            {% if show_payment_form and client_secret %}
-            // Funzione per ottenere il token CSRF dal cookie
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.grandezza-radio').forEach(r => {
+                    r.closest('label').classList.remove('grandezza-selected');
+                });
+                if (this.checked) label.classList.add('grandezza-selected');
+            });
+        });
+
+        // -----------------------------
+        // METODO PAGAMENTO
+        // -----------------------------
+        const radioButtonsPagamento = document.querySelectorAll('.pagamento-radio');
+        radioButtonsPagamento.forEach(radio => {
+            const label = radio.closest('label');
+
+            if (radio.checked) label.classList.add('pagamento-selected');
+
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.pagamento-radio').forEach(r => {
+                    r.closest('label').classList.remove('pagamento-selected');
+                });
+                if (this.checked) label.classList.add('pagamento-selected');
+            });
+        });
+
+        // -----------------------------
+        // STRIPE
+        // -----------------------------
+        const stripeConfig = document.getElementById('stripe-config');
+        if (
+            stripeConfig &&
+            stripeConfig.dataset.showPayment === "true" &&
+            stripeConfig.dataset.clientSecret !== ""
+        ) {
             function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -403,59 +401,52 @@
                 }
                 return cookieValue;
             }
-            
-            const stripe = Stripe('{{ stripe_publishable_key }}');
+
+            const stripe = Stripe(stripeConfig.dataset.stripeKey);
             const elements = stripe.elements();
+
             const cardElement = elements.create('card', {
                 style: {
                     base: {
                         fontSize: '16px',
                         color: '#32325d',
                         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                        '::placeholder': {
-                            color: '#aab7c4'
-                        }
+                        '::placeholder': { color: '#aab7c4' }
                     },
-                    invalid: {
-                        color: '#fa755a',
-                        iconColor: '#fa755a'
-                    }
+                    invalid: { color: '#fa755a', iconColor: '#fa755a' }
                 }
             });
             cardElement.mount('#card-element');
 
             cardElement.on('change', function(event) {
                 const displayError = document.getElementById('card-errors');
-                if (event.error) {
-                    displayError.textContent = event.error.message;
-                } else {
-                    displayError.textContent = '';
-                }
+                displayError.textContent = event.error ? event.error.message : '';
             });
 
             const form = document.getElementById('submit-payment');
             form.addEventListener('click', async function(event) {
                 event.preventDefault();
-                
+
                 const buttonText = document.getElementById('button-text');
                 const spinner = document.getElementById('spinner');
                 buttonText.classList.add('hidden');
                 spinner.classList.remove('hidden');
                 form.disabled = true;
 
-                const {error, paymentIntent} = await stripe.confirmCardPayment('{{ client_secret }}', {
-                    payment_method: {
-                        card: cardElement,
-                    }
-                });
+                const { error, paymentIntent } = await stripe.confirmCardPayment(
+                    stripeConfig.dataset.clientSecret,
+                    { payment_method: { card: cardElement } }
+                );
 
                 if (error) {
                     document.getElementById('card-errors').textContent = error.message;
                     buttonText.classList.remove('hidden');
                     spinner.classList.add('hidden');
                     form.disabled = false;
-                } else if (paymentIntent.status === 'succeeded') {
-                    // Conferma la spedizione al server
+                    return;
+                }
+
+                if (paymentIntent.status === 'succeeded') {
                     const csrftoken = getCookie('csrftoken');
                     fetch('{% url "conferma_pagamento" %}', {
                         method: 'POST',
@@ -466,16 +457,9 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.success) {
+                        if (data.success && data.redirect) {
                             window.location.href = data.redirect;
                         } else {
-                            // Se il server fornisce un redirect (es. pagina di errore), segui il redirect
-                            if (data.redirect) {
-                                window.location.href = data.redirect;
-                                return;
-                            }
-
-                            // Usa il messaggio di errore se presente, altrimenti un fallback
                             const errMsg = data.error || 'Errore sconosciuto';
                             alert('Errore: ' + errMsg);
                             buttonText.classList.remove('hidden');
@@ -485,8 +469,9 @@
                     });
                 }
             });
-            {% endif %}
-        });
+        }
+    });
     </script>
+
 </body>
 </html>
