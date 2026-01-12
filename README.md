@@ -7,8 +7,9 @@
 Questo progetto ha l'obiettivo di sviluppare un software di gestione per un ipotetica azienda di spedizioni. Esso si basa su alcune tecnologie come le blockchain e gli smart contract per aumentare la sicurezza e la trasparenza del software e del funzionamento dell'azienda.
 
 
+## Istruzioni per avviare il server
 
-Per far partire Django:
+Per far partire **Django**:
 
 1) Da terminale spostarsi nella cartella app e digitare:
         1.1) per Mac/Linux: python3 -m venv venv
