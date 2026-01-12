@@ -1445,7 +1445,7 @@ def conferma_consegna_cliente(request, spedizione_id):
     spedizione = get_object_or_404(Spedizione, id=spedizione_id)
     spedizione.conferma_cliente = True
     spedizione.save()
-    return redirect('dashboard_cliente')  # oppure dove vuoi tornare
+    return redirect('dashboard_cliente')
 
 @login_required
 def conferma_pagamento(request):
