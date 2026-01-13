@@ -7,7 +7,7 @@ from django.contrib import messages
 from dotenv import load_dotenv
 import stripe
 import os
-from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova, Reclamo
+from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Reclamo
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
@@ -1699,8 +1699,13 @@ def rifiuta_spedizione(request, codice_tracciamento):
     return redirect('dashboard_gestore')
 
 @login_required
-def gestione_reclami(request):
-    return render(request, 'Ledger_Logistic/gestione_reclami.html')
+def view_gestione_reclami(request):
+    context = {
+        'reclami': Reclamo.objects.all().order_by('data_creazione'),
+        'ReclamiAttivi': Reclamo.objects.filter(risolto=False).count(),
+        'ReclamiRisolti': Reclamo.objects.filter(risolto=True).count(),
+    }
+    return render(request, 'Ledger_Logistic/gestione_reclami.html', context)
 
 @login_required
 def invia_reclamo(request, spedizione_id):
@@ -1754,6 +1759,13 @@ def invia_reclamo(request, spedizione_id):
     return render(request, 'Ledger_Logistic/invia_reclamo.html', {
         'spedizione': spedizione
     })
+    
+def gestisci_reclamo(request, id_reclamo):
+
+    context = {
+        'reclamo': get_object_or_404(Reclamo, id=id_reclamo)
+    }
+    return render(request, 'Ledger_Logistic/decisione_reclamo_gestore.html', context)
 
 def gestione_spedizioni(request):
     context = {

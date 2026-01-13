@@ -273,7 +273,7 @@ class Evento(models.Model):
     def __str__(self):
         return f"{self.nomeEvento} - {self.probabilita_priori}"
     
-class Prova(models.Model):
+class Probabilita_condizionate(models.Model):
     """Prova per l'oracolo bayesiano"""
     nomeProva = models.CharField(max_length=100)
     prob1 = models.BooleanField(default=False, null=True, blank=True)
@@ -504,6 +504,7 @@ class Reclamo(models.Model):
     descrizione = models.CharField(max_length=600, verbose_name='Descrizione Reclamo')
     data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
     risolto = models.BooleanField(default=False, verbose_name='Risolto')
+    esito = models.BooleanField(blank=True, default=None, verbose_name='Esito')
     
     spedizione = models.ForeignKey(
     'Spedizione',

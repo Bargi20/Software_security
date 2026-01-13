@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Reclami - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-gray-50">
+    
+{% include 'Ledger_Logistic/navbar.html'%}
+
+<!-- Main -->
+<div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Dettaglio Reclamo</h1>
+            <p class="text-gray-600 mt-1">
+                Reclamo relativo all’ordine <span class="font-semibold">#{{ reclamo.spedizione.id }}</span>
+            </p>
+        </div>
+
+        <!-- Card Reclamo -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+
+            <!-- Info principali -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border-b">
+
+                <!-- Cliente -->
+                <div>
+                    <p class="text-sm text-gray-500">Cliente</p>
+                    <p class="text-lg font-semibold text-gray-900">
+                        {{ reclamo.spedizione.cliente.username }}
+                    </p>
+                </div>
+
+                <!-- Stato -->
+                <div>
+                    <p class="text-sm text-gray-500">Stato</p>
+                    {% if reclamo.risolto == True %}
+                        <span class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-medium bg-red-100 text-red-700">
+                            Aperto
+                        </span>
+                    {% elif reclamo.risolto == False %}
+                        <span class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-700">
+                            In lavorazione
+                        </span>
+                    {% else %}
+                        <span class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-medium bg-green-100 text-green-700">
+                            Risolto
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Esito -->
+                <div>
+                    <p class="text-sm text-gray-500">Esito verifica</p>
+                    {% if reclamo.esito %}
+                        <span class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
+                            {{ reclamo.esito }}
+                        </span>
+                    {% else %}
+                        <span class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-medium bg-gray-100 text-gray-500">
+                            Non verificato
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- ID Reclamo -->
+                <div>
+                    <p class="text-sm text-gray-500">ID Reclamo</p>
+                    <p class="text-lg font-semibold text-gray-900">
+                        #{{ reclamo.id }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Descrizione -->
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                    Descrizione del reclamo
+                </h2>
+                <p class="text-gray-700 leading-relaxed">
+                    {{ reclamo.descrizione }}
+                </p>
+            </div>
+
+            <!-- Azioni -->
+            <div class="px-6 py-4 bg-gray-50 border-t flex justify-end gap-3">
+
+                <a href="{% url 'home' %}"
+                   class="px-5 py-2 text-sm font-semibold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                    Torna indietro
+                </a>
+
+                <a href="{% url 'home' %}"
+                   class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white hover:bg-blue-700 transition shadow">
+                    Verifica reclamo
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+    <div class="max-w-7xl mx-auto text-center">
+        <p>&copy; 2025 LEDGER LOGISTIC. Tutti i diritti riservati.</p>
+    </div>
+</footer>
+
+</body>
+</html>

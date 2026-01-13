@@ -46,8 +46,11 @@ urlpatterns = [
     path('dashboard/gestore/assegna-spedizioni/', views.assegna_spedizioni, name='assegna_spedizioni'),
     path('dashboard/cliente/fattura/<int:spedizione_id>/', views.scarica_fattura, name='scarica_fattura'),
     path('dashboard/cliente/spedizioni/conferma-cliente/<int:spedizione_id>/', views.conferma_consegna_cliente, name='conferma_consegna_cliente'),
-    path('dashboard/gestore/gestione_reclami/', views.gestione_reclami, name='gestione_reclami'),
+    # ------ RECLAMI ------
+    path('dashboard/gestore/gestione_reclami/', views.view_gestione_reclami, name='gestione_reclami'),
+    path('dashboard/gestore/gestione_reclami/<int:id_reclamo>', views.gestisci_reclamo, name='gestisci_reclamo'),
     path('dashboard/cliente/spedizioni/reclami/<int:spedizione_id>/', views.invia_reclamo, name='reclami_spedizione'),
+    # ------ GESTIONE SPEDIZIONI ------
     path('dashboard/gestore/gestione_spedizioni', views.gestione_spedizioni, name='gestione_spedizioni'),
     path('dashboard/gestore/gestione_spedizioni/dettaglio/<int:spedizione_id>', views.dettaglio_spedizione, name='dettaglio_spedizione')
 ]

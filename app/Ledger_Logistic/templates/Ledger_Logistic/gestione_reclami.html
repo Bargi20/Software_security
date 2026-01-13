@@ -33,13 +33,13 @@
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-lg shadow p-6">
-                <p class="text-md text-gray-700">Reclami Aperti</p>
-                <p class="text-3xl font-bold text-red-600">{{ reclami_aperti|default:0 }}</p>
+                <p class="text-md text-gray-700">Reclami Attivi</p>
+                <p class="text-3xl font-bold text-red-600">{{ ReclamiAttivi|default:0 }}</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-6">
                 <p class="text-md text-gray-700">Risolti</p>
-                <p class="text-3xl font-bold text-green-600">{{ reclami_risolti|default:0 }}</p>
+                <p class="text-3xl font-bold text-green-600">{{ ReclamiRisolti|default:0 }}</p>
             </div>
         </div>
 
@@ -65,27 +65,29 @@
                         {% for reclamo in reclami %}
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 font-medium text-gray-900">
-                                #{{ reclamo.ordine.id }}
+                                #{{ reclamo.spedizione.id }}
                             </td>
                             <td class="px-6 py-4 text-gray-700">
-                                {{ reclamo.cliente }}
+                                {{ reclamo.spedizione.cliente.username }}
                             </td>
                             <td class="px-6 py-4 text-gray-600">
-                                {{ reclamo.motivo }}
+                                {{ reclamo.descrizione }}
                             </td>
                             <td class="px-6 py-4">
-                                {% if reclamo.stato == 'aperto' %}
+                                {% if reclamo.risolto == True %}
                                     <span class="px-3 py-1 rounded-full text-sm bg-red-100 text-red-700">Aperto</span>
-                                {% elif reclamo.stato == 'lavorazione' %}
+                                {% elif reclamo.risolto == False %}
                                     <span class="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700">In lavorazione</span>
                                 {% else %}
                                     <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">Risolto</span>
                                 {% endif %}
                             </td>
                             <td class="px-6 py-4 text-right space-x-2">
-                                <a href="{% url 'dettaglio_reclamo' reclamo.id %}"
+                                <a href="{% url 'gestisci_reclamo' reclamo.id %}"
                                    class="text-blue-600 hover:text-blue-800 font-semibold">
+                                   <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition text-xs font-semibold">
                                     Visualizza
+                                    </button>
                                 </a>
                             </td>
                         </tr>
@@ -107,7 +109,7 @@
 <!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 py-8 mt-12">
     <div class="max-w-7xl mx-auto text-center">
-        <p>&copy; 2025 {{ company_name }}. Tutti i diritti riservati.</p>
+        <p>&copy; 2025 LEDGER LOGISTIC. Tutti i diritti riservati.</p>
     </div>
 </footer>
 
