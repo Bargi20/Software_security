@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login as django_login, logout, get
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from dotenv import load_dotenv
-from Ledger_Logistic.Blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
 import stripe
 import os
 from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova, Reclami
@@ -29,7 +28,7 @@ load_dotenv()
 Utente = get_user_model()
 
 # Costanti
-COMPANY_NAME = 'Ledger Logistics'
+COMPANY_NAME = 'Ledger Logistic'
 STRIPE_CURRENCY = 'eur'
 SPEDIZIONE_IMPORTI_CENT = {
     'piccolo': 500,  # €5.00
@@ -52,7 +51,6 @@ def home(request):
     # Se l'utente cerca un spedizione (logica base)
     tracking_code = request.GET.get('tracking_code')
     context = {
-        'company_name': COMPANY_NAME,
         'tracking_code': tracking_code
     }
     return render(request, 'Ledger_Logistic/home.html', context)
@@ -60,10 +58,7 @@ def home(request):
 
 def servizi(request):
     """Vista per la pagina servizi"""
-    context = {
-        'company_name': COMPANY_NAME
-    }
-    return render(request, 'Ledger_Logistic/servizi.html', context)
+    return render(request, 'Ledger_Logistic/servizi.html')
 
 
 def chi_siamo(request):
@@ -1754,4 +1749,21 @@ def invia_reclamo(request, spedizione_id):
     return render(request, 'Ledger_Logistic/invia_reclamo.html', {
         'spedizione': spedizione
     })
+
+def gestione_spedizioni(request):
+    context = {
+        'spedizioni': Spedizione.objects.all().order_by('data_creazione'),
+        'spedizioni_in_corso': Spedizione.objects.filter(stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']).count(),
+        'spedizioni_consegnate': Spedizione.objects.filter(stato='consegnato').count(),
+    }   
+    
+    return render(request, 'Ledger_Logistic/gestione_spedizioni_e_pagamenti.html', context)
+
+def dettaglio_spedizione(request, spedizione_id):
+    
+    context = {
+        'spedizione': get_object_or_404(Spedizione, id=spedizione_id)
+    }
+    return render(request, 'Ledger_Logistic/dettaglio_spedizione.html', context)
+    
 

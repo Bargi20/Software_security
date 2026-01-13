@@ -9,25 +9,8 @@
 </head>
 
 <body class="font-sans text-gray-800 bg-gray-50">
-
-<!-- Navbar -->
-    <nav class="bg-white shadow-md fixed w-full z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-700 uppercase tracking-wider">
-                        <svg class="w-8 h-8 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        {{ company_name }}
-                    </a>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="{% url 'dashboard_gestore' %}" class="text-blue-700 hover:text-blue-900 font-semibold">Dashboard</a>
-                    <span class="text-gray-600 font-medium">Ciao, {{ user.first_name|default:user.username }}</span>
-                    <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">Logout</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    
+{% include 'Ledger_Logistic/navbar.html'%}
 
 <!-- Main -->
 <div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
@@ -37,7 +20,7 @@
         <div class="bg-gradient-to-r from-red-600 to-red-800 rounded-lg shadow-lg p-8 mb-8 text-white">
             <div class="flex items-center">
                 {% load static %}
-                <img src="{% static 'icons/warning-32.png' %}" class="h-10 w-10 mr-4">
+                <img src="{% static 'icons/warning-32.png' %}" class="h-10 w-10 mr-4" alt="Icona Reclami">
                 <div>
                     <h1 class="text-4xl font-bold">Gestione Reclami</h1>
                     <p class="text-red-100 text-lg">
@@ -50,12 +33,12 @@
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-lg shadow p-6">
-                <p class="text-sm text-gray-500">Reclami Aperti</p>
+                <p class="text-md text-gray-700">Reclami Aperti</p>
                 <p class="text-3xl font-bold text-red-600">{{ reclami_aperti|default:0 }}</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-6">
-                <p class="text-sm text-gray-500">Risolti</p>
+                <p class="text-md text-gray-700">Risolti</p>
                 <p class="text-3xl font-bold text-green-600">{{ reclami_risolti|default:0 }}</p>
             </div>
         </div>
