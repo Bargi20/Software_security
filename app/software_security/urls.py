@@ -47,4 +47,5 @@ urlpatterns = [
     path('dashboard/cliente/fattura/<int:spedizione_id>/', views.scarica_fattura, name='scarica_fattura'),
     path('dashboard/cliente/spedizioni/conferma-cliente/<int:spedizione_id>/', views.conferma_consegna_cliente, name='conferma_consegna_cliente'),
     path('dashboard/gestore/gestione_reclami/', views.gestione_reclami, name='gestione_reclami'),
+    path('spedizioni/reclami/<int:spedizione_id>/', views.invia_reclamo, name='reclami_spedizione'),
 ]

@@ -193,6 +193,11 @@
                                                 Scarica PDF
                                             </a>
                                         </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <a href="{% url 'reclami_spedizione' spedizione.id %}" class="block w-full bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-semibold text-center">
+                                                Reclami
+                                            </a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -285,8 +290,13 @@
                                                 Conferma Consegna
                                             </button>
                                             {% else %}
-                                            <span class="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg text-xs font-semibold">Consegnato</span>
+                                            <span class="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg text-xs font-semibold">Consegna confermata</span>
                                             {% endif %}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <button class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition text-xs font-semibold" >
+                                                Reclami
+                                            </button>
                                         </td>
                                     </tr>
                                 {% endfor %}

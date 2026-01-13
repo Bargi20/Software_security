@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invia Reclamo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-md fixed w-full z-10">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16 items-center">
+            <a href="{% url 'dashboard_cliente' %}"
+               class="text-2xl font-bold text-blue-700 uppercase tracking-wide">
+                Dashboard Cliente
+            </a>
+            <a href="{% url 'logout' %}"
+               class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-semibold">
+                Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- CONTENUTO -->
+<div class="pt-24 pb-12 px-4">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
+
+        <h1 class="text-3xl font-bold mb-4">
+            Invia Reclamo
+        </h1>
+
+        <p class="text-gray-600 mb-8">
+            Compila il modulo sottostante per inviare un reclamo relativo alla spedizione
+            <strong>{{ spedizione.codice_tracciamento }}</strong>.
+        </p>
+
+        {% if errore %}
+        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            {{ errore }}
+        </div>
+        {% endif %}
+
+        <!-- FORM -->
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- TIPO RECLAMO -->
+            <div class="mb-6">
+                <label class="block text-sm font-semibold mb-2">
+                    Motivo del reclamo
+                </label>
+                <select name="tipo" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="">Seleziona un motivo</option>
+                    <option value="spedizione effettuata con successo">
+                        spedizione effettuata con successo
+                    </option>
+                    <option value="pagamento ricevuto con successo">
+                        pagamento ricevuto con successo
+                    </option>
+                    <option value="ritardo di consegna">
+                        ritardo di consegna
+                    </option>
+                </select>
+            </div>
+
+            <!-- DESCRIZIONE -->
+            <div class="mb-6">
+                <label class="block text-sm font-semibold mb-2">
+                    Descrizione del reclamo
+                </label>
+                <textarea name="descrizione" rows="5" required
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          placeholder="Descrivi in modo dettagliato il problema riscontrato..."></textarea>
+            </div>
+
+            <!-- PULSANTI -->
+            <div class="flex justify-end gap-4">
+                <a href="{% url 'dashboard_cliente' %}"
+                   class="px-6 py-3 bg-gray-300 rounded-lg hover:bg-gray-400 font-semibold">
+                    Annulla
+                </a>
+                <button type="submit"
+                        class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold">
+                    Invia Reclamo
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <p>&copy; 2025 – Tutti i diritti riservati</p>
+    </div>
+</footer>
+
+</body>
+</html>
