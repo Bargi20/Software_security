@@ -1704,15 +1704,18 @@ def gestione_reclami(request):
 
 @login_required
 def invia_reclamo(request, spedizione_id):
+    
+    #prendo la spedizione associata al reclamo (recuperato dalla dashboard cliente)
     spedizione = get_object_or_404(
         Spedizione,
         id=spedizione_id,
         cliente=request.user
     )
 
+    #quando clicco su invia reclamo nel form per fare il submit
     if request.method == 'POST':
-        nome_reclamo = request.POST.get('nomeReclamo')
-        descrizione = request.POST.get('descrizione')
+        nome_reclamo = request.POST.get('nomeReclamo') #prendo il valore selezionato nella select
+        descrizione = request.POST.get('descrizione') #prendo il valore scritto nella textarea
 
         if not nome_reclamo or not descrizione:
             return render(request, 'Ledger_Logistic/invia_reclamo.html', {
@@ -1720,13 +1723,14 @@ def invia_reclamo(request, spedizione_id):
                 'errore': 'Compila tutti i campi'
             })
 
-        # Mappatura automatica tipoReclamo -> id evento
+        # Mappatura  nomeReclamo -> id evento
         mapping_eventi = {
             'Spedizione non effettuata correttamente': 1,
-            'Verifica pagamento': 2,
+            #'Verifica pagamento': 2, # Rimosso perché non va nel cliente
             'Ritardo di consegna': 3,
         }
 
+        # Recupera l'id evento corrispondente al nomeReclamo selezionato nella select
         evento_id = mapping_eventi.get(nome_reclamo)
         if not evento_id:
             return render(request, 'Ledger_Logistic/invia_reclamo.html', {
@@ -1734,9 +1738,10 @@ def invia_reclamo(request, spedizione_id):
                 'errore': 'Tipo di reclamo non valido'
             })
 
+        #istanzio oggetto Evento con quell'id
         evento = get_object_or_404(Evento, id=evento_id)
 
-        # Creazione del reclamo
+        # Creazione del reclamo nel database con tutti i dati necessari e evento corrispondente
         Reclami.objects.create(
             nomeReclamo=nome_reclamo,
             evento=evento,

@@ -277,9 +277,9 @@
                                             {% endif %}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <button class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 transition text-xs font-semibold" >
+                                            <a href="{% url 'reclami_spedizione' spedizione.id %}" class="block w-full bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-semibold text-center">
                                                 Reclami
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
