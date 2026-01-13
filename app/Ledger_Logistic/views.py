@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login as django_login, logout, get
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from dotenv import load_dotenv
-from Ledger_Logistic.Blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
 import stripe
 import os
 from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova 
@@ -1735,3 +1734,20 @@ def invia_reclamo(request, spedizione_id):
     return render(request, 'Ledger_Logistic/invia_reclamo.html', {
         'spedizione': spedizione
     })
+
+def gestione_spedizioni(request):
+    context = {
+        'spedizioni': Spedizione.objects.all().order_by('data_creazione'),
+        'spedizioni_in_corso': Spedizione.objects.filter(stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']).count(),
+        'spedizioni_consegnate': Spedizione.objects.filter(stato='consegnato').count(),
+    }   
+    
+    return render(request, 'Ledger_Logistic/gestione_spedizioni_e_pagamenti.html', context)
+
+def dettaglio_spedizione(request, spedizione_id):
+    
+    context = {
+        'spedizione': get_object_or_404(Spedizione, id=spedizione_id)
+    }
+    return render(request, 'Ledger_Logistic/dettaglio_spedizione.html', context)
+    

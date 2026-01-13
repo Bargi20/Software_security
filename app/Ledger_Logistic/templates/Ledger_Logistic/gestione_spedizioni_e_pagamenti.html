@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Spedizioni - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-gray-50">
+
+{% include 'Ledger_Logistic/navbar.html'%}
+
+<!-- Main -->
+<div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-8 mb-8 text-white">
+            <div class="flex items-center">
+                {% load static %}
+                <img src="{% static 'icons/delivery-icon.png' %}" class="h-10 w-10 mr-4" alt="Icona Spedizioni">
+                <div>
+                    <h1 class="text-4xl font-bold">Gestione Spedizioni</h1>
+                    <p class="text-blue-100 text-lg">
+                        Monitoraggio e stato delle spedizioni
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-md text-gray-700">Spedizioni in corso</p>
+                <p class="text-3xl font-bold text-blue-600">{{ spedizioni_in_corso|default:0 }}</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-md text-gray-700">Consegnate</p>
+                <p class="text-3xl font-bold text-green-600">{{ spedizioni_consegnate|default:0 }}</p>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900">Elenco Spedizioni</h2>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">N°Spedizione</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Cliente</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Corriere</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Data Spedizione</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Codice Tracciamento</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Stato</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Azioni</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="bg-white divide-y, divide-gray-200">
+                        {% for spedizione in spedizioni %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-gray-900">
+                                #{{ spedizione.id }}
+                            </td>
+                            <td class="px-6 py-4 text-gray-700">
+                                {{ spedizione.cliente }}
+                            </td>
+                            <td class="px-6 py-4 text-gray-700">
+                                {%if spedizione.corriere.username %}
+                                    {{ spedizione.corriere.username }}
+                                {% else %}  
+                                    Corriere non assegnato
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-gray-600">
+                                {{ spedizione.data_creazione|date:"d M Y H:i" }}
+                            </td>
+                            <td class="px-6 py-4 text-gray-600">
+                                {{ spedizione.codice_tracciamento}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if spedizione.stato == 'in_transito' %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-700">
+                                        In transito
+                                    </span>
+                                {% elif spedizione.stato == 'consegnato' %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700 font-bold">
+                                        Consegnato
+                                    </span>
+                                    {% elif spedizione.stato == 'in_attesa' %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-700">
+                                        In Attesa
+                                    </span>
+                                    {% elif spedizione.stato == 'in_elaborazione' %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-700">
+                                        In Elaborazione
+                                    </span>
+                                    {% elif spedizione.stato == 'in_consegna' %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-700">
+                                        In Consegna
+                                    </span>
+                                {% else %}
+                                    <span class="px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700">
+                                        In Preparazione
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-right space-x-2">
+                                <a href="{% url 'dettaglio_spedizione' spedizione.id %}">
+                                <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">
+                                    Dettaglio
+                                </button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                                Nessuna spedizione presente
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+    <div class="max-w-7xl mx-auto text-center">
+        <p>&copy; 2025 LEDGER LOGISTIC. Tutti i diritti riservati.</p>
+    </div>
+</footer>
+
+</body>
+</html>

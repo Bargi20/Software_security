@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettaglio Spedizione #{{ spedizione.id }} - {{ company_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-gray-50">
+
+{% include 'Ledger_Logistic/navbar.html'%}
+
+<!-- Main -->
+<div class="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-8 mb-8 text-white">
+            <div class="flex items-center">
+                {% load static %}
+                <img src="{% static 'icons/shipping-32.png' %}" class="h-10 w-10 mr-4" alt="Icona Spedizione">
+                <div>
+                    <h1 class="text-4xl font-bold">
+                        Spedizione #{{ spedizione.id }}
+                    </h1>
+                    <p class="text-blue-100 text-lg">
+                        Dettaglio completo della spedizione
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stato -->
+        <div class="mb-8">
+            {% if spedizione.stato == 'in_attesa' %}
+                <span class="px-4 py-2 rounded-full text-sm bg-gray-100 text-gray-700">
+                    In attesa
+                </span>
+            {% elif spedizione.stato == 'in_elaborazione' %}
+                <span class="px-4 py-2 rounded-full text-sm bg-yellow-100 text-yellow-700">
+                    In elaborazione
+                </span>
+            {% elif spedizione.stato == 'in_transito' %}
+                <span class="px-4 py-2 rounded-full text-sm bg-blue-100 text-blue-700">
+                    In transito
+                </span>
+            {% elif spedizione.stato == 'in_consegna' %}
+                <span class="px-4 py-2 rounded-full text-sm bg-indigo-100 text-indigo-700">
+                    In consegna
+                </span>
+            {% elif spedizione.stato == 'consegnato' %}
+                <span class="px-4 py-2 rounded-full text-sm bg-green-100 text-green-700">
+                    Consegnata
+                </span>
+            {% else %}
+                <span class="px-4 py-2 rounded-full text-sm bg-red-100 text-red-700">
+                    Stato sconosciuto
+                </span>
+            {% endif %}
+        </div>
+
+        <!-- Info cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+            <!-- Dati spedizione -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4">Dati spedizione</h2>
+                <ul class="space-y-2 text-gray-700">
+                    <li><strong>Ordine:</strong> #{{ spedizione.id }}</li>
+                    <li><strong>Cliente:</strong> {{ spedizione.cliente }}</li>
+                    <li><strong>Corriere:</strong> {%if spedizione.corriere.username %}
+                                    {{ spedizione.corriere.username }}
+                                {% else %}  
+                                    Corriere non assegnato
+                                {% endif %}</li>
+                    <li><strong>Tracking:</strong> {{ spedizione.codice_tracciamento|default:"—" }}</li>
+                    <li>
+                        <strong>Creata il:</strong>
+                        {{ spedizione.data_creazione|date:"d M Y H:i" }}
+                    </li>
+                    <li>
+                        <strong> Dimensione collo:</strong>
+                        {{ spedizione.grandezza }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Indirizzo -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4">Indirizzo di consegna</h2>
+                <p class="text-gray-700 leading-relaxed">
+                    {{ spedizione.indirizzo_consegna }}<br>
+                </p>
+            </div>
+        </div>
+
+        <!-- Note -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-xl font-bold mb-4">Verifica pagamento</h2>
+
+            Da implementare
+        </div>
+
+        <!-- Azioni -->
+        <div class="flex justify-end space-x-4">
+            <a href="{% url 'gestione_spedizioni' %}"
+               class="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-400 font-semibold">
+                Torna alla lista
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+    <div class="max-w-7xl mx-auto text-center">
+        <p>&copy; 2025 LEDGER LOGISTIC. Tutti i diritti riservati.</p>
+    </div>
+</footer>
+
+</body>
+</html>
