@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
 from datetime import timedelta
-import random
+import random, string
 
 
 # ============= CUSTOM USER MANAGER =============
@@ -482,6 +482,23 @@ class Spedizione(models.Model):
         verbose_name='Disponibilità del Corriere'
     )
     
+    class Meta:
+        verbose_name = "Spedizione"
+        verbose_name_plural = "Spedizioni"
+        ordering = ['-data_creazione']
+        
+    
+    def __str__(self):
+        return f"{self.codice_tracciamento} - {self.cliente.email} ({self.get_stato_display()})"
+    
+    def genera_codice_tracciamento(self):
+        """Genera un codice di tracciamento univoco"""
+        
+        while True:
+            codice = 'LL' + ''.join(random.choices(string.digits, k=10))
+            if not Spedizione.objects.filter(codice_tracciamento=codice).exists():
+                return codice
+    
 class Reclamo(models.Model):
     RECLAMI_CHOICES = [
         ('Spedizione non effettuata correttamente', 'Spedizione non effettuata correttamente'),
@@ -513,24 +530,3 @@ class Reclamo(models.Model):
     verbose_name='Spedizione'
     )
     
-    
-        
-        
-    
-    class Meta:
-        verbose_name = "Spedizione"
-        verbose_name_plural = "Spedizioni"
-        ordering = ['-data_creazione']
-        
-    
-    def __str__(self):
-        return f"{self.codice_tracciamento} - {self.cliente.email} ({self.get_stato_display()})"
-    
-    def genera_codice_tracciamento(self):
-        """Genera un codice di tracciamento univoco"""
-        import random
-        import string
-        while True:
-            codice = 'LL' + ''.join(random.choices(string.digits, k=10))
-            if not Spedizione.objects.filter(codice_tracciamento=codice).exists():
-                return codice
