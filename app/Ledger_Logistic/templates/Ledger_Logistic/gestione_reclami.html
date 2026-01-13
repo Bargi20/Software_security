@@ -20,7 +20,7 @@
         <div class="bg-gradient-to-r from-red-600 to-red-800 rounded-lg shadow-lg p-8 mb-8 text-white">
             <div class="flex items-center">
                 {% load static %}
-                <img src="{% static 'icons/warning-32.png' %}" class="h-10 w-10 mr-4">
+                <img src="{% static 'icons/warning-32.png' %}" class="h-10 w-10 mr-4" alt="Icona Reclami">
                 <div>
                     <h1 class="text-4xl font-bold">Gestione Reclami</h1>
                     <p class="text-red-100 text-lg">
@@ -33,12 +33,12 @@
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-lg shadow p-6">
-                <p class="text-sm text-gray-500">Reclami Aperti</p>
+                <p class="text-md text-gray-700">Reclami Aperti</p>
                 <p class="text-3xl font-bold text-red-600">{{ reclami_aperti|default:0 }}</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-6">
-                <p class="text-sm text-gray-500">Risolti</p>
+                <p class="text-md text-gray-700">Risolti</p>
                 <p class="text-3xl font-bold text-green-600">{{ reclami_risolti|default:0 }}</p>
             </div>
         </div>
