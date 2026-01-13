@@ -497,10 +497,10 @@ class Reclami(models.Model):
     data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
     risolto = models.BooleanField(default=False, verbose_name='Risolto')
     
-    id_spedizione = models.ForeignKey(
+    spedizione = models.ForeignKey(
     'Spedizione',
     on_delete=models.CASCADE,
-    related_name='spedizione',
+    related_name='spedizioni',
     verbose_name='Spedizione'
 )
         
