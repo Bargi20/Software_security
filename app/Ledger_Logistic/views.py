@@ -7,7 +7,7 @@ from django.contrib import messages
 from dotenv import load_dotenv
 import stripe
 import os
-from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova, Reclami
+from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova, Reclamo
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
@@ -1742,7 +1742,7 @@ def invia_reclamo(request, spedizione_id):
         evento = get_object_or_404(Evento, id=evento_id)
 
         # Creazione del reclamo nel database con tutti i dati necessari e evento corrispondente
-        Reclami.objects.create(
+        Reclamo.objects.create(
             nomeReclamo=nome_reclamo,
             evento=evento,
             descrizione=descrizione,

@@ -482,7 +482,7 @@ class Spedizione(models.Model):
         verbose_name='Disponibilità del Corriere'
     )
     
-class Reclami(models.Model):
+class Reclamo(models.Model):
     RECLAMI_CHOICES = [
         ('Spedizione non effettuata correttamente', 'Spedizione non effettuata correttamente'),
         ('Verifica pagamento', 'Verifica pagamento'),
@@ -501,7 +501,7 @@ class Reclami(models.Model):
     verbose_name='Evento'
     )
 
-    descrizione = models.TextField(verbose_name='Descrizione Reclamo')
+    descrizione = models.CharField(max_length=600, verbose_name='Descrizione Reclamo')
     data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
     risolto = models.BooleanField(default=False, verbose_name='Risolto')
     

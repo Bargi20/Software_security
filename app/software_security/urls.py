@@ -49,5 +49,5 @@ urlpatterns = [
     path('dashboard/gestore/gestione_reclami/', views.gestione_reclami, name='gestione_reclami'),
     path('dashboard/cliente/spedizioni/reclami/<int:spedizione_id>/', views.invia_reclamo, name='reclami_spedizione'),
     path('dashboard/gestore/gestione_spedizioni', views.gestione_spedizioni, name='gestione_spedizioni'),
-    path('dashboard/gestore/gestione_spedizioni/dettaglio/<int:spedizione_id>', views.dettaglio_spedizione, name='dettaglio_spedizione'),
+    path('dashboard/gestore/gestione_spedizioni/dettaglio/<int:spedizione_id>', views.dettaglio_spedizione, name='dettaglio_spedizione')
 ]
