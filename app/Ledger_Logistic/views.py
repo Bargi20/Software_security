@@ -1751,7 +1751,8 @@ def invia_reclamo(request, spedizione_id):
             nomeReclamo=nome_reclamo,
             evento=evento,
             descrizione=descrizione,
-            spedizione=spedizione
+            spedizione=spedizione,
+            esito='Non verificato'
         )
 
         return redirect('dashboard_cliente')

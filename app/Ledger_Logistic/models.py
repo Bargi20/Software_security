@@ -505,6 +505,12 @@ class Reclamo(models.Model):
         ('Verifica pagamento', 'Verifica pagamento'),
         ('Ritardo di consegna', 'Ritardo di consegna')
         ]
+    
+    ESITO_CHOICES = [
+        ('Non verificato', 'Non verificato'),
+        ('Accettato', 'Accettato'),
+        ('Rifiutato', 'Rifiutato')
+        ]
         
     nomeReclamo = models.TextField(
         choices=RECLAMI_CHOICES,
@@ -521,8 +527,10 @@ class Reclamo(models.Model):
     descrizione = models.CharField(max_length=600, verbose_name='Descrizione Reclamo')
     data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
     risolto = models.BooleanField(default=False, verbose_name='Risolto')
-    esito = models.BooleanField(blank=True, default=None, verbose_name='Esito')
-    
+    esito = models.TextField(
+        choices=ESITO_CHOICES,
+        verbose_name='Esito')
+
     spedizione = models.ForeignKey(
     'Spedizione',
     on_delete=models.CASCADE,
