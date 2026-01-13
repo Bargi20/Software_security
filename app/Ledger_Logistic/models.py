@@ -484,15 +484,23 @@ class Spedizione(models.Model):
     
 class Reclami(models.Model):
     RECLAMI_CHOICES = [
-    ('spedizione effettuata con successo', 'spedizione effettuata con successo'),
-    ('pagamento ricevuto con successo', 'pagamento ricevuto con successo'),
-    ('ritardo di consegna', 'ritardo di consegna')
-    ]
-    
-    tipo = models.TextField(
+        ('Spedizione non effettuata correttamente', 'Spedizione non effettuata correttamente'),
+        ('Verifica pagamento', 'Verifica pagamento'),
+        ('Ritardo di consegna', 'Ritardo di consegna')
+        ]
+        
+    nomeReclamo = models.TextField(
         choices=RECLAMI_CHOICES,
-        verbose_name='tipo')
+        verbose_name='nomeReclamo')
     
+        
+    evento = models.ForeignKey(
+    'Evento',
+    on_delete=models.CASCADE,
+    related_name='eventi',
+    verbose_name='Evento'
+    )
+
     descrizione = models.TextField(verbose_name='Descrizione Reclamo')
     data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
     risolto = models.BooleanField(default=False, verbose_name='Risolto')
@@ -502,7 +510,9 @@ class Reclami(models.Model):
     on_delete=models.CASCADE,
     related_name='spedizioni',
     verbose_name='Spedizione'
-)
+    )
+    
+    
         
         
     

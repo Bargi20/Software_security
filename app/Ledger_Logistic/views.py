@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from Ledger_Logistic.Blockchain.Spedizione.send_shipping import invia_spedizione_su_besu
 import stripe
 import os
-from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova 
+from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Prova, Reclami
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
@@ -1709,8 +1709,6 @@ def gestione_reclami(request):
 
 @login_required
 def invia_reclamo(request, spedizione_id):
-    from .models import Spedizione, Reclami
-    # Recupero spedizione (sicurezza inclusa)
     spedizione = get_object_or_404(
         Spedizione,
         id=spedizione_id,
@@ -1718,24 +1716,42 @@ def invia_reclamo(request, spedizione_id):
     )
 
     if request.method == 'POST':
-        tipo = request.POST.get('tipo')
+        nome_reclamo = request.POST.get('nomeReclamo')
         descrizione = request.POST.get('descrizione')
 
-        if not tipo or not descrizione:
+        if not nome_reclamo or not descrizione:
             return render(request, 'Ledger_Logistic/invia_reclamo.html', {
                 'spedizione': spedizione,
                 'errore': 'Compila tutti i campi'
             })
 
+        # Mappatura automatica tipoReclamo -> id evento
+        mapping_eventi = {
+            'Spedizione non effettuata correttamente': 1,
+            'Verifica pagamento': 2,
+            'Ritardo di consegna': 3,
+        }
+
+        evento_id = mapping_eventi.get(nome_reclamo)
+        if not evento_id:
+            return render(request, 'Ledger_Logistic/invia_reclamo.html', {
+                'spedizione': spedizione,
+                'errore': 'Tipo di reclamo non valido'
+            })
+
+        evento = get_object_or_404(Evento, id=evento_id)
+
+        # Creazione del reclamo
         Reclami.objects.create(
-            tipo=tipo,
+            nomeReclamo=nome_reclamo,
+            evento=evento,
             descrizione=descrizione,
             spedizione=spedizione
         )
 
         return redirect('dashboard_cliente')
 
-    # GET
     return render(request, 'Ledger_Logistic/invia_reclamo.html', {
         'spedizione': spedizione
     })
+
