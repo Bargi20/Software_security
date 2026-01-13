@@ -482,27 +482,27 @@ class Spedizione(models.Model):
         verbose_name='Disponibilità del Corriere'
     )
     
-    class Reclami(models.Model):
-        RECLAMI_CHOICES = [
-        ('spedizione effettuata con successo', 'spedizione effettuata con successo'),
-        ('pagamento ricevuto con successo', 'pagamento ricevuto con successo'),
-        ('ritardo di consegna', 'ritardo di consegna')
-        ]
-        
-        tipo = models.TextField(
-            choices=RECLAMI_CHOICES,
-            verbose_name='tipo')
-        
-        descrizione = models.TextField(verbose_name='Descrizione Reclamo')
-        data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
-        risolto = models.BooleanField(default=False, verbose_name='Risolto')
-        
-        id_spedizione = models.ForeignKey(
-        'Spedizione',
-        on_delete=models.CASCADE,
-        related_name='spedizione',
-        verbose_name='Spedizione'
-    )
+class Reclami(models.Model):
+    RECLAMI_CHOICES = [
+    ('spedizione effettuata con successo', 'spedizione effettuata con successo'),
+    ('pagamento ricevuto con successo', 'pagamento ricevuto con successo'),
+    ('ritardo di consegna', 'ritardo di consegna')
+    ]
+    
+    tipo = models.TextField(
+        choices=RECLAMI_CHOICES,
+        verbose_name='tipo')
+    
+    descrizione = models.TextField(verbose_name='Descrizione Reclamo')
+    data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
+    risolto = models.BooleanField(default=False, verbose_name='Risolto')
+    
+    id_spedizione = models.ForeignKey(
+    'Spedizione',
+    on_delete=models.CASCADE,
+    related_name='spedizione',
+    verbose_name='Spedizione'
+)
         
         
     
