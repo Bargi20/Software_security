@@ -29,7 +29,7 @@ load_dotenv()
 Utente = get_user_model()
 
 # Costanti
-COMPANY_NAME = 'Ledger Logistics'
+COMPANY_NAME = 'Ledger Logistic'
 STRIPE_CURRENCY = 'eur'
 SPEDIZIONE_IMPORTI_CENT = {
     'piccolo': 500,  # €5.00
@@ -52,7 +52,6 @@ def home(request):
     # Se l'utente cerca un spedizione (logica base)
     tracking_code = request.GET.get('tracking_code')
     context = {
-        'company_name': COMPANY_NAME,
         'tracking_code': tracking_code
     }
     return render(request, 'Ledger_Logistic/home.html', context)
@@ -60,10 +59,7 @@ def home(request):
 
 def servizi(request):
     """Vista per la pagina servizi"""
-    context = {
-        'company_name': COMPANY_NAME
-    }
-    return render(request, 'Ledger_Logistic/servizi.html', context)
+    return render(request, 'Ledger_Logistic/servizi.html')
 
 
 def chi_siamo(request):
