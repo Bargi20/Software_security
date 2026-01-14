@@ -17,6 +17,7 @@ const config: HardhatUserConfig = {
             enabled: true,
             runs: 200,
           },
+          viaIR: true  // usa l’IR intermedio, aiuta a compilare struct più grandi
         },
       },
     ],
@@ -27,14 +28,14 @@ const config: HardhatUserConfig = {
       url: "http://localhost:7545",
       chainId: 1337,
       gas: 6000000,
-      gasPrice: 20000000000
+      gasPrice: 0
     },
     besu: {
       type: "http",
       url: BESU_RPC_URL!,
       chainId: 1338,
       accounts: BESU_PRIVATE_KEYS,
-      gas: 4000000,
+      gas: 0x1ffffffffffffe,
       gasPrice: 0
     }
   }

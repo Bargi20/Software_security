@@ -130,7 +130,7 @@ class Migration(migrations.Migration):
                 ('prob1', models.BooleanField(blank=True, default=False, null=True)),
                 ('prob2', models.BooleanField(blank=True, default=False, null=True)),
                 ('prob3', models.BooleanField(blank=True, default=False, null=True)),
-                ('probabilita_condizionata', models.FloatField()),
+                ('probabilita_condizionata', models.TextField()),
                 ('idEvento1', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='prove_evento1', to='Ledger_Logistic.evento')),
                 ('idEvento2', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='prove_evento2', to='Ledger_Logistic.evento')),
                 ('idEvento3', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='prove_evento3', to='Ledger_Logistic.evento')),

@@ -300,7 +300,7 @@ class Probabilita_condizionate(models.Model):
         null=True,
         blank=True
     )
-    probabilita_condizionata = models.FloatField()  # Rimuovi max_length
+    probabilita_condizionata = models.TextField()  # Rimuovi max_length
     
     class Meta:
         verbose_name = "Prova per oracolo"
