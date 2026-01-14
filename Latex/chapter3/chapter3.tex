@@ -646,153 +646,121 @@ Di seguito è riportato il codice PRISM utilizzato per il modello dell'attaccant
 
 Sfruttando il simulatore di PRISM, sono state eseguite delle simulazioni per analizzare il comportamento del sistema in diversi scenari. Di seguito sono riportate alcune simulazioni:
 
-\subsubsection{Simulazione login corretto}
+\subsubsection{Simulazione attacco login con successo}
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_login_corretto.png}
-    \caption{Utente che effettua il login correttamente.}
+	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_attacco_login_con_successo.png}
+    \caption{Utente che riesce ad attaccare la funzione di login con successo, ottenendo l'accesso ad un account.}
 \end{figure}
 
-La figura 3.1 mostra la simulazione del login da parte di un utente che inserisce correttamente le proprie credenziali e il codice MFA. Si può notare che si arriva in una situazione di deadlock dopo aver effettuato il login con successo, ciò equivale a rimanere indefinitamente nello stato 4.
+La figura 3.1 mostra la simulazione di un utente che effettua un attacco di forza bruta con dizionario sulla funzione di login. Esso riesce a indovinare correttamente sia le credenziali di accesso (email e password) sia il codice MFA, ottenendo così l'accesso ad un account.
 
 \FloatBarrier
 
 \clearpage
 
-\subsubsection{Simulazione login errato}
+\subsubsection{Simulazione attacco login fallito per timeout}
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_credenziali_sbagliate.png}
-    \caption{Timeout login con credenziali sbagliate 5 volte.}
+	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_attacco_login_fallito.png}
+    \caption{Utente che non riesce ad attaccare la funzione di login perché viene bloccato dopo un certo numero di tentativi.}
 \end{figure}
 
-La figura 3.2 mostra la simulazione del login da parte di un utente che inserisce credenziali errate per 5 volte consecutive, raggiungendo così lo stato di timeout.
+La figura 3.2 mostra la simulazione dell'attacco della funzione di login da parte di un utente che inserisce credenziali errate per 5 volte consecutive, arrivando ad attivare il timeout del login.
 
 \FloatBarrier
 
-\subsubsection{Simulazione recupero password corretto}
+\subsubsection{Simulazione inserimento MFA errato}
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_recupero_password_corretto.png}
-    \caption{Utente che effettua il recupero della propria password correttamente.}
+	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_MFA_errato_1.png}
+    \caption{Utente che inserisce correttamente le credenziali, ma sbaglia il codice MFA troppe volte.}
 \end{figure}
 
-La figura 3.3 mostra la simulazione del recupero della password da parte di un utente che inserisce correttamente l'email, il codice di recupero e la nuova password. Alla fine del processo di recupero, l'utente torna allo stato iniziale per effettuare nuovamente il login.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_MFA_errato_2.png}
+    \caption{Utente che inserisce correttamente le credenziali, ma sbaglia il codice MFA troppe volte.}
+\end{figure}
+
+Le figure 3.3 e 3.4 mostrano la simulazione di un utente che inserisce correttamente le credenziali, ma sbaglia il codice MFA per troppe volte consecutive, raggiungendo così lo stato di timeout. Questo scenario evidenzia l'importanza dei sistemi di autenticazione a più fattori, i quali diminuiscono la probabilità di successo di un attacco di forza bruta.
 
 \FloatBarrier
 
-\subsubsection{Simulazione MFA errato}
+\subsubsection{Simulazione attacco effettuato con successo sulla funzione di recupero password ed accesso all'account}
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_sbaglio_codice_MFA.png}
-    \caption{Utente che inserisce correttamente le credenziali, ma sbaglia il codice MFA.}
+	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_recupero_password_e_login.png}
+    \caption{Utente che attacca con successo la funzione di recupero password ed accede all'account appena compromesso.}
 \end{figure}
 
-La figura 3.4 mostra la simulazione di un utente che inserisce correttamente le credenziali, ma sbaglia il codice MFA per 5 volte consecutive, raggiungendo così lo stato di timeout. Questo scenario evidenzia l'importanza dei sistemi di autenticazione a più fattori.
+La figura 3.5 mostra la simulazione di un utente che attacca con successo la funzione di recupero password, indovinando l'email ed il codice di recupero password. Successivamente, l'utente riesce ad accedere all'account appena compromesso inserendo l'email, la password appena cambiata ed indovinando il codice MFA. Questo scenario è molto improbabile, ma evidenzia come un attaccante determinato possa riuscire a compromettere un account anche in presenza di meccanismi di sicurezza avanzati.
 
 \FloatBarrier
 
-\subsubsection{Simulazione codice recupero password errato}
+\subsubsection{Simulazione inserimento codice di recupero password errato}
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_codice_recupero_password_sbagliato.png}
-    \caption{Utente che inserisce correttamente l'email, ma sbaglia il codice di recupero password.}
+	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_codice_recupero_password_errato1.png}
+    \caption{Utente che inserisce il codice di recupero password errato troppe volte, andando a finire nello stato di timeout.}
 \end{figure}
 
-La figura 3.5 mostra la simulazione di un utente che inserisce correttamente l'email per il recupero della password, ma sbaglia il codice di recupero per 5 volte consecutive, raggiungendo così lo stato di timeout.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{chapter3/immagini/Simulazione_codice_recupero_password_errato2.png}
+    \caption{Utente che inserisce il codice di recupero password errato troppe volte, andando a finire nello stato di timeout.}
+\end{figure}
 
 \FloatBarrier
 
-\subsubsection{Simulazione recupero password e login corretto}
-
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_recupero_password_e_login_corretto.png}
-    \caption{Utente effettua la procedura di recupero password e poi effettua il login correttamente.}
-\end{figure}
-
-La figura 3.6 mostra la simulazione di un utente che effettua la procedura di recupero della password in modo corretto e, successivamente, effettua il login con successo usando la nuova password appena cambiata.
+Le figure 3.6 e 3.7 mostrano la simulazione di un utente che effettua la procedura di recupero della password indovinando un'email valida, ma sbagliando il codice di recupero password per troppe volte consecutive, raggiungendo così lo stato di timeout.
 
 \clearpage
 
-%%%%%%%%%%%%%%%%%%%%%% SIMULAZIONE ATTACCANTE %%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Simulazione attacco forza bruta su funzione di login con dizionario effettuato senza successo}
-
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_login_pt1.png}
-    \caption{Attaccante che prova delle combinazioni email e password per attaccare il sistema di login.}
-\end{figure}
-
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_login_pt2.png}
-    \caption{Attaccante che prova delle combinazioni email e password per attaccare il sistema di login.}
-\end{figure}
-
-Le figure 3.7 e 3.8 mostrano la simulazione di un attaccante che tenta di compromettere un account utilizzando un attacco di forza bruta con dizionario. L'attaccante prova diverse combinazioni di email e password, ma alla fine non riesce ad effettuare il login con successo. Per semplicità, si suppone che il dizionario sia composto da 10 email e 10 password; sicuramente un dizionario più ampio o l'uso di tecniche più sofisticate aumenterebbero le probabilità di successo dell'attacco.
-
-\clearpage
-
-\subsubsection{Simulazione attacco forza bruta su funzione di recupero password con dizionario effettuato senza successo}
-
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_recupero_password_pt1.png}
-    \caption{Attaccante che prova delle email e codici di recupero email per attaccare il sistema di login.}
-\end{figure}
-
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_recupero_password_pt2.png}
-    \caption{Attaccante che prova delle email e codici di recupero email per attaccare il sistema di login.}
-\end{figure}
-
-Le figure 3.9 e 3.10 mostrano la simulazione di un attaccante che tenta di compromettere un account utente effettuando un attacco di forza bruta con dizionario. L'attaccante prova diverse combinazioni di email e codici di recupero password, ma alla fine non riesce ad effettuare il login con successo. Per semplicità, si suppone che il dizionario sia composto da 10 email e il codice di recupero password sia a 6 cifre; anche in questo caso un dizionario più ampio o l'uso di tecniche più sofisticate aumenterebbero le probabilità di successo dell'attacco.
-
-\clearpage
-
-\subsubsection{Simulazione attacco forza bruta su funzione di login con dizionario effettuato con successo}
-
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=1\columnwidth]{chapter3/immagini/Simulazione_attacco_login_con_successo.png}
-    \caption{Attaccante che prova delle combinazioni email, password e codice MFA, riuscendo ad accedere ad un account.}
-\end{figure}
-
-La figura 3.11 mostra la simulazione di un attaccante che riesce a compromettere un account utilizzando un attacco di forza bruta con dizionario. Questo scenario è molto improbabile, ma possibile, soprattutto se l'attaccante dispone di un dizionario molto ampio o utilizza tecniche più sofisticate. In questo caso, l'attaccante riesce a indovinare correttamente l'email, la password e il codice MFA, ottenendo così l'accesso ad un account.
-
-\clearpage
+%%%%%%%%% SAFETY %%%%%%%%%%%%%%
 
 \subsection{Verifica di una proprietà di Safety}
 
 La proprietà di \textit{Safety} rappresenta il concetto che "qualcosa di brutto non accada mai" durante l'esecuzione di un sistema. In altre parole, una proprietà di Safety garantisce che il sistema non raggiunga mai uno stato indesiderato o pericoloso. Nel contesto della funzione di login modellata tramite la catena di Markov, una proprietà di Safety potrebbe essere formulata come segue: "Un utente non deve mai superare il numero massimo di tentativi di login errati senza essere bloccato". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
 \begin{verbatim}
-    P=? [ F ((c_log=5|c_mfa=5|c_email=5|c_rpass=5)&p1!=11) ]
+    P=? [ G !( "Timeout" & "AttaccoRiuscito" ) ]
 \end{verbatim}
 
-Ci chiediamo qual'è la probabilità di raggiungere uno stato in cui uno dei contatori ($C_{LOG}$, $C_{MFA}$, $C_{EMAIL}$, $C_{RPASS}$) è uguale a 5 (cioè il numero massimo di tentativi errati) e lo stato corrente (p1) non è lo stato di timeout (stato 11)? In altre parole, questa proprietà garantisce che il sistema bloccherà l'utente dopo un certo numero di tentativi errati, prevenendo così accessi non autorizzati.
+oppure anche con la seguente stringa:
+
+\begin{verbatim}
+    P=? [ F ( "AttaccoRiuscito" ) ] 
+\end{verbatim}
+
+Usando la funzione \textit{Verify} di PRISM, è stato possibile verificare la prima proprietà. Nella prima stringa ci chiediamo qual'è la probabilità che non valga mai il fatto che la funzione di login sia nello stato di timeout (denotato appunto dall'etichetta "Timeout", la quale è un alias per lo stato 20) e l'attaccante sia riuscito ad effettuare l'attacco con successo (denotato dall'etichetta "AttaccoRiuscito", alias per lo stato 24). In altre parole, questa proprietà garantisce che il sistema bloccherà l'utente dopo un certo numero di tentativi errati, prevenendo così accessi non autorizzati. Come si può osservare dalla figura 3.8, la probabilità è quasi 1, il che significa che è praticamente certo che l'utente verrà bloccato prima di riuscire ad accedere con successo.
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.5\columnwidth]{chapter3/immagini/safety.png}
+	\includegraphics[width=0.5\columnwidth]{chapter3/immagini/safety1.png}
+    \caption{Verifica della proprietà di Safety tramite PRISM.}
+\end{figure}
+
+Nella seconda stringa, ci chiediamo qual'è la probabilità che prima o poi si raggiunge lo stato in cui l'attaccante è riuscito ad effettuare l'attacco con successo. Vediamo nella figura 3.9 che questa probabilità è praticamente 0, il che significa che è praticamente impossibile che l'attaccante riesca ad accedere al sistema senza essere bloccato.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\columnwidth]{chapter3/immagini/safety2.png}
     \caption{Verifica della proprietà di Safety tramite PRISM.}
 \end{figure}
 
 \FloatBarrier
 
-Usando la funzione \textit{Verify} di PRISM, è stato possibile verificare questa proprietà di Safety sul modello della funzione di login. La verifica ha confermato che la proprietà è soddisfatta, infatti figura 3.7 mostra che la probabilità di raggiungere uno stato in cui uno dei contatori è uguale a 5 e lo stato corrente non è lo stato di timeout è praticamente pari a 0. Ciò significa che il sistema bloccherà sempre l'utente dopo un certo numero di tentativi errati, garantendo così la sicurezza del processo di autenticazione.
-
+%%%%%%%%% RESPONSE %%%%%%%%%%%%%%
 \subsection{Verifica di una proprietà di response}
 
 La proprietà di \textit{Response} rappresenta il concetto che "se qualcosa di buono accade, allora qualcosa di buono deve accadere sempre". In altre parole, una proprietà di response garantisce che se un evento desiderato si verifica, allora un altro evento desiderato deve seguire. Si è deciso di modellare la "un utente con le credenziali corrette deve riuscire ad accedere al sistema infinitamente spesso". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
 \begin{verbatim}
-    P=? [ F p1=4 ]
+    P=? [ G F !("Timeout" & "LoginEffettuato" ) ]
 \end{verbatim}
 
 \begin{figure}[ht!]
@@ -803,4 +771,4 @@ La proprietà di \textit{Response} rappresenta il concetto che "se qualcosa di b
 
 \FloatBarrier
 
-Anche questa proprietà è stata verificata utilizzando la funzione \textit{Verify} di PRISM sul modello della funzione di login. La verifica ha confermato che la proprietà è soddisfatta, infatti figura 3.8 mostra che la probabilità di raggiungere lo stato 4 (login effettuato con successo) è praticamente pari a 1. Ciò significa che un utente con le credenziali corrette riuscirà sempre ad accedere al sistema, garantendo così l'accessibilità del processo di autenticazione.
+Anche questa proprietà è stata verificata utilizzando la funzione \textit{Verify} di PRISM. La verifica ha confermato che la proprietà è soddisfatta, infatti figura 3.8 mostra che la probabilità che non valga infinitamente spesso il fatto di essere nello stato di timeout e contemporaneamente di aver effettuato il login con successo. Ciò significa che un utente con le credenziali corrette riuscirà sempre ad accedere al sistema, garantendo così l'accessibilità del processo di autenticazione.
