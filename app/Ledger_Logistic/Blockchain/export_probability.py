@@ -65,13 +65,13 @@ def invia_tabella_json_su_besu(file_path):
     contract_abi, contract_address = carica_contratto_ledger()
     contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
-    # prepara i record come lista di tuple
-    batch_tuple = []
+    # genera il payload della tabella da mandare come transazione
+    tabella = []
     for r in records:
         prob1Exists = r.get("prob1") is not None
         prob2Exists = r.get("prob2") is not None
         prob3Exists = r.get("prob3") is not None
-        batch_tuple.append([
+        tabella.append([
             int(r["id"]),
             r["nomeProva"],
             bool(r["prob1"]) if prob1Exists else False,
@@ -86,7 +86,7 @@ def invia_tabella_json_su_besu(file_path):
             int(r["idEvento3_id"])
         ])
 
-    tx_function = contract.functions.addRecords(batch_tuple)
+    tx_function = contract.functions.addRecords(tabella)
     nonce = web3.eth.get_transaction_count(account.address, block_identifier='latest')
     tx = tx_function.build_transaction({
         'from': account.address,
