@@ -431,7 +431,7 @@
 
                 if (paymentIntent.status === 'succeeded') {
                     const csrftoken = getCookie('csrftoken');
-                    fetch('{% url "conferma_pagamento" %}', {
+                    fetch('{% url "conferma_pagamento_stripe" %}', {
                         method: 'POST',
                         headers: {
                             'X-CSRFToken': csrftoken,

@@ -16,6 +16,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse, JsonResponse, FileResponse
+from django.urls import reverse
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -1166,7 +1167,7 @@ def calcola_tempo_medio_consegna():
 @ensure_csrf_cookie
 @login_required
 def crea_spedizione(request):
-    """Vista per creare una nuova spedizione"""
+    
     # Verifica che l'utente sia un cliente
     if request.user.ruolo != 'cliente':
         messages.error(request, 'Solo i clienti possono creare spedizione.')
@@ -1455,8 +1456,8 @@ def conferma_consegna_cliente(request, spedizione_id):
     return redirect('dashboard_cliente')
 
 @login_required
-def conferma_pagamento(request):
-    """Endpoint per confermare il pagamento dopo Stripe"""
+def conferma_pagamento_stripe(request):
+    # Endpoint per confermare il pagamento dopo Stripe
     if request.method != 'POST':
         return JsonResponse({'error': 'Metodo non consentito'}, status=405)
     
@@ -1464,7 +1465,7 @@ def conferma_pagamento(request):
         return JsonResponse({
             'success': False,
             'error': 'Nessuna spedizione in attesa',
-            'redirect': '/spedizione/pagamento-fallito/'
+            'redirect': reverse(pagamento_fallito) # Serve per usare le rotte di django
         }, status=400)
     
     pending = request.session['pending_shipment']
@@ -1501,7 +1502,10 @@ def conferma_pagamento(request):
         scarica_fattura(request, spedizione.id)  
         
         del request.session['pending_shipment']
-        return JsonResponse({'success': True, 'redirect': '/spedizione/pagamento-confermato/'})
+        return JsonResponse({
+            'success': True, 
+            'redirect': reverse(pagamento_confermato)
+            })
     
     except Exception as e:
         # Aggiorna la variabile solo se pagamento con carta
@@ -1512,14 +1516,14 @@ def conferma_pagamento(request):
         request.session['payment_error'] = str(e)
         return JsonResponse({
             'success': False,
-            'redirect': '/spedizione/pagamento-fallito/',
+            'redirect': reverse(pagamento_fallito),
             'error': str(e)
         })
 
 
 @login_required
 def pagamento_confermato(request):
-    """Mostra la pagina di pagamento completato con successo"""
+    # Mostra la pagina di pagamento completato con successo
     if 'payment_success' not in request.session:
         messages.warning(request, 'Nessun pagamento da confermare.')
         return redirect('dashboard_cliente')

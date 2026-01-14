@@ -21,6 +21,7 @@ from Ledger_Logistic import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #------ PAGINE PUBBLICHE ------
     path('', views.home, name='home'),
     path('servizi/', views.servizi, name='servizi'),
     path('chi-siamo/', views.chi_siamo, name='chi_siamo'),
@@ -30,26 +31,39 @@ urlpatterns = [
     path('resend-otp/', views.resend_otp, name='resend_otp'),
     path('logout/', views.custom_logout, name='logout'),
     path('register/', views.register, name='register'),
+    
+    #------ RESET PASSWORD (ANCHE CON OTP) ------
     path('reset-password/', views.reset_password_request, name='reset_password'),
     path('reset-password/verify-otp/', views.reset_password_verify_otp, name='reset_password_verify_otp'),
     path('reset-password/new/', views.reset_password_new, name='reset_password_new'),
+    
+    # ------ TUTTE LE DASHBOARD ------
     path('dashboard/cliente/', views.dashboard_cliente, name='dashboard_cliente'),
     path('dashboard/corriere/', views.dashboard_corriere, name='dashboard_corriere'),
     path('dashboard/gestore/', views.dashboard_gestore, name='dashboard_gestore'),
+    
+    # ------ SPEDIZIONE E PAGAMENTO CLIENTE ------
     path('dashboard/cliente/spedizione/crea/', views.crea_spedizione, name='crea_spedizione'),
-    path('dashboard/cliente/spedizione/conferma-pagamento/', views.conferma_pagamento, name='conferma_pagamento'),
+    path('dashboard/cliente/spedizione/conferma-pagamento/', views.conferma_pagamento_stripe, name='conferma_pagamento_stripe'),
     path('dashboard/cliente/spedizione/pagamento-confermato/', views.pagamento_confermato, name='pagamento_confermato'),
     path('dashboard/cliente/spedizione/pagamento-fallito/', views.pagamento_fallito, name='pagamento_fallito'),
+    
+    # ----- GESTIONE SPEDIZIONI CORRIERE ------
     path('dashboard/corriere/spedizione/completa/<str:codice_tracciamento>/', views.completa_consegna, name='completa_consegna'),
     path('dashboard/corriere/spedizione/accetta/<str:codice_tracciamento>/', views.accetta_spedizione, name='accetta_spedizione'),
     path('dashboard/corriere/spedizione/rifiuta/<str:codice_tracciamento>/', views.rifiuta_spedizione, name='rifiuta_spedizione'),
+    
+    # ------ ASSEGNAZIONE SPEDIZIONI GESTORE ------
     path('dashboard/gestore/assegna-spedizioni/', views.assegna_spedizioni, name='assegna_spedizioni'),
+    #------ FATTURE E CONFERMA CONSEGNA CLIENTE ------
     path('dashboard/cliente/fattura/<int:spedizione_id>/', views.scarica_fattura, name='scarica_fattura'),
     path('dashboard/cliente/spedizioni/conferma-cliente/<int:spedizione_id>/', views.conferma_consegna_cliente, name='conferma_consegna_cliente'),
+    
     # ------ RECLAMI ------
     path('dashboard/gestore/gestione_reclami/', views.view_gestione_reclami, name='gestione_reclami'),
     path('dashboard/gestore/gestione_reclami/<int:id_reclamo>', views.gestisci_reclamo, name='gestisci_reclamo'),
     path('dashboard/cliente/spedizioni/reclami/<int:spedizione_id>/', views.invia_reclamo, name='reclami_spedizione'),
+    
     # ------ GESTIONE SPEDIZIONI ------
     path('dashboard/gestore/gestione_spedizioni', views.gestione_spedizioni, name='gestione_spedizioni'),
     path('dashboard/gestore/gestione_spedizioni/dettaglio/<int:spedizione_id>', views.dettaglio_spedizione, name='dettaglio_spedizione')
