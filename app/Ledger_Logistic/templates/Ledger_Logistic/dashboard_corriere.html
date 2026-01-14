@@ -412,7 +412,9 @@
     // Gestione Modal
     function openModal(codicePacco) {
         document.getElementById('consegnaModal').classList.remove('hidden');
-        document.getElementById('consegnaForm').action = '/spedizione/completa/' + codicePacco + '/';
+         const completaConsegnaUrlTemplate = "{% url 'completa_consegna' 'CODICE_TRACCIAMENTO' %}"; // URL template con segnaposto del codice della spedizione
+         const actionUrl = completaConsegnaUrlTemplate.replace('CODICE_TRACCIAMENTO', codicePacco); // Sostituisco il codice nella stringa
+        document.getElementById('consegnaForm').action = actionUrl;
         // Blocca lo scroll della pagina
         document.body.style.overflow = 'hidden';
     }

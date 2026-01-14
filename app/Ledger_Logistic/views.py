@@ -1563,7 +1563,7 @@ def pagamento_fallito(request):
 
 @login_required
 def completa_consegna(request, codice_tracciamento):
-    """Vista per completare una consegna e assegnare automaticamente il prossimo spedizione"""
+    # Vista per completare una consegna e assegnare automaticamente il prossimo spedizione
     # Verifica che l'utente sia un corriere
     if request.user.ruolo != 'corriere':
         messages.error(request, 'Solo i corrieri possono completare consegne.')
