@@ -1,0 +1,455 @@
+{
+  "scale": 100,
+  "rows": [
+    {
+      "id": 1,
+      "nomeProva": "GPS",
+      "prob": [
+        1,
+        -1,
+        1
+      ],
+      "p_cond": 80,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "nomeProva": "GPS",
+      "prob": [
+        1,
+        -1,
+        0
+      ],
+      "p_cond": 95,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 3,
+      "nomeProva": "GPS",
+      "prob": [
+        0,
+        -1,
+        1
+      ],
+      "p_cond": 20,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 4,
+      "nomeProva": "GPS",
+      "prob": [
+        0,
+        -1,
+        0
+      ],
+      "p_cond": 40,
+      "eventi": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        1,
+        1,
+        1
+      ],
+      "p_cond": 85,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 10,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        1,
+        1,
+        0
+      ],
+      "p_cond": 95,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 11,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        1,
+        0,
+        0
+      ],
+      "p_cond": 60,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 12,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        0,
+        0,
+        0
+      ],
+      "p_cond": 10,
+      "eventi": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 13,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        1,
+        0,
+        1
+      ],
+      "p_cond": 30,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 14,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        0,
+        1,
+        1
+      ],
+      "p_cond": 20,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 15,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        0,
+        0,
+        1
+      ],
+      "p_cond": 5,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 16,
+      "nomeProva": "Conferma Cliente",
+      "prob": [
+        0,
+        1,
+        0
+      ],
+      "p_cond": 30,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 17,
+      "nomeProva": "Traffico",
+      "prob": [
+        1,
+        -1,
+        1
+      ],
+      "p_cond": 80,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 18,
+      "nomeProva": "Traffico",
+      "prob": [
+        1,
+        -1,
+        0
+      ],
+      "p_cond": 70,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 19,
+      "nomeProva": "Traffico",
+      "prob": [
+        0,
+        -1,
+        1
+      ],
+      "p_cond": 60,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 20,
+      "nomeProva": "Traffico",
+      "prob": [
+        0,
+        -1,
+        0
+      ],
+      "p_cond": 90,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 25,
+      "nomeProva": "Fattura emessa",
+      "prob": [
+        -1,
+        1,
+        -1
+      ],
+      "p_cond": 96,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 26,
+      "nomeProva": "Fattura emessa",
+      "prob": [
+        -1,
+        0,
+        -1
+      ],
+      "p_cond": 4,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 27,
+      "nomeProva": "Conferma Gestore del circuito del pagamento",
+      "prob": [
+        -1,
+        1,
+        -1
+      ],
+      "p_cond": 90,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 28,
+      "nomeProva": "Conferma Gestore del circuito del pagamento",
+      "prob": [
+        -1,
+        0,
+        -1
+      ],
+      "p_cond": 10,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 29,
+      "nomeProva": "Disponibilità veicolo",
+      "prob": [
+        1,
+        -1,
+        1
+      ],
+      "p_cond": 90,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 30,
+      "nomeProva": "Disponibilità veicolo",
+      "prob": [
+        1,
+        -1,
+        0
+      ],
+      "p_cond": 90,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 31,
+      "nomeProva": "Disponibilità veicolo",
+      "prob": [
+        0,
+        -1,
+        1
+      ],
+      "p_cond": 10,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 32,
+      "nomeProva": "Disponibilità veicolo",
+      "prob": [
+        0,
+        -1,
+        0
+      ],
+      "p_cond": 10,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 33,
+      "nomeProva": "Meteo sfavorevole",
+      "prob": [
+        -1,
+        -1,
+        1
+      ],
+      "p_cond": 20,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 34,
+      "nomeProva": "Meteo sfavorevole",
+      "prob": [
+        -1,
+        -1,
+        0
+      ],
+      "p_cond": 20,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 35,
+      "nomeProva": "Disponibilità corriere",
+      "prob": [
+        1,
+        -1,
+        1
+      ],
+      "p_cond": 10,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 36,
+      "nomeProva": "Disponibilità corriere",
+      "prob": [
+        1,
+        -1,
+        0
+      ],
+      "p_cond": 30,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 37,
+      "nomeProva": "Disponibilità corriere",
+      "prob": [
+        0,
+        -1,
+        1
+      ],
+      "p_cond": 20,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 38,
+      "nomeProva": "Disponibilità corriere",
+      "prob": [
+        0,
+        -1,
+        0
+      ],
+      "p_cond": 42,
+      "eventi": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}
