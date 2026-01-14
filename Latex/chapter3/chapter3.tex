@@ -213,13 +213,13 @@ In caso di successo nell'inserimento di una email valida, è richiesto un codice
 
 \subsection{Modellazione tramite PRISM}
 
-Per analizzare la catena di Markov della funzione di login e dell'attaccante, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. 
+Per analizzare la catena di Markov della funzione di login e dell'attaccante, è stato utilizzato il tool PRISM, un software per la modellazione e l'analisi di sistemi stocastici. PRISM consente di definire modelli formali, come le catene di Markov, e di eseguire analisi quantitative su di essi. Il modello formale usato per modellare la funzione di login è una \textbf{Discrete-Time Markov Chain (DTMC)}, che rappresenta un sistema che evolve nel tempo in modo discreto, con transizioni tra stati che avvengono in modo probabilistico. Ciò permette anche l'analisi di proprietà che il sistema dovrebbe soddisfare. Inoltre, PRISM esegue automaticamente la composizione dei vari moduli che compongono il modello finale, permettendo di definire modelli complessi ed effettuare simulazioni su di esso. Per sincronizzare i due moduli, sono state usate etichette uguali per le transizioni che necessitano di sincronizzazione tra i moduli.
 
-\subsubsection{Modellazione della funzione di login tramite PRISM}
-Di seguito è riportato il codice PRISM utilizzato per il modello della funzione di login:
+\subsubsection{Codice PRISM della composizione delle catene di Markov}
+Di seguito è riportato il codice PRISM utilizzato per il modello:
 \vspace{1cm}
 
-%%%%%%%%%%%%%%%% MODELLO PRISM LOGIN %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% MODELLO PRISM %%%%%%%%%%%%%%%%%
 \begin{highlightPrism}
 \hfuzz=35pt
 
@@ -825,7 +825,8 @@ Di seguito è riportato il codice PRISM utilizzato per il modello della funzione
 
 \clearpage
 
-\subsection{Simulazione tramite PRISM}
+%%%%%%%%%%%%% SIMULAZIONI %%%%%%%%%%%%%%%%
+\subsection{Simulazioni tramite PRISM}
 
 Sfruttando il simulatore di PRISM, sono state eseguite delle simulazioni per analizzare il comportamento del sistema in diversi scenari. Di seguito sono riportate alcune simulazioni:
 
@@ -905,7 +906,7 @@ Le figure 3.6 e 3.7 mostrano la simulazione di un utente che effettua la procedu
 
 \clearpage
 
-%%%%%%%%% SAFETY %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% SAFETY %%%%%%%%%%%%%%%%%%%%
 
 \subsection{Verifica di una proprietà di Safety}
 
@@ -938,7 +939,7 @@ Nella seconda stringa, ci chiediamo qual'è la probabilità che prima o poi si r
 
 \FloatBarrier
 
-%%%%%%%%% RESPONSE %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% RESPONSE %%%%%%%%%%%%%%%%%%
 \subsection{Verifica di una proprietà di response}
 
 La proprietà di \textit{Response} rappresenta il concetto che "se qualcosa di buono accade, allora qualcosa di buono deve accadere sempre". In altre parole, una proprietà di response garantisce che se un evento desiderato si verifica, allora un altro evento desiderato deve seguire. Si è deciso di modellare la "un utente con le credenziali corrette deve riuscire ad accedere al sistema infinitamente spesso". Questa proprietà può essere rappresentata in PRISM tramite la seguente stringa: 
