@@ -2,10 +2,10 @@
   {
     "id": 1,
     "nomeProva": "GPS",
-    "prob1": true,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.8",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 80,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -13,10 +13,10 @@
   {
     "id": 2,
     "nomeProva": "GPS",
-    "prob1": true,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.95",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 95,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -24,10 +24,10 @@
   {
     "id": 3,
     "nomeProva": "GPS",
-    "prob1": false,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.2",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 20,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -35,10 +35,10 @@
   {
     "id": 4,
     "nomeProva": "GPS",
-    "prob1": false,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.4",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 40,
     "idEvento1_id": 1,
     "idEvento2_id": 1,
     "idEvento3_id": 1
@@ -46,10 +46,10 @@
   {
     "id": 9,
     "nomeProva": "Conferma Cliente",
-    "prob1": true,
-    "prob2": true,
-    "prob3": true,
-    "probabilita_condizionata": "0.85",
+    "prob1": "true",
+    "prob2": "true",
+    "prob3": "true",
+    "probabilita_condizionata": 85,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -57,10 +57,10 @@
   {
     "id": 10,
     "nomeProva": "Conferma Cliente",
-    "prob1": true,
-    "prob2": true,
-    "prob3": false,
-    "probabilita_condizionata": "0.95",
+    "prob1": "true",
+    "prob2": "true",
+    "prob3": "false",
+    "probabilita_condizionata": 95,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -68,10 +68,10 @@
   {
     "id": 11,
     "nomeProva": "Conferma Cliente",
-    "prob1": true,
-    "prob2": false,
-    "prob3": false,
-    "probabilita_condizionata": "0.6",
+    "prob1": "true",
+    "prob2": "false",
+    "prob3": "false",
+    "probabilita_condizionata": 60,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -79,10 +79,10 @@
   {
     "id": 12,
     "nomeProva": "Conferma Cliente",
-    "prob1": false,
-    "prob2": false,
-    "prob3": false,
-    "probabilita_condizionata": "0.1",
+    "prob1": "false",
+    "prob2": "false",
+    "prob3": "false",
+    "probabilita_condizionata": 10,
     "idEvento1_id": 1,
     "idEvento2_id": 1,
     "idEvento3_id": 1
@@ -90,10 +90,10 @@
   {
     "id": 13,
     "nomeProva": "Conferma Cliente",
-    "prob1": true,
-    "prob2": false,
-    "prob3": true,
-    "probabilita_condizionata": "0.3",
+    "prob1": "true",
+    "prob2": "false",
+    "prob3": "true",
+    "probabilita_condizionata": 30,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -101,10 +101,10 @@
   {
     "id": 14,
     "nomeProva": "Conferma Cliente",
-    "prob1": false,
-    "prob2": true,
-    "prob3": true,
-    "probabilita_condizionata": "0.2",
+    "prob1": "false",
+    "prob2": "true",
+    "prob3": "true",
+    "probabilita_condizionata": 20,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -112,10 +112,10 @@
   {
     "id": 15,
     "nomeProva": "Conferma Cliente",
-    "prob1": false,
-    "prob2": false,
-    "prob3": true,
-    "probabilita_condizionata": "0.05",
+    "prob1": "false",
+    "prob2": "false",
+    "prob3": "true",
+    "probabilita_condizionata": 5,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -123,10 +123,10 @@
   {
     "id": 16,
     "nomeProva": "Conferma Cliente",
-    "prob1": false,
-    "prob2": true,
-    "prob3": false,
-    "probabilita_condizionata": "0.3",
+    "prob1": "false",
+    "prob2": "true",
+    "prob3": "false",
+    "probabilita_condizionata": 30,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -134,10 +134,10 @@
   {
     "id": 17,
     "nomeProva": "Traffico",
-    "prob1": true,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.8",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 80,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -145,10 +145,10 @@
   {
     "id": 18,
     "nomeProva": "Traffico",
-    "prob1": true,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.4",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 40,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -156,10 +156,10 @@
   {
     "id": 19,
     "nomeProva": "Traffico",
-    "prob1": false,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.9",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 90,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -167,10 +167,10 @@
   {
     "id": 20,
     "nomeProva": "Traffico",
-    "prob1": false,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.5",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 50,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -178,10 +178,10 @@
   {
     "id": 25,
     "nomeProva": "Fattura emessa",
-    "prob1": null,
-    "prob2": true,
-    "prob3": null,
-    "probabilita_condizionata": "0.95",
+    "prob1": "",
+    "prob2": "true",
+    "prob3": "",
+    "probabilita_condizionata": 95,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -189,10 +189,10 @@
   {
     "id": 26,
     "nomeProva": "Fattura emessa",
-    "prob1": null,
-    "prob2": false,
-    "prob3": null,
-    "probabilita_condizionata": "0.1",
+    "prob1": "",
+    "prob2": "false",
+    "prob3": "",
+    "probabilita_condizionata": 10,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -200,10 +200,10 @@
   {
     "id": 27,
     "nomeProva": "Conferma Gestore del circuito del pagamento",
-    "prob1": null,
-    "prob2": true,
-    "prob3": null,
-    "probabilita_condizionata": "0.9",
+    "prob1": "",
+    "prob2": "true",
+    "prob3": "",
+    "probabilita_condizionata": 90,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -211,10 +211,10 @@
   {
     "id": 28,
     "nomeProva": "Conferma Gestore del circuito del pagamento",
-    "prob1": null,
-    "prob2": false,
-    "prob3": null,
-    "probabilita_condizionata": "0.1",
+    "prob1": "",
+    "prob2": "false",
+    "prob3": "",
+    "probabilita_condizionata": 10,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -222,10 +222,10 @@
   {
     "id": 29,
     "nomeProva": "Disponibilità veicolo",
-    "prob1": true,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.7",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 70,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -233,10 +233,10 @@
   {
     "id": 30,
     "nomeProva": "Disponibilità veicolo",
-    "prob1": true,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.9",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 90,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -244,10 +244,10 @@
   {
     "id": 31,
     "nomeProva": "Disponibilità veicolo",
-    "prob1": false,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.1",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 10,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -255,10 +255,10 @@
   {
     "id": 32,
     "nomeProva": "Disponibilità veicolo",
-    "prob1": false,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.3",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 30,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -266,10 +266,10 @@
   {
     "id": 33,
     "nomeProva": "Meteo sfavorevole",
-    "prob1": null,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.4",
+    "prob1": "",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 40,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -277,10 +277,10 @@
   {
     "id": 34,
     "nomeProva": "Meteo sfavorevole",
-    "prob1": null,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.2",
+    "prob1": "",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 20,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -288,10 +288,10 @@
   {
     "id": 35,
     "nomeProva": "Disponibilità corriere",
-    "prob1": true,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.9",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 90,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -299,10 +299,10 @@
   {
     "id": 36,
     "nomeProva": "Disponibilità corriere",
-    "prob1": true,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.95",
+    "prob1": "true",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 95,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -310,10 +310,10 @@
   {
     "id": 37,
     "nomeProva": "Disponibilità corriere",
-    "prob1": false,
-    "prob2": null,
-    "prob3": true,
-    "probabilita_condizionata": "0.2",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "true",
+    "probabilita_condizionata": 20,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -321,10 +321,10 @@
   {
     "id": 38,
     "nomeProva": "Disponibilità corriere",
-    "prob1": false,
-    "prob2": null,
-    "prob3": false,
-    "probabilita_condizionata": "0.45",
+    "prob1": "false",
+    "prob2": "",
+    "prob3": "false",
+    "probabilita_condizionata": 45,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3

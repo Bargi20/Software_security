@@ -52,17 +52,27 @@ def main():
         # Parsing righe in formato JSON come CSV
         data = []
         for r in cursor.fetchall():
-            data.append({
+            # Manteniamo solo i booleani validi (True/False)
+            bool_values = {}
+            for key in ["prob1", "prob2", "prob3"]:
+                val = r[key]
+                if val is not None:
+                    # Converte 1/0 in True/False, lascia i booleani già True/False
+                    bool_values[key] = bool(val)
+
+            record = {
                 "id": r["id"],
                 "nomeProva": r["nomeProva"].strip() if r["nomeProva"] else "",
-                "prob1": bool_to_str(r["prob1"]),
-                "prob2": bool_to_str(r["prob2"]),
-                "prob3": bool_to_str(r["prob3"]),
-                "probabilita_condizionata": r["probabilita_condizionata"].strip() if r["probabilita_condizionata"] else "",
+                "prob1": r["prob1"].strip() if r["prob1"] else "",
+                "prob2": r["prob2"].strip() if r["prob2"] else "",
+                "prob3": r["prob3"].strip() if r["prob3"] else "",
+                "probabilita_condizionata": r["probabilita_condizionata"],
                 "idEvento1_id": r["idEvento1_id"],
                 "idEvento2_id": r["idEvento2_id"],
                 "idEvento3_id": r["idEvento3_id"]
-            })
+            }
+
+            data.append(record)
 
         # Salvataggio JSON
         with open(OUTPUT_JSON, "w", encoding="utf-8") as f:

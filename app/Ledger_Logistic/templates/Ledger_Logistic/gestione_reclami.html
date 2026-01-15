@@ -83,9 +83,11 @@
                                 {% endif %}
                             </td>
                             <td class="px-6 py-4 text-right space-x-2">
+                                <a href="{% url 'gestisci_reclamo' reclamo.id %}">
                                    <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition text-xs font-semibold">
                                     Visualizza
                                     </button>
+                                </a>
                             </td>
                         </tr>
                         {% empty %}

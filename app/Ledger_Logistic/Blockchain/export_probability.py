@@ -6,11 +6,13 @@ import json
 # -------------------------------------------------------------------
 # Configurazione Django
 # -------------------------------------------------------------------
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")) # Due livelli sopra rispetto alla posizione di questo file
+#print(f"BASE_DIR impostato a: {BASE_DIR}")
 sys.path.insert(0, BASE_DIR)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "software_security.settings")
-django.setup()
+django.setup() # Inizializza l'ambiente Django per prendere le variabili d'ambiente nel file settings.py
 
 from django.conf import settings
 from web3.middleware import ExtraDataToPOAMiddleware
@@ -21,7 +23,7 @@ from import_probability import main as import_probability
 # Funzioni Blockchain
 # -------------------------------------------------------------------
 
-def carica_contratto_ledger():
+def load_contract():
     """Carica ABI e indirizzo del contratto Oracolo dal deployment"""
     PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
     DEPLOY_PATH = os.path.join(PROJECT_ROOT, "ignition", "deployments", "chain-1338")
@@ -34,6 +36,7 @@ def carica_contratto_ledger():
     if not os.path.exists(address_path):
         raise FileNotFoundError(f"Address non trovato: {address_path}")
 
+    # Carica ABI e indirizzo dai rispettivi JSON
     with open(abi_path, "r", encoding="utf-8") as f:
         contract_abi = json.load(f)
     with open(address_path, "r", encoding="utf-8") as f:
@@ -42,81 +45,99 @@ def carica_contratto_ledger():
     return contract_abi, contract_address
 
 
-def invia_tabella_json_su_besu(file_path):
-    """Invia l'intera tabella dei record JSON in un'unica transazione"""
+def invia_tabella(file_path):
+    """Invia la tabella al contratto prendendo solo i due booleani presenti in ogni record."""
 
     # Leggi JSON
-    try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            records = json.load(f)
-    except Exception as e:
-        raise ValueError(f"Errore nel caricare il file JSON: {e}")
+    with open(file_path, "r", encoding="utf-8") as f:
+        records = json.load(f)
 
     if not records:
         raise Exception("Il file JSON è vuoto.")
 
-    # Connessione a Besu
     web3 = connect_to_besu()
-    web3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
-
     private_key = settings.BESU_PRIVATE_KEYS[0]
     account = get_account(private_key)
 
-    contract_abi, contract_address = carica_contratto_ledger()
+    contract_abi, contract_address = load_contract()
     contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
-    # genera il payload della tabella da mandare come transazione
     tabella = []
     for r in records:
-        prob1Exists = r.get("prob1") is not None
-        prob2Exists = r.get("prob2") is not None
-        prob3Exists = r.get("prob3") is not None
+        
         tabella.append([
             int(r["id"]),
             r["nomeProva"],
-            bool(r["prob1"]) if prob1Exists else False,
-            bool(prob1Exists),
-            bool(r["prob2"]) if prob2Exists else False,
-            bool(prob2Exists),
-            bool(r["prob3"]) if prob3Exists else False,
-            bool(prob3Exists),
-            r["probabilita_condizionata"],
+            r["prob1"],
+            r["prob2"],
+            r["prob3"],
+            int(r["probabilita_condizionata"]),
             int(r["idEvento1_id"]),
             int(r["idEvento2_id"]),
             int(r["idEvento3_id"])
         ])
 
+    if not tabella:
+        raise Exception("Nessun record valido da inviare.")
+
+    # Invio al contratto
     tx_function = contract.functions.addRecords(tabella)
-    nonce = web3.eth.get_transaction_count(account.address, block_identifier='latest')
     tx = tx_function.build_transaction({
         'from': account.address,
-        'nonce': nonce,
-        'gas': 8000000,       
-        'gasPrice': 20 * 10**9
+        'nonce': web3.eth.get_transaction_count(account.address, block_identifier='latest'),
+        'gas': 8000000,
+        'gasPrice': 0
     })
 
     signed_txn = web3.eth.account.sign_transaction(tx, private_key)
-    try:
-        tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_transaction)
-        print(f"[OK] Tabella inviata in un'unica transazione: {tx_hash.hex()}")
-        return tx_hash.hex()
-    except Exception as e:
-        raise Exception(f"Errore nell'invio della transazione: {e}")
+    tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_transaction)
+    print(f"[OK] Tabella inviata: {tx_hash.hex()}")
+    return tx_hash.hex()
 
 
-def leggi_tabella_da_besu():
-    """Legge tutti i record dal contratto Oracolo"""
+def leggi_tabella_da_besu(tx_hash: str):
     web3 = connect_to_besu()
-    web3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
+    #web3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
 
-    contract_abi, contract_address = carica_contratto_ledger()
+    # Carica ABI e indirizzo del contratto
+    contract_abi, contract_address = load_contract()
     contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
     try:
-        records = contract.functions.getRecords().call()
+        # Ottieni il receipt della transazione
+        receipt = web3.eth.get_transaction_receipt(tx_hash)
+        block_number = receipt.blockNumber
+
+        # Leggi i record esattamente al blocco della transazione
+        # Se chiami contract.functions.getRecords().call() senza specificare il blocco, stai leggendo lo stato corrente del contratto.
+        # Tra il momento in cui invii la tabella e il momento in cui leggi, qualcun altro potrebbe aver scritto nuovi record o modificato l’array.
+        # In quel caso, i dati letti potrebbero non corrispondere a quelli appena inviati.
+        # Specificando block_identifier=receipt.blockNumber, chiedi a Web3 di leggere i dati come erano subito dopo quel blocco, cioè dopo la tua transazione. Questo ti garantisce coerenza.
+        records = contract.functions.getRecords().call(block_identifier=block_number)
         return records
     except Exception as e:
-        raise Exception(f"Errore nel leggere i record dal contratto: {e}")
+        raise Exception(f"Errore nel leggere i record dal contratto dalla tx {tx_hash}: {e}")
+
+def getCijFiltered(gps: str, prob1: str, prob2: str, prob3: str):
+    web34 = connect_to_besu()
+    # Carica ABI e indirizzo del contratto
+    contract_abi, contract_address = load_contract()
+    contract = web34.eth.contract(address=contract_address, abi=contract_abi)
+
+    try:
+        # Ottieni il receipt della transazione
+        receipt2 = web34.eth.get_transaction_receipt(tx_hash)
+        block_number = receipt2.blockNumber
+
+        # Leggi i record esattamente al blocco della transazione
+        # Se chiami contract.functions.getRecords().call() senza specificare il blocco, stai leggendo lo stato corrente del contratto.
+        # Tra il momento in cui invii la tabella e il momento in cui leggi, qualcun altro potrebbe aver scritto nuovi record o modificato l’array.
+        # In quel caso, i dati letti potrebbero non corrispondere a quelli appena inviati.
+        # Specificando block_identifier=receipt.blockNumber, chiedi a Web3 di leggere i dati come erano subito dopo quel blocco, cioè dopo la tua transazione. Questo ti garantisce coerenza.
+        record2 = contract.functions.getCijFiltered(gps, "true", prob1, prob2, prob3).call(block_identifier=block_number)
+        return record2
+    except Exception as e:
+        raise Exception(f"Errore nel leggere i record dal contratto dalla tx {tx_hash}: {e}")
 
 
 # -------------------------------------------------------------------
@@ -136,12 +157,12 @@ if __name__ == "__main__":
 
     print("\n=== INVIO TABELLA SU BESU ===")
     try:
-        tx_hash = invia_tabella_json_su_besu(JSON_PATH)
+        tx_hash = invia_tabella(JSON_PATH)
     except Exception as e:
         print(f"[ERRORE] Invio su Besu fallito: {e}")
         exit(1)
 
-    print("\n=== VERIFICA TRANSAZIONE ===")
+    #print("\n=== VERIFICA TRANSAZIONE ===")
     web3 = connect_to_besu()
     receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
     if receipt.status == 1:
@@ -149,8 +170,13 @@ if __name__ == "__main__":
     else:
         print(f"[ERRORE] Transazione fallita: {tx_hash}")
 
-    print("\n=== LETTURA TABELLA DAL CONTRATTO ===")
-    records = leggi_tabella_da_besu()
-    print(f"Record caricati: {len(records)}")
-    for r in records:
-        print(r)
+    #print("\n=== LETTURA TABELLA DAL CONTRATTO (al blocco della transazione) ===")
+    records = leggi_tabella_da_besu(tx_hash)
+    
+    
+    print("\n=== record c_ij ===")
+    record = getCijFiltered("Fattura emessa", "", "true", "")
+    print(record)
+    
+    
+    
