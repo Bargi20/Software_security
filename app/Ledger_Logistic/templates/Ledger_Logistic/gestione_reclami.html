@@ -56,8 +56,7 @@
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Ordine</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Cliente</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Tipologia</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Motivo</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Stato</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold  text-gray-600 uppercase">Stato</th>
                             <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Azioni</th>
                         </tr>
                     </thead>
@@ -73,9 +72,6 @@
                             </td>
                             <td class="px-6 py-4 text-gray-700">
                                 {{ reclamo.evento.nomeEvento}}
-                            </td>
-                            <td class="px-6 py-4 text-gray-600">
-                                {{ reclamo.descrizione }}
                             </td>
                             <td class="px-6 py-4">
                                 {% if reclamo.risolto == True %}

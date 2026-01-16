@@ -765,7 +765,8 @@ INSERT INTO "public"."Ledger_Logistic_reclamo" (
         "data_creazione",
         "risolto",
         "esito",
-        "evento_id",
+        "evento1_id",
+        "evento2_id",
         "spedizione_id"
     )
 VALUES (
@@ -776,6 +777,7 @@ VALUES (
         'false',
         'Non verificato',
         '1',
+        '2',
         '1'
     ),
     (
@@ -786,6 +788,7 @@ VALUES (
         'false',
         'Non verificato',
         '1',
+        null,
         '7'
     ),
     (
@@ -796,5 +799,6 @@ VALUES (
         'false',
         'Non verificato',
         '1',
+        null,
         '8'
     );

@@ -3,6 +3,7 @@ import sys
 import django
 import json
 
+from django.shortcuts import get_object_or_404
 # -------------------------------------------------------------------
 # Configurazione Django
 # -------------------------------------------------------------------
@@ -105,7 +106,7 @@ def leggi_tabella_da_besu(tx_hash: str):
 
     try:
         # Ottieni il receipt della transazione
-        receipt = web3.eth.get_transaction_receipt(tx_hash)
+        # receipt = web3.eth.get_transaction_receipt(tx_hash)
 
         # Leggi i record esattamente al blocco della transazione
         # Se chiami contract.functions.getRecords().call() senza specificare il blocco, stai leggendo lo stato corrente del contratto.
@@ -125,7 +126,7 @@ def getA_ij(gps: str, strProva: str, prob1: str, prob2: str, prob3: str):
 
     try:
         # Ottieni il receipt della transazione
-        receipt2 = web34.eth.get_transaction_receipt(tx_hash)
+        # receipt2 = web34.eth.get_transaction_receipt(tx_hash)
 
         # Leggi i record esattamente al blocco della transazione
         # Se chiami contract.functions.getRecords().call() senza specificare il blocco, stai leggendo lo stato corrente del contratto.
@@ -142,7 +143,8 @@ def getA_ij(gps: str, strProva: str, prob1: str, prob2: str, prob3: str):
 # MAIN
 # -------------------------------------------------------------------
 
-if __name__ == "__main__":
+def main():
+    calcola_probabilita(1)
     print("=== IMPORT PROBABILITÀ DAL DATABASE ===")
     try:
         import_probability()
@@ -169,12 +171,33 @@ if __name__ == "__main__":
         print(f"[ERRORE] Transazione fallita: {tx_hash}")
 
     #print("\n=== LETTURA TABELLA DAL CONTRATTO (al blocco della transazione) ===")
-    records = leggi_tabella_da_besu(tx_hash)
+    #records = leggi_tabella_da_besu(tx_hash)
     
     
     print("\n=== record c_ij ===")
     record = getA_ij("Fattura emessa", "false", "", "true", "")
     print(record)
+
+#   questa è la funzione che viene chiamata quando il gestore vuole verificare un reclamo. Qui si prende la spedizione associata al reclamo e si calcola la probabilità dell'evento del reclamo
+def calcola_probabilita(id_reclamo):
+    from Ledger_Logistic.models import Spedizione, Reclamo, Evento
+    from django.forms.models import model_to_dict
+    reclamo = Reclamo.objects.get(id=id_reclamo)
+    spedizione = model_to_dict(Spedizione.objects.get(id=id_reclamo))
+    prove = [spedizione[prova] for prova in ['traffico', 'veicolo_disponibile', 'meteo_sfavorevole', 'conferma_del_gestore_di_pagamento', 'fattura_emessa', 'gps', 'conferma_cliente', 'disponibilita_corriere']]
+    print(spedizione)
+    print(prove)
+    evento1 = model_to_dict(Evento.objects.get(id=reclamo.evento1_id))
+    
+    if reclamo.evento2_id:
+        evento2 = model_to_dict(Evento.objects.get(id=reclamo.evento2_id))
+        return evento1, evento2
+    else :
+        return evento1
+
+if __name__ == "__main__":
+    main()
+        
     
     
     

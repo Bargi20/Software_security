@@ -429,51 +429,37 @@ class Spedizione(models.Model):
     
     # PROVE PER ORACOLO BAYESIANO
     traffico = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='Presenza Traffico'
     )
     
     veicolo_disponibile = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='Veicolo Disponibile'
     )
     
     meteo_sfavorevole = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='Meteo Sfavorevole'
     )
     
     conferma_del_gestore_di_pagamento = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='conferma del gestore di pagamento'
     )
     
     fattura_emessa = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='Fattura Emessa'
     )
 
     gps = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='GPS'
     )
     
     conferma_cliente = models.BooleanField(
-        null=True,
-        blank=True,
-        default=None,
+        default=False,
         verbose_name='Conferma del Cliente'
     )
 
@@ -517,11 +503,19 @@ class Reclamo(models.Model):
         verbose_name='nomeReclamo')
     
         
-    evento = models.ForeignKey(
+    evento1 = models.ForeignKey(
     'Evento',
     on_delete=models.CASCADE,
-    related_name='eventi',
-    verbose_name='Evento'
+    related_name='evento1',
+    verbose_name='Evento1'
+    )
+    evento2 = models.ForeignKey(
+    'Evento',
+    null=True,
+    blank=True,
+    on_delete=models.CASCADE,
+    related_name='evento2',
+    verbose_name='Evento2'
     )
 
     descrizione = models.CharField(max_length=600, verbose_name='Descrizione Reclamo')
