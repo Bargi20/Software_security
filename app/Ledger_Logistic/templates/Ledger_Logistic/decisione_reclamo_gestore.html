@@ -92,15 +92,14 @@
             <!-- Azioni -->
             <div class="px-6 py-4 bg-gray-50 border-t flex justify-end gap-3">
 
-                <a href="{% url 'dashboard_gestore' %}"
+                <a href="{% url 'gestione_reclami' %}"
                    class="px-5 py-2 text-sm font-semibold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
                     Torna indietro
                 </a>
 
-                <a href="{% url 'home' %}"
-                   class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white hover:bg-blue-700 transition shadow">
+                <button id="verifica_reclamo_btn" class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white hover:bg-blue-700 transition shadow">
                     Verifica reclamo
-                </a>
+            </button>
 
             </div>
 
