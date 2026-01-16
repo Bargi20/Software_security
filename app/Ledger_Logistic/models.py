@@ -276,9 +276,9 @@ class Evento(models.Model):
 class Probabilita_condizionate(models.Model):
     """Prova per l'oracolo bayesiano"""
     nomeProva = models.CharField(max_length=100)
-    evento1 = models.BooleanField(default=False, null=True, blank=True)
-    evento2 = models.BooleanField(default=False, null=True, blank=True)
-    evento3 = models.BooleanField(default=False, null=True, blank=True)
+    evento1 = models.TextField(default=False, null=True, blank=True)
+    evento2 = models.TextField(default=False, null=True, blank=True)
+    evento3 = models.TextField(default=False, null=True, blank=True)
     idEvento1 = models.ForeignKey(
         Evento, 
         on_delete=models.CASCADE, 
@@ -300,7 +300,7 @@ class Probabilita_condizionate(models.Model):
         null=True,
         blank=True
     )
-    probabilita_condizionata = models.TextField()  # Rimuovi max_length
+    probabilita_condizionata = models.IntegerField()  # Rimuovi max_length
     
     class Meta:
         verbose_name = "Prova per oracolo"

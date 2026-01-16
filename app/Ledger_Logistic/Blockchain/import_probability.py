@@ -47,9 +47,9 @@ def main():
             record = {
                 "id": r["id"],
                 "nomeProva": r["nomeProva"].strip() if r["nomeProva"] else "",
-                "prob1": r["prob1"].strip() if r["prob1"] else "",
-                "prob2": r["prob2"].strip() if r["prob2"] else "",
-                "prob3": r["prob3"].strip() if r["prob3"] else "",
+                "evento1": r["evento1"].strip() if r["evento1"] else "",
+                "evento2": r["evento2"].strip() if r["evento2"] else "",
+                "evento3": r["evento3"].strip() if r["evento3"] else "",
                 "probabilita_condizionata": r["probabilita_condizionata"],
                 "idEvento1_id": r["idEvento1_id"],
                 "idEvento2_id": r["idEvento2_id"],

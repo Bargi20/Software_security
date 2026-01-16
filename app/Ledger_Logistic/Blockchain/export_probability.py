@@ -68,9 +68,9 @@ def invia_tabella(file_path):
         tabella.append([
             int(r["id"]),
             r["nomeProva"],
-            r["prob1"],
-            r["prob2"],
-            r["prob3"],
+            r["evento1"],
+            r["evento2"],
+            r["evento3"],
             int(r["probabilita_condizionata"]),
             int(r["idEvento1_id"]),
             int(r["idEvento2_id"]),
