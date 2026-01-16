@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
+
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 contract Oracolo {
-
+    using Strings for string;
     struct Record {
         uint16 id;
         string nomeProva;
@@ -36,34 +38,34 @@ contract Oracolo {
         // -------------------------------
     // Filtra per nomeProva e combinazione di prob1/prob2/prob3
     // -------------------------------
-function getCijFiltered(
-    string memory nomeProvaFilter,
-    string memory boolProva,
-    string memory prob1Filter,
-    string memory prob2Filter,
-    string memory prob3Filter
+function getA_ij(
+    string memory nomeProva,
+    string memory checkProva,
+    string memory prob1,
+    string memory prob2,
+    string memory prob3
 ) public view returns (uint8) {
     for (uint i = 0; i < records.length; i++) {
         Record storage r = records[i];
 
-        if (keccak256(bytes(r.nomeProva)) != keccak256(bytes(nomeProvaFilter))) {
+        if (!(r.nomeProva.equal(nomeProva))) {
             continue;
         }
         if (
-            keccak256(bytes(r.prob1)) != keccak256(bytes(prob1Filter)) ||
-            keccak256(bytes(r.prob2)) != keccak256(bytes(prob2Filter)) ||
-            keccak256(bytes(r.prob3)) != keccak256(bytes(prob3Filter))
+            !(r.prob1.equal(prob1)) ||
+            !(r.prob2.equal(prob2)) ||
+            !(r.prob3.equal(prob3))
         ) {
             continue;
         }
-        if (keccak256(bytes("true")) == keccak256(bytes(boolProva))) {
+        // mi ritorna l'intero del record se GPS è true
+        if (checkProva.equal("true")) {
             return r.probabilitaCond;
         }
-        // Restituisce il primo record che corrisponde ai filtri
+        // altrimenti mi torna il complementare
         return 100 - r.probabilitaCond;
     }
-
-    // Se nessun record corrisponde, possiamo decidere di restituire 0 oppure revert
+    // Serve solo per dire alla funzione che almeno un valore intero ritornerà
     return 0;
     }
 }

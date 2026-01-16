@@ -127,9 +127,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nomeProva', models.CharField(max_length=100)),
-                ('prob1', models.TextField(blank=True, verbose_name='prob1')),
-                ('prob2', models.TextField(blank=True, verbose_name='prob2')),
-                ('prob3', models.TextField(blank=True, verbose_name='prob3')),
+                ('evento1', models.TextField(blank=True, verbose_name='evento1')),
+                ('evento2', models.TextField(blank=True, verbose_name='evento2')),
+                ('evento3', models.TextField(blank=True, verbose_name='evento3')),
                 ('probabilita_condizionata', models.BigIntegerField()),
                 ('idEvento1', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='prove_evento1', to='Ledger_Logistic.evento')),
                 ('idEvento2', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='prove_evento2', to='Ledger_Logistic.evento')),

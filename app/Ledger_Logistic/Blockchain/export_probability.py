@@ -106,19 +106,18 @@ def leggi_tabella_da_besu(tx_hash: str):
     try:
         # Ottieni il receipt della transazione
         receipt = web3.eth.get_transaction_receipt(tx_hash)
-        block_number = receipt.blockNumber
 
         # Leggi i record esattamente al blocco della transazione
         # Se chiami contract.functions.getRecords().call() senza specificare il blocco, stai leggendo lo stato corrente del contratto.
         # Tra il momento in cui invii la tabella e il momento in cui leggi, qualcun altro potrebbe aver scritto nuovi record o modificato l’array.
         # In quel caso, i dati letti potrebbero non corrispondere a quelli appena inviati.
         # Specificando block_identifier=receipt.blockNumber, chiedi a Web3 di leggere i dati come erano subito dopo quel blocco, cioè dopo la tua transazione. Questo ti garantisce coerenza.
-        records = contract.functions.getRecords().call(block_identifier=block_number)
+        records = contract.functions.getRecords().call()
         return records
     except Exception as e:
         raise Exception(f"Errore nel leggere i record dal contratto dalla tx {tx_hash}: {e}")
 
-def getCijFiltered(gps: str, prob1: str, prob2: str, prob3: str):
+def getA_ij(gps: str, strProva: str, prob1: str, prob2: str, prob3: str):
     web34 = connect_to_besu()
     # Carica ABI e indirizzo del contratto
     contract_abi, contract_address = load_contract()
@@ -127,14 +126,13 @@ def getCijFiltered(gps: str, prob1: str, prob2: str, prob3: str):
     try:
         # Ottieni il receipt della transazione
         receipt2 = web34.eth.get_transaction_receipt(tx_hash)
-        block_number = receipt2.blockNumber
 
         # Leggi i record esattamente al blocco della transazione
         # Se chiami contract.functions.getRecords().call() senza specificare il blocco, stai leggendo lo stato corrente del contratto.
         # Tra il momento in cui invii la tabella e il momento in cui leggi, qualcun altro potrebbe aver scritto nuovi record o modificato l’array.
         # In quel caso, i dati letti potrebbero non corrispondere a quelli appena inviati.
         # Specificando block_identifier=receipt.blockNumber, chiedi a Web3 di leggere i dati come erano subito dopo quel blocco, cioè dopo la tua transazione. Questo ti garantisce coerenza.
-        record2 = contract.functions.getCijFiltered(gps, "true", prob1, prob2, prob3).call(block_identifier=block_number)
+        record2 = contract.functions.getA_ij(gps, strProva, prob1, prob2, prob3).call()
         return record2
     except Exception as e:
         raise Exception(f"Errore nel leggere i record dal contratto dalla tx {tx_hash}: {e}")
@@ -175,7 +173,7 @@ if __name__ == "__main__":
     
     
     print("\n=== record c_ij ===")
-    record = getCijFiltered("Fattura emessa", "", "true", "")
+    record = getA_ij("Fattura emessa", "false", "", "true", "")
     print(record)
     
     
