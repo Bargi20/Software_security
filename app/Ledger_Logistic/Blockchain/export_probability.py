@@ -16,8 +16,8 @@ django.setup() # Inizializza l'ambiente Django per prendere le variabili d'ambie
 
 from django.conf import settings
 from web3.middleware import ExtraDataToPOAMiddleware
-from besu import connect_to_besu, get_account
-from import_probability import main as import_probability
+from Ledger_Logistic.Blockchain.besu import connect_to_besu, get_account
+from Ledger_Logistic.Blockchain.import_probability import main as import_probability
 
 # -------------------------------------------------------------------
 # Funzioni Blockchain
