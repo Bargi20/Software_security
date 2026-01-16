@@ -3,7 +3,6 @@ import sys
 import django
 import json
 
-from django.shortcuts import get_object_or_404
 # -------------------------------------------------------------------
 # Configurazione Django
 # -------------------------------------------------------------------
@@ -144,7 +143,7 @@ def getA_ij(gps: str, strProva: str, prob1: str, prob2: str, prob3: str):
 # -------------------------------------------------------------------
 
 def main():
-    calcola_probabilita(1)
+    
     print("=== IMPORT PROBABILITÀ DAL DATABASE ===")
     try:
         import_probability()
