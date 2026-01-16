@@ -182,18 +182,19 @@ def main():
 def calcola_probabilita(id_reclamo):
     from Ledger_Logistic.models import Spedizione, Reclamo, Evento
     from django.forms.models import model_to_dict
+    
     reclamo = Reclamo.objects.get(id=id_reclamo)
     spedizione = model_to_dict(Spedizione.objects.get(id=id_reclamo))
-    prove = [spedizione[prova] for prova in ['traffico', 'veicolo_disponibile', 'meteo_sfavorevole', 'conferma_del_gestore_di_pagamento', 'fattura_emessa', 'gps', 'conferma_cliente', 'disponibilita_corriere']]
-    print(spedizione)
-    print(prove)
+    # Si prendono tutte le prove della spedizione (in stringhe lowercase)
+    prove = [str(spedizione[prova]).lower() for prova in ['traffico', 'veicolo_disponibile', 'meteo_sfavorevole', 'conferma_del_gestore_di_pagamento', 'fattura_emessa', 'gps', 'conferma_cliente', 'disponibilita_corriere']]
+
     evento1 = model_to_dict(Evento.objects.get(id=reclamo.evento1_id))
     
     if reclamo.evento2_id:
         evento2 = model_to_dict(Evento.objects.get(id=reclamo.evento2_id))
-        return evento1, evento2
+        return evento1, evento2, prove
     else :
-        return evento1
+        return evento1, prove
 
 if __name__ == "__main__":
     main()
