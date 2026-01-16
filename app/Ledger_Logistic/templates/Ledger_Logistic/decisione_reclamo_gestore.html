@@ -110,7 +110,7 @@
                 </a>
                 
                 <!-- Se la verifica è già stata fatta, il bottone è bloccato -->
-                <button id="verifica_reclamo_btn" {%if reclamo.esito == "Nsdon verificato" %} class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white hover:bg-blue-700 transition shadow">
+                <button id="verifica_reclamo_btn" {%if reclamo.esito == "Non verificato" %} class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white hover:bg-blue-700 transition shadow">
                     Verifica reclamo
                 </button>
                 {%else%} 
