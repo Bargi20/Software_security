@@ -166,9 +166,9 @@
 
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-3">
+                                <div class="block text-sm font-medium text-gray-700 mb-3">
                                     Grandezza Pacco <span class="text-red-500">*</span>
-                                </label>
+                                </div>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <label class="relative flex flex-col items-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition hover:shadow-md">
                                         <input type="radio" name="grandezza" value="piccolo" class="sr-only grandezza-radio" id="piccolo" {% if grandezza == 'piccolo' %}checked{% endif %} required>
@@ -374,8 +374,8 @@
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
                     const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
+                    for (const element of cookies) {
+                        const cookie = element.trim();
                         if (cookie.substring(0, name.length + 1) === (name + '=')) {
                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                             break;
@@ -441,7 +441,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success && data.redirect) {
-                            window.location.href = data.redirect;
+                            globalThis.location.href = data.redirect;
                         } else {
                             const errMsg = data.error || 'Errore sconosciuto';
                             alert('Errore: ' + errMsg);
