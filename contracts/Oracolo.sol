@@ -47,10 +47,12 @@ function getA_ij(
 ) public view returns (uint8) {
     for (uint i = 0; i < records.length; i++) {
         Record storage r = records[i];
-
+        // Se non coincide il nomeProva, il record viene scartato, il ciclo passa direttamente all’iterazione successiva
         if (!(r.nomeProva.equal(nomeProva))) {
-            continue;
+            continue; // interrompe l’iterazione corrente del ciclo e passa subito alla successiva.
         }
+
+        // Se non coincide almeno uno dei tre eventi, il record viene scartato, il ciclo passa direttamente all’iterazione successiva
         if (
             !(r.evento1.equal(evento1)) ||
             !(r.evento2.equal(evento2)) ||
@@ -58,7 +60,7 @@ function getA_ij(
         ) {
             continue;
         }
-        // mi ritorna l'intero del record se GPS è true
+        // mi ritorna la probabilitaCond del record se prova è "true"
         if (checkProva.equal("true")) {
             return r.probabilitaCond;
         }
