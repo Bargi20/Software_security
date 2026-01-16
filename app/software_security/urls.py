@@ -69,5 +69,5 @@ urlpatterns = [
     path('dashboard/gestore/gestione_spedizioni/dettaglio/<int:spedizione_id>', views.dettaglio_spedizione, name='dettaglio_spedizione'),
     
     # ------ API PER VERIFICA RECLAMO ------
-    path('verifica_reclamo/<int:reclamo_id>', views.verifica_reclamo, name='verifica_reclamo'),
+    path('dashboard/gestore/gestione_reclami/verifica_reclamo', views.verifica_reclamo, name='verifica_reclamo'),
 ]
