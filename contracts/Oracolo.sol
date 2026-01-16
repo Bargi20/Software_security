@@ -8,9 +8,9 @@ contract Oracolo {
     struct Record {
         uint16 id;
         string nomeProva;
-        string prob1; // "true", "false" o ""
-        string prob2; // "true", "false" o ""
-        string prob3; // "true", "false" o ""
+        string evento1; // "true", "false" o ""
+        string evento2; // "true", "false" o ""
+        string evento3; // "true", "false" o ""
         uint8 probabilitaCond; // scala 0-100
         uint16 idEvento1;
         uint16 idEvento2;
@@ -41,9 +41,9 @@ contract Oracolo {
 function getA_ij(
     string memory nomeProva,
     string memory checkProva,
-    string memory prob1,
-    string memory prob2,
-    string memory prob3
+    string memory evento1,
+    string memory evento2,
+    string memory evento3
 ) public view returns (uint8) {
     for (uint i = 0; i < records.length; i++) {
         Record storage r = records[i];
@@ -52,9 +52,9 @@ function getA_ij(
             continue;
         }
         if (
-            !(r.prob1.equal(prob1)) ||
-            !(r.prob2.equal(prob2)) ||
-            !(r.prob3.equal(prob3))
+            !(r.evento1.equal(evento1)) ||
+            !(r.evento2.equal(evento2)) ||
+            !(r.evento3.equal(evento3))
         ) {
             continue;
         }
