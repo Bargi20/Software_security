@@ -463,7 +463,7 @@
     // Funzione di filtro (modificata per ripaginare)
     function filtraSpedizioni() {
         const filtroGrandezza = document.getElementById('filtroGrandezza').value;
-        const url = new URL(window.location.href);
+        const url = new URL(globalThis.location.href);
         
         // Aggiorna i parametri URL
         if (filtroGrandezza) {
@@ -491,14 +491,14 @@
                 }
                 
                 // Aggiorna URL senza ricaricare
-                const finalUrl = new URL(window.location.href);
+                const finalUrl = new URL(globalThis.location.href);
                 if (filtroGrandezza) {
                     finalUrl.searchParams.set('filtro_grandezza', filtroGrandezza);
                 } else {
                     finalUrl.searchParams.delete('filtro_grandezza');
                 }
                 finalUrl.searchParams.delete('pagina_in_corso');
-                window.history.pushState({}, '', finalUrl);
+                globalThis.history.pushState({}, '', finalUrl);
             })
             .catch(error => console.error('Errore nel filtraggio:', error));
     }

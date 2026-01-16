@@ -36,6 +36,9 @@ SPEDIZIONE_IMPORTI_CENT = {
     'medio': 1000,   # €10.00
     'grande': 2000   # €20.00
 }
+ACTION_MSG = 'Accesso negato. Non hai i permessi per accedere a questa dashboard.'
+LEDGER_LOGISTIC_CREASPEDIZIONE_URL = "Ledger_Logistic/crea_spedizione.html"
+LEDGER_LOGISTIC_INVIARECLAMO_URL = "Ledger_Logistic/invia_reclamo.html"
 
 
 def _get_stripe_api_key():
@@ -808,6 +811,52 @@ def reset_password_verify_otp(request):
     })
 
 
+def _validate_password_fields(new_password, confirm_password):
+    """Valida che i campi password siano compilati e corrispondano"""
+    errors = []
+    
+    if not new_password or not confirm_password:
+        errors.append('Entrambi i campi sono obbligatori.')
+        return errors
+    
+    if new_password != confirm_password:
+        errors.append('Le password non corrispondono.')
+    
+    return errors
+
+
+def _validate_password_strength(password):
+    """Valida la complessità della password secondo i requisiti di sicurezza"""
+    import re
+    
+    errors = []
+    if len(password) < 8:
+        errors.append('La password deve essere lunga almeno 8 caratteri')
+    if not re.search(r'[A-Z]', password):
+        errors.append('Deve contenere almeno una lettera maiuscola')
+    if not re.search(r'[a-z]', password):
+        errors.append('Deve contenere almeno una lettera minuscola')
+    if not re.search(r'\d', password):
+        errors.append('Deve contenere almeno un numero')
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>+]', password):
+        errors.append('Deve contenere almeno un carattere speciale (!@#$%^&*(),.?":{}|<>+)')
+    
+    return errors
+
+
+def _update_user_password(email, new_password):
+    """Aggiorna la password dell'utente"""
+    try:
+        user = Utente.objects.get(email=email)
+        user.set_password(new_password)
+        user.save()
+        return True, None
+    except Utente.DoesNotExist:
+        return False, 'Errore: utente non trovato.'
+    except Exception as e:
+        return False, f'Errore durante l\'aggiornamento della password: {str(e)}'
+
+
 def reset_password_new(request):
     """Vista per impostare una nuova password dopo verifica OTP"""
     root = "Ledger_Logistic/reset_password_new.html"
@@ -824,52 +873,35 @@ def reset_password_new(request):
     new_password = request.POST.get('new_password', '').strip()
     confirm_password = request.POST.get('confirm_password', '').strip()
     
-    if not new_password or not confirm_password:
-        messages.error(request, 'Entrambi i campi sono obbligatori.')
+    # Valida i campi base
+    field_errors = _validate_password_fields(new_password, confirm_password)
+    if field_errors:
+        for error in field_errors:
+            messages.error(request, error)
         return render(request, root, {'email': email})
     
-    if new_password != confirm_password:
-        messages.error(request, 'Le password non corrispondono.')
-        return render(request, root, {'email': email})
-    
-    import re
-    
-    errors = []
-    if len(new_password) < 8:
-        errors.append('La password deve essere lunga almeno 8 caratteri')
-    if not re.search(r'[A-Z]', new_password):
-        errors.append('Deve contenere almeno una lettera maiuscola')
-    if not re.search(r'[a-z]', new_password):
-        errors.append('Deve contenere almeno una lettera minuscola')
-    if not re.search(r'\d', new_password):
-        errors.append('Deve contenere almeno un numero')
-    if not re.search(r'[!@#$%^&*(),.?":{}|<>+]', new_password):
-        errors.append('Deve contenere almeno un carattere speciale (!@#$%^&*(),.?":{}|<>+)')
-    
-    if errors:
-        for error in errors:
+    # Valida la complessità della password
+    strength_errors = _validate_password_strength(new_password)
+    if strength_errors:
+        for error in strength_errors:
             messages.error(request, f'❌ {error}')
         return render(request, root, {'email': email})
     
-    try:
-        user = Utente.objects.get(email=email)
-        user.set_password(new_password)
-        user.save()
-        
-        _clear_reset_password_session(request)
-        
-        messages.success(
-            request,
-            '✅ Password aggiornata con successo! Ora puoi effettuare il login con la nuova password.'
-        )
-        return redirect('login')
-        
-    except Utente.DoesNotExist:
-        messages.error(request, 'Errore: utente non trovato.')
-        return redirect('reset_password')
-    except Exception as e:
-        messages.error(request, f'Errore durante l\'aggiornamento della password: {str(e)}')
+    # Aggiorna la password
+    success, error_message = _update_user_password(email, new_password)
+    
+    if not success:
+        messages.error(request, error_message)
+        if 'utente non trovato' in error_message:
+            return redirect('reset_password')
         return render(request, root, {'email': email})
+    
+    _clear_reset_password_session(request)
+    messages.success(
+        request,
+        '✅ Password aggiornata con successo! Ora puoi effettuare il login con la nuova password.'
+    )
+    return redirect('login')
 
 
 @staff_member_required
@@ -951,8 +983,9 @@ def assegna_spedizioni(request):
 def dashboard_cliente(request):
     """Dashboard per utenti con ruolo 'cliente'"""
     # Verifica che l'utente abbia il ruolo cliente
+
     if request.user.ruolo != 'cliente':
-        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        messages.error(request, ACTION_MSG)
         # Reindirizza alla dashboard corretta in base al ruolo
         if request.user.ruolo == 'corriere':
             return redirect('dashboard_corriere')
@@ -1025,7 +1058,7 @@ def dashboard_corriere(request):
     """Dashboard per utenti con ruolo 'corriere'"""
     # Verifica che l'utente abbia il ruolo corriere
     if request.user.ruolo != 'corriere':
-        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        messages.error(request, ACTION_MSG)
         # Reindirizza alla dashboard corretta in base al ruolo
         if request.user.ruolo == 'cliente':
             return redirect('dashboard_cliente')
@@ -1085,7 +1118,7 @@ def dashboard_gestore(request):
     """Dashboard per utenti con ruolo 'gestore'"""
     # Verifica che l'utente abbia il ruolo gestore
     if request.user.ruolo != 'gestore':
-        messages.error(request, 'Accesso negato. Non hai i permessi per accedere a questa dashboard.')
+        messages.error(request, ACTION_MSG)
         # Reindirizza alla dashboard corretta in base al ruolo
         if request.user.ruolo == 'cliente':
             return redirect('dashboard_cliente')
@@ -1164,47 +1197,18 @@ def calcola_tempo_medio_consegna():
 
 # ============= SPEDIZIONE VIEWS =============
 
-@ensure_csrf_cookie
-@login_required
-def crea_spedizione(request):
-    
-    # Verifica che l'utente sia un cliente
-    if request.user.ruolo != 'cliente':
-        messages.error(request, 'Solo i clienti possono creare spedizione.')
-        return redirect('home')
-    
-    root = "Ledger_Logistic/crea_spedizione.html"
-    
-    # GET request - mostra il form
-    if request.method != 'POST':
-        context = {
-            'company_name': COMPANY_NAME,
-            'user': request.user
-        }
-        return render(request, root, context)
-    
-    # POST request - processa la creazione
-    indirizzo_consegna = request.POST.get('indirizzo_consegna', '').strip()
-    citta = request.POST.get('citta', '').strip()
-    cap = request.POST.get('cap', '').strip()
-    provincia = request.POST.get('provincia', '').strip().upper()
-    grandezza = request.POST.get('grandezza', '')
-    descrizione = request.POST.get('descrizione', '').strip()
-    metodo_pagamento = request.POST.get('metodo_pagamento', 'carta').strip()
-
-    form_context = {
+def _build_spedizione_form_context(request, **form_data):
+    """Costruisce il contesto per il form di creazione spedizione"""
+    context = {
         'company_name': COMPANY_NAME,
-        'user': request.user,
-        'indirizzo_consegna': indirizzo_consegna,
-        'citta': citta,
-        'cap': cap,
-        'provincia': provincia,
-        'grandezza': grandezza,
-        'descrizione': descrizione,
-        'metodo_pagamento': metodo_pagamento
+        'user': request.user
     }
-    
-    # Validazione
+    context.update(form_data)
+    return context
+
+
+def _validate_spedizione_form(indirizzo_consegna, citta, cap, provincia, grandezza, descrizione, metodo_pagamento):
+    """Valida i dati del form di spedizione. Ritorna lista di errori."""
     errors = []
     
     if not indirizzo_consegna:
@@ -1226,73 +1230,119 @@ def crea_spedizione(request):
     if metodo_pagamento not in ['carta', 'cash']:
         errors.append('Seleziona un metodo di pagamento valido.')
     
+    return errors
+
+
+def _process_stripe_payment(request, grandezza, form_context, form_data):
+    """Processa il pagamento Stripe. Ritorna la response o None se successo."""
+    root = LEDGER_LOGISTIC_CREASPEDIZIONE_URL
+    
+    stripe_api_key = _get_stripe_api_key()
+    if not stripe_api_key:
+        messages.error(request, 'Pagamento non disponibile: configurare STRIPE_SECRET_KEY nel file .env.')
+        return render(request, root, form_context)
+
+    stripe.api_key = stripe_api_key
+    amount_cents = _calcola_importo_pagamento(grandezza)
+    if not amount_cents:
+        messages.error(request, 'Pagamento non disponibile per la grandezza selezionata.')
+        return render(request, root, form_context)
+
+    try:
+        payment_intent = stripe.PaymentIntent.create(
+            amount=amount_cents,
+            currency=STRIPE_CURRENCY,
+            description=f"Spedizione {grandezza} - {request.user.email}",
+            payment_method_types=['card'],
+            metadata={
+                'cliente': request.user.email,
+                'grandezza': grandezza,
+                'citta': form_data['citta'],
+            },
+        )
+        
+        # Salva i dati nella sessione per dopo la conferma pagamento
+        request.session['pending_shipment'] = {
+            'payment_intent_id': payment_intent.id,
+            **form_data
+        }
+        
+        # Passa il client_secret al template per confermare il pagamento
+        form_context['client_secret'] = payment_intent.client_secret
+        form_context['stripe_publishable_key'] = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
+        form_context['show_payment_form'] = True
+        return render(request, root, form_context)
+        
+    except stripe.error.StripeError as e:
+        messages.error(request, f'Pagamento Stripe non riuscito: {str(e)}')
+        return render(request, root, form_context)
+    except Exception as e:
+        messages.error(request, f'Errore imprevisto nel pagamento: {str(e)}')
+        return render(request, root, form_context)
+
+
+def _handle_cash_payment(request, form_context, form_data):
+    """Gestisce il pagamento in contanti. Ritorna la response."""
+    root = LEDGER_LOGISTIC_CREASPEDIZIONE_URL
+    
+    try:
+        _crea_spedizione_db(
+            request, request.user,
+            form_data['indirizzo_consegna'],
+            form_data['citta'],
+            form_data['cap'],
+            form_data['provincia'],
+            form_data['grandezza'],
+            form_data['descrizione'],
+            form_data['metodo_pagamento']
+        )
+        return redirect('dashboard_cliente')
+    except Exception as e:
+        messages.error(request, f'Errore durante la creazione della spedizione: {str(e)}')
+        return render(request, root, form_context)
+
+
+@ensure_csrf_cookie
+@login_required
+def crea_spedizione(request):
+    """Vista per la creazione di una nuova spedizione"""
+    # Verifica permessi
+    if request.user.ruolo != 'cliente':
+        messages.error(request, 'Solo i clienti possono creare spedizione.')
+        return redirect('home')
+    
+    root =LEDGER_LOGISTIC_CREASPEDIZIONE_URL
+    
+    # GET request - mostra il form
+    if request.method != 'POST':
+        return render(request, root, _build_spedizione_form_context(request))
+    
+    # POST request - estrai i dati
+    form_data = {
+        'indirizzo_consegna': request.POST.get('indirizzo_consegna', '').strip(),
+        'citta': request.POST.get('citta', '').strip(),
+        'cap': request.POST.get('cap', '').strip(),
+        'provincia': request.POST.get('provincia', '').strip().upper(),
+        'grandezza': request.POST.get('grandezza', ''),
+        'descrizione': request.POST.get('descrizione', '').strip(),
+        'metodo_pagamento': request.POST.get('metodo_pagamento', 'carta').strip()
+    }
+    
+    form_context = _build_spedizione_form_context(request, **form_data)
+    
+    # Valida i dati
+    errors = _validate_spedizione_form(**form_data)
     if errors:
         for error in errors:
             messages.error(request, error)
         return render(request, root, form_context)
-
-    payment_intent = None
-    if metodo_pagamento == 'carta':
-        stripe_api_key = _get_stripe_api_key()
-        if not stripe_api_key:
-            messages.error(request, 'Pagamento non disponibile: configurare STRIPE_SECRET_KEY nel file .env.')
-            return render(request, root, form_context)
-
-        stripe.api_key = stripe_api_key
-        amount_cents = _calcola_importo_pagamento(grandezza)
-        if not amount_cents:
-            messages.error(request, 'Pagamento non disponibile per la grandezza selezionata.')
-            return render(request, root, form_context)
-
-        try:
-            payment_intent = stripe.PaymentIntent.create(
-                amount=amount_cents,
-                currency=STRIPE_CURRENCY,
-                description=f"Spedizione {grandezza} - {request.user.email}",
-                payment_method_types=['card'],
-                metadata={
-                    'cliente': request.user.email,
-                    'grandezza': grandezza,
-                    'citta': citta,
-                },
-            )
-            # Salva i dati nella sessione per dopo la conferma pagamento
-            request.session['pending_shipment'] = {
-                'payment_intent_id': payment_intent.id,
-                'indirizzo_consegna': indirizzo_consegna,
-                'citta': citta,
-                'cap': cap,
-                'provincia': provincia,
-                'grandezza': grandezza,
-                'descrizione': descrizione,
-                'metodo_pagamento': metodo_pagamento
-            }
-            # Passa il client_secret al template per confermare il pagamento
-            form_context['client_secret'] = payment_intent.client_secret
-            form_context['stripe_publishable_key'] = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
-            form_context['show_payment_form'] = True
-            return render(request, root, form_context)
-        except stripe.error.StripeError as e:
-            messages.error(request, f'Pagamento Stripe non riuscito: {str(e)}')
-            return render(request, root, form_context)
-        except Exception as e:
-            messages.error(request, f'Errore imprevisto nel pagamento: {str(e)}')
-            return render(request, root, form_context)
     
-    # Se pagamento cash, crea subito la spedizione
-    if metodo_pagamento == 'cash':
-        try:
-            spedizione = _crea_spedizione_db(
-                request, request.user, indirizzo_consegna, citta, cap, provincia,
-                grandezza, descrizione, metodo_pagamento
-            )
-            return redirect('dashboard_cliente')
-        except Exception as e:
-            messages.error(request, f'Errore durante la creazione della spedizione: {str(e)}')
-            return render(request, root, form_context)
+    # Processa il pagamento in base al metodo selezionato
+    if form_data['metodo_pagamento'] == 'carta':
+        return _process_stripe_payment(request, form_data['grandezza'], form_context, form_data)
     
-    # Se carta, il resto è già gestito sopra (mostra form pagamento)
-    return render(request, root, form_context)
+    # Pagamento in contanti
+    return _handle_cash_payment(request, form_context, form_data)
 
 
 def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provincia, grandezza, descrizione, metodo_pagamento):
@@ -1325,43 +1375,7 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     
     # Salva la spedizione nel database
     spedizione.save()
-    
-    # Verifica GPS e associa il valore alla spedizione
-   
-    
 
-    
-################# SPEDIZIONE TO BLOCKCHAIN ####################
-    
-    # payload = {
-    #     "id_spedizione": codice_tracciamento,
-    #     "descrizione": descrizione,
-    #     "indirizzo_consegna": indirizzo_consegna,
-    #     "citta": citta,
-    #     "cap": cap,
-    #     "provincia": provincia,
-    #     "grandezza": grandezza,
-    #     "metodo_pagamento": metodo_pagamento,
-    # }
-
-    # file_path = "Ledger_Logistic/Blockchain/Spedizione/dati_spedizione.json"
-
-    # try:
-    #     with open(file_path, "r") as f:
-    #         spedizione_list = json.load(f)
-    # except (FileNotFoundError, json.JSONDecodeError):
-    #     spedizione_list = []
-
-    # # Aggiungi la nuova spedizione alla lista
-    # spedizione_list.append(payload)
-
-    # with open(file_path, "w") as f:
-    #     json.dump(spedizione_list, f, indent=4)
-
-    # invia_spedizione_su_besu(file_path)
-
-    # # Elimina il file JSON temporaneo dei dati della spedizione
-    # os.remove(file_path)
     
     messages.success(
         request,
@@ -1372,6 +1386,10 @@ def _crea_spedizione_db(request, cliente, indirizzo_consegna, citta, cap, provin
     return spedizione
 
 def scarica_fattura(request, spedizione_id):
+    """Genera e scarica una fattura PDF elegante per la spedizione"""
+    from reportlab.lib import colors
+    from datetime import datetime
+    
     # Recupera la spedizione dal DB
     spedizione = Spedizione.objects.get(id=spedizione_id)
     
@@ -1386,58 +1404,129 @@ def scarica_fattura(request, spedizione_id):
     pdf = canvas.Canvas(buffer, pagesize=A4)
     width, height = A4
 
+    # Colori personalizzati
+    primary_color = colors.HexColor('#1e3a8a')  # Blu scuro
+    secondary_color = colors.HexColor('#3b82f6')  # Blu
+    text_color = colors.HexColor('#1f2937')  # Grigio scuro
+    light_gray = colors.HexColor('#f3f4f6')
+    
+    # === HEADER CON LOGO E INTESTAZIONE ===
     logo_path = "Ledger_Logistic/ledger-logistic-logo.png"
-    logo_width = 120
-    logo_height = 120
-
-    pdf.drawImage(
-        logo_path,
-        width/2-logo_width/2,
-        height - 140,
-        width=logo_width,
-        height=logo_height,
-        mask='auto'
-    )
-    # Titolo
-    pdf.setFont("Helvetica-Bold", 20)
-    pdf.drawString(50, height - 170, "Fattura Spedizione")
-
-    # Questa funzione rende in corsivo i campi prima dei : e normali i valori dopo
-    def draw_label_value(pdf, x, y, label, value, label_font="Helvetica-Oblique", value_font="Helvetica", size=16):
-        pdf.setFont(label_font, size)
-        label_text = f"{label}: "
-        pdf.drawString(x, y, label_text)
-        label_width = pdf.stringWidth(label_text, label_font, size)
-        pdf.setFont(value_font, size)
-        pdf.drawString(x + label_width, y, str(value))
+    pdf.drawImage(logo_path, 50, height - 120, width=80, height=80, mask='auto')
     
-    # Dati spedizione
-    y = height - 200
-    line_height = 25    # Spaziatura tra le righe
-
-    draw_label_value(pdf, 50, y, "Codice Tracciamento", spedizione.codice_tracciamento)
-    y -= line_height
-
-    draw_label_value(pdf, 50, y, "Città", spedizione.citta)
-    y -= line_height
-
-    draw_label_value(pdf, 50, y, "Provincia", spedizione.provincia)
-    y -= line_height
-
-    draw_label_value(pdf, 50, y, "Indirizzo Consegna", spedizione.indirizzo_consegna)
-    y -= line_height
-
-    draw_label_value(pdf, 50, y, "Grandezza", spedizione.get_grandezza_display())
-    y -= line_height
-
-    draw_label_value(pdf, 50, y, "Importo", f"€{importo:.2f}")
-    y -= line_height
-
-    draw_label_value(pdf, 50, y, "Metodo di pagamento", spedizione.metodo_pagamento)
-    y -= line_height
+    # Info azienda (destra)
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.setFillColor(primary_color)
+    pdf.drawRightString(width - 50, height - 60, "LEDGER LOGISTIC")
+    pdf.setFont("Helvetica", 9)
+    pdf.setFillColor(text_color)
+    pdf.drawRightString(width - 50, height - 75, "Via del Trasporto, 123")
+    pdf.drawRightString(width - 50, height - 88, "20100 Milano (MI)")
+    pdf.drawRightString(width - 50, height - 101, "P.IVA: 12345678901")
     
-    # Footer
-    pdf.drawString(50, 50, "Ledger Logistic - Grazie per aver scelto i nostri servizi.")
+    # Linea separatrice
+    pdf.setStrokeColor(secondary_color)
+    pdf.setLineWidth(2)
+    pdf.line(50, height - 135, width - 50, height - 135)
+    
+    # === TITOLO FATTURA ===
+    pdf.setFont("Helvetica-Bold", 24)
+    pdf.setFillColor(primary_color)
+    pdf.drawString(50, height - 170, "FATTURA")
+    
+    # Numero e data fattura
+    pdf.setFont("Helvetica", 10)
+    pdf.setFillColor(text_color)
+    data_oggi = datetime.now().strftime("%d/%m/%Y")
+    pdf.drawRightString(width - 50, height - 165, f"Data: {data_oggi}")
+    pdf.drawRightString(width - 50, height - 180, f"N. {spedizione.codice_tracciamento}")
+    
+    # === DATI CLIENTE (BOX) ===
+    y_pos = height - 230
+    pdf.setFillColor(light_gray)
+    pdf.rect(50, y_pos - 70, 250, 65, fill=True, stroke=False)
+    
+    pdf.setFont("Helvetica-Bold", 11)
+    pdf.setFillColor(primary_color)
+    pdf.drawString(60, y_pos - 15, "CLIENTE")
+    
+    pdf.setFont("Helvetica", 10)
+    pdf.setFillColor(text_color)
+    pdf.drawString(60, y_pos - 32, f"{spedizione.cliente.get_full_name() or spedizione.cliente.username}")
+    pdf.drawString(60, y_pos - 47, f"Email: {spedizione.cliente.email}")
+    if spedizione.cliente.phone_number:
+        pdf.drawString(60, y_pos - 62, f"Tel: {spedizione.cliente.phone_number}")
+    
+    # === DETTAGLI SPEDIZIONE (BOX) ===
+    y_pos = height - 330
+    pdf.setFillColor(light_gray)
+    pdf.rect(50, y_pos - 130, width - 100, 125, fill=True, stroke=False)
+    
+    pdf.setFont("Helvetica-Bold", 11)
+    pdf.setFillColor(primary_color)
+    pdf.drawString(60, y_pos - 15, "DETTAGLI SPEDIZIONE")
+    
+    # Tabella dettagli
+    pdf.setFont("Helvetica", 10)
+    pdf.setFillColor(text_color)
+    line_height = 20
+    y_detail = y_pos - 40
+    
+    details = [
+        ("Codice Tracciamento:", spedizione.codice_tracciamento),
+        ("Destinazione:", f"{spedizione.citta} ({spedizione.provincia})"),
+        ("Indirizzo:", spedizione.indirizzo_consegna),
+        ("CAP:", spedizione.cap),
+        ("Dimensione Pacco:", spedizione.get_grandezza_display().upper()),
+        ("Metodo Pagamento:", "Carta di Credito" if spedizione.metodo_pagamento == "carta" else "Contanti")
+    ]
+    
+    for label, value in details:
+        pdf.setFont("Helvetica-Bold", 9)
+        pdf.drawString(60, y_detail, label)
+        pdf.setFont("Helvetica", 9)
+        pdf.drawString(220, y_detail, str(value))
+        y_detail -= line_height
+    
+    # === TOTALE (BOX EVIDENZIATO) ===
+    y_pos = height - 510
+    pdf.setFillColor(secondary_color)
+    pdf.rect(50, y_pos - 50, width - 100, 45, fill=True, stroke=False)
+    
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.setFillColor(colors.white)
+    pdf.drawString(60, y_pos - 25, "TOTALE FATTURA")
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawRightString(width - 60, y_pos - 27, f"€ {importo:.2f}")
+    
+    # === NOTE ===
+    y_pos = height - 590
+    pdf.setFont("Helvetica-Bold", 10)
+    pdf.setFillColor(primary_color)
+    pdf.drawString(50, y_pos, "Note:")
+    
+    pdf.setFont("Helvetica", 9)
+    pdf.setFillColor(text_color)
+    pdf.drawString(50, y_pos - 18, "• Fattura generata automaticamente dal sistema Ledger Logistic")
+    pdf.drawString(50, y_pos - 33, "• Conservare questa fattura per eventuali reclami o contestazioni")
+    if spedizione.metodo_pagamento == "carta":
+        pdf.drawString(50, y_pos - 48, "• Pagamento già effettuato con carta di credito")
+    else:
+        pdf.drawString(50, y_pos - 48, "• Pagamento alla consegna")
+    
+    # === FOOTER ===
+    pdf.setStrokeColor(secondary_color)
+    pdf.setLineWidth(1)
+    pdf.line(50, 80, width - 50, 80)
+    
+    pdf.setFont("Helvetica-Bold", 10)
+    pdf.setFillColor(primary_color)
+    pdf.drawCentredString(width / 2, 60, "Grazie per aver scelto Ledger Logistic!")
+    
+    pdf.setFont("Helvetica", 8)
+    pdf.setFillColor(text_color)
+    pdf.drawCentredString(width / 2, 45, "Per assistenza: info@ledgerlogistic.it | Tel: +39 02 1234567")
+    pdf.drawCentredString(width / 2, 32, "www.ledgerlogistic.it")
 
     pdf.showPage()
     pdf.save()
@@ -1727,7 +1816,7 @@ def invia_reclamo(request, spedizione_id):
         descrizione = request.POST.get('descrizione') #prendo il valore scritto nella textarea
 
         if not nome_reclamo or not descrizione:
-            return render(request, 'Ledger_Logistic/invia_reclamo.html', {
+            return render(request, LEDGER_LOGISTIC_INVIARECLAMO_URL, {
                 'spedizione': spedizione,
                 'errore': 'Compila tutti i campi'
             })
@@ -1742,7 +1831,7 @@ def invia_reclamo(request, spedizione_id):
         # Recupera l'id evento corrispondente al nomeReclamo selezionato nella select
         evento_id = mapping_eventi.get(nome_reclamo)
         if not evento_id:
-            return render(request, 'Ledger_Logistic/invia_reclamo.html', {
+            return render(request, LEDGER_LOGISTIC_INVIARECLAMO_URL, {
                 'spedizione': spedizione,
                 'errore': 'Tipo di reclamo non valido'
             })
@@ -1761,7 +1850,7 @@ def invia_reclamo(request, spedizione_id):
 
         return redirect('dashboard_cliente')
 
-    return render(request, 'Ledger_Logistic/invia_reclamo.html', {
+    return render(request, LEDGER_LOGISTIC_INVIARECLAMO_URL, {
         'spedizione': spedizione
     })
     
