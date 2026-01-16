@@ -169,13 +169,14 @@ def main():
     else:
         print(f"[ERRORE] Transazione fallita: {tx_hash}")
 
-    #print("\n=== LETTURA TABELLA DAL CONTRATTO (al blocco della transazione) ===")
-    #records = leggi_tabella_da_besu(tx_hash)
+    print("\n=== LETTURA TABELLA DAL CONTRATTO (al blocco della transazione) ===")
+    records = leggi_tabella_da_besu(tx_hash)
     
     
-    print("\n=== record c_ij ===")
-    record = getA_ij("Fattura emessa", "false", "", "true", "")
-    print(record)
+    # print("\n=== record c_ij ===")
+    # record = getA_ij("Fattura emessa", "false", "", "true", "")
+    for p in records:
+        print(p)
 
 #   questa è la funzione che viene chiamata quando il gestore vuole verificare un reclamo. Qui si prende la spedizione associata al reclamo e si calcola la probabilità dell'evento del reclamo
 def calcola_probabilita(id_reclamo):

@@ -38,7 +38,6 @@ contract Oracolo {
 //prende la probabilita condizionata A_ij che soddisfa il nomeProva e che combacia con i tre eventi
 function getA_ij(
     string memory nomeProva,
-    string memory checkProva,
     string memory evento1,
     string memory evento2,
     string memory evento3
@@ -59,13 +58,114 @@ function getA_ij(
             continue;
         }
         // mi ritorna la probabilitaCond del record se prova è "true"
-        if (checkProva.equal("true")) {
-            return r.probabilitaCond;
+        return r.probabilitaCond;
         }
-        // altrimenti mi torna il complementare
-        return 100 - r.probabilitaCond;
+        return 0;
     }
-    // Serve solo per dire alla funzione che almeno un valore intero ritornerà
-    return 0;
+    
+
+    function prob_spedizione_fallita(
+        string memory checkEvento,
+        string memory checkProva1,
+        string memory checkProva2,
+        string memory checkProva3,
+        string memory checkProva4,
+        string memory checkProva5,
+        uint8 p,
+        uint8 q
+    ) public view returns(uint8){
+        uint8 numeratore = p;
+
+        if(checkEvento.equal("false"))
+            numeratore = 100 - p;
+        
+        // adesso prendo tutte le prove di cui tutte le combinazioni in cui so evento1 ma non evento2
+        
+        // GPS vero: ha sempre due eventi, quindi uno sempre vero e il secondo evento che puo essere vero o falso                  
+        uint8 gps_tt = getA_ij("GPS", "true", "", "true");
+        uint8 gps_tf = getA_ij("GPS", "true", "", "false");
+
+        // mi serve per il denominatore
+        uint8 gps_ft = getA_ij("GPS", "false", "", "true");
+        uint8 gps_ff = getA_ij("GPS", "false", "", "false");
+
+        // se GPS è falso mi servono i due complementari
+        if(checkProva1.equal("false")){
+            gps_tt = 100 - gps_tt;
+            gps_tf = 100 - gps_tf;
+        }
+
+
+        //VEICOLO
+        uint8 veicolo_tt = getA_ij("Disponibilita veicolo", "true", "", "true");
+        uint8 veicolo_tf = getA_ij("Disponibilita veicolo", "true", "", "false");
+
+        uint8 veicolo_ft = getA_ij("Disponibilita veicolo", "false", "", "true");
+        uint8 veicolo_ff = getA_ij("Disponibilita veicolo", "false", "", "false");
+
+        if(checkProva2.equal("false")){
+            veicolo_tt = 100 - veicolo_tt;
+            veicolo_tf = 100 - veicolo_tf;
+        }
+
+        // TRAFFICO
+        uint8 traffico_tt = getA_ij("Traffico", "true", "", "true");
+        uint8 traffico_tf = getA_ij("Traffico", "true", "", "false");
+
+        uint8 traffico_ft = getA_ij("Traffico", "false", "", "true");
+        uint8 traffico_ff = getA_ij("Traffico", "false", "", "false");
+
+        if(checkProva3.equal("false")){
+            traffico_tt = 100 - traffico_tt;
+            traffico_tf = 100 - traffico_tf;
+        }
+
+        // CONFERMA CLIENTE: ne ha 4 perche ha tutti e 3 gli eventi, uno sempre vero e 4 combinazioni degli altri due
+        uint8 confermacliente_ttt = getA_ij("Conferma cliente", "true", "true", "true");
+        uint8 confermacliente_ttf = getA_ij("Conferma cliente", "true", "true", "false");
+        uint8 confermacliente_tft = getA_ij("Conferma cliente", "true", "false", "true");
+        uint8 confermacliente_tff = getA_ij("Conferma cliente", "true", "false", "false");
+
+        // per il denominatore
+        uint8 confermacliente_ftt = getA_ij("Conferma cliente", "false", "true", "true");
+        uint8 confermacliente_ftf = getA_ij("Conferma cliente", "false", "true", "false");
+        uint8 confermacliente_fft = getA_ij("Conferma cliente", "false", "false", "true");
+        uint8 confermacliente_fff = getA_ij("Conferma cliente", "false", "false", "false");
+
+        if(checkProva4.equal("false")){
+            confermacliente_ttt = 100 - confermacliente_ttt;
+            confermacliente_ttf = 100 - confermacliente_ttf;
+            confermacliente_tft = 100 - confermacliente_tft;
+            confermacliente_tff = 100 - confermacliente_tff;
+        }
+
+        //CORRIERE
+        uint8 corriere_tt = getA_ij("Disponibilita corriere", "true", "", "true");
+        uint8 corriere_tf = getA_ij("Disponibilita corriere", "true", "", "false");
+
+        uint8 corriere_ft = getA_ij("Disponibilita corriere", "false", "", "true");
+        uint8 corriere_ff = getA_ij("Disponibilita corriere", "false", "", "false");
+
+        if(checkProva5.equal("false")){
+            corriere_tt = 100 - corriere_tt;
+            corriere_tf = 100 - corriere_tf;
+        }
+
+        numeratore = numeratore * ((q * gps_tt * veicolo_tt * traffico_tt * confermacliente_ttt * confermacliente_tft * corriere_tt) 
+        + ((1-q) * gps_tf * veicolo_tf * traffico_tf * 
+        confermacliente_ttf * confermacliente_tff * corriere_tt));
+
+        uint8 denominatore = 
+        (p * q * gps_tt * veicolo_tt * traffico_tt * confermacliente_ttt * confermacliente_tft * corriere_tt) 
+        + (p * (1-q) * gps_tf * veicolo_tf * traffico_tf * confermacliente_ttf * confermacliente_tff * corriere_tt) 
+        + ((1-p) * q * gps_ft * veicolo_ft * traffico_ft * confermacliente_ftt * confermacliente_fft * corriere_ft) 
+        + (((1-p) * (1-q) * gps_ff * veicolo_ff * traffico_ff * confermacliente_ftf * confermacliente_fff * corriere_ff));
+
+        if(checkEvento.equal("false")) {
+            return 100 - numeratore / denominatore;
+        }
+
+        return numeratore/denominatore;
     }
 }
+
