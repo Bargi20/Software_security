@@ -264,7 +264,7 @@ class CodiceOTP(models.Model):
 class Evento(models.Model):
     """Modello per tracciare eventi per l'oracolo bayesiano"""
     nomeEvento = models.CharField(max_length=100)
-    probabilita_priori = models.IntegerField()  # Rimuovi max_length
+    probabilita_priori = models.IntegerField()
     
     class Meta:
         verbose_name = "Evento per oracolo"
@@ -276,31 +276,31 @@ class Evento(models.Model):
 class Probabilita_condizionate(models.Model):
     """Prova per l'oracolo bayesiano"""
     nomeProva = models.CharField(max_length=100)
-    evento1 = models.TextField(default=False, null=True, blank=True)
-    evento2 = models.TextField(default=False, null=True, blank=True)
-    evento3 = models.TextField(default=False, null=True, blank=True)
+    evento1 = models.TextField(default=False, blank=True)
+    evento2 = models.TextField(default=False, blank=True)
+    evento3 = models.TextField(default=False, blank=True)
     idEvento1 = models.ForeignKey(
         Evento, 
         on_delete=models.CASCADE, 
-        related_name='prove_evento1',  # Cambiato
+        related_name='prove_evento1',
         null=True, 
         blank=True
     )
     idEvento2 = models.ForeignKey(
         Evento, 
         on_delete=models.CASCADE, 
-        related_name='prove_evento2',  # Cambiato
+        related_name='prove_evento2',
         null=True,
         blank=True
     )
     idEvento3 = models.ForeignKey(
         Evento, 
         on_delete=models.CASCADE, 
-        related_name='prove_evento3',  # Cambiato
+        related_name='prove_evento3', 
         null=True,
         blank=True
     )
-    probabilita_condizionata = models.IntegerField()  # Rimuovi max_length
+    probabilita_condizionata = models.IntegerField()
     
     class Meta:
         verbose_name = "Prova per oracolo"
