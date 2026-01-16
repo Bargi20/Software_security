@@ -264,7 +264,7 @@ class CodiceOTP(models.Model):
 class Evento(models.Model):
     """Modello per tracciare eventi per l'oracolo bayesiano"""
     nomeEvento = models.CharField(max_length=100)
-    probabilita_priori = models.FloatField()  # Rimuovi max_length
+    probabilita_priori = models.IntegerField()  # Rimuovi max_length
     
     class Meta:
         verbose_name = "Evento per oracolo"
