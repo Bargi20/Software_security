@@ -140,7 +140,8 @@
 $(document).ready(function () {
     $('#verifica_reclamo_btn').click(function (event) {
         event.preventDefault();
-
+        const buttonVerifica = $('#verifica_reclamo_btn');
+        buttonVerifica.text("Verifica in corso...");
         // Qui chiamiamo la rotta che chiama la funzione di verifica del reclamo, la quale ci restituirà un esito e la probabilità
         $.ajax({
             url: "{% url 'verifica_reclamo' %}",
@@ -153,16 +154,25 @@ $(document).ready(function () {
             },
             success: function (response) {
                 const esitoVerifica = $('#esito_verifica');
-
+                
                 esitoVerifica.text(response.esito);
                 esitoVerifica.removeClass();
                 esitoVerifica.addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-green-50 text-green-700 border border-green-200");
+
+                buttonVerifica.removeClass();
+                buttonVerifica.addClass("px-5 py-2 text-sm font-semibold rounded-md bg-gray-600 text-white hover:bg-gray-700 transition shadow");
+                buttonVerifica.attr('disabled', true);
+                buttonVerifica.text('Verifica effettuata');
             },
             error: function () {
                 $('#esito_verifica')
                     .text('Errore nella verifica')
                     .removeClass()
                     .addClass('bg-red-50 text-red-700 border border-red-200');
+                    buttonVerifica.removeClass();
+                buttonVerifica.addClass("px-5 py-2 text-sm font-semibold rounded-md bg-red-600 text-white hover:bg-red-700 transition shadow");
+                buttonVerifica.attr('disabled', true);
+                buttonVerifica.text('Errore nella verifica');
             }
         });
     });

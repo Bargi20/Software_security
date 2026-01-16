@@ -1885,12 +1885,13 @@ def verifica_reclamo(request):
     id_reclamo = request.POST.get('reclamo_id')
     probabilita = verifica_on_chain(id_reclamo)
     
-    if probabilita >= 90:
-        esito = 'Valido'
-    else:
-        esito = 'Non Valido'
+    #if probabilita >= 90:
+    #    esito = 'Valido'
+    #else:
+    #    esito = 'Non Valido'
     
+    # Da implementare il cambio dell'esito del reclamo nel database
     return JsonResponse({
-        "esito": esito,
-        "probabilita": probabilita
+        "esito": 1,
+        "probabilita": 2
     })
