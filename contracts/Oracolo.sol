@@ -35,9 +35,7 @@ contract Oracolo {
         return records.length;
     }
 
-        // -------------------------------
-    // Filtra per nomeProva e combinazione di prob1/prob2/prob3
-    // -------------------------------
+//prende la probabilita condizionata A_ij che soddisfa il nomeProva e che combacia con i tre eventi
 function getA_ij(
     string memory nomeProva,
     string memory checkProva,
