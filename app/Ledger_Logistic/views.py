@@ -1890,20 +1890,20 @@ def verifica_reclamo(request):
     #print(reclamo.esito)
     
     if (bool_evento == 'true') & (probabilita >= 0.9):
-        esito = 'Valido'
+        esito = 'Accettato'
         reclamo.esito = 'Accettato'
     elif (bool_evento == 'true') & (probabilita <= 0.2):
-        esito = 'Non Valido'
+        esito = 'Rifiutato'
         reclamo.esito = 'Rifiutato'
     elif(bool_evento == 'false') & (probabilita >= 0.9):
-        esito = 'Valido'
+        esito = 'Accettato'
         reclamo.esito = 'Accettato'
     elif (bool_evento == 'false') & (probabilita <= 0.2):
-        esito = 'Non Valido'
+        esito = 'Rifiutato'
         reclamo.esito = 'Rifiutato'
     else:
         esito = 'Impossibile dare un esito (soglia non raggiunta)'
-        reclamo.esito = 'Annullato'
+        reclamo.esito = 'Non verificabile'
     
     reclamo.risolto = True
     reclamo.save()    

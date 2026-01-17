@@ -495,7 +495,8 @@ class Reclamo(models.Model):
     ESITO_CHOICES = [
         ('Non verificato', 'Non verificato'),
         ('Accettato', 'Accettato'),
-        ('Rifiutato', 'Rifiutato')
+        ('Rifiutato', 'Rifiutato'),
+        ('Non verificabile', 'Non verificabile')
         ]
         
     nomeReclamo = models.TextField(
