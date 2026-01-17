@@ -1856,7 +1856,7 @@ def invia_reclamo(request, spedizione_id):
 def gestisci_reclamo(request, id_reclamo):
 
     context = {
-        'reclamo': get_object_or_404(Reclamo, id=id_reclamo)
+        'reclamo': Reclamo.objects.get(id=id_reclamo)
     }
     return render(request, 'Ledger_Logistic/decisione_reclamo_gestore.html', context)
 
@@ -1882,23 +1882,16 @@ from django.http import JsonResponse
 def verifica_reclamo(request):
     from Ledger_Logistic.Blockchain.calcola_probabilita_reclami import calcola_probabilita
     id_reclamo = request.POST.get('reclamo_id')
-    bool_evento = request.POST.get('boolReclamo')
-    probabilita = calcola_probabilita(id_reclamo, bool_evento)
-    #print(probabilita)
+    probabilitaVero = calcola_probabilita(id_reclamo, True)
+    probabilitaFalso = calcola_probabilita(id_reclamo, False)
+
     reclamo = Reclamo.objects.get(id=id_reclamo)
-    #print(reclamo.esito)
     
-    if (bool_evento == 'true') & (probabilita >= 0.9):
-        esito = 'Accettato'
+    if (probabilitaVero >= 0.8) & (probabilitaFalso <= 0.2):
+        esito = 'Reclamo accettato'
         reclamo.esito = 'Accettato'
-    elif (bool_evento == 'true') & (probabilita <= 0.2):
-        esito = 'Rifiutato'
-        reclamo.esito = 'Rifiutato'
-    elif(bool_evento == 'false') & (probabilita >= 0.9):
-        esito = 'Accettato'
-        reclamo.esito = 'Accettato'
-    elif (bool_evento == 'false') & (probabilita <= 0.2):
-        esito = 'Rifiutato'
+    elif (probabilitaVero <= 0.2) & (probabilitaFalso >= 0.8):
+        esito = 'Reclamo rifiutato'
         reclamo.esito = 'Rifiutato'
     else:
         esito = 'Impossibile dare un esito (soglia non raggiunta)'
@@ -1907,8 +1900,8 @@ def verifica_reclamo(request):
     reclamo.risolto = True
     reclamo.save()    
     
-    # Da implementare il cambio dell'esito del reclamo nel database
     return JsonResponse({
         "esito": esito,
-        "probabilita": f"{probabilita*100:.2f}"
+        "probabilita_vero": f"{probabilitaVero*100:.2f}",
+        "probabilita_falso": f"{probabilitaFalso*100:.2f}"
     })

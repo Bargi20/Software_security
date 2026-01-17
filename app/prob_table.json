@@ -5,7 +5,7 @@
     "evento1": "true",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 96,
+    "probabilita_condizionata": 4,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -16,7 +16,7 @@
     "evento1": "true",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 70,
+    "probabilita_condizionata": 30,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -27,7 +27,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 60,
+    "probabilita_condizionata": 40,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -38,7 +38,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 50,
+    "probabilita_condizionata": 85,
     "idEvento1_id": 1,
     "idEvento2_id": 1,
     "idEvento3_id": 1
@@ -49,7 +49,7 @@
     "evento1": "true",
     "evento2": "true",
     "evento3": "true",
-    "probabilita_condizionata": 96,
+    "probabilita_condizionata": 4,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -60,7 +60,7 @@
     "evento1": "true",
     "evento2": "true",
     "evento3": "false",
-    "probabilita_condizionata": 70,
+    "probabilita_condizionata": 5,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -71,7 +71,7 @@
     "evento1": "true",
     "evento2": "false",
     "evento3": "false",
-    "probabilita_condizionata": 60,
+    "probabilita_condizionata": 20,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -82,7 +82,7 @@
     "evento1": "false",
     "evento2": "false",
     "evento3": "false",
-    "probabilita_condizionata": 50,
+    "probabilita_condizionata": 90,
     "idEvento1_id": 1,
     "idEvento2_id": 1,
     "idEvento3_id": 1
@@ -93,7 +93,7 @@
     "evento1": "true",
     "evento2": "false",
     "evento3": "true",
-    "probabilita_condizionata": 80,
+    "probabilita_condizionata": 70,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -104,7 +104,7 @@
     "evento1": "false",
     "evento2": "true",
     "evento3": "true",
-    "probabilita_condizionata": 30,
+    "probabilita_condizionata": 20,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -115,7 +115,7 @@
     "evento1": "false",
     "evento2": "false",
     "evento3": "true",
-    "probabilita_condizionata": 50,
+    "probabilita_condizionata": 75,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -148,7 +148,7 @@
     "evento1": "true",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 70,
+    "probabilita_condizionata": 50,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -159,7 +159,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 60,
+    "probabilita_condizionata": 80,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -170,7 +170,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 90,
+    "probabilita_condizionata": 5,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -181,7 +181,7 @@
     "evento1": "",
     "evento2": "true",
     "evento3": "",
-    "probabilita_condizionata": 96,
+    "probabilita_condizionata": 2,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -192,7 +192,7 @@
     "evento1": "",
     "evento2": "false",
     "evento3": "",
-    "probabilita_condizionata": 4,
+    "probabilita_condizionata": 95,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -203,7 +203,7 @@
     "evento1": "",
     "evento2": "true",
     "evento3": "",
-    "probabilita_condizionata": 90,
+    "probabilita_condizionata": 3,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -214,7 +214,7 @@
     "evento1": "",
     "evento2": "false",
     "evento3": "",
-    "probabilita_condizionata": 10,
+    "probabilita_condizionata": 98,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -225,7 +225,7 @@
     "evento1": "true",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 90,
+    "probabilita_condizionata": 10,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -236,7 +236,7 @@
     "evento1": "true",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 90,
+    "probabilita_condizionata": 10,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -247,7 +247,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 10,
+    "probabilita_condizionata": 90,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -258,7 +258,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 10,
+    "probabilita_condizionata": 95,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -269,7 +269,7 @@
     "evento1": "",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 20,
+    "probabilita_condizionata": 80,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -280,7 +280,7 @@
     "evento1": "",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 20,
+    "probabilita_condizionata": 15,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -291,7 +291,7 @@
     "evento1": "true",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 10,
+    "probabilita_condizionata": 95,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -302,7 +302,7 @@
     "evento1": "true",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 30,
+    "probabilita_condizionata": 90,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -313,7 +313,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "true",
-    "probabilita_condizionata": 20,
+    "probabilita_condizionata": 30,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
@@ -324,7 +324,7 @@
     "evento1": "false",
     "evento2": "",
     "evento3": "false",
-    "probabilita_condizionata": 42,
+    "probabilita_condizionata": 5,
     "idEvento1_id": 1,
     "idEvento2_id": 2,
     "idEvento3_id": 3
