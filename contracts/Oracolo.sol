@@ -92,6 +92,8 @@ function getA_ij(
         if(checkProva1.equal("false")){
             gps_tt = 100 - gps_tt;
             gps_tf = 100 - gps_tf;
+            gps_ft = 100 - gps_ft;
+            gps_ff = 100 - gps_ff;
         }
 
 
@@ -105,6 +107,8 @@ function getA_ij(
         if(checkProva2.equal("false")){
             veicolo_tt = 100 - veicolo_tt;
             veicolo_tf = 100 - veicolo_tf;
+            veicolo_ft = 100 - veicolo_ft;
+            veicolo_ff = 100 - veicolo_ff;
         }
 
         // -----------------TRAFFICO--------------
@@ -117,6 +121,8 @@ function getA_ij(
         if(checkProva3.equal("false")){
             traffico_tt = 100 - traffico_tt;
             traffico_tf = 100 - traffico_tf;
+            traffico_ft = 100 - traffico_ft;
+            traffico_ff = 100 - traffico_ff;
         }
 
         //------------------ CONFERMA CLIENTE ----------------------------
@@ -137,6 +143,11 @@ function getA_ij(
             confermacliente_ttf = 100 - confermacliente_ttf;
             confermacliente_tft = 100 - confermacliente_tft;
             confermacliente_tff = 100 - confermacliente_tff;
+
+            confermacliente_ftt = 100 - confermacliente_ftt;
+            confermacliente_ftf = 100 - confermacliente_ftf;
+            confermacliente_fft = 100 - confermacliente_fft;
+            confermacliente_fff = 100 - confermacliente_fff;
         }
 
         // ------------------ CORRIERE ----------------------------
@@ -149,6 +160,8 @@ function getA_ij(
         if(checkProva5.equal("false")){
             corriere_tt = 100 - corriere_tt;
             corriere_tf = 100 - corriere_tf;
+            corriere_ft = 100 - corriere_ft;
+            corriere_ff = 100 - corriere_ff;
         }
 
         // se l'evento è falso, divneta 100 - priori1 e si cambiano le combinazioni del numeratore
