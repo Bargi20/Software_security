@@ -3,6 +3,7 @@ import time
 import requests
 from web3 import Web3
 from django.conf import settings
+import json
 
 # Funzione per connettersi al nodo Besu
 def connect_to_besu():
@@ -12,8 +13,9 @@ def connect_to_besu():
     return web3
 
 # Funzione per ottenere il primo account disponibile dalla lista di chiavi private
-def get_account(private_key):
-    web3 = connect_to_besu() 
+def get_account():
+    web3 = connect_to_besu()
+    private_key = settings.BESU_PRIVATE_KEYS[0] 
     account = web3.eth.account.from_key(private_key)  # Usa la chiave privata passata
     return account
 
@@ -56,3 +58,24 @@ def transaction_details(tx_hash):
         except requests.exceptions.RequestException as e:
             print(f"\nErrore durante la richiesta: {e}")
             break  # Se c'è un errore, fermati
+
+def load_contract():
+    """Carica ABI e indirizzo del contratto Oracolo dal deployment"""
+    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+    DEPLOY_PATH = os.path.join(PROJECT_ROOT, "ignition", "deployments", "chain-1338")
+
+    abi_path = os.path.join(DEPLOY_PATH, "Oracolo_abi.json")
+    address_path = os.path.join(DEPLOY_PATH, "Oracolo_address.json")
+
+    if not os.path.exists(abi_path):
+        raise FileNotFoundError(f"ABI non trovato: {abi_path}")
+    if not os.path.exists(address_path):
+        raise FileNotFoundError(f"Address non trovato: {address_path}")
+
+    # Carica ABI e indirizzo dai rispettivi JSON
+    with open(abi_path, "r", encoding="utf-8") as f:
+        contract_abi = json.load(f)
+    with open(address_path, "r", encoding="utf-8") as f:
+        contract_address = json.load(f)["Oracolo"]
+
+    return contract_abi, contract_address
