@@ -70,10 +70,10 @@
                     {% if reclamo.esito == "Non verificato" %}
                         <span id="esito_verifica" class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-gray-50 text-gray-700 border border-gray-200">
                         {{ reclamo.esito }}
-                    {% elif reclamo.esito == "Valido" %}
+                    {% elif reclamo.esito == "Accettato" %}
                         <span id="esito_verifica" class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-green-50 text-green-700 border border-green-200">
                         ✅ {{ reclamo.esito }}
-                    {% elif reclamo.esito == "Non valido" %}
+                    {% elif reclamo.esito == "Rifiutato" %}
                         <span id="prob_esito_verifica" class="inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-red-50 text-red-700 border border-red-200">
                         ❌ {{ reclamo.esito }}
                     {% else %}
