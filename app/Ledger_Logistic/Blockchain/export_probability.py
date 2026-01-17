@@ -38,7 +38,7 @@ def invia_tabella(file_path):
 
     web3 = connect_to_besu()
     private_key = settings.BESU_PRIVATE_KEYS[0]
-    account = get_account(private_key)
+    account = get_account()
 
     contract_abi, contract_address = load_contract()
     contract = web3.eth.contract(address=contract_address, abi=contract_abi)
@@ -125,7 +125,7 @@ def getA_ij(gps: str, strProva: str, prob1: str, prob2: str, prob3: str):
 
 def main():
     
-    print("=== IMPORT PROBABILITÀ DAL DATABASE ===")
+    #print("=== IMPORT PROBABILITÀ DAL DATABASE ===")
     try:
         import_probability()
         print("[OK] File JSON generato correttamente dal database")
@@ -135,7 +135,7 @@ def main():
 
     JSON_PATH = "prob_table.json"
 
-    print("\n=== INVIO TABELLA SU BESU ===")
+    #print("\n=== INVIO TABELLA SU BESU ===")
     try:
         tx_hash = invia_tabella(JSON_PATH)
     except Exception as e:
@@ -145,19 +145,19 @@ def main():
     #print("\n=== VERIFICA TRANSAZIONE ===")
     web3 = connect_to_besu()
     receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
-    if receipt.status == 1:
-        print(f"[OK] Transazione confermata: {tx_hash}")
-    else:
-        print(f"[ERRORE] Transazione fallita: {tx_hash}")
+    #if receipt.status == 1:
+    #    print(f"[OK] Transazione confermata: {tx_hash}")
+    #else:
+    #    print(f"[ERRORE] Transazione fallita: {tx_hash}")
 
-    print("\n=== LETTURA TABELLA DAL CONTRATTO (al blocco della transazione) ===")
+    #print("\n=== LETTURA TABELLA DAL CONTRATTO (al blocco della transazione) ===")
     records = leggi_tabella_da_besu(tx_hash)
     
     
     # print("\n=== record c_ij ===")
     # record = getA_ij("Fattura emessa", "false", "", "true", "")
-    for p in records:
-        print(p)
+    #for p in records:
+    #    print(p)
         
 if __name__ == "__main__":
     main()

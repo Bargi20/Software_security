@@ -11,23 +11,25 @@ django.setup()
 from Ledger_Logistic.models import Spedizione, Reclamo, Evento
 from django.forms.models import model_to_dict
 from Ledger_Logistic.Blockchain.besu import connect_to_besu, load_contract
+from Ledger_Logistic.Blockchain.export_probability import main as export_prob
 
 # Questa è la funzione che viene chiamata quando il gestore vuole verificare un reclamo. Qui si prende la spedizione associata al reclamo e si calcola la probabilità dell'evento del reclamo
 
-def calcola_probabilita(id_reclamo):
-    
+def calcola_probabilita(id_reclamo, boolEvento):
+    # Prendo il reclamo in base all'id
     reclamo = Reclamo.objects.get(id=id_reclamo)
-    # La spedizione contiene i valori delle prove
-    spedizione = model_to_dict(Spedizione.objects.get(id=id_reclamo))
-    
+    # Prendo la spedizione in base al reclamo, la quale contiene i valori delle prove
+    spedizione = model_to_dict(Spedizione.objects.get(id=reclamo.spedizione.id))
+
     probPriori = list(Evento.objects.values_list('probabilita_priori', flat=True))
-    evento1 = model_to_dict(Evento.objects.get(id=reclamo.evento1_id))
-    
+
+    export_prob()
     # Calcolo delle probabilità per l'evento spedizione fallita
     if (reclamo.evento2_id is None) & (reclamo.evento1_id == 1):
         web3 = connect_to_besu()
         abi, address = load_contract()
         contract = web3.eth.contract(address=address, abi=abi)
-        probabilita = contract.functions.prob_spedizione_fallita('true', str(spedizione['gps']).lower(), str(spedizione['veicolo_disponibile']).lower(), str(spedizione['traffico']).lower(), str(spedizione['conferma_cliente']).lower(), str(spedizione['disponibilita_corriere']).lower(), probPriori[0], probPriori[1], probPriori[2]).call()
-        print(probabilita)
+        probabilita = contract.functions.prob_spedizione_fallita(str(boolEvento).lower(), str(spedizione['gps']).lower(), str(spedizione['veicolo_disponibile']).lower(), str(spedizione['traffico']).lower(), str(spedizione['conferma_cliente']).lower(), str(spedizione['disponibilita_corriere']).lower(), probPriori[0], probPriori[1], probPriori[2]).call()
+        print(probabilita[0]/probabilita[1])
+calcola_probabilita(3)
 calcola_probabilita(2)

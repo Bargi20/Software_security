@@ -1883,7 +1883,8 @@ from django.http import JsonResponse
 def verifica_reclamo(request):
     from Ledger_Logistic.Blockchain.calcola_probabilita_reclami import calcola_probabilita
     id_reclamo = request.POST.get('reclamo_id')
-    probabilita = calcola_probabilita(id_reclamo)
+    boolEvento = request.POST.get('boolEvento')
+    probabilita = calcola_probabilita(id_reclamo, boolEvento)
     
     #if probabilita >= 90:
     #    esito = 'Valido'

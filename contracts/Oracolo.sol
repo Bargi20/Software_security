@@ -74,8 +74,8 @@ function getA_ij(
         uint256 priori1,
         uint256 priori2,
         uint256 priori3
-    ) public view returns(uint256){
-          
+    ) public view returns(uint256, uint256){
+
         uint256 numeratore = priori1;
         // adesso prendo tutte le prove di cui tutte le combinazioni in cui so evento1 ma non evento2
         
@@ -121,16 +121,16 @@ function getA_ij(
 
         //------------------ CONFERMA CLIENTE ----------------------------
         // ne ha 4 perche ha tutti e 3 gli eventi, uno sempre vero e 4 combinazioni degli altri due
-        uint256 confermacliente_ttt = getA_ij("Conferma cliente", "true", "true", "true");
-        uint256 confermacliente_ttf = getA_ij("Conferma cliente", "true", "true", "false");
-        uint256 confermacliente_tft = getA_ij("Conferma cliente", "true", "false", "true");
-        uint256 confermacliente_tff = getA_ij("Conferma cliente", "true", "false", "false");
+        uint256 confermacliente_ttt = getA_ij("Conferma Cliente", "true", "true", "true");
+        uint256 confermacliente_ttf = getA_ij("Conferma Cliente", "true", "true", "false");
+        uint256 confermacliente_tft = getA_ij("Conferma Cliente", "true", "false", "true");
+        uint256 confermacliente_tff = getA_ij("Conferma Cliente", "true", "false", "false");
 
         // per il denominatore
-        uint256 confermacliente_ftt = getA_ij("Conferma cliente", "false", "true", "true");
-        uint256 confermacliente_ftf = getA_ij("Conferma cliente", "false", "true", "false");
-        uint256 confermacliente_fft = getA_ij("Conferma cliente", "false", "false", "true");
-        uint256 confermacliente_fff = getA_ij("Conferma cliente", "false", "false", "false");
+        uint256 confermacliente_ftt = getA_ij("Conferma Cliente", "false", "true", "true");
+        uint256 confermacliente_ftf = getA_ij("Conferma Cliente", "false", "true", "false");
+        uint256 confermacliente_fft = getA_ij("Conferma Cliente", "false", "false", "true");
+        uint256 confermacliente_fff = getA_ij("Conferma Cliente", "false", "false", "false");
 
         if(checkProva4.equal("false")){
             confermacliente_ttt = 100 - confermacliente_ttt;
@@ -185,7 +185,8 @@ function getA_ij(
         + ((100-priori1)*(100-priori2)*priori3* confermacliente_fft)
         + ((100-priori1)*(100-priori2)*(100-priori3)* confermacliente_fff);
 
-        return numeratore/denominatore;
+        // Siccome solidity non permette di fare matematica con numeri con la virgola, cioè i float, la divisione verrebbe troncata e il risultato sarebbe sempre 0, dato che esso è compreso tra 0 ed 1
+        return (numeratore, denominatore);
     }
 }
 
