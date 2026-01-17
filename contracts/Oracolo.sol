@@ -168,7 +168,7 @@ function getA_ij(
         if(checkEvento.equal("false")){
             numeratore = 100 - priori1;
             numeratore = numeratore * ((priori2 * gps_ft * veicolo_ft * traffico_ft * corriere_ft) 
-              + ((100-priori2) * gps_ff * veicolo_ff * traffico_ff * corriere_ft) 
+              + ((100-priori2) * gps_ff * veicolo_ff * traffico_ff * corriere_ff) 
               + (priori2 * priori3 * confermacliente_ftt) 
               + ((100-priori2)*priori3*confermacliente_fft) 
               + (priori2 * (100-priori3)*confermacliente_ftf) 
