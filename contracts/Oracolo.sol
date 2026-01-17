@@ -66,21 +66,20 @@ function getA_ij(
 
     function prob_spedizione_fallita(
         string memory checkEvento,
-        string memory checkProva1,
-        string memory checkProva2,
-        string memory checkProva3,
-        string memory checkProva4,
-        string memory checkProva5,
-        uint8 p,
-        uint8 q
+        string memory checkProva1, //GPS
+        string memory checkProva2, //VEICOLO
+        string memory checkProva3, //TRAFFICO
+        string memory checkProva4, //CONFERMA CLIENTE
+        string memory checkProva5, //CORRIERE
+        uint8 priori1,
+        uint8 priori2,
+        uint8 priori3
     ) public view returns(uint8){
-        uint8 numeratore = p;
-
-        if(checkEvento.equal("false"))
-            numeratore = 100 - p;
-        
+          
+        uint8 numeratore = priori1;
         // adesso prendo tutte le prove di cui tutte le combinazioni in cui so evento1 ma non evento2
         
+        // ----------GPS---------- 
         // GPS vero: ha sempre due eventi, quindi uno sempre vero e il secondo evento che puo essere vero o falso                  
         uint8 gps_tt = getA_ij("GPS", "true", "", "true");
         uint8 gps_tf = getA_ij("GPS", "true", "", "false");
@@ -96,7 +95,7 @@ function getA_ij(
         }
 
 
-        //VEICOLO
+        //--------------VEICOLO-----------------
         uint8 veicolo_tt = getA_ij("Disponibilita veicolo", "true", "", "true");
         uint8 veicolo_tf = getA_ij("Disponibilita veicolo", "true", "", "false");
 
@@ -108,7 +107,7 @@ function getA_ij(
             veicolo_tf = 100 - veicolo_tf;
         }
 
-        // TRAFFICO
+        // -----------------TRAFFICO--------------
         uint8 traffico_tt = getA_ij("Traffico", "true", "", "true");
         uint8 traffico_tf = getA_ij("Traffico", "true", "", "false");
 
@@ -120,7 +119,8 @@ function getA_ij(
             traffico_tf = 100 - traffico_tf;
         }
 
-        // CONFERMA CLIENTE: ne ha 4 perche ha tutti e 3 gli eventi, uno sempre vero e 4 combinazioni degli altri due
+        //------------------ CONFERMA CLIENTE ----------------------------
+        // ne ha 4 perche ha tutti e 3 gli eventi, uno sempre vero e 4 combinazioni degli altri due
         uint8 confermacliente_ttt = getA_ij("Conferma cliente", "true", "true", "true");
         uint8 confermacliente_ttf = getA_ij("Conferma cliente", "true", "true", "false");
         uint8 confermacliente_tft = getA_ij("Conferma cliente", "true", "false", "true");
@@ -139,7 +139,7 @@ function getA_ij(
             confermacliente_tff = 100 - confermacliente_tff;
         }
 
-        //CORRIERE
+        // ------------------ CORRIERE ----------------------------
         uint8 corriere_tt = getA_ij("Disponibilita corriere", "true", "", "true");
         uint8 corriere_tf = getA_ij("Disponibilita corriere", "true", "", "false");
 
@@ -151,19 +151,38 @@ function getA_ij(
             corriere_tf = 100 - corriere_tf;
         }
 
-        numeratore = numeratore * ((q * gps_tt * veicolo_tt * traffico_tt * confermacliente_ttt * confermacliente_tft * corriere_tt) 
-        + ((1-q) * gps_tf * veicolo_tf * traffico_tf * 
-        confermacliente_ttf * confermacliente_tff * corriere_tt));
+        // se l'evento è falso, divneta 100 - priori1 e si cambiano le combinazioni del numeratore
+        if(checkEvento.equal("false")){
+            numeratore = 100 - priori1;
+            numeratore = numeratore * ((priori2 * gps_ft * veicolo_ft * traffico_ft * corriere_ft) 
+              + ((100-priori2) * gps_ff * veicolo_ff * traffico_ff * corriere_ft) 
+              + (priori2 * priori3 * confermacliente_ftt) 
+              + ((100-priori2)*priori3*confermacliente_fft) 
+              + (priori2 * (100-priori3)*confermacliente_ftf) 
+              + ((100-priori2)*(100-priori3)*confermacliente_fff));
+        }
+        else{ //se l'evento è vero
+            numeratore = numeratore * ((priori2 * gps_tt * veicolo_tt * traffico_tt * corriere_tt) 
+            + ((100-priori2) * gps_tf * veicolo_tf * traffico_tf * corriere_tf) 
+            + (priori2 * priori3 * confermacliente_ttt) 
+            + ((100 -priori2)*priori3*confermacliente_tft) 
+            + (priori2 * (100-priori3)*confermacliente_ttf) 
+            + ((100-priori2)*(100-priori3)*confermacliente_tff));
+        }
 
         uint8 denominatore = 
-        (p * q * gps_tt * veicolo_tt * traffico_tt * confermacliente_ttt * confermacliente_tft * corriere_tt) 
-        + (p * (1-q) * gps_tf * veicolo_tf * traffico_tf * confermacliente_ttf * confermacliente_tff * corriere_tt) 
-        + ((1-p) * q * gps_ft * veicolo_ft * traffico_ft * confermacliente_ftt * confermacliente_fft * corriere_ft) 
-        + (((1-p) * (1-q) * gps_ff * veicolo_ff * traffico_ff * confermacliente_ftf * confermacliente_fff * corriere_ff));
-
-        if(checkEvento.equal("false")) {
-            return 100 - numeratore / denominatore;
-        }
+        (priori1 * priori2 * gps_tt * veicolo_tt * traffico_tt * corriere_tt) 
+        + (priori1 * (100-priori2) * gps_tf * veicolo_tf * traffico_tf * corriere_tf) 
+        + ((100-priori1) * priori2 * gps_ft * veicolo_ft * traffico_ft * corriere_ft) 
+        + (((100-priori1) * (100-priori2) * gps_ff * veicolo_ff * traffico_ff * corriere_ff))
+        + (priori1 * priori2* priori3 * confermacliente_ttt)
+        + (priori1 * priori2 * (100-priori3)* confermacliente_ttf)
+        + (priori1*(100-priori2)*priori3* confermacliente_tft)
+        + (priori1*(100-priori2)*(100-priori3)* confermacliente_tff)
+        + ((100-priori1)*priori2*priori3*confermacliente_ftt)
+        + ((100-priori1)*priori2*(100-priori3)*confermacliente_ftf)
+        + ((100-priori1)*(100-priori2)*priori3* confermacliente_fft)
+        + ((100-priori1)*(100-priori2)*(100-priori3)* confermacliente_fff);
 
         return numeratore/denominatore;
     }
