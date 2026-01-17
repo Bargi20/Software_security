@@ -1899,7 +1899,7 @@ def verifica_reclamo(request):
     
     reclamo.risolto = True
     reclamo.save()    
-    
+    # Da chiedere al prof se le probabilità di un evento che sia vero e falso sono complementari o no
     return JsonResponse({
         "esito": esito,
         "probabilita_vero": f"{probabilitaVero*100:.2f}",
