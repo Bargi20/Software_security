@@ -182,13 +182,11 @@ $(document).ready(function () {
 
                 if (response.esito == "Valido"){
                     esitoVerifica.text(response.esito);
-                    esitoVerifica.removeClass();
-                    esitoVerifica.addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-green-50 text-green-700 border border-green-200");
+                    esitoVerifica.removeClass().addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-green-600 text-white border border-green-700");
                     esitoVerifica.after('<span id="probabilita" class="ml-2 text-sm text-gray-600  font-bold">Probabilità: ' + response.probabilita +'%' + '</span>');
                 } else {
                     esitoVerifica.text(response.esito);
-                    esitoVerifica.removeClass();
-                    esitoVerifica.addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-red-50 text-red-700 border border-red-200");
+                    esitoVerifica.removeClass().addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-red-600 text-white border border-red-700");
                     esitoVerifica.after('<span id="probabilita" class="ml-2 text-sm text-gray-600 font-bold">Probabilità: ' + response.probabilita +'%' + '</span>');
                 }
                 
@@ -202,7 +200,7 @@ $(document).ready(function () {
                 $('#esito_verifica')
                     .text('⚠️ Errore nella verifica')
                     .removeClass()
-                    .addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-red-50 text-red-700 border border-red-200");
+                    .addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-red-600 text-white border border-red-700");
                     buttonVerifica.removeClass();
                 buttonVerifica.addClass("px-5 py-2 text-sm font-semibold rounded-md bg-red-600 text-white hover:bg-red-700 transition shadow");
                 buttonVerifica.attr('disabled', true);
