@@ -11,7 +11,7 @@ contract Oracolo {
         string evento1; // "true", "false" o ""
         string evento2; // "true", "false" o ""
         string evento3; // "true", "false" o ""
-        uint8 probabilitaCond; // scala 0-100
+        uint256 probabilitaCond; // scala 0-100
         uint16 idEvento1;
         uint16 idEvento2;
         uint16 idEvento3;
@@ -41,7 +41,7 @@ function getA_ij(
     string memory evento1,
     string memory evento2,
     string memory evento3
-) public view returns (uint8) {
+) public view returns (uint256) {
     for (uint i = 0; i < records.length; i++) {
         Record storage r = records[i];
         // Se non coincide il nomeProva, il record viene scartato, il ciclo passa direttamente all’iterazione successiva
@@ -71,22 +71,22 @@ function getA_ij(
         string memory checkProva3, //TRAFFICO
         string memory checkProva4, //CONFERMA CLIENTE
         string memory checkProva5, //CORRIERE
-        uint8 priori1,
-        uint8 priori2,
-        uint8 priori3
-    ) public view returns(uint8){
+        uint256 priori1,
+        uint256 priori2,
+        uint256 priori3
+    ) public view returns(uint256){
           
-        uint8 numeratore = priori1;
+        uint256 numeratore = priori1;
         // adesso prendo tutte le prove di cui tutte le combinazioni in cui so evento1 ma non evento2
         
         // ----------GPS---------- 
         // GPS vero: ha sempre due eventi, quindi uno sempre vero e il secondo evento che puo essere vero o falso                  
-        uint8 gps_tt = getA_ij("GPS", "true", "", "true");
-        uint8 gps_tf = getA_ij("GPS", "true", "", "false");
+        uint256 gps_tt = getA_ij("GPS", "true", "", "true");
+        uint256 gps_tf = getA_ij("GPS", "true", "", "false");
 
         // mi serve per il denominatore
-        uint8 gps_ft = getA_ij("GPS", "false", "", "true");
-        uint8 gps_ff = getA_ij("GPS", "false", "", "false");
+        uint256 gps_ft = getA_ij("GPS", "false", "", "true");
+        uint256 gps_ff = getA_ij("GPS", "false", "", "false");
 
         // se GPS è falso mi servono i due complementari
         if(checkProva1.equal("false")){
@@ -96,11 +96,11 @@ function getA_ij(
 
 
         //--------------VEICOLO-----------------
-        uint8 veicolo_tt = getA_ij("Disponibilita veicolo", "true", "", "true");
-        uint8 veicolo_tf = getA_ij("Disponibilita veicolo", "true", "", "false");
+        uint256 veicolo_tt = getA_ij("Disponibilita veicolo", "true", "", "true");
+        uint256 veicolo_tf = getA_ij("Disponibilita veicolo", "true", "", "false");
 
-        uint8 veicolo_ft = getA_ij("Disponibilita veicolo", "false", "", "true");
-        uint8 veicolo_ff = getA_ij("Disponibilita veicolo", "false", "", "false");
+        uint256 veicolo_ft = getA_ij("Disponibilita veicolo", "false", "", "true");
+        uint256 veicolo_ff = getA_ij("Disponibilita veicolo", "false", "", "false");
 
         if(checkProva2.equal("false")){
             veicolo_tt = 100 - veicolo_tt;
@@ -108,11 +108,11 @@ function getA_ij(
         }
 
         // -----------------TRAFFICO--------------
-        uint8 traffico_tt = getA_ij("Traffico", "true", "", "true");
-        uint8 traffico_tf = getA_ij("Traffico", "true", "", "false");
+        uint256 traffico_tt = getA_ij("Traffico", "true", "", "true");
+        uint256 traffico_tf = getA_ij("Traffico", "true", "", "false");
 
-        uint8 traffico_ft = getA_ij("Traffico", "false", "", "true");
-        uint8 traffico_ff = getA_ij("Traffico", "false", "", "false");
+        uint256 traffico_ft = getA_ij("Traffico", "false", "", "true");
+        uint256 traffico_ff = getA_ij("Traffico", "false", "", "false");
 
         if(checkProva3.equal("false")){
             traffico_tt = 100 - traffico_tt;
@@ -121,16 +121,16 @@ function getA_ij(
 
         //------------------ CONFERMA CLIENTE ----------------------------
         // ne ha 4 perche ha tutti e 3 gli eventi, uno sempre vero e 4 combinazioni degli altri due
-        uint8 confermacliente_ttt = getA_ij("Conferma cliente", "true", "true", "true");
-        uint8 confermacliente_ttf = getA_ij("Conferma cliente", "true", "true", "false");
-        uint8 confermacliente_tft = getA_ij("Conferma cliente", "true", "false", "true");
-        uint8 confermacliente_tff = getA_ij("Conferma cliente", "true", "false", "false");
+        uint256 confermacliente_ttt = getA_ij("Conferma cliente", "true", "true", "true");
+        uint256 confermacliente_ttf = getA_ij("Conferma cliente", "true", "true", "false");
+        uint256 confermacliente_tft = getA_ij("Conferma cliente", "true", "false", "true");
+        uint256 confermacliente_tff = getA_ij("Conferma cliente", "true", "false", "false");
 
         // per il denominatore
-        uint8 confermacliente_ftt = getA_ij("Conferma cliente", "false", "true", "true");
-        uint8 confermacliente_ftf = getA_ij("Conferma cliente", "false", "true", "false");
-        uint8 confermacliente_fft = getA_ij("Conferma cliente", "false", "false", "true");
-        uint8 confermacliente_fff = getA_ij("Conferma cliente", "false", "false", "false");
+        uint256 confermacliente_ftt = getA_ij("Conferma cliente", "false", "true", "true");
+        uint256 confermacliente_ftf = getA_ij("Conferma cliente", "false", "true", "false");
+        uint256 confermacliente_fft = getA_ij("Conferma cliente", "false", "false", "true");
+        uint256 confermacliente_fff = getA_ij("Conferma cliente", "false", "false", "false");
 
         if(checkProva4.equal("false")){
             confermacliente_ttt = 100 - confermacliente_ttt;
@@ -140,11 +140,11 @@ function getA_ij(
         }
 
         // ------------------ CORRIERE ----------------------------
-        uint8 corriere_tt = getA_ij("Disponibilita corriere", "true", "", "true");
-        uint8 corriere_tf = getA_ij("Disponibilita corriere", "true", "", "false");
+        uint256 corriere_tt = getA_ij("Disponibilita corriere", "true", "", "true");
+        uint256 corriere_tf = getA_ij("Disponibilita corriere", "true", "", "false");
 
-        uint8 corriere_ft = getA_ij("Disponibilita corriere", "false", "", "true");
-        uint8 corriere_ff = getA_ij("Disponibilita corriere", "false", "", "false");
+        uint256 corriere_ft = getA_ij("Disponibilita corriere", "false", "", "true");
+        uint256 corriere_ff = getA_ij("Disponibilita corriere", "false", "", "false");
 
         if(checkProva5.equal("false")){
             corriere_tt = 100 - corriere_tt;
@@ -170,7 +170,8 @@ function getA_ij(
             + ((100-priori2)*(100-priori3)*confermacliente_tff));
         }
 
-        uint8 denominatore = 
+        uint256 denominatore;
+        denominatore = 
         (priori1 * priori2 * gps_tt * veicolo_tt * traffico_tt * corriere_tt) 
         + (priori1 * (100-priori2) * gps_tf * veicolo_tf * traffico_tf * corriere_tf) 
         + ((100-priori1) * priori2 * gps_ft * veicolo_ft * traffico_ft * corriere_ft) 

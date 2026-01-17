@@ -22,13 +22,12 @@ def calcola_probabilita(id_reclamo):
     
     probPriori = list(Evento.objects.values_list('probabilita_priori', flat=True))
     evento1 = model_to_dict(Evento.objects.get(id=reclamo.evento1_id))
-    evento2 = model_to_dict(Evento.objects.get(id=reclamo.evento2_id))
     
     # Calcolo delle probabilità per l'evento spedizione fallita
     if (reclamo.evento2_id is None) & (reclamo.evento1_id == 1):
         web3 = connect_to_besu()
         abi, address = load_contract()
         contract = web3.eth.contract(address=address, abi=abi)
-        contract.functions.prob_spedizione_fallita(evento1, str(spedizione['gps']).lower(), str(spedizione['veicolo_disponibile']).lower(), str(spedizione['traffico']).lower(), str(spedizione['conferma_cliente']).lower(), (spedizione['disponibilita_corriere']).lower(), probPriori[0], probPriori[1], probPriori[2])
-        
-calcola_probabilita(1)
+        probabilita = contract.functions.prob_spedizione_fallita('true', str(spedizione['gps']).lower(), str(spedizione['veicolo_disponibile']).lower(), str(spedizione['traffico']).lower(), str(spedizione['conferma_cliente']).lower(), str(spedizione['disponibilita_corriere']).lower(), probPriori[0], probPriori[1], probPriori[2]).call()
+        print(probabilita)
+calcola_probabilita(2)
