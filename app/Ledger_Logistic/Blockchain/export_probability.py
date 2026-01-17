@@ -16,33 +16,14 @@ django.setup() # Inizializza l'ambiente Django per prendere le variabili d'ambie
 
 from django.conf import settings
 from web3.middleware import ExtraDataToPOAMiddleware
-from Ledger_Logistic.Blockchain.besu import connect_to_besu, get_account
+from Ledger_Logistic.Blockchain.besu import connect_to_besu, get_account, load_contract
 from Ledger_Logistic.Blockchain.import_probability import main as import_probability
 
 # -------------------------------------------------------------------
 # Funzioni Blockchain
 # -------------------------------------------------------------------
 
-def load_contract():
-    """Carica ABI e indirizzo del contratto Oracolo dal deployment"""
-    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-    DEPLOY_PATH = os.path.join(PROJECT_ROOT, "ignition", "deployments", "chain-1338")
 
-    abi_path = os.path.join(DEPLOY_PATH, "Oracolo_abi.json")
-    address_path = os.path.join(DEPLOY_PATH, "Oracolo_address.json")
-
-    if not os.path.exists(abi_path):
-        raise FileNotFoundError(f"ABI non trovato: {abi_path}")
-    if not os.path.exists(address_path):
-        raise FileNotFoundError(f"Address non trovato: {address_path}")
-
-    # Carica ABI e indirizzo dai rispettivi JSON
-    with open(abi_path, "r", encoding="utf-8") as f:
-        contract_abi = json.load(f)
-    with open(address_path, "r", encoding="utf-8") as f:
-        contract_address = json.load(f)["Oracolo"]
-
-    return contract_abi, contract_address
 
 
 def invia_tabella(file_path):
@@ -177,25 +158,7 @@ def main():
     # record = getA_ij("Fattura emessa", "false", "", "true", "")
     for p in records:
         print(p)
-
-#   questa è la funzione che viene chiamata quando il gestore vuole verificare un reclamo. Qui si prende la spedizione associata al reclamo e si calcola la probabilità dell'evento del reclamo
-def calcola_probabilita(id_reclamo):
-    from Ledger_Logistic.models import Spedizione, Reclamo, Evento
-    from django.forms.models import model_to_dict
-    
-    reclamo = Reclamo.objects.get(id=id_reclamo)
-    spedizione = model_to_dict(Spedizione.objects.get(id=id_reclamo))
-    # Si prendono tutte le prove della spedizione (in stringhe lowercase)
-    prove = [str(spedizione[prova]).lower() for prova in ['traffico', 'veicolo_disponibile', 'meteo_sfavorevole', 'conferma_del_gestore_di_pagamento', 'fattura_emessa', 'gps', 'conferma_cliente', 'disponibilita_corriere']]
-
-    evento1 = model_to_dict(Evento.objects.get(id=reclamo.evento1_id))
-    
-    if reclamo.evento2_id:
-        evento2 = model_to_dict(Evento.objects.get(id=reclamo.evento2_id))
-        return evento1, evento2, prove
-    else :
-        return evento1, prove
-
+        
 if __name__ == "__main__":
     main()
         

@@ -1881,9 +1881,9 @@ def dettaglio_spedizione(request, spedizione_id):
 from django.http import JsonResponse
 
 def verifica_reclamo(request):
-    from Ledger_Logistic.Blockchain.export_probability import calcola_probabilita as verifica_on_chain
+    from Ledger_Logistic.Blockchain.calcola_probabilita_reclami import calcola_probabilita
     id_reclamo = request.POST.get('reclamo_id')
-    probabilita = verifica_on_chain(id_reclamo)
+    probabilita = calcola_probabilita(id_reclamo)
     
     #if probabilita >= 90:
     #    esito = 'Valido'
