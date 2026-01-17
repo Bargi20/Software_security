@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django_otp.admin import OTPAdminSite
 from django_otp.decorators import otp_required
-from .models import Utente, TentativiDiLogin, CodiceOTP, MessaggioContatto, FileViewer
+from .models import Utente, TentativiDiLogin, CodiceOTP
 import os
 from django.utils.html import format_html
 from django.conf import settings
-from .models import Utente, TentativiDiLogin, CodiceOTP, MessaggioContatto, Spedizione
+from .models import Utente, TentativiDiLogin, CodiceOTP, Spedizione
 
 # Usa admin normale, non OTP
 # admin.site.__class__ = OTPAdminSite
@@ -35,14 +35,6 @@ class CodiceOTPAdmin(admin.ModelAdmin):
     search_fields = ['utente__email']
     list_filter = ['usato', 'creato_il']
     readonly_fields = ['creato_il']
-
-@admin.register(MessaggioContatto)
-class MessaggioContattoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'email', 'servizio', 'data_invio', 'letto')
-    list_filter = ('letto', 'servizio', 'data_invio')
-    search_fields = ('nome', 'email', 'messaggio')
-    readonly_fields = ('data_invio',)
-    actions = ['mark_as_read']
     
     def mark_as_read(self, request, queryset):
         queryset.update(letto=True)
@@ -88,9 +80,6 @@ class FileViewerAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return True
     
-    def get_queryset(self, request):
-        return FileViewer.objects.none()
-    
     def changelist_view(self, request, extra_context=None):
         folder_path = os.path.join(settings.BASE_DIR, '..', 'contracts')
         folder_path = os.path.abspath(folder_path)
@@ -125,8 +114,3 @@ class FileViewerAdmin(admin.ModelAdmin):
         extra_context['title'] = 'Contratti Solidity'
         extra_context['folder'] = folder_path
         return super().changelist_view(request, extra_context)
-
-
-@admin.register(FileViewer)
-class FileViewerAdminClass(FileViewerAdmin):
-    pass

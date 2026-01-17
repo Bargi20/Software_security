@@ -8,10 +8,8 @@ import random, string
 # ============= CUSTOM USER MANAGER =============
 
 class UtenteManager(BaseUserManager):
-    """Manager personalizzato per il modello Utente"""
     
     def create_user(self, email, username, password=None, **extra_fields):
-        """Crea e salva un utente normale"""
         if not email:
             raise ValueError('L\'email è obbligatoria')
         if not username:
@@ -40,12 +38,11 @@ class UtenteManager(BaseUserManager):
 # ============= CUSTOM USER MODEL =============
 
 class Utente(AbstractBaseUser, PermissionsMixin):
-    """Modello User personalizzato che usa email per l'autenticazione"""
     
     email = models.EmailField(max_length=254, unique=True, verbose_name='Email')
     username = models.CharField(max_length=150, unique=True, verbose_name='Username')
-    first_name = models.CharField(max_length=30, blank=True, verbose_name='Nome')
-    last_name = models.CharField(max_length=30, blank=True, verbose_name='Cognome')
+    first_name = models.CharField(max_length=50, blank=True, verbose_name='Nome')
+    last_name = models.CharField(max_length=50, blank=True, verbose_name='Cognome')
     phone_number = models.CharField(max_length=15, blank=True, verbose_name='Telefono')
     address = models.TextField(blank=True, verbose_name='Indirizzo')
     data_nascita = models.DateField(blank=True, null=True, verbose_name='Data di nascita')
@@ -276,9 +273,9 @@ class Evento(models.Model):
 class Probabilita_condizionate(models.Model):
     """Prova per l'oracolo bayesiano"""
     nomeProva = models.CharField(max_length=100)
-    evento1 = models.TextField(default=False, blank=True)
-    evento2 = models.TextField(default=False, blank=True)
-    evento3 = models.TextField(default=False, blank=True)
+    evento1 = models.TextField(blank=True)
+    evento2 = models.TextField(blank=True)
+    evento3 = models.TextField(blank=True)
     idEvento1 = models.ForeignKey(
         Evento, 
         on_delete=models.CASCADE, 
@@ -300,50 +297,12 @@ class Probabilita_condizionate(models.Model):
         null=True,
         blank=True
     )
-    probabilita_condizionata = models.IntegerField()
+    probabilita_condizionata = models.IntegerField(blank=False)
     
     class Meta:
         verbose_name = "Prova per oracolo"
         verbose_name_plural = "Prove per oracolo"
     
-    def __str__(self):
-        return f"{self.nomeProva} - {self.probabilita_condizionata}"
-
-
-# ============= MESSAGGIO CONTATTO MODEL =============
-
-class MessaggioContatto(models.Model):
-    """Modello per salvare i messaggi inviati tramite il form contatti"""
-    nome = models.CharField(max_length=200, verbose_name='Nome e Cognome')
-    email = models.EmailField(max_length=254, verbose_name='Email')
-    telefono = models.CharField(max_length=20, blank=True, verbose_name='Telefono')
-    servizio = models.CharField(max_length=50, blank=True, verbose_name='Servizio di interesse')
-    messaggio = models.TextField(verbose_name='Messaggio')
-    data_invio = models.DateTimeField(auto_now_add=True, verbose_name='Data invio')
-    letto = models.BooleanField(default=False, verbose_name='Letto')
-    
-    class Meta:
-        verbose_name = "Messaggio di Contatto"
-        verbose_name_plural = "Messaggi di Contatto"
-        ordering = ['-data_invio']
-    
-    def __str__(self):
-        return f"{self.nome} - {self.email} ({self.data_invio.strftime('%d/%m/%Y %H:%M')})"
-    
-    def mark_as_read(self):
-        """Segna il messaggio come letto"""
-        self.letto = True
-        self.save()
-
-# In models.py, aggiungi:
-class FileViewer(models.Model):
-    """Modello dummy per visualizzare file nella dashboard admin"""
-    
-    class Meta:
-        verbose_name = "Visualizzatore File"
-        verbose_name_plural = "Visualizzatore File"
-        managed = False  # Non crea tabella nel database
-        app_label = 'Ledger_Logistic'
 
 # ============= SPEDIZIONE MODEL =============
 
@@ -386,7 +345,7 @@ class Spedizione(models.Model):
     )
     
     # Indirizzo di consegna
-    indirizzo_consegna = models.TextField(verbose_name='Indirizzo di Consegna')
+    indirizzo_consegna = models.CharField(max_length=300, verbose_name='Indirizzo di Consegna')
     citta = models.CharField(max_length=100, verbose_name='Città')
     cap = models.CharField(max_length=10, verbose_name='CAP')
     provincia = models.CharField(max_length=2, verbose_name='Provincia')
@@ -398,7 +357,7 @@ class Spedizione(models.Model):
         default='medio',
         verbose_name='Grandezza Pacco'
     )
-    descrizione = models.TextField(verbose_name='Descrizione Ordine')
+    descrizione = models.CharField(max_length=700, verbose_name='Descrizione Ordine')
     
     # Stato e timestamp
     stato = models.CharField(
@@ -472,14 +431,9 @@ class Spedizione(models.Model):
         verbose_name = "Spedizione"
         verbose_name_plural = "Spedizioni"
         ordering = ['-data_creazione']
-        
-    
-    def __str__(self):
-        return f"{self.codice_tracciamento} - {self.cliente.email} ({self.get_stato_display()})"
     
     def genera_codice_tracciamento(self):
         """Genera un codice di tracciamento univoco"""
-        
         while True:
             codice = 'LL' + ''.join(random.choices(string.digits, k=10))
             if not Spedizione.objects.filter(codice_tracciamento=codice).exists():
@@ -487,8 +441,8 @@ class Spedizione(models.Model):
     
 class Reclamo(models.Model):
     RECLAMI_CHOICES = [
-        ('Spedizione non effettuata correttamente', 'Spedizione non effettuata correttamente'),
-        ('Verifica pagamento', 'Verifica pagamento'),
+        ('Spedizione fallita', 'Spedizione fallita'),
+        ('Pagamento fallito', 'Pagamento fallito'),
         ('Ritardo di consegna', 'Ritardo di consegna')
         ]
     
@@ -521,6 +475,7 @@ class Reclamo(models.Model):
 
     descrizione = models.CharField(max_length=600, verbose_name='Descrizione Reclamo')
     data_creazione = models.DateTimeField(auto_now_add=True, verbose_name='Data Creazione Reclamo')
+    
     risolto = models.BooleanField(default=False, verbose_name='Risolto')
     esito = models.TextField(
         choices=ESITO_CHOICES,

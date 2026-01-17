@@ -20,8 +20,7 @@ from django.urls import reverse
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.utils import ImageReader
-import random, string
+import random
 load_dotenv()
 
 
