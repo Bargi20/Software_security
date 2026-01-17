@@ -30,6 +30,7 @@ def calcola_probabilita(id_reclamo, boolEvento):
         abi, address = load_contract()
         contract = web3.eth.contract(address=address, abi=abi)
         probabilita = contract.functions.prob_spedizione_fallita(str(boolEvento).lower(), str(spedizione['gps']).lower(), str(spedizione['veicolo_disponibile']).lower(), str(spedizione['traffico']).lower(), str(spedizione['conferma_cliente']).lower(), str(spedizione['disponibilita_corriere']).lower(), probPriori[0], probPriori[1], probPriori[2]).call()
-        print(type(probabilita[0]/probabilita[1]))
+        #print(type(probabilita[0]/probabilita[1]))
+        
         
         return (probabilita[0]/probabilita[1])

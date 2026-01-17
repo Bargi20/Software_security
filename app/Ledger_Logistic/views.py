@@ -1882,23 +1882,31 @@ from django.http import JsonResponse
 
 def verifica_reclamo(request):
     from Ledger_Logistic.Blockchain.calcola_probabilita_reclami import calcola_probabilita
-    from decimal import Decimal, ROUND_DOWN 
     id_reclamo = request.POST.get('reclamo_id')
     bool_evento = request.POST.get('boolReclamo')
     probabilita = calcola_probabilita(id_reclamo, bool_evento)
-    print(probabilita)
+    #print(probabilita)
+    reclamo = Reclamo.objects.get(id=id_reclamo)
+    #print(reclamo.esito)
     
     if (bool_evento == 'true') & (probabilita >= 0.9):
         esito = 'Valido'
+        reclamo.esito = 'Accettato'
     elif (bool_evento == 'true') & (probabilita <= 0.2):
         esito = 'Non Valido'
+        reclamo.esito = 'Rifiutato'
     elif(bool_evento == 'false') & (probabilita >= 0.9):
         esito = 'Valido'
+        reclamo.esito = 'Accettato'
     elif (bool_evento == 'false') & (probabilita <= 0.2):
         esito = 'Non Valido'
+        reclamo.esito = 'Rifiutato'
     else:
         esito = 'Impossibile dare un esito (soglia non raggiunta)'
-        
+        reclamo.esito = 'Annullato'
+    
+    reclamo.risolto = True
+    reclamo.save()    
     
     # Da implementare il cambio dell'esito del reclamo nel database
     return JsonResponse({
