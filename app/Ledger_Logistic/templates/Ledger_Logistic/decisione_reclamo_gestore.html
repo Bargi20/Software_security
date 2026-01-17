@@ -200,9 +200,9 @@ $(document).ready(function () {
             error: function () {
                 clearInterval(dotsInterval);
                 $('#esito_verifica')
-                    .text('Errore nella verifica')
+                    .text('⚠️ Errore nella verifica')
                     .removeClass()
-                    .addClass('bg-red-50 text-red-700 border border-red-200');
+                    .addClass("inline-flex px-3 py-1 mt-1 rounded-full text-sm font-semibold bg-red-50 text-red-700 border border-red-200");
                     buttonVerifica.removeClass();
                 buttonVerifica.addClass("px-5 py-2 text-sm font-semibold rounded-md bg-red-600 text-white hover:bg-red-700 transition shadow");
                 buttonVerifica.attr('disabled', true);
