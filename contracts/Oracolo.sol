@@ -283,10 +283,8 @@ function getA_ij(
 
         uint256 denominatore;
         denominatore = 
-        (priori2 * fatturaemessa_t) 
-        + ((100-priori2)*fatturaemessa_f) 
-        + (priori2*confermagestore_t)
-        + ((100-priori2)*confermagestore_f) 
+        (priori2 * fatturaemessa_t * confermagestore_t) 
+        + ((100-priori2)*fatturaemessa_f *confermagestore_f) 
         + (priori1 * priori2* priori3 * confermacliente_ttt)
         + (priori1 * priori2 * (100-priori3)* confermacliente_ttf)
         + (priori1*(100-priori2)*priori3* confermacliente_tft)
