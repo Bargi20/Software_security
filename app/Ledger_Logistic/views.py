@@ -1877,20 +1877,20 @@ def dettaglio_spedizione(request, spedizione_id):
     return render(request, 'Ledger_Logistic/dettaglio_spedizione.html', context)
     
 
-from django.http import JsonResponse
-
+# Qui viene chiama la funzione per calcolare la probabilità in base all'evento collegato al reclamo
 def verifica_reclamo(request):
     from Ledger_Logistic.Blockchain.calcola_probabilita_reclami import calcola_probabilita
     id_reclamo = request.POST.get('reclamo_id')
-    probabilitaVero = calcola_probabilita(id_reclamo, True)
-    probabilitaFalso = calcola_probabilita(id_reclamo, False)
+    probabilita_vero = calcola_probabilita(id_reclamo, True)
+    probabilita_falso = calcola_probabilita(id_reclamo, False)
 
     reclamo = Reclamo.objects.get(id=id_reclamo)
     
-    if (probabilitaVero >= 0.8) & (probabilitaFalso <= 0.2):
+    # Soglie per cui si può decidere l'esito del reclamo
+    if (probabilita_vero >= 0.8) & (probabilita_falso <= 0.2):
         esito = 'Reclamo accettato'
         reclamo.esito = 'Accettato'
-    elif (probabilitaVero <= 0.2) & (probabilitaFalso >= 0.8):
+    elif (probabilita_vero <= 0.2) & (probabilita_falso >= 0.8):
         esito = 'Reclamo rifiutato'
         reclamo.esito = 'Rifiutato'
     else:
@@ -1902,6 +1902,6 @@ def verifica_reclamo(request):
     # Da chiedere al prof se le probabilità di un evento che sia vero e falso sono complementari o no
     return JsonResponse({
         "esito": esito,
-        "probabilita_vero": f"{probabilitaVero*100:.2f}",
-        "probabilita_falso": f"{probabilitaFalso*100:.2f}"
+        "probabilita_vero": f"{probabilita_vero*100:.2f}",
+        "probabilita_falso": f"{probabilita_falso*100:.2f}"
     })
