@@ -325,11 +325,11 @@ Di seguito è riportato il codice PRISM utilizzato per il modello:
 \\
 [\variable{inizioAttaccoLogin}]
 (\variable{statoLogin}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{1});
+-> (\variable{statoLogin'}=\numberb{1});
 \\
 [\variable{inizioAttaccoPasswordDimenticata}]
 (\variable{statoLogin}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{10});
+-> (\variable{statoLogin'}=\numberb{10});
 \\\\
 \cmt{////////////////////}
 \\
@@ -339,79 +339,79 @@ Di seguito è riportato il codice PRISM utilizzato per il modello:
 \\\\
 [\variable{InserimentoEmail}]
 (\variable{statoLogin}=\numberb{1})
--> (\variable{statoLogin}'=\numberb{2});
+-> (\variable{statoLogin'}=\numberb{2});
 \\\\
 [\variable{InserimentoPassword}]
 (\variable{statoLogin}=\numberb{2})
 \& (\variable{c\_log} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{3})
-\& \\ (\variable{c\_log}'
+-> (\variable{statoLogin'}=\numberb{3})
+\& \\ (\variable{c\_log'}
 =\variable{c\_log}-\numberb{1});
 \\\\
 [\variable{DatiOK}]
 (\variable{statoLogin}=\numberb{3})
--> (\variable{statoLogin}'=\numberb{5});
+-> (\variable{statoLogin'}=\numberb{5});
 \\
 [\variable{DatiKO}]
 (\variable{statoLogin}=\numberb{3})
--> (\variable{statoLogin}'=\numberb{4});
+-> (\variable{statoLogin'}=\numberb{4});
 \\\\
 [\variable{RitentaDati}]
 (\variable{statoLogin}=\numberb{4})
 \& (\variable{c\_log} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{1});
+-> (\variable{statoLogin'}=\numberb{1});
 \\
 [\variable{RitentaPassword}]
 (\variable{statoLogin}=\numberb{4})
 \& (\variable{c\_log} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{2});
+-> (\variable{statoLogin'}=\numberb{2});
 \\
 [\variable{Timeout}]
 (\variable{statoLogin}=\numberb{4})
 \& (\variable{c\_log}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{20});
+-> (\variable{statoLogin'}=\numberb{20});
 \\\\
 [\variable{InserimentoMFA}]
 (\variable{statoLogin}=\numberb{5})
 \& (\variable{c\_mfa} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{7})
-\& \\ (\variable{c\_mfa}'
+-> (\variable{statoLogin'}=\numberb{7})
+\& \\ (\variable{c\_mfa'}
 =\variable{c\_mfa}-\numberb{1});
 \\
 [\variable{RinvioCodiceMFA}]
 (\variable{statoLogin}=\numberb{5})
 \& (\variable{c\_rinvioMFA} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{6})
-\& (\variable{c\_rinvioMFA}'
+-> (\variable{statoLogin'}=\numberb{6})
+\& \\ (\variable{c\_rinvioMFA'}
 =\variable{c\_rinvioMFA}-\numberb{1});
 \\\\
 [\variable{MFARinviato}]
 (\variable{statoLogin}=\numberb{6})
 \& (\variable{c\_rinvioMFA} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{5});
+-> (\variable{statoLogin'}=\numberb{5});
 \\
 [\variable{Timeout}]
 (\variable{statoLogin}=\numberb{6})
 \& (\variable{c\_rinvioMFA}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{20});
+-> (\variable{statoLogin'}=\numberb{20});
 \\\\
 [\variable{CodiceMFAOK}]
 (\variable{statoLogin}=\numberb{7})
--> (\variable{statoLogin}'=\numberb{9});
+-> (\variable{statoLogin'}=\numberb{9});
 \\
 [\variable{CodiceMFAKO}]
 (\variable{statoLogin}=\numberb{7})
--> (\variable{statoLogin}'=\numberb{8});
+-> (\variable{statoLogin'}=\numberb{8});
 \\\\
 [\variable{RitentaCodiceMFA}]
 (\variable{statoLogin}=\numberb{8})
 \& (\variable{c\_mfa} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{5});
+-> (\variable{statoLogin'}=\numberb{5});
 \\
 [\variable{Timeout}]
 (\variable{statoLogin}=\numberb{8})
 \& (\variable{c\_mfa}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{20});
+-> (\variable{statoLogin'}=\numberb{20});
 \\\\
 \cmt{////////////////////////////////}
 \\
@@ -422,101 +422,101 @@ Di seguito è riportato il codice PRISM utilizzato per il modello:
 [\variable{InserimentoEmail}]
 (\variable{statoLogin}=\numberb{10})
 \& (\variable{c\_email} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{11})
-\& \\ (\variable{c\_email}'
+-> (\variable{statoLogin'}=\numberb{11})
+\& \\ (\variable{c\_email'}
 =\variable{c\_email}-\numberb{1});
 \\\\
 [\variable{EmailKO}]
 (\variable{statoLogin}=\numberb{11})
--> (\variable{statoLogin}'=\numberb{12});
+-> (\variable{statoLogin'}=\numberb{12});
 \\
 [\variable{EmailOK}]
 (\variable{statoLogin}=\numberb{11})
--> (\variable{statoLogin}'=\numberb{13});
+-> (\variable{statoLogin'}=\numberb{13});
 \\\\
 [\variable{RitentaEmail}]
 (\variable{statoLogin}=\numberb{12})
 \& (\variable{c\_email} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{10});
+-> (\variable{statoLogin'}=\numberb{10});
 \\
 [\variable{Timeout}]
 (\variable{statoLogin}=\numberb{12})
 \& (\variable{c\_email}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{20});
+-> (\variable{statoLogin'}=\numberb{20});
 \\\\
 [\variable{InserimentoCodicePass}]
 (\variable{statoLogin}=\numberb{13})
 \& (\variable{c\_rpass} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{15})
-\& (\variable{c\_rpass}'
+-> (\variable{statoLogin'}=\numberb{15}) \\
+\&  (\variable{c\_rpass'}
 =\variable{c\_rpass}-\numberb{1});
 \\
 [\variable{RinvioCodicePass}]
 (\variable{statoLogin}=\numberb{13})
 \& (\variable{c\_rinvioRPASS} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{14})
-\& (\variable{c\_rinvioRPASS}'
+-> (\variable{statoLogin'}=\numberb{14}) \\
+\& (\variable{c\_rinvioRPASS'}
 =\variable{c\_rinvioRPASS}-\numberb{1});
 \\\\
 [\variable{CodiceRecuperoPassRinviato}]
 (\variable{statoLogin}=\numberb{14})
 \& (\variable{c\_rinvioRPASS} > \numberb{0})
--> \\ (\variable{statoLogin}'=\numberb{13});
+-> \\ (\variable{statoLogin'}=\numberb{13});
 \\
 [\variable{Timeout}]
 (\variable{statoLogin}=\numberb{14})
 \& (\variable{c\_rinvioRPASS}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{20});
+-> (\variable{statoLogin'}=\numberb{20});
 \\\\
 [\variable{CodicePassKO}]
 (\variable{statoLogin}=\numberb{15})
--> (\variable{statoLogin}'=\numberb{16});
+-> (\variable{statoLogin'}=\numberb{16});
 \\
 [\variable{CodicePassOK}]
 (\variable{statoLogin}=\numberb{15})
--> (\variable{statoLogin}'=\numberb{17});
+-> (\variable{statoLogin'}=\numberb{17});
 \\\\
 [\variable{RitentaCodicePassword}]
 (\variable{statoLogin}=\numberb{16})
 \& (\variable{c\_rpass} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{13});
+-> (\variable{statoLogin'}=\numberb{13});
 \\
 [\variable{Timeout}]
 (\variable{statoLogin}=\numberb{16})
 \& (\variable{c\_rpass}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{20});
+-> (\variable{statoLogin'}=\numberb{20});
 \\\\
 [\variable{InserimentoNuovaPassword}]
 (\variable{statoLogin}=\numberb{17})
 \& (\variable{c\_nuovaPass} > \numberb{0})
--> \\ (\variable{statoLogin}'=\numberb{18})
-\& (\variable{c\_nuovaPass}'
+-> \\ (\variable{statoLogin'}=\numberb{18})
+\& (\variable{c\_nuovaPass'}
 =\variable{c\_nuovaPass}-\numberb{1});
 \\\\
 [\variable{NuovaPasswordKO}]
 (\variable{statoLogin}=\numberb{18})
--> (\variable{statoLogin}'=\numberb{19});
+-> (\variable{statoLogin'}=\numberb{19});
 \\
 [\variable{NuovaPasswordOK}]
 (\variable{statoLogin}=\numberb{18})
--> (\variable{statoLogin}'=\numberb{0})
-\& (\variable{c\_log}'=\variable{numTentativi})\\
-\& (\variable{c\_mfa}'=\variable{numTentativi})
-\& (\variable{c\_rpass}'=\variable{numTentativi})
-\& (\variable{c\_email}'=\variable{numTentativi})\\
-\& (\variable{c\_rinvioMFA}'=\variable{numTentativi})
-\& (\variable{c\_rinvioRPASS}'=\variable{numTentativi})
-\& \\ (\variable{c\_nuovaPass}'=\variable{numTentativi});
+-> (\variable{statoLogin'}=\numberb{0})
+\& (\variable{c\_log'}=\variable{numTentativi})\\
+\& (\variable{c\_mfa'}=\variable{numTentativi})
+\& (\variable{c\_rpass'}=\variable{numTentativi})
+\& (\variable{c\_email'}=\variable{numTentativi})\\
+\& (\variable{c\_rinvioMFA'}=\variable{numTentativi})
+\& (\variable{c\_rinvioRPASS'}=\variable{numTentativi})
+\& \\ (\variable{c\_nuovaPass'}=\variable{numTentativi});
 \\\\
 [\variable{RitentaNuovaPassword}]
 (\variable{statoLogin}=\numberb{19})
 \& (\variable{c\_nuovaPass} > \numberb{0})
--> (\variable{statoLogin}'=\numberb{17});
+-> (\variable{statoLogin'}=\numberb{17});
 \\
 [\variable{Timeout}]
 (\variable{statoLogin}=\numberb{19})
 \& (\variable{c\_nuovaPass}=\numberb{0})
--> (\variable{statoLogin}'=\numberb{20});
+-> (\variable{statoLogin'}=\numberb{20});
 \\\\
 \keyword{endmodule}
 \\\\
@@ -561,121 +561,121 @@ Di seguito è riportato il codice PRISM utilizzato per il modello:
 \\
 [\variable{inizioAttaccoLogin}]
 \variable{statoAtt}=\numberb{0}
--> (\variable{statoAtt}'=\numberb{1});
+-> (\variable{statoAtt'}=\numberb{1});
 \\
 [\variable{inizioAttaccoPasswordDimenticata}]
 \variable{statoAtt}=\numberb{0}
--> (\variable{statoAtt}'=\numberb{14});
+-> (\variable{statoAtt'}=\numberb{14});
 \\\\
 [\variable{InserimentoEmail}]
 (\variable{statoAtt}=\numberb{1})
 \& (\variable{tentativo\_email} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{2})
-\& \\ (\variable{tentativo\_email}'
+-> (\variable{statoAtt'}=\numberb{2})
+\& \\ (\variable{tentativo\_email'}
 =\variable{tentativo\_email}-\numberb{1});
 \\\\
 [\variable{InserimentoPassword}]
 (\variable{statoAtt}=\numberb{2})
 \& (\variable{tentativo\_pass} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{3})\\
-\& (\variable{tentativo\_pass}'
+-> (\variable{statoAtt'}=\numberb{3})\\
+\& (\variable{tentativo\_pass'}
 =\variable{tentativo\_pass}-\numberb{1});
 \\\\
 [\variable{CheckDati}]
 \variable{statoAtt}=\numberb{3}
 -> \variable{p\_login\_success} :
-(\variable{statoAtt}'=\numberb{4})
+(\variable{statoAtt'}=\numberb{4})
 + \variable{p\_login\_fail} :\\
-(\variable{statoAtt}'=\numberb{5});
+(\variable{statoAtt'}=\numberb{5});
 \\\\
 [\variable{DatiOK}]
 \variable{statoAtt}=\numberb{4}
--> (\variable{statoAtt}'=\numberb{7});
+-> (\variable{statoAtt'}=\numberb{7});
 \\
 [\variable{DatiKO}]
 \variable{statoAtt}=\numberb{5}
--> (\variable{statoAtt}'=\numberb{6});
+-> (\variable{statoAtt'}=\numberb{6});
 \\\\
 [\variable{RitentaPassword}]
 (\variable{statoAtt}=\numberb{6})
 \& (\variable{tentativo\_pass} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{2});
+-> (\variable{statoAtt'}=\numberb{2});
 \\\\
 [\variable{RitentaDati}]
 (\variable{statoAtt}=\numberb{6})
 \& (\variable{tentativo\_pass}=\numberb{0})
 \& (\variable{tentativo\_email} > \numberb{0})
--> \\(\variable{statoAtt}'=\numberb{1})
-\& (\variable{tentativo\_pass}'=\variable{n\_pass});
+-> \\(\variable{statoAtt'}=\numberb{1}) \\
+\& (\variable{tentativo\_pass'}=\variable{n\_pass});
 \\\\
 [\variable{AttaccoFallito}]
 (\variable{statoAtt}=\numberb{6})
 \& (\variable{tentativo\_pass}=\numberb{0})
-\& (\variable{tentativo\_email}=\numberb{0})
--> \\(\variable{statoAtt}'=\numberb{24});
+\& (\variable{tentativo\_email}=\numberb{0}) \\
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{Timeout}]
 (\variable{statoAtt}=\numberb{6})
 \& (\variable{c\_log}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{RinvioCodiceMFA}]
 (\variable{statoAtt}=\numberb{7})
 \& (\variable{tentativo\_rinvioMFA} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{26})\\
-\& (\variable{tentativo\_rinvioMFA}'
+-> (\variable{statoAtt'}=\numberb{26})\\
+\& (\variable{tentativo\_rinvioMFA'}
 =\variable{tentativo\_rinvioMFA}-\numberb{1});
 \\\\
 [\variable{MFARinviato}]
 (\variable{statoAtt}=\numberb{26})
 \& (\variable{tentativo\_rinvioMFA} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{7});
+-> (\variable{statoAtt'}=\numberb{7});
 \\\\
 [\variable{Timeout}]
 (\variable{statoAtt}=\numberb{26})
 \& (\variable{tentativo\_rinvioMFA}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{InserimentoMFA}]
 (\variable{statoAtt}=\numberb{7})
 \& (\variable{tentativo\_mfa} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{8})
-\& \\(\variable{tentativo\_mfa}'
+-> (\variable{statoAtt'}=\numberb{8})
+\& \\(\variable{tentativo\_mfa'}
 =\variable{tentativo\_mfa}-\numberb{1});
 \\\\
 [\variable{CheckMFA}]
 (\variable{statoAtt}=\numberb{8})
 -> \variable{p\_mfa\_success} :
-(\variable{statoAtt}'=\numberb{10})
+(\variable{statoAtt'}=\numberb{10})
 + \variable{p\_mfa\_fail} :\\
-(\variable{statoAtt}'=\numberb{9});
+(\variable{statoAtt'}=\numberb{9});
 \\\\
 [\variable{CodiceMFAOK}]
 \variable{statoAtt}=\numberb{10}
--> (\variable{statoAtt}'=\numberb{12});
+-> (\variable{statoAtt'}=\numberb{12});
 \\
 [\variable{CodiceMFAKO}]
 \variable{statoAtt}=\numberb{9}
--> (\variable{statoAtt}'=\numberb{11});
+-> (\variable{statoAtt'}=\numberb{11});
 \\\\
 [\variable{RitentaCodiceMFA}]
 (\variable{statoAtt}=\numberb{11})
 \& (\variable{tentativo\_mfa} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{7});
+-> (\variable{statoAtt'}=\numberb{7});
 \\\\
 [\variable{AttaccoFallito}]
 (\variable{statoAtt}=\numberb{11})
 \& (\variable{tentativo\_mfa}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{Timeout}]
 (\variable{statoAtt}=\numberb{11})
 \& (\variable{c\_mfa}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{AttaccoRiuscito}]
 (\variable{statoAtt}=\numberb{12})
--> (\variable{statoAtt}'=\numberb{13});
+-> (\variable{statoAtt'}=\numberb{13});
 \\\\
 \cmt{//////////////////////////////////////////////////////}
 \\
@@ -686,137 +686,137 @@ Di seguito è riportato il codice PRISM utilizzato per il modello:
 [\variable{InserimentoEmail}]
 (\variable{statoAtt}=\numberb{14})
 \& (\variable{tentativo\_email} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{15})
-\& (\variable{tentativo\_email}'
+-> (\variable{statoAtt'}=\numberb{15}) \\
+\& (\variable{tentativo\_email'}
 =\variable{tentativo\_email}-\numberb{1});
 \\\\
 [\variable{CheckEmail}]
 \variable{statoAtt}=\numberb{15}
 -> \variable{p\_email\_reset\_success} :
-(\variable{statoAtt}'=\numberb{16})
+(\variable{statoAtt'}=\numberb{16})
 + \\ \variable{p\_email\_reset\_fail} :
-(\variable{statoAtt}'=\numberb{17});
+(\variable{statoAtt'}=\numberb{17});
 \\\\
 [\variable{EmailKO}]
 \variable{statoAtt}=\numberb{17}
--> (\variable{statoAtt}'=\numberb{18});
+-> (\variable{statoAtt'}=\numberb{18});
 \\
 [\variable{EmailOK}]
 \variable{statoAtt}=\numberb{16}
--> (\variable{statoAtt}'=\numberb{19});
+-> (\variable{statoAtt'}=\numberb{19});
 \\\\
 [\variable{RitentaEmail}]
 (\variable{statoAtt}=\numberb{18})
 \& (\variable{tentativo\_email} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{14});
+-> (\variable{statoAtt'}=\numberb{14});
 \\\\
 [\variable{AttaccoFallito}]
 (\variable{statoAtt}=\numberb{18})
 \& (\variable{tentativo\_email}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{Timeout}]
 (\variable{statoAtt}=\numberb{18})
 \& (\variable{c\_email}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{InserimentoCodicePass}]
 (\variable{statoAtt}=\numberb{19})
 \& (\variable{tentativo\_codice\_pass} > \numberb{0})
--> \\ (\variable{statoAtt}'=\numberb{20})
-\& (\variable{tentativo\_codice\_pass}'
+-> \\ (\variable{statoAtt'}=\numberb{20})
+\& (\variable{tentativo\_codice\_pass'}
 =\variable{tentativo\_codice\_pass}-\numberb{1});
 \\\\
 [\variable{CheckCodicePass}]
 (\variable{statoAtt}=\numberb{20})
 -> \variable{p\_codice\_email\_success} :
-(\variable{statoAtt}'=\numberb{23})
+(\variable{statoAtt'}=\numberb{23}) \\
 + \variable{p\_codice\_email\_fail} :
-(\variable{statoAtt}'=\numberb{21});
+(\variable{statoAtt'}=\numberb{21});
 \\\\
 [\variable{CodicePassOK}]
 \variable{statoAtt}=\numberb{23}
--> (\variable{statoAtt}'=\numberb{27});
+-> (\variable{statoAtt'}=\numberb{27});
 \\
 [\variable{CodicePassKO}]
 \variable{statoAtt}=\numberb{21}
--> (\variable{statoAtt}'=\numberb{22});
+-> (\variable{statoAtt'}=\numberb{22});
 \\\\
 [\variable{RinvioCodicePass}]
 (\variable{statoAtt}=\numberb{19})
 \& (\variable{tentativo\_rinvio\_codice\_pass} > \numberb{0})
--> \\ (\variable{statoAtt}'=\numberb{25})
-\& (\variable{tentativo\_rinvio\_codice\_pass}'
+-> \\ (\variable{statoAtt'}=\numberb{25})
+\& (\variable{tentativo\_rinvio\_codice\_pass'}
 =\variable{tentativo\_rinvio\_codice\_pass}-\numberb{1});
 \\\\
 [\variable{CodiceRecuperoPassRinviato}]
-(\variable{statoAtt}=\numberb{25})
+(\variable{statoAtt}=\numberb{25}) \\
 \& (\variable{tentativo\_rinvio\_codice\_pass} > \numberb{0})
--> (\variable{statoAtt}'=\numberb{19});
+-> (\variable{statoAtt'}=\numberb{19});
 \\\\
 [\variable{Timeout}]
 (\variable{statoAtt}=\numberb{25})
 \& (\variable{c\_rinvioRPASS}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{RitentaCodicePassword}]
 (\variable{statoAtt}=\numberb{22})
 \& (\variable{tentativo\_codice\_pass} > \numberb{0})
--> \\ (\variable{statoAtt}'=\numberb{19});
+-> \\ (\variable{statoAtt'}=\numberb{19});
 \\\\
 [\variable{AttaccoFallito}]
 (\variable{statoAtt}=\numberb{22})
 \& (\variable{tentativo\_codice\_pass}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{Timeout}]
 (\variable{statoAtt}=\numberb{22})
 \& (\variable{c\_rpass}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{24});
+-> (\variable{statoAtt'}=\numberb{24});
 \\\\
 [\variable{InserimentoNuovaPassword}]
 (\variable{statoAtt}=\numberb{27})
 \& (\variable{tentativo\_nuova\_pass} > \numberb{0})
--> \\ (\variable{statoAtt}'=\numberb{28})
-\& (\variable{tentativo\_nuova\_pass}'
+-> \\ (\variable{statoAtt'}=\numberb{28})
+\& (\variable{tentativo\_nuova\_pass'}
 =\variable{tentativo\_nuova\_pass}-\numberb{1});
 \\\\
 [\variable{CheckNuovaPass}]
 (\variable{statoAtt}=\numberb{28})
 -> \variable{p\_nuova\_pass\_success} :
-(\variable{statoAtt}'=\numberb{29})
+(\variable{statoAtt'}=\numberb{29})
 + \\ \variable{p\_nuova\_pass\_fail} :
-(\variable{statoAtt}'=\numberb{30});
+(\variable{statoAtt'}=\numberb{30});
 \\\\
 [\variable{NuovaPasswordKO}]
 \variable{statoAtt}=\numberb{30}
--> (\variable{statoAtt}'=\numberb{31});
+-> (\variable{statoAtt'}=\numberb{31});
 \\\\
 [\variable{RitentaNuovaPassword}]
 (\variable{statoAtt}=\numberb{31})
 \& (\variable{tentativo\_nuova\_pass} > \numberb{0})
--> \\ (\variable{statoAtt}'=\numberb{27});
+-> \\ (\variable{statoAtt'}=\numberb{27});
 \\\\
 [\variable{AttaccoFallito}]
 (\variable{statoAtt}=\numberb{31})
 \& (\variable{tentativo\_nuova\_pass}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{27});
+-> (\variable{statoAtt'}=\numberb{27});
 \\\\
 [\variable{Timeout}]
 (\variable{statoAtt}=\numberb{31})
 \& (\variable{c\_nuovaPass}=\numberb{0})
--> (\variable{statoAtt}'=\numberb{27});
+-> (\variable{statoAtt'}=\numberb{27});
 \\\\
 [\variable{NuovaPasswordOK}]
 (\variable{statoAtt}=\numberb{29})
--> (\variable{statoAtt}'=\numberb{0})
-\& (\variable{tentativo\_codice\_pass}'\\
+-> (\variable{statoAtt'}=\numberb{0})
+\& (\variable{tentativo\_codice\_pass'}\\
 =\variable{n\_codici\_pass})
-\& (\variable{tentativo\_rinvio\_codice\_pass}'
+\& (\variable{tentativo\_rinvio\_codice\_pass'}
 =\variable{numTentativi})
-\& \\ (\variable{tentativo\_nuova\_pass}'
+\& \\ (\variable{tentativo\_nuova\_pass'}
 =\variable{numTentativi})
-\& (\variable{tentativo\_email}'
+\& (\variable{tentativo\_email'}
 =\variable{numTentativi});
 \\\\
 \keyword{endmodule}
