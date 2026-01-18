@@ -1823,7 +1823,7 @@ def invia_reclamo(request, spedizione_id):
         # Mappatura  nomeReclamo -> id evento
         mapping_eventi = {
             'Spedizione non effettuata correttamente': 1,
-            #'Verifica pagamento': 2, # Rimosso perché non va nel cliente
+            'Pagamento fallito': 2,
             'Ritardo di consegna': 3,
         }
 
@@ -1836,14 +1836,16 @@ def invia_reclamo(request, spedizione_id):
             })
 
         #istanzio oggetto Evento con quell'id
-        evento = get_object_or_404(Evento, id=evento_id)
+        evento1 = get_object_or_404(Evento, id=evento_id)
 
         # Creazione del reclamo nel database con tutti i dati necessari e evento corrispondente
         Reclamo.objects.create(
             nomeReclamo=nome_reclamo,
-            evento=evento,
+            evento1=evento1,
+            evento2=None,
             descrizione=descrizione,
             spedizione=spedizione,
+            risolto = False,
             esito='Non verificato'
         )
 
