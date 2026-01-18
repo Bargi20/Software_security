@@ -7,7 +7,7 @@ from django.contrib import messages
 from dotenv import load_dotenv
 import stripe
 import os
-from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Reclamo
+from .models import Spedizione, TentativiDiLogin, TentativiRecuperoPassword, CodiceOTP,Evento, Reclamo, Utente
 from django.utils import timezone
 from django.db import IntegrityError
 from django.core.mail import send_mail
@@ -35,7 +35,7 @@ SPEDIZIONE_IMPORTI_CENT = {
     'medio': 1000,   # €10.00
     'grande': 2000   # €20.00
 }
-ACTION_MSG = 'Accesso negato. Non hai i permessi per accedere a questa dashboard.'
+ACTION_MSG = 'Accesso negato. Non hai i permessi per accedere a questa pagina.'
 LEDGER_LOGISTIC_CREASPEDIZIONE_URL = "Ledger_Logistic/crea_spedizione.html"
 LEDGER_LOGISTIC_INVIARECLAMO_URL = "Ledger_Logistic/invia_reclamo.html"
 
@@ -1067,7 +1067,7 @@ def dashboard_corriere(request):
             return redirect('home')
     
     # Importa il modello Spedizione
-    from .models import Spedizione
+    from .models import Spedizione, Utente
     
     # Recupera le spedizione assegnate al corriere
     spedizione_assegnate = Spedizione.objects.filter(corriere=request.user).order_by('-data_creazione')
@@ -1097,7 +1097,7 @@ def dashboard_corriere(request):
     spedizione_passate = spedizione_assegnate.filter(
         stato__in=['consegnato', 'annullato']
     ).order_by('-data_aggiornamento')
-    
+
     context = {
         'company_name': COMPANY_NAME,
         'user': request.user,
@@ -1127,7 +1127,6 @@ def dashboard_gestore(request):
             return redirect('home')
     
     from .models import Spedizione, Utente
-    from django.db.models import Count, Q
     
     corrieri_attivi= Utente.objects.filter(ruolo='corriere', is_active=True).count()
     corrieri_totali= Utente.objects.filter(ruolo='corriere').count()
@@ -1147,17 +1146,18 @@ def dashboard_gestore(request):
     
     # Statistiche
     totale_spedizione = Spedizione.objects.count()
-    spedizione_attive = Spedizione.objects.filter(
+    spedizioni_attive = Spedizione.objects.filter(
         stato__in=['in_attesa', 'in_elaborazione', 'in_transito', 'in_consegna']
     ).count()
-    spedizione_completate = Spedizione.objects.filter(stato='consegnato').count()
-    totale_utenti = Utente.objects.filter(is_active=True).count()
+    spedizioni_completate = Spedizione.objects.filter(stato='consegnato').count()
     
     # Calcola tasso di successo
     if totale_spedizione > 0:
-        tasso_successo = round((spedizione_completate / totale_spedizione) * 100, 1)
+        tasso_successo = round((spedizioni_completate / totale_spedizione) * 100, 1)
     else:
         tasso_successo = 0
+    
+    utenti_totali = Utente.objects.count()
     
     context = {
         'company_name': COMPANY_NAME,
@@ -1165,14 +1165,14 @@ def dashboard_gestore(request):
         'spedizione_in_attesa': spedizione_in_attesa,
         'spedizione_storico': spedizione_storico,
         'totale_spedizione': totale_spedizione,
-        'spedizione_attive': spedizione_attive,
-        'spedizione_completate': spedizione_completate,
-        'totale_utenti': totale_utenti,
+        'spedizioni_attive': spedizioni_attive,
+        'spedizioni_completate': spedizioni_completate,
         'tasso_successo': tasso_successo,
         'corrieri_attivi': corrieri_attivi,
         'corrieri_totali': corrieri_totali,
         'spedizioni_oggi': spedizioni_oggi,
         'tempo_medio_consegna': tempo_medio_consegna,
+        'utenti_totali': utenti_totali
     }
     return render(request, 'Ledger_Logistic/dashboard_gestore.html', context)
 
