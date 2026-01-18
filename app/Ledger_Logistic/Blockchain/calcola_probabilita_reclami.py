@@ -15,21 +15,73 @@ from Ledger_Logistic.Blockchain.export_probability import main as export_prob
 
 # Questa è la funzione che viene chiamata quando il gestore vuole verificare un reclamo. Qui si prende la spedizione associata al reclamo e si calcola la probabilità dell'evento del reclamo
 
-def calcola_probabilita(id_reclamo, boolEvento):
+def calcola_probabilita(id_reclamo, bool_evento):
     # Prendo il reclamo in base all'id
     reclamo = Reclamo.objects.get(id=id_reclamo)
     # Prendo la spedizione in base al reclamo, la quale contiene i valori delle prove
     spedizione = model_to_dict(Spedizione.objects.get(id=reclamo.spedizione.id))
 
-    probPriori = list(Evento.objects.values_list('probabilita_priori', flat=True))
+    prob_priori = list(Evento.objects.values_list('probabilita_priori', flat=True))
 
     export_prob()
+    web3 = connect_to_besu()
+    abi, address = load_contract()
+    contract = web3.eth.contract(address=address, abi=abi)
+    
     # Calcolo delle probabilità per l'evento spedizione fallita
     if (reclamo.evento2_id is None) & (reclamo.evento1_id == 1):
-        web3 = connect_to_besu()
-        abi, address = load_contract()
-        contract = web3.eth.contract(address=address, abi=abi)
+        probabilita = contract.functions.prob_spedizione_fallita(
+        str(bool_evento).lower(), 
+        str(spedizione['gps']).lower(),
+        str(spedizione['veicolo_disponibile']).lower(),
+        str(spedizione['traffico']).lower(),
+        str(spedizione['conferma_cliente']).lower(),
+        str(spedizione['disponibilita_corriere']).lower(),
+        prob_priori[0], # Probabilità a priori del primo evento (spedizione fallita)
+        prob_priori[1],# Probabilità a priori del secondo evento (pagamento fallito)
+        prob_priori[2]).call() # Probabilità a priori del terzo evento (ritardo di consegna)
         
-        probabilita = contract.functions.prob_spedizione_fallita(str(boolEvento).lower(), str(spedizione['gps']).lower(), str(spedizione['veicolo_disponibile']).lower(), str(spedizione['traffico']).lower(), str(spedizione['conferma_cliente']).lower(), str(spedizione['disponibilita_corriere']).lower(), probPriori[0], probPriori[1], probPriori[2]).call()
+    # Calcolo evento pagamento fallito e ritardo di consegna insieme
+    elif (reclamo.evento2_id == 3) & (reclamo.evento1_id == 2):
+        probabilita = contract.functions(
+        str(bool_evento).lower(),
+        str(spedizione['gps']).lower(),
+        str(spedizione['veicolo_disponibile']).lower(),
+        str(spedizione['traffico']).lower(),
+        str(spedizione['conferma_cliente']).lower(),
+        str(spedizione['disponibilita_corriere']).lower(),
+        str(spedizione['fattura_emessa']).lower(),
+        str(spedizione['disponibilita_corriere']).lower(),
+        str(spedizione['conferma_del_gestore_di_pagamento']).lower(),
+        str(spedizione['disponibilita_corriere']).lower(),
+        str(spedizione['meteo_sfavorevole']).lower(),
+        prob_priori[0],
+        prob_priori[1],
+        prob_priori[2]).call()
         
-        return (probabilita[0]/probabilita[1])
+    # Calcolo evento pagamento fallito
+    elif (reclamo.evento2_id is None) & (reclamo.evento1_id == 2):
+        probabilita = contract.functions.prob_pagamento_fallito(
+        str(bool_evento).lower(),
+        str(spedizione['conferma_cliente']).lower(),
+        str(spedizione['fattura_emessa']).lower(),
+        str(spedizione['conferma_del_gestore_di_pagamento']).lower(),
+        prob_priori[0],
+        prob_priori[1],
+        prob_priori[2]).call()
+        
+    # Calcolo evento ritardo di consegna
+    else:
+        probabilita = contract.functions.prob_ritardo_consegna(
+        str(bool_evento).lower(),
+        str(spedizione['gps']).lower(),
+        str(spedizione['veicolo_disponibile']).lower(),
+        str(spedizione['traffico']).lower(),
+        str(spedizione['conferma_cliente']).lower(),
+        str(spedizione['disponibilita_corriere']).lower(),
+        str(spedizione['meteo_sfavorevole']).lower(),
+        prob_priori[0],
+        prob_priori[1],
+        prob_priori[2]).call()
+        
+    return (probabilita[0]/probabilita[1])
