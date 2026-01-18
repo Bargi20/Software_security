@@ -63,7 +63,7 @@ function getA_ij(
         return 0;
     }
     
-    //-----CALCOLA PROB SPEDIZIONE FALLITA-----
+/////////////////-----CALCOLA PROB SPEDIZIONE FALLITA-----//////////////////////////////
 
     function prob_spedizione_fallita(
         string memory checkEvento,
@@ -204,7 +204,7 @@ function getA_ij(
     }
 
 
-    //------CALCOLA PROB PAGAMENTO FALLITO-------
+//////////////------CALCOLA PROB PAGAMENTO FALLITO-------///////////////////////////////
 
     function prob_pagamento_fallito(
         string memory checkEvento,
@@ -443,5 +443,71 @@ function getA_ij(
         return (numeratore, denominatore);
     }
 
+/////-------------------CALCOLA PROBABILITA PAGAMENTO FALLITO + RITARDO DI CONSEGNA--------------------//////////////////
+
+    function prob_pagamento_fallito_e_ritardo_consegna(
+        string memory checkEvento1,
+        string memory checkEvento2,
+        string memory checkProva1, //CONFERMA CLIENTE
+        uint256 priori1,
+        uint256 priori2,
+        uint256 priori3
+    ) public view returns(uint256, uint256){
+        uint256 numeratore = priori2 * priori3;
+
+        //------------------ CONFERMA CLIENTE ----------------------------
+        // ne ha 4 perche ha tutti e 3 gli eventi, uno sempre vero e 4 combinazioni degli altri due
+        uint256 confermacliente_ttt = getA_ij("Conferma Cliente", "true", "true", "true");
+        uint256 confermacliente_ttf = getA_ij("Conferma Cliente", "true", "true", "false");
+        uint256 confermacliente_tft = getA_ij("Conferma Cliente", "true", "false", "true");
+        uint256 confermacliente_tff = getA_ij("Conferma Cliente", "true", "false", "false");
+
+        // per il denominatore
+        uint256 confermacliente_ftt = getA_ij("Conferma Cliente", "false", "true", "true");
+        uint256 confermacliente_ftf = getA_ij("Conferma Cliente", "false", "true", "false");
+        uint256 confermacliente_fft = getA_ij("Conferma Cliente", "false", "false", "true");
+        uint256 confermacliente_fff = getA_ij("Conferma Cliente", "false", "false", "false");
+
+        if(checkProva1.equal("false")){
+            confermacliente_ttt = 100 - confermacliente_ttt;
+            confermacliente_ttf = 100 - confermacliente_ttf;
+            confermacliente_tft = 100 - confermacliente_tft;
+            confermacliente_tff = 100 - confermacliente_tff;
+
+            confermacliente_ftt = 100 - confermacliente_ftt;
+            confermacliente_ftf = 100 - confermacliente_ftf;
+            confermacliente_fft = 100 - confermacliente_fft;
+            confermacliente_fff = 100 - confermacliente_fff;
+        }
+     
+        //l'unica prova ad avere l'evento 2 e 3 insieme è solo conferma cliente
+        if(checkEvento1.equal("false") && checkEvento2.equal("false")){ // t/f, f, f
+            priori2 = 100 - priori2;
+            priori3 = 100 - priori3;
+            //di conferma cliente bisogna mettere tutte le altre combinazioni rimanenti conoscendo gia evento 2 falso e 3 falso, ovvero evento1 vero e evento 1 falso
+            numeratore = numeratore * (priori1 * confermacliente_tff + ((100-priori1)*confermacliente_fff));
+        } else if(checkEvento1.equal("false")){ // t/f, f, t
+            priori2 = 100 - priori2;
+            numeratore = numeratore * (priori1 * confermacliente_tft + ((100-priori1)*confermacliente_fft));
+        } else if(checkEvento2.equal("false")){ // t/f, t, f
+            priori3 = 100 - priori3;
+            numeratore = numeratore * (priori1 * confermacliente_ttf + ((100-priori1)*confermacliente_ftf));
+        } else { // t/f, t, t
+            numeratore = numeratore * (priori1 * confermacliente_ttt + ((100-priori1)*confermacliente_ftt));
+        }
+
+        uint256 denominatore;
+        denominatore = 
+        (priori1 * priori2* priori3 * confermacliente_ttt)
+        + (priori1 * priori2 * (100-priori3)* confermacliente_ttf)
+        + (priori1*(100-priori2)*priori3* confermacliente_tft)
+        + (priori1*(100-priori2)*(100-priori3)* confermacliente_tff)
+        + ((100-priori1)*priori2*priori3*confermacliente_ftt)
+        + ((100-priori1)*priori2*(100-priori3)*confermacliente_ftf)
+        + ((100-priori1)*(100-priori2)*priori3* confermacliente_fft)
+        + ((100-priori1)*(100-priori2)*(100-priori3)* confermacliente_fff);
+
+        return (numeratore, denominatore);
+    }
 }
 
