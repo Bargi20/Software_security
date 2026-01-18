@@ -15,7 +15,7 @@ from Ledger_Logistic.Blockchain.export_probability import main as export_prob
 
 # Questa è la funzione che viene chiamata quando il gestore vuole verificare un reclamo. Qui si prende la spedizione associata al reclamo e si calcola la probabilità dell'evento del reclamo
 
-def calcola_probabilita(id_reclamo, bool_evento):
+def calcola_probabilita(id_reclamo, bool_evento1, bool_evento2):
     # Prendo il reclamo in base all'id
     reclamo = Reclamo.objects.get(id=id_reclamo)
     # Prendo la spedizione in base al reclamo, la quale contiene i valori delle prove
@@ -46,18 +46,10 @@ def calcola_probabilita(id_reclamo, bool_evento):
         
     # Calcolo evento pagamento fallito e ritardo di consegna insieme
     elif (reclamo.evento2_id == 3) & (reclamo.evento1_id == 2):
-        probabilita = contract.functions(
-        str(bool_evento).lower(),
-        str(spedizione['gps']).lower(),
-        str(spedizione['veicolo_disponibile']).lower(),
-        str(spedizione['traffico']).lower(),
+        probabilita = contract.functions.prob_pagamento_fallito_e_ritardo_consegna(
+        str(bool_evento1).lower(),
+        str(bool_evento2).lower(),
         str(spedizione['conferma_cliente']).lower(),
-        str(spedizione['disponibilita_corriere']).lower(),
-        str(spedizione['fattura_emessa']).lower(),
-        str(spedizione['disponibilita_corriere']).lower(),
-        str(spedizione['conferma_del_gestore_di_pagamento']).lower(),
-        str(spedizione['disponibilita_corriere']).lower(),
-        str(spedizione['meteo_sfavorevole']).lower(),
         prob_priori[0],
         prob_priori[1],
         prob_priori[2]).call()
@@ -65,7 +57,7 @@ def calcola_probabilita(id_reclamo, bool_evento):
     # Calcolo evento pagamento fallito
     elif (reclamo.evento2_id is None) & (reclamo.evento1_id == 2):
         probabilita = contract.functions.prob_pagamento_fallito(
-        str(bool_evento).lower(),
+        str(bool_evento1).lower(),
         str(spedizione['conferma_cliente']).lower(),
         str(spedizione['fattura_emessa']).lower(),
         str(spedizione['conferma_del_gestore_di_pagamento']).lower(),
@@ -76,7 +68,7 @@ def calcola_probabilita(id_reclamo, bool_evento):
     # Calcolo evento ritardo di consegna
     else:
         probabilita = contract.functions.prob_ritardo_consegna(
-        str(bool_evento).lower(),
+        str(bool_evento1).lower(),
         str(spedizione['gps']).lower(),
         str(spedizione['veicolo_disponibile']).lower(),
         str(spedizione['traffico']).lower(),
