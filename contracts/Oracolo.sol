@@ -203,6 +203,164 @@ function getA_ij(
         return (numeratore, denominatore);
     }
 
+    function prob_spedizione_fallita2(
+        string memory checkEvento,
+        string memory checkProva1, //GPS
+        string memory checkProva2, //CONFERMA CLIENTE
+        string memory checkProva3, //TRAFFICO
+        string memory checkProva4, //FATTURA EMESSA
+        string memory checkProva5, //CONFERMA DEL CIRCUITO DI PAGAMENTO
+        string memory checkProva6, //DISPONIBILITA' VEICOLO
+        string memory checkProva7, //DISPONIBILITA' CORRIERE
+        string memory checkProva8, //METEO SFAVOREVOLE
+        uint256 priori1,
+        uint256 priori2,
+        uint256 priori3
+    ) public view returns(uint256, uint256){
+
+        uint256 numeratore = priori1;
+        // adesso prendo tutte le prove di cui tutte le combinazioni in cui so evento1 ma non evento2
+        
+        // ----------GPS---------- 
+        // GPS vero: ha sempre due eventi, quindi uno sempre vero e il secondo evento che puo essere vero o falso                  
+        uint256 gps_tt = getA_ij("GPS", "true", "", "true");
+        uint256 gps_tf = getA_ij("GPS", "true", "", "false");
+
+        uint256 gps_ft = getA_ij("GPS", "false", "", "true");
+        uint256 gps_ff = getA_ij("GPS", "false", "", "false");
+
+        // se GPS è falso mi servono i due complementari
+        if(checkProva1.equal("false")){
+            gps_tt = 100 - gps_tt;
+            gps_tf = 100 - gps_tf;
+            gps_ft = 100 - gps_ft;
+            gps_ff = 100 - gps_ff;
+        }
+
+        //------------------ CONFERMA CLIENTE ----------------------------
+        // ne ha 4 perche ha tutti e 3 gli eventi, uno sempre vero e 4 combinazioni degli altri due
+        uint256 confermacliente_ttt = getA_ij("Conferma Cliente", "true", "true", "true");
+        uint256 confermacliente_ttf = getA_ij("Conferma Cliente", "true", "true", "false");
+        uint256 confermacliente_tft = getA_ij("Conferma Cliente", "true", "false", "true");
+        uint256 confermacliente_tff = getA_ij("Conferma Cliente", "true", "false", "false");
+
+        uint256 confermacliente_ftt = getA_ij("Conferma Cliente", "false", "true", "true");
+        uint256 confermacliente_ftf = getA_ij("Conferma Cliente", "false", "true", "false");
+        uint256 confermacliente_fft = getA_ij("Conferma Cliente", "false", "false", "true");
+        uint256 confermacliente_fff = getA_ij("Conferma Cliente", "false", "false", "false");
+
+        if(checkProva2.equal("false")){
+            confermacliente_ttt = 100 - confermacliente_ttt;
+            confermacliente_ttf = 100 - confermacliente_ttf;
+            confermacliente_tft = 100 - confermacliente_tft;
+            confermacliente_tff = 100 - confermacliente_tff;
+
+            confermacliente_ftt = 100 - confermacliente_ftt;
+            confermacliente_ftf = 100 - confermacliente_ftf;
+            confermacliente_fft = 100 - confermacliente_fft;
+            confermacliente_fff = 100 - confermacliente_fff;
+        }
+
+        // -----------------TRAFFICO--------------
+        uint256 traffico_tt = getA_ij("Traffico", "true", "", "true");
+        uint256 traffico_tf = getA_ij("Traffico", "true", "", "false");
+
+        uint256 traffico_ft = getA_ij("Traffico", "false", "", "true");
+        uint256 traffico_ff = getA_ij("Traffico", "false", "", "false");
+
+        if(checkProva3.equal("false")){
+            traffico_tt = 100 - traffico_tt;
+            traffico_tf = 100 - traffico_tf;
+            traffico_ft = 100 - traffico_ft;
+            traffico_ff = 100 - traffico_ff;
+        }
+
+        //-----FATTURA EMESSA-----
+        uint256 fatturaemessa_t = getA_ij("Fattura emessa", "", "true", "");
+
+        uint256 fatturaemessa_f = getA_ij("Fattura emessa", "", "false", "");
+
+        if(checkProva4.equal("false")){
+            fatturaemessa_t = 100 - fatturaemessa_t;
+            fatturaemessa_f = 100 - fatturaemessa_f;
+        }
+
+        //----CONFERMA GESTORE DI PAGAMENTO----
+        uint256 confermagestore_t = getA_ij("Conferma Gestore del circuito del pagamento", "", "true", "");
+
+        uint256 confermagestore_f = getA_ij("Conferma Gestore del circuito del pagamento", "", "false", "");
+
+        if(checkProva5.equal("false")){
+            confermagestore_t = 100 - confermagestore_t;
+            confermagestore_f = 100 - confermagestore_f;
+        }
+
+        //--------------VEICOLO-----------------
+        uint256 veicolo_tt = getA_ij("Disponibilita veicolo", "true", "", "true");
+        uint256 veicolo_tf = getA_ij("Disponibilita veicolo", "true", "", "false");
+
+        uint256 veicolo_ft = getA_ij("Disponibilita veicolo", "false", "", "true");
+        uint256 veicolo_ff = getA_ij("Disponibilita veicolo", "false", "", "false");
+
+        if(checkProva6.equal("false")){
+            veicolo_tt = 100 - veicolo_tt;
+            veicolo_tf = 100 - veicolo_tf;
+            veicolo_ft = 100 - veicolo_ft;
+            veicolo_ff = 100 - veicolo_ff;
+        }
+
+        // ------------------ CORRIERE ----------------------------
+        uint256 corriere_tt = getA_ij("Disponibilita corriere", "true", "", "true");
+        uint256 corriere_tf = getA_ij("Disponibilita corriere", "true", "", "false");
+
+        uint256 corriere_ft = getA_ij("Disponibilita corriere", "false", "", "true");
+        uint256 corriere_ff = getA_ij("Disponibilita corriere", "false", "", "false");
+
+        if(checkProva7.equal("false")){
+            corriere_tt = 100 - corriere_tt;
+            corriere_tf = 100 - corriere_tf;
+            corriere_ft = 100 - corriere_ft;
+            corriere_ff = 100 - corriere_ff;
+        }
+
+        //--------------METEO SFAVOREVOLE-----------------
+        uint256 meteo_t = getA_ij("Meteo sfavorevole", "", "", "true");
+        uint256 meteo_f = getA_ij("Meteo sfavorevole", "", "", "false");
+
+        if(checkProva8.equal("false")){
+            meteo_t = 100 - meteo_t;
+            meteo_f = 100 - meteo_f;
+        }
+
+        // se l'evento è falso, diventa 100 - priori1 e si cambiano le combinazioni del numeratore
+        if(checkEvento.equal("false")){
+            numeratore = 100 - priori1;
+            numeratore = numeratore * ((priori2 * priori3 * gps_ft * confermacliente_ftt * traffico_ft * fatturaemessa_t * confermagestore_t * veicolo_ft  * corriere_ft * meteo_t) 
+            + ((100-priori2) * priori3 * gps_ft * confermacliente_fft * traffico_ft * fatturaemessa_f * confermagestore_f * veicolo_ft  * corriere_ft * meteo_t) 
+            + (priori2 * (100 - priori3) * gps_ff * confermacliente_ftf * traffico_ff * fatturaemessa_t * confermagestore_t * veicolo_ff  * corriere_ff * meteo_f)  
+            + ((100-priori2)*(100-priori3) * gps_ff * confermacliente_fff * traffico_ff * fatturaemessa_f * confermagestore_f * veicolo_ff  * corriere_ff * meteo_f));
+        }
+        else{ //se l'evento è vero
+            numeratore = numeratore * ((priori2 * priori3 * gps_tt * confermacliente_ttt * traffico_tt * fatturaemessa_t * confermagestore_t * veicolo_tt  * corriere_tt * meteo_t) 
+            + ((100-priori2) * priori3 * gps_tt * confermacliente_tft * traffico_tt * fatturaemessa_f * confermagestore_f * veicolo_tt  * corriere_tt * meteo_t) 
+            + (priori2 * (100 - priori3) * gps_tf * confermacliente_ttf * traffico_tf * fatturaemessa_t * confermagestore_t * veicolo_tf  * corriere_tf * meteo_f)  
+            + ((100-priori2)*(100-priori3) * gps_tf * confermacliente_tff * traffico_tf * fatturaemessa_f * confermagestore_f * veicolo_tf  * corriere_tf * meteo_f));
+        }
+
+        uint256 denominatore;
+        denominatore = 
+        (priori1 * priori2 * priori3 * gps_tt * confermacliente_ttt * traffico_tt * fatturaemessa_t * confermagestore_t * veicolo_tt  * corriere_tt * meteo_t) 
+        + (priori1 * priori2 * (100 - priori3) * gps_tf * confermacliente_ttf * traffico_tf * fatturaemessa_t * confermagestore_t * veicolo_tf  * corriere_tf * meteo_f) 
+        + (priori1 * (100 - priori2) * priori3 * gps_tt * confermacliente_tft * traffico_tt * fatturaemessa_f * confermagestore_f * veicolo_tt  * corriere_tt * meteo_t) 
+        + (priori1 * (100-priori2)* (100 - priori3) * gps_tf * confermacliente_tff * traffico_tf * fatturaemessa_f * confermagestore_f * veicolo_tf  * corriere_tf * meteo_f)
+        + ((100-priori1)* priori2 * priori3 * gps_ft * confermacliente_ftt * traffico_ft * fatturaemessa_t * confermagestore_t * veicolo_ft  * corriere_ft * meteo_t)
+        + ((100-priori1) * priori2 * (100 - priori3) * gps_ff * confermacliente_ftf * traffico_ff * fatturaemessa_t * confermagestore_t * veicolo_ff  * corriere_ff * meteo_f)
+        + ((100-priori1) * (100 - priori2) * priori3 * gps_tt * confermacliente_tft * traffico_tt * fatturaemessa_f * confermagestore_f * veicolo_tt  * corriere_tt * meteo_t)
+        + ((100-priori1) * (100-priori2)* (100 - priori3) * gps_ff * confermacliente_fff * traffico_ff * fatturaemessa_f * confermagestore_f * veicolo_ff  * corriere_ff * meteo_f);
+
+        return (numeratore, denominatore);
+    }
+
 
     //------CALCOLA PROB PAGAMENTO FALLITO-------
 

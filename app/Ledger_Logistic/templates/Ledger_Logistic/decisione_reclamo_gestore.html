@@ -212,13 +212,13 @@ $(document).ready(function () {
                 if (response.esito == "Accettato"){
                     esitoVerifica.text(response.esito);
                     esitoVerifica.removeClass().addClass("inline-flex px-3 py-2 mt-2 rounded-full text-sm font-semibold bg-green-600 text-white border border-green-700");
-                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento vero: ' + response.probabilita_vero +'%' + '</span>');
-                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento falso: ' + response.probabilita_falso +'%' + '</span>');
+                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento VERO: ' + response.probabilita_vero +'%' + '</span>');
+                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento FALSO: ' + response.probabilita_falso +'%' + '</span>');
                 } else {
                     esitoVerifica.text(response.esito);
-                    esitoVerifica.removeClass().addClass("inline-flex px-3 py-2 mt-2 rounded-full text-sm font-semibold bg-green-600 text-white border border-green-700");
-                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento vero: ' + response.probabilita_vero +'%' + '</span>');
-                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento falso: ' + response.probabilita_falso +'%' + '</span>');
+                    esitoVerifica.removeClass().addClass("inline-flex px-3 py-2 mt-2 rounded-full text-sm font-semibold bg-red-600 text-white border border-red-700");
+                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento VERO: ' + response.probabilita_vero +'%' + '</span>');
+                    esitoVerifica.after('<span id="probabilita" class="ml-2 text-md text-gray-600 font-bold">Probabilità evento FALSO: ' + response.probabilita_falso +'%' + '</span>');
                 }
                 
                 buttonVerifica.removeClass();

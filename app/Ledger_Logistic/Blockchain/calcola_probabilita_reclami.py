@@ -30,15 +30,18 @@ def calcola_probabilita(id_reclamo, bool_evento):
     
     # Calcolo delle probabilità per l'evento spedizione fallita
     if (reclamo.evento2_id is None) & (reclamo.evento1_id == 1):
-        probabilita = contract.functions.prob_spedizione_fallita(
+        probabilita = contract.functions.prob_spedizione_fallita2(
         str(bool_evento).lower(), 
         str(spedizione['gps']).lower(),
-        str(spedizione['veicolo_disponibile']).lower(),
-        str(spedizione['traffico']).lower(),
         str(spedizione['conferma_cliente']).lower(),
+        str(spedizione['traffico']).lower(),
+        str(spedizione['fattura_emessa']).lower(),
+        str(spedizione['conferma_del_gestore_di_pagamento']).lower(),
+        str(spedizione['veicolo_disponibile']).lower(),
         str(spedizione['disponibilita_corriere']).lower(),
+        str(spedizione['meteo_sfavorevole']).lower(),
         prob_priori[0], # Probabilità a priori del primo evento (spedizione fallita)
-        prob_priori[1],# Probabilità a priori del secondo evento (pagamento fallito)
+        prob_priori[1], # Probabilità a priori del secondo evento (pagamento fallito)
         prob_priori[2]).call() # Probabilità a priori del terzo evento (ritardo di consegna)
         
     # Calcolo evento pagamento fallito e ritardo di consegna insieme
